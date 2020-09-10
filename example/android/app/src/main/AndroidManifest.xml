@@ -1,0 +1,34 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yuxiaor.flutter.g_faraday_example">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:name=".App"
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme"
+        android:label="g_faraday_example">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".FirstActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="native_page_first"
+                    android:scheme="native" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".FragmentPage" />
+
+    </application>
+</manifest>

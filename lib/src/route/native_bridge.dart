@@ -1,0 +1,167 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+
+import 'navigator.dart';
+import 'arg.dart';
+
+const MethodChannel _channel = const MethodChannel('g_faraday');
+
+class FaradayNativeBridge extends StatefulWidget {
+  final RouteFactory onGenerateRoute;
+
+  final RouteFactory mockNativeRouteFactory;
+  final RouteSettings mockInitialSettings;
+
+  FaradayNativeBridge({Key key, @required this.onGenerateRoute, this.mockNativeRouteFactory, this.mockInitialSettings}) : super(key: key);
+
+  static FaradayNativeBridgeState of(BuildContext context) {
+    FaradayNativeBridgeState faraday;
+    if (context is StatefulElement && context.state is FaradayNativeBridgeState) {
+      faraday = context.state as FaradayNativeBridgeState;
+    }
+    return faraday ?? context.findAncestorStateOfType<FaradayNativeBridgeState>();
+  }
+
+  @override
+  FaradayNativeBridgeState createState() => FaradayNativeBridgeState();
+}
+
+class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
+  List<FaradayNavigator> _navigatorStack = [];
+  int _index = 0;
+  int _preIndex = 0;
+  int _seq = 0;
+
+  RouteSettings get _mockInitialSettings => widget.mockInitialSettings;
+  RouteFactory get _mockNativeRouteFactory => widget.mockNativeRouteFactory;
+
+  @override
+  void initState() {
+    super.initState();
+    _channel.setMethodCallHandler(_handler);
+
+    if (kDebugMode) {
+      if (widget.mockInitialSettings != null) {
+        _handler(MethodCall('pageCreate', {'name': _mockInitialSettings.name, 'arg': _mockInitialSettings.arguments}));
+      }
+    }
+  }
+
+  Future<T> push<T extends Object>(
+    String name, {
+    Map<String, dynamic> arguments,
+    bool present = false,
+    bool flutterRoute = false,
+  }) async {
+    if (kDebugMode) {
+      if (_mockNativeRouteFactory != null) {
+        if (flutterRoute) {
+          final key = _navigatorStack.last.key as LabeledGlobalKey;
+          if (key.currentState is FaradayNavigatorState) {
+            return (key.currentState as FaradayNavigatorState).pushNamed(name, arguments: arguments);
+          }
+        }
+        return Navigator.of(context, rootNavigator: true).push(_mockNativeRouteFactory(RouteSettings(
+          name: name,
+          arguments: {'present': present, 'flutterRoute': flutterRoute, if (arguments != null) ...arguments},
+        )));
+      }
+    }
+    //
+    return _channel.invokeMethod(
+      'pushNativePage',
+      {'name': name, 'present': present, 'flutterRoute': flutterRoute, if (arguments != null) 'arguments': arguments},
+    );
+  }
+
+  Future<void> pop<T extends Object>(Key key, [T result]) async {
+    if (kDebugMode) {
+      if (_mockNativeRouteFactory != null) {
+        return Navigator.of(context, rootNavigator: true).maybePop(result);
+      }
+    }
+    assert(_navigatorStack.isNotEmpty);
+    assert(_navigatorStack[_index].arg.key == key);
+    await _channel.invokeMethod('popContainer', result);
+  }
+
+  Future<void> disableHorizontalSwipePopGesture(bool disable) async {
+    if (kDebugMode) {
+      if (_mockNativeRouteFactory != null) {
+        return;
+      }
+    }
+    await _channel.invokeMethod('disableHorizontalSwipePopGesture', disable);
+  }
+
+  bool isOnTop(Key key) {
+    return _navigatorStack.isNotEmpty && _navigatorStack[_index].arg.key == key;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_navigatorStack.isEmpty || _index == -1) return Container();
+
+    return IndexedStack(
+      children: _navigatorStack,
+      index: _index,
+    );
+  }
+
+  Future<dynamic> _handler(MethodCall call) {
+    int index() {
+      int seq = call.arguments as int;
+      final index = _navigatorStack.indexWhere((n) => n.arg.seq == seq);
+      assert(index != -1, 'page not found');
+      return index;
+    }
+
+    switch (call.method) {
+      case 'pageCreate':
+        String name = call.arguments['name'];
+        final arg = FaradayArguments(call.arguments, name, _seq++);
+        _navigatorStack.add(appRoot(arg));
+        _updateIndex(_navigatorStack.length - 1);
+        return Future.value(arg.seq);
+      case 'pageShow':
+        _updateIndex(index());
+        return Future.value(true);
+      case 'pageHidden':
+        if (index() == _index) _updateIndex(_preIndex);
+        return Future.value(true);
+      case 'pageDealloc':
+        final current = _navigatorStack[_index];
+        _navigatorStack.removeAt(index());
+        _updateIndex(_navigatorStack.indexOf(current));
+        return Future.value(true);
+      default:
+        return Future.value(false);
+    }
+  }
+
+  void _updateIndex(int index) {
+    if (index >= _navigatorStack.length || index < 0) return;
+    setState(() {
+      _preIndex = _index;
+      _index = index;
+      debugPrint('index: $_index, preIndex: $_preIndex, max_seq: $_seq');
+    });
+  }
+
+  FaradayNavigator appRoot(FaradayArguments arg) {
+    return FaradayNavigator(
+      key: GlobalKey(debugLabel: 'seq: ${arg.seq}'),
+      arg: arg,
+      initialRoute: arg.name,
+      onGenerateRoute: widget.onGenerateRoute,
+      onGenerateInitialRoutes: (navigator, initialRoute) => [
+        widget.onGenerateRoute(RouteSettings(name: initialRoute, arguments: arg.arguments)),
+      ],
+    );
+  }
+}

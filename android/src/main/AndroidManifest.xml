@@ -1,0 +1,23 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.yuxiaor.flutter.g_faraday">
+
+    <application tools:node="merge">
+        <provider
+            android:name=".utils.NativeContextProvider"
+            android:authorities="${applicationId}.app.provider"
+            android:exported="false" />
+
+        <activity
+            android:name=".FaradayActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize" />
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+
+    </application>
+</manifest>
