@@ -13,9 +13,7 @@ import g_faraday
         
         UINavigationController.farady_automaticallyHandleNavigationBarHidenAndCallback()
         
-        if !Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self) {
-            fatalError("initial flutter engine failed.")
-        }
+        Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self)
         
         return true
     }
@@ -37,6 +35,10 @@ extension AppDelegate: FaradayNavigationDelegate {
         } else {
             navigationController?.pushViewController(vc, with: callbackToken, animated: true)
         }
+    }
+    
+    func disableHorizontalSwipePopGesture(_ disable: Bool) {
+        Faraday.sharedInstance.currentFlutterViewController?.disableHorizontalSwipePopGesture(disable: disable)
     }
     
     func pop() -> FaradayFlutterViewController? {

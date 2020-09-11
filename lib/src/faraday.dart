@@ -40,13 +40,16 @@ class Faraday {
       return FaradayPageRouteBuilder(
         pageBuilder: (context) {
           if (kDebugMode) {
-            if (nativeMockFactory != null) assert(mockInitialname != null && mockInitialname.isNotEmpty);
-            final page = FaradayNativeBridge(
-              onGenerateRoute: rawFactory,
-              mockInitialSettings: RouteSettings(name: mockInitialname, arguments: mockInitialArguments),
-              mockNativeRouteFactory: nativeMockFactory,
-            );
-            return decorator != null ? decorator(context, page) : page;
+            if (nativeMockFactory != null) {
+              assert(mockInitialname != null && mockInitialname.isNotEmpty);
+
+              final page = FaradayNativeBridge(
+                onGenerateRoute: rawFactory,
+                mockInitialSettings: RouteSettings(name: mockInitialname, arguments: mockInitialArguments),
+                mockNativeRouteFactory: nativeMockFactory,
+              );
+              return decorator != null ? decorator(context, page) : page;
+            }
           }
           final page = FaradayNativeBridge(onGenerateRoute: rawFactory);
           return decorator != null ? decorator(context, page) : page;
