@@ -19,13 +19,17 @@ class _MyAppState extends State<MyApp> {
   Map<String, RouteFactory> routes = {
     'first_page': (RouteSettings settings) => CupertinoPageRoute(builder: (context) => FirstPage(0), settings: settings),
     'home': (RouteSettings settings) => CupertinoPageRoute(builder: (context) => HomePage(settings.arguments), settings: settings),
-    'tab': (RouteSettings settings) => CupertinoPageRoute(builder: (context) => EmbeddingPage(0), settings: settings),
+    'flutter_tab_1': (RouteSettings settings) => CupertinoPageRoute(builder: (context) => EmbeddingPage(0), settings: settings),
   };
 
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-      onGenerateRoute: Faraday.factory((setttings) => routes[setttings.name](setttings)),
+      onGenerateRoute: Faraday.factory((setttings) {
+        final f = routes[setttings.name];
+        if (f == null) return null;
+        return f(setttings);
+      }),
     );
   }
 }

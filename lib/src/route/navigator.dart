@@ -75,15 +75,6 @@ class FaradayNavigatorState extends NavigatorState with WidgetsBindingObserver {
   }
 
   @override
-  Future<T> pushNamed<T extends Object>(String routeName, {Object arguments}) {
-    try {
-      return super.pushNamed(routeName, arguments: arguments);
-    } catch (e) {
-      return FaradayNativeBridge.of(context).push(routeName, arguments: arguments);
-    }
-  }
-
-  @override
   void pop<T extends Object>([T result]) {
     if (observer.onlyOnePage) {
       FaradayNativeBridge.of(context).pop(widget.arg.key, result);

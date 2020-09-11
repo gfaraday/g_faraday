@@ -11,9 +11,9 @@ import g_faraday
 class Flutter1ViewController: UIViewController {
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         
-        
-        let vc = FPage.flutterTab1.flutterViewController() { _ in
+        let vc = FPage.tab.flutterViewController() { _ in
             
         }
         
@@ -24,8 +24,10 @@ class Flutter1ViewController: UIViewController {
         
         vc.view.frame = view.frame;
         vc.view.autoresizingMask = [.flexibleWidth, .flexibleWidth]
-        
-        super.viewDidLoad()
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
 }

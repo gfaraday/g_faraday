@@ -11,19 +11,18 @@ class Flutter2ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        let vc = FPage.flutterTab2.flutterViewController() { _ in
+            
+        }
+        
+        vc.willMove(toParent: self)
+        addChild(vc)
+        view.addSubview(vc.view)
+        vc.didMove(toParent: self)
+        
+        vc.view.frame = view.frame;
+        vc.view.autoresizingMask = [.flexibleWidth, .flexibleWidth]
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+   
 }

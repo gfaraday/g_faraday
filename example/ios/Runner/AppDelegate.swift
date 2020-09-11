@@ -10,9 +10,7 @@ import g_faraday
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        
-        UINavigationController.farady_automaticallyHandleNavigationBarHidenAndCallback()
-        
+
         Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self)
         
         return true
@@ -26,14 +24,14 @@ extension AppDelegate: FaradayNavigationDelegate {
     }
     
     func push(_ callbackToken: CallbackToken, name: String, isFlutterRoute: Bool, isPresent: Bool, arguments: Dictionary<String, Any>?) {
-        let vc = isFlutterRoute ? FPage.tab.flutterViewController(callback: { r in
+        let vc = isFlutterRoute ? FPage.flutter.flutterViewController(callback: { r in
             debugPrint(r.debugDescription)
         }) : FirstViewController()
         
         if (isPresent) {
-            navigationController?.topViewController?.present(vc, with: callbackToken, animated: true, completion: nil)
+            navigationController?.topViewController?.present(vc, animated: true, completion: nil)
         } else {
-            navigationController?.pushViewController(vc, with: callbackToken, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -56,10 +54,20 @@ public protocol FlutterPage {
 
 enum FPage: FlutterPage {
     
-    case home
-    case tab
+    case flutterTab1
+    case flutterTab2
+    case flutter
     
-    var name: String { return self == .home ? "home" : "tab" }
+    var name: String {
+        switch self {
+        case .flutterTab1:
+            return "flutter_tab_1"
+        case .flutterTab2:
+            return "flutter_tab_2"
+        default:
+            return "flutter"
+        }
+    }
     
     var arguments: Any? { return [:] }
 }
@@ -70,6 +78,3 @@ extension FlutterPage {
         return Faraday.createFlutterViewController(name, arguments: arguments, callback: callback)
     }
 }
-
-extension MainTabBarController: FaradayNavigationBarHiddenProtocol {}
-

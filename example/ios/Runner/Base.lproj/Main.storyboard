@@ -7,10 +7,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Item 2-->
+        <!--flutter2-->
         <scene sceneID="isn-E8-6mB">
             <objects>
-                <viewController id="nU1-di-L5x" sceneMemberID="viewController">
+                <viewController id="nU1-di-L5x" customClass="Flutter2ViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="32I-VN-q8Q"/>
                         <viewControllerLayoutGuide type="bottom" id="tGD-Aj-m2x"/>
@@ -20,16 +20,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 2" id="0gc-3w-9ZB"/>
+                    <tabBarItem key="tabBarItem" title="flutter2" id="0gc-3w-9ZB"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6TV-qr-hb1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-254" y="704"/>
         </scene>
-        <!--Item 1-->
+        <!--native1-->
         <scene sceneID="k4U-NI-Nn4">
             <objects>
-                <viewController id="AwQ-Gq-Nwq" customClass="Tab1ViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="AwQ-Gq-Nwq" customClass="Native1ViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MlJ-PF-ULa"/>
                         <viewControllerLayoutGuide type="bottom" id="kMw-6G-4Kb"/>
@@ -52,7 +52,7 @@
                             <constraint firstItem="W4e-BC-iYF" firstAttribute="centerY" secondItem="1cP-wr-bfP" secondAttribute="centerY" id="uuc-L7-MtN"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 1" id="WAK-tL-pOp"/>
+                    <tabBarItem key="tabBarItem" title="native1" id="WAK-tL-pOp"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VzD-6v-WGW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -61,12 +61,14 @@
         <!--Navigation Controller-->
         <scene sceneID="YsA-1m-wmm">
             <objects>
-                <navigationController id="InR-2g-XB1" sceneMemberID="viewController">
+                <navigationController navigationBarHidden="YES" id="InR-2g-XB1" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="gYx-pd-exc">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="LPm-3b-CMf">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="um7-gn-RUq" kind="relationship" relationship="rootViewController" id="IhA-NZ-pnz"/>
                     </connections>
@@ -95,10 +97,10 @@
             </objects>
             <point key="canvasLocation" x="-2442" y="275"/>
         </scene>
-        <!--Item-->
+        <!--flutter1-->
         <scene sceneID="pJq-fU-5ye">
             <objects>
-                <viewController id="ea8-wb-6vo" customClass="Tab0ViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ea8-wb-6vo" customClass="Flutter1ViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ku2-Ue-Ish"/>
                         <viewControllerLayoutGuide type="bottom" id="IEs-ML-MQg"/>
@@ -108,7 +110,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="0tJ-xh-Chy"/>
+                    <tabBarItem key="tabBarItem" title="flutter1" id="0tJ-xh-Chy"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6la-yb-CKl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

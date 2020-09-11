@@ -153,7 +153,11 @@ public class Faraday {
         let faraday = Faraday.sharedInstance
         let info = state.info;
         faraday.channel?.invokeMethod(info.0, arguments: info.1, result: { r in
-            result(r)
+            if (r is FlutterError) {
+                fatalError((r as! FlutterError).message ?? "unkonwn error")
+            } else {
+                result(r)
+            }
         })
     }
     
@@ -177,13 +181,13 @@ public class Faraday {
     
     func pop(flutterContainer arguments: Any?, callback: FlutterResult) {
         let vc = navigatorDelegate?.pop()
-        vc?.callback?(arguments)
-        callback(nil)
+        vc?.callbackValueToCreator(arguments)
+        callback(vc != nil)
     }
     
     func disableHorizontalSwipePopGesture(arguments: Any?, callback: FlutterResult) {
         Faraday.sharedInstance.navigatorDelegate?.disableHorizontalSwipePopGesture(arguments as? Bool ?? false)
-        callback(nil)
+        callback(true)
     }
     
 }

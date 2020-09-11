@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:g_faraday/src/widgets/404.dart';
 
 import 'route/native_bridge.dart';
 import 'route/route.dart';
@@ -35,7 +36,7 @@ class Faraday {
   /// ```
   ///
   static RouteFactory factory(RouteFactory rawFactory,
-      {FaradayDecorator decorator, RouteFactory nativeMockFactory, String mockInitialname, Object mockInitialArguments}) {
+      {FaradayDecorator decorator, RouteFactory nativeMockFactory, RouteFactory onUnknownRoute, String mockInitialname, Object mockInitialArguments}) {
     final f = (settings) {
       return FaradayPageRouteBuilder(
         pageBuilder: (context) {
@@ -47,11 +48,12 @@ class Faraday {
                 onGenerateRoute: rawFactory,
                 mockInitialSettings: RouteSettings(name: mockInitialname, arguments: mockInitialArguments),
                 mockNativeRouteFactory: nativeMockFactory,
+                onUnknownRoute: onUnknownRoute ?? _default404Page,
               );
               return decorator != null ? decorator(context, page) : page;
             }
           }
-          final page = FaradayNativeBridge(onGenerateRoute: rawFactory);
+          final page = FaradayNativeBridge(onGenerateRoute: rawFactory, onUnknownRoute: onUnknownRoute ?? _default404Page);
           return decorator != null ? decorator(context, page) : page;
         },
         settings: settings,
@@ -60,3 +62,7 @@ class Faraday {
     return f;
   }
 }
+
+RouteFactory _default404Page = (RouteSettings settings) => CupertinoPageRoute(
+      builder: (context) => NotFoundPage(settings),
+    );

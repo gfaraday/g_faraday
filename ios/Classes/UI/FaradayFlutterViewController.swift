@@ -11,7 +11,8 @@ public class FaradayFlutterViewController: FlutterViewController {
     
     public let name: String
     public let arguments: Any?
-    public let callback: ((Any?) -> ())?
+    
+    private var callback: ((Any?) -> ())?
     
     private var isShowing = false
     private weak var previousFlutterViewController: FaradayFlutterViewController?
@@ -44,6 +45,14 @@ public class FaradayFlutterViewController: FlutterViewController {
         
     public func disableHorizontalSwipePopGesture(disable: Bool) {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = !disable
+    }
+    
+    public func callbackValueToCreator(_ value: Any?) {
+        guard let cb = callback else {
+            fatalError("don't support callback or did callback-ed")
+        }
+        cb(value)
+        callback = nil
     }
     
     public override func viewWillAppear(_ animated: Bool) {

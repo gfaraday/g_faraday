@@ -8,7 +8,7 @@
 import UIKit
 import g_faraday
 
-class FirstViewController: UIViewController, FaradayResultProvider {
+class FirstViewController: UIViewController {
 
     var result: Any?
     
@@ -21,7 +21,7 @@ class FirstViewController: UIViewController, FaradayResultProvider {
     }
 
     @IBAction func openFlutter(sender: UIButton) {
-        let vc = FPage.home.flutterViewController { r in
+        let vc = FPage.flutter.flutterViewController { r in
             debugPrint(r.debugDescription)
         }
         

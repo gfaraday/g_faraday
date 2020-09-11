@@ -19,7 +19,7 @@ class Native1ViewController: UIViewController {
 
     @IBAction func openFlutterDemo(sender: UIButton) {
         
-        let vc = FPage.home.flutterViewController { r in
+        let vc = FPage.flutter.flutterViewController { r in
             sender.setTitle("result from flutter \(r ?? "none")", for: .normal)
         }
         

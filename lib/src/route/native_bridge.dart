@@ -13,11 +13,18 @@ const MethodChannel _channel = const MethodChannel('g_faraday');
 
 class FaradayNativeBridge extends StatefulWidget {
   final RouteFactory onGenerateRoute;
+  final RouteFactory onUnknownRoute;
 
   final RouteFactory mockNativeRouteFactory;
   final RouteSettings mockInitialSettings;
 
-  FaradayNativeBridge({Key key, @required this.onGenerateRoute, this.mockNativeRouteFactory, this.mockInitialSettings}) : super(key: key);
+  FaradayNativeBridge({
+    Key key,
+    @required this.onGenerateRoute,
+    this.onUnknownRoute,
+    this.mockNativeRouteFactory,
+    this.mockInitialSettings,
+  }) : super(key: key);
 
   static FaradayNativeBridgeState of(BuildContext context) {
     FaradayNativeBridgeState faraday;
@@ -33,7 +40,7 @@ class FaradayNativeBridge extends StatefulWidget {
 
 class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   List<FaradayNavigator> _navigatorStack = [];
-  int _index = 0;
+  int _index;
   int _preIndex = 0;
   int _seq = 0;
 
@@ -105,7 +112,14 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   @override
   Widget build(BuildContext context) {
-    if (_navigatorStack.isEmpty || _index == -1) return Container();
+    if (_index == -1 || _navigatorStack.isEmpty)
+      return Container(
+        alignment: Alignment.center,
+        child: Text(
+          'hot restart losts all states, please trigger re-create.',
+          textAlign: TextAlign.center,
+        ),
+      );
 
     return IndexedStack(
       children: _navigatorStack,
@@ -117,7 +131,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     int index() {
       int seq = call.arguments as int;
       final index = _navigatorStack.indexWhere((n) => n.arg.seq == seq);
-      assert(index != -1, 'page not found');
       return index;
     }
 
@@ -145,7 +158,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   void _updateIndex(int index) {
-    if (index >= _navigatorStack.length || index < 0) return;
     setState(() {
       _preIndex = _index;
       _index = index;
@@ -154,13 +166,20 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   FaradayNavigator appRoot(FaradayArguments arg) {
+    final initialSettings = RouteSettings(name: arg.name, arguments: arg.arguments);
     return FaradayNavigator(
       key: GlobalKey(debugLabel: 'seq: ${arg.seq}'),
       arg: arg,
       initialRoute: arg.name,
-      onGenerateRoute: widget.onGenerateRoute,
+      onGenerateRoute: (settings) {
+        if (kDebugMode) {
+          if (settings.name == "/") return widget.onGenerateRoute(initialSettings);
+        }
+        return widget.onGenerateRoute(settings);
+      },
+      onUnknownRoute: widget.onUnknownRoute,
       onGenerateInitialRoutes: (navigator, initialRoute) => [
-        widget.onGenerateRoute(RouteSettings(name: initialRoute, arguments: arg.arguments)),
+        widget.onGenerateRoute(initialSettings) ?? widget.onUnknownRoute(initialSettings),
       ],
     );
   }
