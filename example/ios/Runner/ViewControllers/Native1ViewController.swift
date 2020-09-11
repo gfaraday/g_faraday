@@ -8,7 +8,7 @@
 import UIKit
 import g_faraday
 
-class Tab1ViewController: UIViewController {
+class Native1ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
