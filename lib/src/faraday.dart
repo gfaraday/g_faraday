@@ -35,7 +35,7 @@ class Faraday {
   /// }
   /// ```
   ///
-  static RouteFactory factory(RouteFactory rawFactory,
+  static RouteFactory wrapper(RouteFactory rawFactory,
       {FaradayDecorator decorator, RouteFactory nativeMockFactory, RouteFactory onUnknownRoute, String mockInitialname, Object mockInitialArguments}) {
     final f = (settings) {
       return FaradayPageRouteBuilder(

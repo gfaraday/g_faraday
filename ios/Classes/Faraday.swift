@@ -33,6 +33,11 @@ public protocol FaradayNavigationDelegate: NSObjectProtocol {
     func pop() -> FaradayFlutterViewController?
 }
 
+public protocol FaradayMethodHandler: NSObjectProtocol {
+
+    func handle(_ method: String, arguments: Any?, completion: (Any?) -> Void);
+}
+
 enum PageState {
     
     case create(String, Any?) // name, arguments
@@ -64,6 +69,8 @@ public class Faraday {
     }
     
     private weak var navigatorDelegate: FaradayNavigationDelegate? // not retain
+    private(set) weak var netHandler: FaradayMethodHandler?
+    private(set) weak var commonHandler: FaradayMethodHandler?
     
     private var channel: FlutterMethodChannel?
     
@@ -72,8 +79,8 @@ public class Faraday {
     private var callbackCache = [UUID: FlutterResult]()
     
     /// 当前attach在Engine的viewController 不一定可见
-    public var currentFlutterViewController: FaradayFlutterViewController? {
-        return engine.viewController as? FaradayFlutterViewController
+    public var currentFlutterViewController: FlutterViewController? {
+        return engine.viewController
     }
     
     
@@ -83,8 +90,10 @@ public class Faraday {
     ///   - automaticallyRegisterPlugins: 是否自动注册插件，如果不自动注册请及时手动注册所有插件
     /// - Returns: 插件Registry 用于注册插件
     @discardableResult
-    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, automaticallyRegisterPlugins: Bool = true) -> FlutterPluginRegistry {
+    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, netHandler: FaradayMethodHandler? = nil, commonHandler: FaradayMethodHandler? = nil, automaticallyRegisterPlugins: Bool = true) -> FlutterPluginRegistry {
         self.navigatorDelegate = navigatorDelegate
+        self.netHandler = netHandler
+        self.commonHandler = commonHandler
         
         engine = FlutterEngine(name: "io.flutter.faraday", project: nil, allowHeadlessExecution: false)
         

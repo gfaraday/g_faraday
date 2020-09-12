@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-      onGenerateRoute: Faraday.factory((setttings) {
+      onGenerateRoute: Faraday.wrapper((setttings) {
         final f = routes[setttings.name];
         if (f == null) return null;
         return f(setttings);
@@ -33,3 +33,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+@nativeEntry
+void showDetail(int id) {}

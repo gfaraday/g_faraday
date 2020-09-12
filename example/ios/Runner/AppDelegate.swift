@@ -36,7 +36,7 @@ extension AppDelegate: FaradayNavigationDelegate {
     }
     
     func disableHorizontalSwipePopGesture(_ disable: Bool) {
-        Faraday.sharedInstance.currentFlutterViewController?.disableHorizontalSwipePopGesture(disable: disable)
+        (Faraday.sharedInstance.currentFlutterViewController as? FaradayFlutterViewController)?.disableHorizontalSwipePopGesture(disable: disable)
     }
     
     func pop() -> FaradayFlutterViewController? {
