@@ -6,6 +6,7 @@ import com.yuxiaor.flutter.g_faraday.utils.ContextProvider
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.plugin.common.MethodChannel
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -36,7 +37,17 @@ object Faraday {
     }
 
     /**
-     * register customer plugins
+     * register channel
+     */
+    @JvmStatic
+    fun registerChannel(channelName: String, handler: MethodChannel.MethodCallHandler): MethodChannel {
+        return MethodChannel(engine.dartExecutor, channelName).apply {
+            setMethodCallHandler(handler)
+        }
+    }
+
+    /**
+     * register plugin
      */
     @JvmStatic
     fun registerPlugin(plugin: FlutterPlugin) {
