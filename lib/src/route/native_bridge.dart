@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'navigator.dart';
 import 'arg.dart';
+import 'navigator.dart';
 
 const MethodChannel _channel = const MethodChannel('g_faraday');
 
@@ -137,7 +137,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     switch (call.method) {
       case 'pageCreate':
         String name = call.arguments['name'];
-        final arg = FaradayArguments(call.arguments, name, _seq++);
+        final arg = FaradayArguments(call.arguments['arguments'], name, _seq++);
         _navigatorStack.add(appRoot(arg));
         _updateIndex(_navigatorStack.length - 1);
         return Future.value(arg.seq);

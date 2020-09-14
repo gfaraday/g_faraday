@@ -12,6 +12,7 @@ import java.io.Serializable
 /** GFaradayPlugin */
 class GFaradayPlugin : FlutterPlugin, MethodCallHandler {
     private var channel: MethodChannel? = null
+    private var navigator: FaradayNavigator? = null
 
     companion object {
         @JvmStatic
@@ -27,6 +28,10 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler {
         channel?.setMethodCallHandler(this)
     }
 
+    fun setNavigator(navigator: FaradayNavigator) {
+        this.navigator = navigator
+    }
+
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
@@ -34,11 +39,11 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler {
             "pushNativePage" -> {
                 val name = call.argument<String>("name")
                 require(name != null) { "page route name should not be null" }
-                Faraday.navigator?.push(name, call.argument("arguments")) { result.success(it) }
+                navigator?.push(name, call.argument("arguments")) { result.success(it) }
             }
             "popContainer" -> {
                 val arg = call.arguments
-                Faraday.navigator?.pop(arg as? Serializable)
+                navigator?.pop(arg as? Serializable)
                 if (arg != null && arg !is Serializable) {
                     print("=========返回值丢失，返回值类型 $arg")
                 }
@@ -47,28 +52,34 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler {
             "disableHorizontalSwipePopGesture" -> {
                 val disable = call.arguments as? Boolean ?: false
                 print(if (!disable) "enable" else "disable" + " Horizontal Swipe PopGesture")
+                navigator?.onSwipeBack(!disable)
                 result.success(null)
             }
             else -> result.notImplemented()
         }
     }
 
-    fun onPageCreate(args: Any?, callback: (seqId: Int) -> Unit) {
-        channel?.invoke("pageCreate", args) {
+    internal fun onPageCreate(route: String, args: Any?, callback: (seqId: Int) -> Unit) {
+        val data = hashMapOf<String, Any>()
+        data["name"] = route
+        if (args != null) {
+            data["arguments"] = args
+        }
+        channel?.invoke("pageCreate", data) {
             val seqId = it as Int
             callback.invoke(seqId)
         }
     }
 
-    fun onPageShow(seqId: Int) {
+    internal fun onPageShow(seqId: Int) {
         channel?.invokeMethod("pageShow", seqId)
     }
 
-    fun onPageHidden(seqId: Int) {
+    internal fun onPageHidden(seqId: Int) {
         channel?.invokeMethod("pageHidden", seqId)
     }
 
-    fun onPageDealloc(seqId: Int) {
+    internal fun onPageDealloc(seqId: Int) {
         channel?.invokeMethod("pageDealloc", seqId)
     }
 

@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                 Center(child: Text("Flutter Home Page")),
                 button(
                   "pop with result",
-                  () => Navigator.of(context).pop('[lutter pop with result]'),
+                  () => Navigator.of(context).pop('[flutter pop with result]'),
                 ),
                 button(
                   "maybe pop",

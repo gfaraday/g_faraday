@@ -1,4 +1,4 @@
-package com.yuxiaor.flutter.g_faraday_example
+package com.yuxiaor.flutter.g_faraday_example.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -6,6 +6,7 @@ import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.yuxiaor.flutter.g_faraday.FaradayFragment
+import com.yuxiaor.flutter.g_faraday_example.R
 
 /**
  * Author: Edward

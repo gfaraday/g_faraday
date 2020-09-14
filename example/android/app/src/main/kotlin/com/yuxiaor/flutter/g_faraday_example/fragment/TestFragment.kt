@@ -1,4 +1,4 @@
-package com.yuxiaor.flutter.g_faraday_example
+package com.yuxiaor.flutter.g_faraday_example.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.yuxiaor.flutter.g_faraday_example.R
 
 /**
  * Author: Edward

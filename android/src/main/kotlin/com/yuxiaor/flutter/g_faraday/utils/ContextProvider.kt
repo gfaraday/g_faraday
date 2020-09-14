@@ -11,7 +11,7 @@ import android.net.Uri
  * Date: 2019-08-13
  * Description:
  */
-class NativeContextProvider : ContentProvider() {
+class ContextProvider : ContentProvider() {
 
     companion object {
         lateinit var context: Application
@@ -19,7 +19,7 @@ class NativeContextProvider : ContentProvider() {
 
     override fun onCreate(): Boolean {
         val app = context as Application
-        NativeContextProvider.context = app
+        ContextProvider.context = app
         return true
     }
 

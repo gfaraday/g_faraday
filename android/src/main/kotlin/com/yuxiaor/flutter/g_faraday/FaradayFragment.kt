@@ -13,18 +13,19 @@ import io.flutter.embedding.engine.FlutterEngine
  */
 class FaradayFragment private constructor() : FlutterFragment() {
 
-    private var seqId = 0
-
+    private var seqId: Int? = null
+    private val plugin = Faraday.faradayPlugin
 
     companion object {
 
+        private const val ARGS_KEY = "_flutter_args"
+        private const val ROUTE_KEY = "_flutter_route"
+
         @JvmStatic
-        fun newInstance(route: String, vararg params: Pair<String, Any>): FaradayFragment {
-            val args = hashMapOf(*params).apply {
-                this["name"] = route
-            }
+        fun newInstance(routeName: String, params: HashMap<String, Any>? = null): FaradayFragment {
             val bundle = Bundle().apply {
-                putSerializable(Faraday.FLUTTER_ARGS_KEY, args)
+                putString(ROUTE_KEY, routeName)
+                putSerializable(ARGS_KEY, params)
                 putString(ARG_FLUTTERVIEW_TRANSPARENCY_MODE, TransparencyMode.opaque.name)
             }
             return FaradayFragment().apply { arguments = bundle }
@@ -37,41 +38,44 @@ class FaradayFragment private constructor() : FlutterFragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val args = arguments?.getSerializable(Faraday.FLUTTER_ARGS_KEY)
-        Faraday.onPageCreate(args) {
-            seqId = it
-        }
         super.onCreate(savedInstanceState)
+        val route = arguments?.getString(ROUTE_KEY)
+        require(route != null) { "route must not be null!" }
+        val args = arguments?.getSerializable(ARGS_KEY)
+        plugin.onPageCreate(route, args) {
+            seqId = it
+            plugin.onPageShow(it)
+        }
     }
 
 
     override fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) {
-            Faraday.onPageShow(seqId)
+            seqId?.let { plugin.onPageShow(it) }
         } else {
-            Faraday.onPageHidden(seqId)
+            seqId?.let { plugin.onPageHidden(it) }
         }
         super.onHiddenChanged(hidden)
     }
 
     override fun onResume() {
-        Faraday.onPageShow(seqId)
         super.onResume()
+        seqId?.let { plugin.onPageShow(it) }
     }
 
     override fun onPause() {
-        Faraday.onPageHidden(seqId)
         super.onPause()
+        seqId?.let { plugin.onPageHidden(it) }
     }
 
     override fun onDetach() {
-        Faraday.onPageDealloc(seqId)
         super.onDetach()
+        seqId?.let { plugin.onPageDealloc(it) }
     }
 
     override fun onDestroy() {
-        Faraday.onPageDealloc(seqId)
         super.onDestroy()
+        seqId?.let { plugin.onPageDealloc(it) }
     }
 
 }

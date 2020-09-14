@@ -11,14 +11,14 @@
         android:label="g_faraday_example"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".FirstActivity">
+        <activity android:name=".activity.FirstActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

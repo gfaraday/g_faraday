@@ -10,9 +10,8 @@ import com.yuxiaor.flutter.g_faraday.Faraday
  */
 class App : Application() {
 
-
     override fun onCreate() {
         super.onCreate()
-        Faraday.startFlutterEngine()
+        Faraday.startFlutterEngine(MyFlutterNavigator())
     }
 }

@@ -1,4 +1,4 @@
-package com.yuxiaor.flutter.g_faraday.plugins
+package com.yuxiaor.flutter.g_faraday
 
 import android.content.Intent
 import io.flutter.embedding.engine.plugins.FlutterPlugin

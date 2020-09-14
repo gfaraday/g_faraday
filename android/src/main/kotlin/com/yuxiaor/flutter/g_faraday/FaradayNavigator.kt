@@ -1,4 +1,4 @@
-package com.yuxiaor.flutter.g_faraday.delegates
+package com.yuxiaor.flutter.g_faraday
 
 import java.io.Serializable
 
@@ -10,7 +10,18 @@ import java.io.Serializable
 
 interface FaradayNavigator {
 
+    /**
+     * open native Activity
+     */
     fun push(name: String, arguments: Serializable?, callback: (result: HashMap<String, Any?>?) -> Unit)
 
+    /**
+     * finish flutter container Activity
+     */
     fun pop(result: Serializable?)
+
+    /**
+     * 是否允许滑动返回
+     */
+    fun onSwipeBack(enable: Boolean)
 }
