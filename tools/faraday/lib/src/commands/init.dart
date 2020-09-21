@@ -1,12 +1,11 @@
 import 'dart:io';
 
-import 'package:faraday/src/utils/exception.dart';
-import 'package:faraday/src/utils/package_graph.dart';
 import 'package:g_json/g_json.dart';
-
-import '../commands/command.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
+
+import '../utils/exception.dart';
+import '../commands/command.dart';
 
 class InitCommand extends FaradayCommand {
   @override

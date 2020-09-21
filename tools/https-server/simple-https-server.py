@@ -13,7 +13,7 @@ https://jjayyyyyyy.github.io/2016/10/07/reWrite_SimpleHTTPServerWithUpload_with_
 
 __version__ = "0.4"
 __all__ = ["SimpleHTTPRequestHandler"]
-__author__ = "bones7456, BUPTGuo, FrozenMap, a.7"
+__author__ = "bones7456, BUPTGuo, FrozenMap, a.7, yxr"
 __home_page__ = "http://luy.li/, http://buptguo.com, https://jjayyyyyyy.github.io"
 
 
