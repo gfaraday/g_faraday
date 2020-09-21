@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import '../utils/exception.dart';
 import 'package:g_json/g_json.dart';
 
-import 'exception.dart';
 import 'generator.dart';
 import 'parse_string.dart';
 

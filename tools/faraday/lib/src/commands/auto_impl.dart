@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:faraday/src/commands/command.dart';
-import 'package:faraday/src/utils/parse_string.dart';
+import 'package:faraday/src/services/parse_string.dart';
 import 'package:g_json/g_json.dart';
 
 class AutoImplCommand extends FaradayCommand {

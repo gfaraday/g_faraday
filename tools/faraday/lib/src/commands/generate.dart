@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:faraday/src/commands/command.dart';
-import 'package:faraday/src/utils/exception.dart';
-import 'package:faraday/src/utils/processor.dart';
+import '../commands/command.dart';
+import '../services/processor.dart';
+import '../utils/exception.dart';
 import 'package:path/path.dart' as path;
 
 class GenerateCommand extends FaradayCommand {
@@ -55,6 +55,8 @@ class GenerateCommand extends FaradayCommand {
       log.info('source code length: ${sourceCode.length}');
 
       process(sourceCode, projectRoot, filePath.split('lib/').last, outputs);
+
+      return 'generated common(s)&route(s) for $filePath';
     }
 
     // 从当前目录开始查找 项目根目录
@@ -83,6 +85,6 @@ class GenerateCommand extends FaradayCommand {
       }
     }
 
-    return '';
+    return 'generated common(s)&route(s) for $projectRoot';
   }
 }
