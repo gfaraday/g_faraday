@@ -1,5 +1,52 @@
 # g_faraday
 
+一个足够灵活的Flutter混合开发解决方案
+
+## 为什么会有这个库
+Flutter凭借着优秀的跨平台能力迅速壮大了起来，但flutter对[Add-to-app](https://flutter.dev/docs/development/add-to-app)的支持并没有纯flutter项目那么友好。
+我们试着考虑一下对现有app添加flutter支持需会遇到哪些问题?
+
+### 混合栈路由
+混合app肯定会存在`native page`和`flutter widget`交替出现的场景，所以我们处理了这种页面跳转以及传值。 目前社区比较知名的有闲鱼团队的 [flutter_boost](https://github.com/alibaba/flutter_boost)。
+
+### 网络
+native肯定已经有比较完善的网路层支持了，可能涉及到数据包加解密以及认证等等。这里我们就有2中处理方式，一是将native的认证消息通过[Method Channel](https://api.flutter.dev/flutter/services/MethodChannel-class.html)传递到flutter侧，另一种则是将flutter侧的所有网络请求全部代理至native
+
+#### 数据字典
+native一般都会在本地缓存一些基础数据，flutter侧肯定也会有读写这些数据的需求
+
+#### 其他 
+native可能会实现一些特定算法，或者特定功能的方法，flutter侧也必须有能力调用。flutter的错误日志收集等等
+
+### 试一下
+<!-- `g_faraday`是一个标准的`Flutter`插件，`flutter`侧集成与其他插件并无区别。 -->
+首先你需要创建和原生app集成的`flutter module` (这里大家需要明确flutter app plugin module package之间的异同)
+
+``` shell
+flutter create -t module faraday_demo -i swift -a kotlin --org com.yuxiaor.mobile.flutter
+```
+
+`faraday_demo` 即项目名称，你需要换成即项目的名称。其他参数你可以用一下命令来查看用法
+```shell
+flutter create --help
+```
+
+`module` 创建完成以后你需要引入`g_faraday`依赖，在`pubspec.yaml`中添加然后执行`flutter pub get` 至此flutter侧集成完毕
+
+``` yaml
+dependencies:
+  g_faraday: ^1.2.0
+```
+
+下面我们继续来看 native侧集成
+
+#### iOS 开发
+
+#### Android 开发
+
+
+### 工程化
+
 ## 页面间传值
 
 ### Flutter侧

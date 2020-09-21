@@ -34,5 +34,5 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-@nativeEntry
+@entry
 void showDetail(int id) {}

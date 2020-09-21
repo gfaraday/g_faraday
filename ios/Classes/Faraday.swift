@@ -59,6 +59,7 @@ enum PageState {
     }
 }
 
+public typealias FaradayHandler = (_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Void
 /// Faraday 核心类，负责管理Flutter Engine 已经处理flutter侧的方法调用
 public class Faraday {
     
@@ -69,8 +70,8 @@ public class Faraday {
     }
     
     private weak var navigatorDelegate: FaradayNavigationDelegate? // not retain
-    private(set) weak var netHandler: FaradayMethodHandler?
-    private(set) weak var commonHandler: FaradayMethodHandler?
+    private(set) var netHandler: FaradayHandler?
+    private(set) var commonHandler: FaradayHandler?
     
     private var channel: FlutterMethodChannel?
     
@@ -90,7 +91,7 @@ public class Faraday {
     ///   - automaticallyRegisterPlugins: 是否自动注册插件，如果不自动注册请及时手动注册所有插件
     /// - Returns: 插件Registry 用于注册插件
     @discardableResult
-    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, netHandler: FaradayMethodHandler? = nil, commonHandler: FaradayMethodHandler? = nil, automaticallyRegisterPlugins: Bool = true) -> FlutterPluginRegistry {
+    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, netHandler: FaradayHandler? = nil, commonHandler: FaradayHandler? = nil, automaticallyRegisterPlugins: Bool = true) -> FlutterPluginRegistry {
         self.navigatorDelegate = navigatorDelegate
         self.netHandler = netHandler
         self.commonHandler = commonHandler

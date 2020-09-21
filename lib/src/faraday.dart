@@ -8,6 +8,8 @@ import 'route/route.dart';
 typedef FaradayDecorator = Widget Function(BuildContext context, Widget child);
 
 class Faraday {
+  const Faraday();
+
   ///
   ///`Flutter Native 容器`: iOS端是指`FaradayFlutterViewController` Android端是指
   ///`FlutterActivity`或者`FlutterFragment`容器初始化时需要指定 `name` 以及 `arguments`
@@ -66,3 +68,5 @@ class Faraday {
 RouteFactory _default404Page = (RouteSettings settings) => CupertinoPageRoute(
       builder: (context) => NotFoundPage(settings),
     );
+
+const faraday = Faraday();

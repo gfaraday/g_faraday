@@ -9,21 +9,23 @@ public class SwiftGFaradayPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
         //
         let channel = FlutterMethodChannel(name: "g_faraday", binaryMessenger: registrar.messenger())
-        let netChannel = FlutterMethodChannel(name: "g_faraday/net", binaryMessenger: registrar.messenger())
-        let commonChannel = FlutterMethodChannel(name: "g_faraday/common", binaryMessenger: registrar.messenger())
         
         let instance = SwiftGFaradayPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
         Faraday.sharedInstance.setup(channel: channel)
         
-        instance.netChannel = netChannel
-        netChannel.setMethodCallHandler { (call, r) in
-            Faraday.sharedInstance.netHandler?.handle(call.method, arguments: call.arguments, completion: r)
+        if let h = Faraday.sharedInstance.netHandler {
+            instance.netChannel = FlutterMethodChannel(name: "g_faraday/net", binaryMessenger: registrar.messenger())
+            instance.netChannel?.setMethodCallHandler({ (call, r) in
+                h(call.method, call.arguments, r)
+            })
         }
         
-        instance.commonChannel = commonChannel
-        commonChannel.setMethodCallHandler { (call, r) in
-            Faraday.sharedInstance.commonHandler?.handle(call.method, arguments: call.arguments, completion: r)
+        if let h = Faraday.sharedInstance.commonHandler {
+            instance.commonChannel = FlutterMethodChannel(name: "g_faraday/common", binaryMessenger: registrar.messenger())
+            instance.commonChannel?.setMethodCallHandler({ (call, r) in
+                h(call.method, call.arguments, r)
+            })
         }
     }
     
