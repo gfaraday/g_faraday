@@ -1,0 +1,51 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "faraday build",
+      "type": "dart",
+      "request": "launch",
+      "program": "bin/faraday.dart",
+      "args": [
+        "tag",
+        "--project",
+        "/Users/gix/Documents/faraday/g_faraday_scaffold",
+        "--version",
+        "1.0.3+1234",
+        "-s",
+        "http://localhost:8000",
+        "--repo-name",
+        "faraday",
+      ]
+    },
+    {
+      "name": "faraday auto-impl",
+      "type": "dart",
+      "request": "launch",
+      "program": "bin/faraday.dart",
+      "args": [
+        "auto-impl",
+        "-f",
+        "/Users/gix/Documents/faraday/g_faraday_scaffold/lib/src/demo.dart"
+      ]
+    },
+    {
+      "name": "faraday generate",
+      "request": "launch",
+      "program": "bin/faraday.dart",
+      "args": [
+        "generate",
+        "-f",
+        "/Users/gix/Documents/faraday/g_faraday_scaffold/lib/demo.dart",
+        "--ios-common",
+        "bin/debug.swift",
+        "--ios-route",
+        "bin/debug.swift"
+      ],
+      "type": "dart"
+    }
+  ]
+}
