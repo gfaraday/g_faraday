@@ -9,11 +9,28 @@
 
 # g_faraday
 
-一个足够灵活的Flutter混合开发解决方案
+又一个Flutter混合开发解决方案
 
 ## 为什么会有这个库
 Flutter凭借着优秀的跨平台能力迅速壮大了起来，但flutter对[Add-to-app](https://flutter.dev/docs/development/add-to-app)的支持并没有纯flutter项目那么友好。
-我们试着考虑一下对现有app添加flutter支持需会遇到哪些问题?
+所以有了这个库，我们尝试来解决这个问题。
+
+## 关于开发人员
+引入flutter以后开发人员的角色会有一下三种
+>
+> - ios/android 纯native开发
+> - 纯flutter开发
+> - ios/android native/flutter 开发
+
+团队成员不可能会全员进行`ios/android native/flutter`开发，所有我们需要尽可能的保证三种角色的相对独立性。而且也不能对现有的构建打包体系有太多的侵入。
+
+#
+
+## 快速开始
+
+开始之前请大家详细阅读官方[Add-to-app](https://flutter.dev/docs/development/add-to-app)文档，详细按照官方文档完成一次手动集成，理解涉及到的各个概念，尤其是 `module`、`plugin`、`Method Channel`
+
+## 混合开发会遇到哪些问题？
 
 ### 混合栈路由
 混合app肯定会存在`native page`和`flutter widget`交替出现的场景，所以我们处理了这种页面跳转以及传值。 目前社区比较知名的有闲鱼团队的 [flutter_boost](https://github.com/alibaba/flutter_boost)。
@@ -25,7 +42,11 @@ native肯定已经有比较完善的网路层支持了，可能涉及到数据�
 native一般都会在本地缓存一些基础数据，flutter侧肯定也会有读写这些数据的需求
 
 #### 其他 
-native可能会实现一些特定算法，或者特定功能的方法，flutter侧也必须有能力调用。flutter的错误日志收集等等
+native可能会实现一些特定算法，或者特定功能的方法，flutter侧也必须有能力调用。flutter的错误日志、构建打包相关等等
+
+## 引入
+
+请确认你已按照官方文档，成功集成`flutter module` 到你的原生项目
 
 ### 试一下
 <!-- `g_faraday`是一个标准的`Flutter`插件，`flutter`侧集成与其他插件并无区别。 -->
