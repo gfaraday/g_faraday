@@ -80,8 +80,8 @@ public class Faraday {
     private var callbackCache = [UUID: FlutterResult]()
     
     /// 当前attach在Engine的viewController 不一定可见
-    public var currentFlutterViewController: FlutterViewController? {
-        return engine.viewController
+    public var currentFlutterViewController: FaradayFlutterViewController? {
+        return engine.viewController as? FaradayFlutterViewController
     }
     
     

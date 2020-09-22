@@ -25,7 +25,7 @@ void process(String sourceCode, String projectRoot, String identifier,
       // impl
       final impls = generateSwift(commonMethods ?? [], SwiftCodeType.impl,
           identifier: token);
-      flush(impls, 'impl', token, swiftCommonFile);
+      flush(impls, 'impl', token, swiftCommonFile, indentation: '        ');
     }
 
     final swiftRouteFile = outputs['ios-route'];
@@ -42,6 +42,7 @@ void process(String sourceCode, String projectRoot, String identifier,
   }
 
   final r = parse(sourceCode: sourceCode);
+
   // 遍历信息 准备生成 代码
   r.forEach((clazz, info) {
     final commons = info['common']?.map((m) => JSON(m.info))?.toList();
@@ -54,13 +55,14 @@ void process(String sourceCode, String projectRoot, String identifier,
 }
 
 void flush(
-    List<String> contents, String prefix, String token, String outputFilePath) {
+    List<String> contents, String prefix, String token, String outputFilePath,
+    {String indentation = '    '}) {
   final file = File(outputFilePath);
 
   final lines = LineSplitter.split(file.readAsStringSync()).toList();
 
-  final beginToken = '  // ---> $prefix $token';
-  final endToken = '  // <--- $prefix $token';
+  final beginToken = '$indentation// ---> $prefix $token';
+  final endToken = '$indentation// <--- $prefix $token';
 
   final begin = lines.indexWhere((l) => l.endsWith(beginToken));
   if (begin != -1) {

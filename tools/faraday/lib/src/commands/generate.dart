@@ -40,16 +40,7 @@ class GenerateCommand extends FaradayCommand {
     if (filePath != null && filePath.contains('lib/')) {
       projectRoot = filePath.split('lib/').first;
 
-      final metadata =
-          File(path.join(projectRoot, '.metadata')).readAsStringSync();
-      if (!metadata.contains('project_type: module')) {
-        throw ('源文件必须包含于某个 flutter module 项目 $metadata');
-      }
-      if (!filePath.contains('lib/')) {
-        throwToolExit('源文件必须包含于某个 flutter module 项目');
-      }
-
-      log.info('project root' + projectRoot);
+      log.info('project root ' + projectRoot);
 
       final sourceCode = File(filePath).readAsStringSync() ?? '';
       log.info('source code length: ${sourceCode.length}');
@@ -79,7 +70,6 @@ class GenerateCommand extends FaradayCommand {
         in Directory(pwd.contains('lib') ? pwd : path.join(projectRoot, 'lib'))
             .listSync(followLinks: false, recursive: true)) {
       if (item is File && item.path.endsWith('.dart')) {
-        log.fine('processing $item');
         process(item.readAsStringSync(), projectRoot,
             item.path.split('lib/').last, outputs);
       }

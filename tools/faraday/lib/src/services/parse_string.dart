@@ -1,4 +1,3 @@
-import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 
@@ -8,13 +7,11 @@ const routeAnnotation = ['entry'];
 Map<String, Map<String, List<MethodDeclaration>>> parse({String sourceCode}) {
   final result = <String, Map<String, List<MethodDeclaration>>>{};
 
-  final unit = parseString(
-      content: sourceCode, featureSet: FeatureSet.fromEnableFlags([])).unit;
+  final unit = parseString(content: sourceCode).unit;
   for (final declaration in unit.declarations) {
     if (declaration is ClassDeclaration) {
       final clazzName = declaration.name.name;
-      if (declaration.metadata.indexWhere((a) => a.name.name == 'faraday') ==
-          -1) {
+      if (declaration.extendsClause.superclass.name.name != 'App') {
         result[clazzName] = {};
         break;
       }
@@ -47,6 +44,8 @@ Map<String, Map<String, List<MethodDeclaration>>> parse({String sourceCode}) {
         }
       }
 
+      print(
+          '🔥 process app: $clazzName\n common(s):\n  ${commonMethods.join(',\n  ')}\nroute(s):\n  ${routeMethods.join(',\n  ')}');
       result[clazzName] = {'common': commonMethods, 'route': routeMethods};
     }
   }

@@ -12,7 +12,7 @@
       "args": [
         "tag",
         "--project",
-        "/Users/gix/Documents/faraday/g_faraday_scaffold",
+        "../../g_faraday/example",
         "--version",
         "1.0.3+1234",
         "-s",
@@ -29,7 +29,7 @@
       "args": [
         "auto-impl",
         "-f",
-        "/Users/gix/Documents/faraday/g_faraday_scaffold/lib/src/demo.dart"
+        "../../example/lib/cli_demo/demo.dart"
       ]
     },
     {
@@ -39,11 +39,11 @@
       "args": [
         "generate",
         "-f",
-        "/Users/gix/Documents/faraday/g_faraday_scaffold/lib/demo.dart",
+        "../../example/lib/cli_demo/demo.dart",
         "--ios-common",
-        "bin/debug.swift",
+        "../../example/ios/Runner/Faraday/FaradayCommon.swift",
         "--ios-route",
-        "bin/debug.swift"
+        "../../example/ios/Runner/Faraday/FaradayRoute.swift"
       ],
       "type": "dart"
     }

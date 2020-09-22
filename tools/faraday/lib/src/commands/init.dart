@@ -24,11 +24,11 @@ class InitCommand extends FaradayCommand {
 \\/   \\__,_|_|  \\__,_|\\__,_|\\__,_|\\__, |
                                  |___/       
     ''';
-    print(welcome);
+    log.info(welcome);
 
     Logger.root.level = Level.ALL;
 
-    log.info('faraday将帮你集成`g_faraday`');
+    log.fine('faraday将帮你集成`g_faraday`\n');
 
     // 拉取模版
     var projectPath = path.current;
@@ -63,9 +63,10 @@ class InitCommand extends FaradayCommand {
 
     // 写文件
     File(path.join(projectPath, '.faraday.json'))
-        .writeAsStringSync(config.prettyString());
+        .writeAsStringSync(config.prettyString('  '));
 
-    // 需要帮忙生成一堆文件
+    // 生成模版文件
+    
     return '';
   }
 }

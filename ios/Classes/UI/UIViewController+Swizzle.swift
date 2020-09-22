@@ -7,7 +7,7 @@
 
 import UIKit
 
-private let swizzle: (AnyClass, Selector, Selector) -> () = { fromClass, originalSelector, swizzledSelector in
+let swizzle: (AnyClass, Selector, Selector) -> () = { fromClass, originalSelector, swizzledSelector in
     guard
         let originalMethod = class_getInstanceMethod(fromClass, originalSelector),
         let swizzledMethod = class_getInstanceMethod(fromClass, swizzledSelector)
@@ -15,7 +15,7 @@ private let swizzle: (AnyClass, Selector, Selector) -> () = { fromClass, origina
     method_exchangeImplementations(originalMethod, swizzledMethod)
 }
 
-// 当前 ViewController 需要隐藏navigationBar时，需遵循此协议,此外如果是rootVC，则需要单独设置navigationBarHidden 不可用 navigationBar.isHidden = true 替代
+// 当前 ViewController 需要隐藏navigationBar时，需遵循此协议,此外如果是rootVC，则需要单独设置navigationBarHidden
 public protocol FaradayNavigationBarHiddenProtocol {}
 
 public protocol FaradayResultProvider: UIViewController {
@@ -36,35 +36,30 @@ public extension UINavigationController {
         UIViewController.faraday_handleCallback()
     }
     
-    func pushViewController(_ viewController: UIViewController, with callbackToken: CallbackToken, animated: Bool) {
-        viewController.callbackToken = callbackToken
-        pushViewController(viewController, animated: animated)
-    }
-    
-    @objc func faraday_pushViewController(_ viewController: UIViewController, animated: Bool) {
+    @objc private func faraday_pushViewController(_ viewController: UIViewController, animated: Bool) {
         var formHidden = false
         var toHidden = false
-
+        
         if let _ = viewControllers.last as? FaradayNavigationBarHiddenProtocol {
             formHidden = true
         }
         if let _ = viewController as? FaradayNavigationBarHiddenProtocol {
             toHidden = true
         }
-
+        
         faraday_pushViewController(viewController, animated: animated)
         if formHidden != toHidden {
             setNavigationBarHidden(toHidden, animated: animated)
         }
     }
-
-    @objc func faraday_popViewController(animated: Bool) -> UIViewController? {
+    
+    @objc private func faraday_popViewController(animated: Bool) -> UIViewController? {
         if viewControllers.count <= 1 {
             return nil
         }
         var formHidden = false
         var toHidden = false
-
+        
         if let _ = viewControllers.last as? FaradayNavigationBarHiddenProtocol {
             formHidden = true
         }
@@ -77,20 +72,22 @@ public extension UINavigationController {
                 setNavigationBarHidden(toHidden, animated: animated)
             }
         }
+        
         let vc = faraday_popViewController(animated: animated)
+        let callbackToken = vc?.fa.callbackToken
         if let p = vc as? FaradayResultProvider {
-            Faraday.callback(p.callbackToken, result: p.result)
+            Faraday.callback(callbackToken, result: p.result)
         }
         return vc
     }
     
-    @objc func faraday_popToViewController(_ viewController: UIViewController, animated: Bool) -> [UIViewController]? {
+    @objc private func faraday_popToViewController(_ viewController: UIViewController, animated: Bool) -> [UIViewController]? {
         if viewControllers.count <= 1 {
             return nil
         }
         var formHidden = false
         var toHidden = false
-
+        
         if let _ = viewControllers.last as? FaradayNavigationBarHiddenProtocol {
             formHidden = true
         }
@@ -98,7 +95,7 @@ public extension UINavigationController {
         if let _ = viewController as? FaradayNavigationBarHiddenProtocol {
             toHidden = true
         }
-
+        
         defer {
             if formHidden != toHidden {
                 setNavigationBarHidden(toHidden, animated: animated)
@@ -107,26 +104,26 @@ public extension UINavigationController {
         let vcs = faraday_popToViewController(viewController, animated: animated)
         vcs?.forEach({ vc in
             if let p = vc as? FaradayResultProvider {
-                Faraday.callback(p.callbackToken, result: p.result)
+                Faraday.callback(vc.fa.callbackToken, result: p.result)
             }
         })
         return vcs;
     }
     
-    @objc func faraday_popToRootViewController(animated: Bool) -> [UIViewController]? {
+    @objc private func faraday_popToRootViewController(animated: Bool) -> [UIViewController]? {
         if viewControllers.count <= 1 {
             return nil
         }
         var formHidden = false
         var toHidden = false
-
+        
         if let _ = viewControllers.last as? FaradayNavigationBarHiddenProtocol {
             formHidden = true
         }
         if let _ = viewControllers.first as? FaradayNavigationBarHiddenProtocol {
             toHidden = true
         }
-
+        
         defer {
             if formHidden != toHidden {
                 setNavigationBarHidden(toHidden, animated: animated)
@@ -135,42 +132,23 @@ public extension UINavigationController {
         let vcs = faraday_popToRootViewController(animated: animated)
         vcs?.forEach({ vc in
             if let p = vc as? FaradayResultProvider {
-                Faraday.callback(p.callbackToken, result: p.result)
+                Faraday.callback(vc.fa.callbackToken, result: p.result)
             }
         })
         return vcs;
     }
 }
 
-public extension UIViewController {
-    
-    private struct AssociatedKeys {
-        static var CallbackName = "faraday_CallbackName"
-    }
-    
-    var callbackToken: CallbackToken? {
-        get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.CallbackName) as? CallbackToken
-        }
-        set {
-            if let newValue = newValue {
-                objc_setAssociatedObject(self, &AssociatedKeys.CallbackName, newValue as CallbackToken?, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            }
-        }
-    }
+extension UIViewController {
     
     fileprivate static let faraday_handleCallback: () -> () = {
         swizzle(UINavigationController.self, #selector(dismiss(animated:completion:)), #selector(faraday_dismiss(animated:completion:)))
     }
     
-    func present(_ viewControllerToPresent: UIViewController, with callbackToken: CallbackToken,  animated flag: Bool, completion: (() -> Void)? = nil) {
-        viewControllerToPresent.callbackToken = callbackToken
-        present(viewControllerToPresent, animated: flag, completion: completion)
-    }
-    
-    @objc func faraday_dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+    @objc private func faraday_dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        let callbackToken = self.fa.callbackToken
         if let p = self as? FaradayResultProvider {
-            Faraday.callback(p.callbackToken, result: p.result)
+            Faraday.callback(callbackToken, result: p.result)
         }
         faraday_dismiss(animated: flag, completion: completion)
     }

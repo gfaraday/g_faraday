@@ -15,27 +15,29 @@ List<String> generateSwift(List<JSON> methods, SwiftCodeType type,
         .replaceDartTypeToSwift;
     switch (type) {
       case SwiftCodeType.protocol:
-        result.add('\n  ' +
-            (method['comments'].string?.replaceAll('\n', '\n  ') ??
-                '/// NO COMMENTS') +
-            '\n  func $name($args) -> Any?');
+        result.add('\n    ' +
+            (method['comments'].string?.replaceAll('\n', '\n    ') ??
+                '// NO COMMENTS') +
+            '\n    func $name($args) -> Any?');
         break;
       case SwiftCodeType.enmu:
-        result.add('\n  ' +
-            (method['comments'].string?.replaceAll('\n', '\n  ') ??
-                '// NO COMMENTS') +
-            '\n  case $name($args)');
+        var r = "    case $name${args.isEmpty ? '' : '($args)'}";
+        final comments =
+            method['comments'].string?.replaceAll('\n', '\n    ') ?? '';
+        if (comments.isNotEmpty) {
+          r = '    $comments\n$r';
+        }
+        result.add(r);
         break;
       case SwiftCodeType.impl:
         final lets =
             method['arguments'].listValue.map((j) => j.getter()).join('\n');
-        result.add('''    if (name == "$identifier#$name") {
+        result.add('''        if (name == "$identifier#$name") {
 $lets
-      // invoke $name
-      completions($name(${method['arguments'].listValue.map((j) => j.name).join(', ')}))
-      return true
-    }
-        ''');
+            // invoke $name
+            completion($name(${method['arguments'].listValue.map((j) => j.name).join(', ')}))
+            return true
+        }''');
         break;
     }
   }
@@ -59,14 +61,19 @@ extension JSONArguments on JSON {
     final let =
         'let $name = args?["$name"] as? $argumentType'.replaceDartTypeToSwift;
     if (isRequired) {
-      return '''
-      guard $let else {
-        fatalError("argument: $name not valid")
+      if (argumentType == 'dynamic') {
+        return '''
+            guard let $name = args?["$name"] else {
+                fatalError("argument: $name not valid")
+            }''';
       }
-      ''';
+      return '''
+            guard $let else {
+                fatalError("argument: $name not valid")
+            }''';
     }
     return '''
-      $let ''';
+            $let ''';
   }
 }
 
@@ -78,5 +85,6 @@ extension StringFaraday on String {
       .replaceAll('float', 'Float')
       .replaceAll('double', 'Double')
       .replaceAll('num', 'Double')
+      .replaceAll('dynamic', 'Any')
       .replaceAll('null', 'Any?');
 }

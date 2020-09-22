@@ -8,7 +8,8 @@ final warningPen = AnsiPen()..xterm(11);
 final severePen = AnsiPen()..xterm(1);
 
 void recordAnsiLog(LogRecord record) {
-  print(_penForlevel(record.level).call('${record.time} ${record.loggerName}-${record.level.name}: ${record.message}'));
+  // record.level).call('${record.time} ${record.loggerName}-${record.level.name}:
+  print(_penForlevel(record.level).call(record.message));
 }
 
 AnsiPen _penForlevel(Level l) {

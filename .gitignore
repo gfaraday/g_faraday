@@ -10,3 +10,5 @@ build/
 
 android-aar-repo
 ios-frameworks
+
+.faraday.json

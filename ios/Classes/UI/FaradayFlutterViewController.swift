@@ -56,14 +56,12 @@ public class FaradayFlutterViewController: FlutterViewController {
     }
     
     public override func viewWillAppear(_ animated: Bool) {
-        if engine?.viewController != self {
-            if let s = seq {
-                engine?.viewController = self
-                isShowing = true
-                Faraday.sendPageState(.show(s)) { r in
-                    let succeed = r as? Bool ?? false
-                    debugPrint("seq: \(s) send pageState `show` \(succeed ? "succeed" : "failed")")
-                }
+        if let s = seq {
+            engine?.viewController = self
+            isShowing = true
+            Faraday.sendPageState(.show(s)) { r in
+                let succeed = r as? Bool ?? false
+                debugPrint("seq: \(s) send pageState `show` \(succeed ? "succeed" : "failed")")
             }
         }
         super.viewWillAppear(animated)

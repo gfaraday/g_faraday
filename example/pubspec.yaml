@@ -13,6 +13,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  g_json: ^2.0.2
 
   g_faraday:
     # When depending on this package from a real application you should use:

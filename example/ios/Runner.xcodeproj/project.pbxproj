@@ -10,6 +10,9 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		2B7C7E45D5FD3A950621793C /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44332D89126D63036F2EF2EC /* Pods_Runner.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		5B3F2C6B251992270091B7E5 /* FaradayCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F2C6A251992270091B7E5 /* FaradayCommon.swift */; };
+		5B3F2C6D251992310091B7E5 /* FaradayRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F2C6C251992310091B7E5 /* FaradayRoute.swift */; };
+		5B3F2C6F251992E80091B7E5 /* FaradayNet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F2C6E251992E80091B7E5 /* FaradayNet.swift */; };
 		5B5982F524FF41DE0036EF15 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5982F424FF41DE0036EF15 /* MainTabBarController.swift */; };
 		5B5982F724FF45DC0036EF15 /* Native1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5982F624FF45DC0036EF15 /* Native1ViewController.swift */; };
 		5B59830124FF894C0036EF15 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5982FF24FF894C0036EF15 /* FirstViewController.swift */; };
@@ -41,6 +44,9 @@
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		44332D89126D63036F2EF2EC /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5501EE160CBE2CB443C7C5D9 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		5B3F2C6A251992270091B7E5 /* FaradayCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaradayCommon.swift; sourceTree = "<group>"; };
+		5B3F2C6C251992310091B7E5 /* FaradayRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaradayRoute.swift; sourceTree = "<group>"; };
+		5B3F2C6E251992E80091B7E5 /* FaradayNet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaradayNet.swift; sourceTree = "<group>"; };
 		5B5982F424FF41DE0036EF15 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		5B5982F624FF45DC0036EF15 /* Native1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Native1ViewController.swift; sourceTree = "<group>"; };
 		5B5982FF24FF894C0036EF15 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +85,16 @@
 				44332D89126D63036F2EF2EC /* Pods_Runner.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5B3F2C69251992170091B7E5 /* Faraday */ = {
+			isa = PBXGroup;
+			children = (
+				5B3F2C6A251992270091B7E5 /* FaradayCommon.swift */,
+				5B3F2C6C251992310091B7E5 /* FaradayRoute.swift */,
+				5B3F2C6E251992E80091B7E5 /* FaradayNet.swift */,
+			);
+			path = Faraday;
 			sourceTree = "<group>";
 		};
 		5B5982F124FF41890036EF15 /* ViewControllers */ = {
@@ -137,14 +153,15 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				5B5982F124FF41890036EF15 /* ViewControllers */,
+				5B3F2C69251992170091B7E5 /* Faraday */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
 				97C147021CF9000F007C117D /* Info.plist */,
 				1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */,
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
-				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 			);
 			path = Runner;
@@ -304,7 +321,10 @@
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				5B8FA3FA250B5B6C00FA825E /* Flutter2ViewController.swift in Sources */,
 				5B5982F724FF45DC0036EF15 /* Native1ViewController.swift in Sources */,
+				5B3F2C6F251992E80091B7E5 /* FaradayNet.swift in Sources */,
+				5B3F2C6D251992310091B7E5 /* FaradayRoute.swift in Sources */,
 				5B5982F524FF41DE0036EF15 /* MainTabBarController.swift in Sources */,
+				5B3F2C6B251992270091B7E5 /* FaradayCommon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

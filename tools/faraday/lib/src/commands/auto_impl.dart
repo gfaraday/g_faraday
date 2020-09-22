@@ -43,5 +43,5 @@ class AutoImplCommand extends FaradayCommand {
 
 extension ParameterDart on Parameter {
   String get dartStyle =>
-      isRequired ? "'$name': $name" : "if ($name != null) '$name': name";
+      isRequired ? "'$name': $name" : "if ($name != null) '$name': $name";
 }
