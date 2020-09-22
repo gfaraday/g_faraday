@@ -44,14 +44,6 @@ $lets
   return result;
 }
 
-List<String> generateKotlin(List<JSON> methods, String category) {
-  return [];
-}
-
-List<String> generateImpl(List<JSON> methods) {
-  return [];
-}
-
 extension JSONArguments on JSON {
   String get name => this['name'].stringValue;
   String get argumentType => this['type'].stringValue;
@@ -64,12 +56,12 @@ extension JSONArguments on JSON {
       if (argumentType == 'dynamic') {
         return '''
             guard let $name = args?["$name"] else {
-                fatalError("argument: $name not valid")
+                fatalError("Invalid argument: $name")
             }''';
       }
       return '''
             guard $let else {
-                fatalError("argument: $name not valid")
+                fatalError("Invalid argument: $name")
             }''';
     }
     return '''

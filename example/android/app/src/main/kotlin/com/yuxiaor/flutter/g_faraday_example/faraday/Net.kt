@@ -1,6 +1,8 @@
+package com.yuxiaor.flutter.g_faraday_example.faraday
+
 //
-//  FaradayRoute.swift
-//  Runner
+//  Common.kt
+//  Faraday
 //
 //  Created by gix on 2020/9/22.
 //
@@ -15,15 +17,5 @@
 //
 // GENERATED CODE BY FARADAY CLI - DO NOT MODIFY BY HAND
 
-import Foundation
-
-enum FaradayRoute {
-    // ---> enum
-    // ---> enum cli_demo/demo.dart|DemoApp
-    case demoHome
-    case demoHome1(_ id: String)
-    case demoHome2(_ name: String)
-    /// comments open demo home
-    case demoHome3
-    // <--- enum cli_demo/demo.dart|DemoApp
+class Net {
 }

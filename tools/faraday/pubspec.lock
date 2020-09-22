@@ -253,6 +253,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.4.4"
+  recase:
+    dependency: "direct main"
+    description:
+      name: recase
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.0"
   shelf:
     dependency: transitive
     description:

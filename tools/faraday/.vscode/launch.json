@@ -43,7 +43,11 @@
         "--ios-common",
         "../../example/ios/Runner/Faraday/FaradayCommon.swift",
         "--ios-route",
-        "../../example/ios/Runner/Faraday/FaradayRoute.swift"
+        "../../example/ios/Runner/Faraday/FaradayRoute.swift",
+        "--android-route",
+        "../../example/android/app/src/main/kotlin/com/yuxiaor/flutter/g_faraday_example/faraday/Route.kt",
+        "--android-common",
+        "../../example/android/app/src/main/kotlin/com/yuxiaor/flutter/g_faraday_example/faraday/Common.kt"
       ],
       "type": "dart"
     }

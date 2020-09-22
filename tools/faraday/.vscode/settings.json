@@ -9,6 +9,7 @@
     "httpd",
     "inited",
     "posixpath",
+    "recase",
     "wfile"
   ]
 }

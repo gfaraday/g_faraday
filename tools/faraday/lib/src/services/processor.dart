@@ -1,19 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:faraday/src/services/kotlin_generator.dart';
+
 import '../utils/exception.dart';
 import 'package:g_json/g_json.dart';
 
-import 'generator.dart';
+import 'swift_generator.dart';
 import 'parse_string.dart';
 
 void process(String sourceCode, String projectRoot, String identifier,
     Map<String, String> outputs) {
-  void _flushSwift(String fileIdentifier, String clazz,
+  void _flushSwift(String token, String clazz,
       {List<JSON> commonMethods, List<JSON> routeMethods}) {
-    // 注意 AutoImplCommand 用到了这个token值
-    final token = '$fileIdentifier|$clazz';
-
     final swiftCommonFile = outputs['ios-common'];
     if (swiftCommonFile != null && commonMethods != null) {
       // protocol
@@ -36,9 +35,29 @@ void process(String sourceCode, String projectRoot, String identifier,
     }
   }
 
-  void _flushKotlin(String fileIdentifier, String clazz,
+  void _flushKotlin(String token, String clazz,
       {List<JSON> commonMethods, List<JSON> routeMethods}) {
     print('kotlin todo --> $clazz');
+
+    final kotlinCommonFile = outputs['android-common'];
+    if (kotlinCommonFile != null) {
+      final interface = generateKotlin(
+          commonMethods ?? [], KotlinCodeType.interface,
+          identifier: token);
+      flush(interface, 'interface', token, kotlinCommonFile);
+
+      final impls = generateKotlin(commonMethods ?? [], KotlinCodeType.impl,
+          identifier: token);
+      flush(impls, 'impl', token, kotlinCommonFile);
+    }
+
+    final kotlinRouteFile = outputs['android-route'];
+    if (kotlinRouteFile != null) {
+      // sealed class
+      final sealeds = generateKotlin(routeMethods ?? [], KotlinCodeType.sealed,
+          identifier: token);
+      flush(sealeds, 'sealed', token, kotlinRouteFile, indentation: '');
+    }
   }
 
   final r = parse(sourceCode: sourceCode);
@@ -47,10 +66,10 @@ void process(String sourceCode, String projectRoot, String identifier,
   r.forEach((clazz, info) {
     final commons = info['common']?.map((m) => JSON(m.info))?.toList();
     final routes = info['route']?.map((m) => JSON(m.info))?.toList();
-    _flushSwift(identifier, clazz,
-        commonMethods: commons, routeMethods: routes);
-    _flushKotlin(identifier, clazz,
-        commonMethods: commons, routeMethods: routes);
+    // 注意 AutoImplCommand 用到了这个token值
+    final token = '$identifier|$clazz';
+    _flushSwift(token, clazz, commonMethods: commons, routeMethods: routes);
+    _flushKotlin(token, clazz, commonMethods: commons, routeMethods: routes);
   });
 }
 

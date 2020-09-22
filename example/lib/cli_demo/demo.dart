@@ -14,7 +14,7 @@ class DemoApp extends App {
 
   @override
   Map<String, RouteFactory> pageBuilders = {
-    '/demo_home': (settings) => CupertinoPageRoute(
+    'demo_home': (settings) => CupertinoPageRoute(
           builder: (context) => Text('Demo page'),
         )
   };
@@ -25,28 +25,33 @@ class DemoApp extends App {
   /// to native
   @common
   static getSomeData(String id, {bool optionalArg}) {
-    FaradayCommon.invokeMethod('cli_demo/demo.dart|DemoApp#getSomeData', {
-      'id': id,
-      if (optionalArg != null) 'optionalArg': optionalArg
-    }).then((r) => JSON(r));
+    return FaradayCommon.invokeMethod('cli_demo/demo.dart|DemoApp#getSomeData',
+            {'id': id, if (optionalArg != null) 'optionalArg': optionalArg})
+        .then((r) => JSON(r));
   }
 
   @common
-  static showloading(String message) {}
+  static showLoading(String message) {}
 
   @common
   static setSomeData(dynamic data, {@required String id}) {}
 
   @entry
-  static openDemoHome() {}
+  static demoHome(BuildContext context) {
+    return Navigator.of(context).pushNamedFromNative('demo_home3');
+  }
 
   @entry
-  static openDemoHome1(String id) {}
+  static demoHome1(BuildContext context, String id) {
+    return Navigator.of(context).pushNamedFromNative('demo_home1');
+  }
 
   @entry
-  static openDemoHome2(String name) {}
+  static demoHome2(BuildContext context, String name) {
+    return Navigator.of(context).pushNamedFromNative('demo_home2');
+  }
 
   /// comments open demo home
   @entry
-  static openDemoHome3() {}
+  static demoHome3() {}
 }

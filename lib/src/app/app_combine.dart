@@ -16,9 +16,9 @@ void _validate([List<App> apps]) {
       print('请为 ${app.name} 添加描述 description');
     }
     if (app.pageBuilders.keys
-        .where((element) => !element.startsWith('/${app.name}'))
+        .where((element) => !element.startsWith('${app.name}'))
         .isNotEmpty) {
-      throw '路由[${app.pageBuilders.keys}]注册必须以/${app.name}开头';
+      throw '路由[${app.pageBuilders.keys}]注册必须以${app.name}开头';
     }
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:faraday/src/commands/command.dart';
 import 'package:faraday/src/services/parse_string.dart';
 import 'package:g_json/g_json.dart';
+import 'package:recase/recase.dart';
 
 class AutoImplCommand extends FaradayCommand {
   AutoImplCommand() : super() {
@@ -33,8 +34,12 @@ class AutoImplCommand extends FaradayCommand {
       }
       final route = info['route'];
       if (route != null) {
-        result.addAll(route.map((m) =>
-            "Navigator.of(context).pushNamedFromNative('${m.name}', arguments: {${m.arguments.map((p) => p.dartStyle).join(', ')}})"));
+        result.addAll(route.map((m) {
+          final arguments = m.arguments.isNotEmpty
+              ? ", arguments: {${m.arguments.map((p) => p.dartStyle).join(', ')}}"
+              : null;
+          return "Navigator.of(context).pushNamedFromNative('${m.name.name.snakeCase}'${arguments ?? ''})";
+        }));
       }
     });
     return JSON(result).rawString();

@@ -23,13 +23,16 @@ protocol FaradayCommonHandler {
     // ---> protocol
     // ---> protocol cli_demo/demo.dart|DemoApp
 
-    /// commnets
+    /// document commnets
     /// will be
     /// send
     /// to native
     func getSomeData(_ id: String, _ optionalArg: Bool?) -> Any?
 
-    /// NO COMMENTS
+    // NO COMMENTS
+    func showLoading(_ message: String) -> Any?
+
+    // NO COMMENTS
     func setSomeData(_ data: Any, _ id: String) -> Any?
     // <--- protocol cli_demo/demo.dart|DemoApp
     
@@ -50,19 +53,27 @@ extension FaradayCommonHandler {
         // ---> impl cli_demo/demo.dart|DemoApp
         if (name == "cli_demo/demo.dart|DemoApp#getSomeData") {
             guard let id = args?["id"] as? String else {
-                fatalError("argument: id not valid")
+                fatalError("Invalid argument: id")
             }
             let optionalArg = args?["optionalArg"] as? Bool 
             // invoke getSomeData
             completion(getSomeData(id, optionalArg))
             return true
         }
+        if (name == "cli_demo/demo.dart|DemoApp#showLoading") {
+            guard let message = args?["message"] as? String else {
+                fatalError("Invalid argument: message")
+            }
+            // invoke showLoading
+            completion(showLoading(message))
+            return true
+        }
         if (name == "cli_demo/demo.dart|DemoApp#setSomeData") {
             guard let data = args?["data"] else {
-                fatalError("argument: data not valid")
+                fatalError("Invalid argument: data")
             }
             guard let id = args?["id"] as? String else {
-                fatalError("argument: id not valid")
+                fatalError("Invalid argument: id")
             }
             // invoke setSomeData
             completion(setSomeData(data, id))
