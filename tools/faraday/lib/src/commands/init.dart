@@ -6,8 +6,16 @@ import 'package:path/path.dart' as path;
 
 import '../utils/exception.dart';
 import '../commands/command.dart';
+import '../template/template.dart' as t;
 
 class InitCommand extends FaradayCommand {
+  InitCommand() : super() {
+    argParser.addOption('ios-common', help: '初始化 ios FaradayCommon.swift');
+    argParser.addOption('ios-route', help: '初始化 ios FaradayRoute.swift');
+    argParser.addOption('android-common', help: '初始化 android Common.kt');
+    argParser.addOption('android-route', help: '初始化 android Route.kt');
+  }
+
   @override
   String get description => 'init faraday project';
 
@@ -27,6 +35,34 @@ class InitCommand extends FaradayCommand {
     log.info(welcome);
 
     Logger.root.level = Level.ALL;
+
+    final ios_common = stringArg('ios-common');
+    final ios_route = stringArg('ios-route');
+    final android_common = stringArg('android-common');
+    final android_route = stringArg('android-route');
+
+    final outputs = <String, String>{
+      if (ios_common != null) ios_common: t.s_common,
+      if (ios_route != null) ios_route: t.s_route,
+      if (android_common != null) android_common: t.k_common,
+      if (android_route != null) android_route: t.k_route,
+    };
+
+    if (outputs.isNotEmpty) {
+      outputs.forEach((fp, c) {
+        // android 需要吧package 信息拿出来
+        if (c.contains('fun ')) {
+          final ktfile = File(fp).readAsStringSync().split('\n');
+          if (ktfile.isEmpty || !ktfile.first.startsWith('package ')) {
+            throwToolExit('Kotlin file must starts with `package `');
+          }
+          final package = ktfile.first;
+          c = package + '\n\n' + c;
+        }
+        File(fp).writeAsStringSync(c, mode: FileMode.write);
+      });
+      return outputs.keys.join(' ');
+    }
 
     log.fine('faraday将帮你集成`g_faraday`\n');
 
@@ -51,13 +87,13 @@ class InitCommand extends FaradayCommand {
     config['project'] = '.';
 
     log.fine(
-        '请输入静态文件服务器地址，需要支持上传下载。 如需帮助请点击 https://github.com/yuxiaormobi/xxx.md');
+        '输入静态文件服务器地址，需要支持上传下载。 如需帮助请点击 https://github.com/yuxiaormobi/xxx.md');
     log.config('static-file-server-address: ');
 
     config['static-file-server-address'] = stdin.readLineSync();
 
     log.fine(
-        '请输入 cocoapods private spec 名称。如需帮助: https://github.com/yuxiaormob/xxx.md');
+        '输入 cocoapods private spec 名称。如需帮助: https://github.com/yuxiaormob/xxx.md');
     log.config('cocoapods-repo-name: ');
     config['pod-repo-name'] = stdin.readLineSync();
 
@@ -65,8 +101,6 @@ class InitCommand extends FaradayCommand {
     File(path.join(projectPath, '.faraday.json'))
         .writeAsStringSync(config.prettyString('  '));
 
-    // 生成模版文件
-    
     return '';
   }
 }

@@ -2,8 +2,6 @@ package com.yuxiaor.flutter.g_faraday_example.faraday
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import java.lang.RuntimeException
-
 
 //
 //  Common.kt
@@ -56,6 +54,7 @@ interface Common: MethodChannel.MethodCallHandler {
             return true
         }
     // <--- impl cli_demo/demo.dart|DemoApp
+
         return false
     }
 
