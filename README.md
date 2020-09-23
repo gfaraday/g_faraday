@@ -9,7 +9,7 @@
 
 # g_faraday
 
-又一个Flutter混合开发解决方案
+一个Flutter混合开发解决方案
 
 ## 为什么会有这个库
 Flutter凭借着优秀的跨平台能力迅速壮大了起来，但flutter对[Add Flutter to existing app](https://flutter.dev/docs/development/add-to-app)的支持并没有纯flutter项目那么友好。
@@ -25,6 +25,10 @@ Flutter凭借着优秀的跨平台能力迅速壮大了起来，但flutter对[Ad
 > - ios/android native/flutter 开发
 
 团队成员不可能会全员进行`ios/android native/flutter`开发，所有我们需要尽可能的保证三种角色的相对独立性。而且也不能对现有的构建打包体系有太多的侵入。
+
+[简单集成]()
+
+[faraday全家桶(推荐)]()
 
 [快速开始](docs/integration.md)
 

@@ -12,13 +12,9 @@
       "args": [
         "tag",
         "--project",
-        "../../g_faraday/example",
-        "--version",
+        "/Users/gix/Documents/yxr/g_faraday/integrate_example",
+        "-v",
         "1.0.3+1234",
-        "-s",
-        "http://localhost:8000",
-        "--repo-name",
-        "faraday",
       ]
     },
     {

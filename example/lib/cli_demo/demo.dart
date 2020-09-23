@@ -31,7 +31,9 @@ class DemoApp extends App {
   }
 
   @common
-  static showLoading(String message) {}
+  static showLoading(String message) {
+    
+  }
 
   @common
   static setSomeData(dynamic data, {@required String id}) {}

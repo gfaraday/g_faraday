@@ -1,16 +1,18 @@
 import 'dart:io';
 
 import 'package:g_json/g_json.dart';
+import 'package:path/path.dart' as p;
 
-final _configFile = File('.faraday.json');
-final _config = _configFile.existsSync()
-    ? JSON.parse(_configFile.readAsStringSync())
-    : JSON.nil;
+JSON _config;
 
 JSON get config => _config;
-
+void readConfig(String projectPath) {
+  final _configFile = File(p.join(projectPath, '.faraday.json'));
+  _config = _configFile.existsSync()
+      ? JSON.parse(_configFile.readAsStringSync())
+      : JSON.nil;
+}
 //
-String get projectRooPath => config['porject'].stringValue;
 
 String get staticFileServer => config['static-file-server-address'].stringValue;
 

@@ -15,6 +15,6 @@
       "program": "example/lib/main.dart",
       "request": "launch",
       "type": "dart"
-    }
+    },
   ]
 }
