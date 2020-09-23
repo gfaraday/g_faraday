@@ -38,7 +38,7 @@ class DemoApp extends App {
 
   @entry
   static demoHome(BuildContext context) {
-    return Navigator.of(context).pushNamedFromNative('demo_home3');
+    return Navigator.of(context).pushNamedFromNative('demo_home');
   }
 
   @entry
