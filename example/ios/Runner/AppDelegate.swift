@@ -85,6 +85,10 @@ extension FlutterPage {
 
 
 extension AppDelegate: FaradayCommonHandler {
+    func showLoading(_ message: String) -> Any? {
+        return nil
+    }
+    
     func getSomeData(_ id: String, _ optionalArg: Bool?) -> Any? {
         return ["name": "test"]
     }

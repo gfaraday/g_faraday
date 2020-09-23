@@ -1,6 +1,7 @@
 import 'package:g_json/g_json.dart';
+import 'package:recase/recase.dart';
 
-enum SwiftCodeType { protocol, enmu, impl }
+enum SwiftCodeType { protocol, enmu, impl, enumPage }
 
 List<String> generateSwift(List<JSON> methods, SwiftCodeType type,
     {String identifier}) {
@@ -28,6 +29,17 @@ List<String> generateSwift(List<JSON> methods, SwiftCodeType type,
           r = '    $comments\n$r';
         }
         result.add(r);
+        break;
+      case SwiftCodeType.enumPage:
+        final arguments = method['arguments'].listValue;
+        if (arguments.isEmpty) {
+          result.add('''            case .$name:
+                return ("${name.snakeCase}", nil)''');
+        } else {
+          result.add(
+              '''            case let .$name(${arguments.map((dynamic a) => a.name).join(', ')}):
+                return ("${name.snakeCase}", [${arguments.map((dynamic a) => '"${a.name}": ${a.name}').join(', ')}])''');
+        }
         break;
       case SwiftCodeType.impl:
         final lets =

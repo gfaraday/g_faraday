@@ -32,6 +32,11 @@ void process(String sourceCode, String projectRoot, String identifier,
       // enum
       final enums = generateSwift(routeMethods ?? [], SwiftCodeType.enmu);
       flush(enums, 'enum', token, swiftRouteFile);
+
+      final enumPages =
+          generateSwift(routeMethods ?? [], SwiftCodeType.enumPage);
+      flush(enumPages, 'enum_page', token, swiftRouteFile,
+          indentation: '            ');
     }
   }
 

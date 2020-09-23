@@ -53,17 +53,32 @@ fun Activity.openFlutter(route: FlutterRoute, requestCode: Int) {
 }
 ''';
 
-String s_common = '''import Foundation
+String s_route = '''import Foundation
+import g_faraday
 
 $_header
 
 enum FaradayRoute {
     // ---> enum
+
+    var page: (name: String, arguments: Any?) {
+        switch self {
+            // ---> enum_page
+        }
+    }
+}
+
+extension Faraday {
+    
+    static func createFlutterViewController(route: FaradayRoute, callback:  @escaping (Any?) -> () = { r in debugPrint("result don't be used \(String(describing: r))")}) -> FaradayFlutterViewController {
+        let page = route.page
+        return Faraday.createFlutterViewController(page.name, arguments: page.arguments, callback: callback)
+    }
 }
 
 ''';
 
-String s_route = '''import Foundation
+String s_common = '''import Foundation
 
 $_header
 
