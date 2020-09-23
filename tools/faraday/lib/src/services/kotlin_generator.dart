@@ -44,7 +44,7 @@ List<String> generateKotlin(List<JSON> methods, KotlinCodeType type,
                 (j.isRequired
                     ? ' ?: throw IllegalArgumentException("Invalid argument: ${j.name}")'
                     : ''))
-            .join('\n           ');
+            .join('\n            ');
         result.add('''        if (call.method == "$identifier#$name") {
             $vals
             // invoke $name

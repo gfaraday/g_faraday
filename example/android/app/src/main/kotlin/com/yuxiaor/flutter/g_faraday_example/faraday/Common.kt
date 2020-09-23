@@ -35,7 +35,7 @@ interface Common: MethodChannel.MethodCallHandler {
     // ---> impl cli_demo/demo.dart|DemoApp
         if (call.method == "cli_demo/demo.dart|DemoApp#getSomeData") {
             val id = args["id"] as? String ?: throw IllegalArgumentException("Invalid argument: id")
-           val optionalArg = args["optionalArg"] as? Boolean
+            val optionalArg = args["optionalArg"] as? Boolean
             // invoke getSomeData
             result.success(getSomeData(id, optionalArg))
             return true
@@ -48,7 +48,7 @@ interface Common: MethodChannel.MethodCallHandler {
         }
         if (call.method == "cli_demo/demo.dart|DemoApp#setSomeData") {
             val data = args["data"] as? Any ?: throw IllegalArgumentException("Invalid argument: data")
-           val id = args["id"] as? String ?: throw IllegalArgumentException("Invalid argument: id")
+            val id = args["id"] as? String ?: throw IllegalArgumentException("Invalid argument: id")
             // invoke setSomeData
             result.success(setSomeData(data, id))
             return true

@@ -38,14 +38,18 @@ class InitCommand extends FaradayCommand {
 
     final ios_common = stringArg('ios-common');
     final ios_route = stringArg('ios-route');
+    final ios_net = stringArg('ios_net');
     final android_common = stringArg('android-common');
     final android_route = stringArg('android-route');
+    final android_net = stringArg('android_net');
 
     final outputs = <String, String>{
       if (ios_common != null) ios_common: t.s_common,
       if (ios_route != null) ios_route: t.s_route,
+      if (ios_net != null) ios_route: t.s_net,
       if (android_common != null) android_common: t.k_common,
       if (android_route != null) android_route: t.k_route,
+      if (android_net != null) android_route: t.k_net,
     };
 
     if (outputs.isNotEmpty) {

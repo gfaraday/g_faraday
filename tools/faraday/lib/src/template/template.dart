@@ -53,6 +53,25 @@ fun Activity.openFlutter(route: FlutterRoute, requestCode: Int) {
 }
 ''';
 
+String k_net = '''import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
+import java.util.*
+
+$_header
+
+fun flutterNetBridge(call: MethodCall, result: MethodChannel.Result) {
+    val args: Map<*, *> = call.arguments as? Map<*, *> ?: emptyMap<Any, Any>()
+    val method = call.method.toUpperCase(Locale.ROOT)
+
+    val query = args["query"] as? Map<*, *>
+    val body = args["body"] as? Map<*, *>
+    val additions = args["additions"]
+
+    result.notImplemented()
+}
+
+''';
+
 String s_route = '''import Foundation
 import g_faraday
 
@@ -105,4 +124,21 @@ extension FaradayCommonHandler {
     
 }
 
+''';
+
+String s_net = '''import Foundation
+
+$_header
+
+func flutterNetBridge(_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Void {
+    
+    let args = arguments as? [String: Any]
+    
+    let method = name.uppercased(); // REQUEST/GET/PUT/POST/DELETE
+    let query = args?["query"] as? [String: Any]
+    let body = args?["body"] as? [String: Any]
+    let additions = args?["additions"]
+  
+    completion(FlutterMethodNotImplemented);
+}
 ''';

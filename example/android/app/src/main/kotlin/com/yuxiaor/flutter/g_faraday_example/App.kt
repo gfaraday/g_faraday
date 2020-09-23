@@ -2,6 +2,7 @@ package com.yuxiaor.flutter.g_faraday_example
 
 import android.app.Application
 import com.yuxiaor.flutter.g_faraday.Faraday
+import com.yuxiaor.flutter.g_faraday_example.faraday.flutterNetBridge
 
 /**
  * Author: Edward

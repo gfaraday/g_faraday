@@ -3,6 +3,8 @@
     "BUPT",
     "Podfile",
     "cocoapod",
-    "cocoapods"
+    "cocoapods",
+    "executables",
+    "recase"
   ]
 }

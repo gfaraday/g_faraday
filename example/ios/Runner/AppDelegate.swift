@@ -13,7 +13,7 @@ import g_faraday
         
         UINavigationController.farady_automaticallyHandleNavigationBarHidenAndValueCallback()
         
-        Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self)
+        Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self, netHandler: flutterNetBridge(_:_:_:), commonHandler: self.handle(_:_:_:))
         
         return true
     }
