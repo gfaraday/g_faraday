@@ -7,6 +7,10 @@ build_number: 2
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
+faraday:
+  static_file_server_address: "http://localhost:8000"
+  pod_repo_name: "faraday"
+
 environment:
   sdk: ">=2.7.0 <3.0.0"
 

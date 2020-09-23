@@ -40,26 +40,13 @@
       "type": "dart"
     },
     {
-      "name": "faraday init module",
+      "name": "faraday init",
       "request": "launch",
       "program": "bin/faraday.dart",
       "args": [
         "init",
-        "module",
         "--config-path",
-        "../../.faraday_init.json"
-      ],
-      "type": "dart"
-    },
-    {
-      "name": "faraday init native",
-      "request": "launch",
-      "program": "bin/faraday.dart",
-      "args": [
-        "init",
-        "native",
-        "--config-path",
-        "../../.faraday_init.json"
+        "../../.faraday.json"
       ],
       "type": "dart"
     }

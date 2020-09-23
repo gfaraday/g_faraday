@@ -12,7 +12,7 @@ android: `Common.kt`, `Net.kt`, `Route.kt` # kotlin 文件请注意第一行包�
 
 ![android](images/android_init.png)
 
-然后在`flutter module`目录下新建`.faraday_init.json`,然后将上面6个文件的*绝对路径*添加进去，注意配置git忽略`.faraday_init.json`，因为每位开发成员的路径都不一致。
+然后在`flutter module`目录下新建`.faraday_init.json`,然后将上面6个文件的*绝对路径*添加进去，注意配置git忽略`.faraday.json`，因为每位开发成员的路径都不一致。
 
 ![dart](images/dart_init.png)
 

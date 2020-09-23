@@ -9,8 +9,6 @@ import 'package:yaml/yaml.dart';
 import 'package:shell/shell.dart';
 import 'package:recase/recase.dart';
 
-import '../globals.dart' as globals;
-
 const pluginRegistrant = 'FlutterPluginRegistrant';
 
 class TagCommand extends FaradayCommand {
@@ -55,8 +53,6 @@ class TagCommand extends FaradayCommand {
   Future run() async {
     _project = stringArg('project') ?? path.current;
 
-    globals.readConfig(_project);
-
     // 确定存在
     final pubspecFile = File(path.join(project, 'pubspec.yaml'));
     if (!pubspecFile.existsSync()) {
@@ -74,8 +70,11 @@ class TagCommand extends FaradayCommand {
 
     _release = boolArg('release') ?? false;
 
-    final address =
-        stringArg('static-file-server-address') ?? globals.staticFileServer;
+    final fMap = _pubspec['faraday'];
+    if (fMap == null) throwToolExit('请在 pubspec.yaml 中配置faraday节点相关参数');
+
+    final address = stringArg('static-file-server-address') ??
+        fMap['static_file_server_address'];
     _dio = Dio(BaseOptions(baseUrl: address));
 
     try {
@@ -89,7 +88,7 @@ class TagCommand extends FaradayCommand {
 
     _shell = Shell(workingDirectory: project);
 
-    _repoName = stringArg('repo-name') ?? globals.repoName;
+    _repoName = stringArg('repo-name') ?? fMap['faraday'];
 
     final repoList =
         (await shell.startAndReadAsString('pod', ['repo'])).split('\n');

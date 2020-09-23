@@ -45,20 +45,28 @@ flutter create --help
 
 ```
 
-## 0x03 依赖 `g_faraday`
+## 0x03 修改 `pubspec.yaml`
 
-在`pubspec.yaml`中添加
-
+#### 添加`g_faraday`依赖
 ``` yaml
 dependencies:
   g_faraday: ^version
 ```
-然后在项目目录执行
+
+#### 添加faraday配置信息
+
+``` yaml
+
+...
+
+faraday:
+  static_file_server_address: "http://localhost:8000"
+  pod_repo_name: "faraday"
+
+...
 
 ```
-faraday init
-```
-按照提示依次输入 `文件服务器地址` 和 `Private Repo Name`
+
 
 ## 0x03 Tag
 
