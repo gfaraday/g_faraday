@@ -36,18 +36,30 @@
         "generate",
         "-f",
         "../../example/lib/cli_demo/demo.dart",
-        "--ios-common",
-        "../../example/ios/Runner/Faraday/FaradayCommon.swift",
-        "--ios-route",
-        "../../example/ios/Runner/Faraday/FaradayRoute.swift",
-        "--ios-net",
-        "../../example/ios/Runner/Faraday/FaradayNet.swift",
-        "--android-route",
-        "../../example/android/app/src/main/kotlin/com/yuxiaor/flutter/g_faraday_example/faraday/Route.kt",
-        "--android-common",
-        "../../example/android/app/src/main/kotlin/com/yuxiaor/flutter/g_faraday_example/faraday/Common.kt",
-        "--android-net",
-        "../../example/android/app/src/main/kotlin/com/yuxiaor/flutter/g_faraday_example/faraday/Net.kt"
+      ],
+      "type": "dart"
+    },
+    {
+      "name": "faraday init module",
+      "request": "launch",
+      "program": "bin/faraday.dart",
+      "args": [
+        "init",
+        "module",
+        "--config-path",
+        "../../.faraday_init.json"
+      ],
+      "type": "dart"
+    },
+    {
+      "name": "faraday init native",
+      "request": "launch",
+      "program": "bin/faraday.dart",
+      "args": [
+        "init",
+        "native",
+        "--config-path",
+        "../../.faraday_init.json"
       ],
       "type": "dart"
     }

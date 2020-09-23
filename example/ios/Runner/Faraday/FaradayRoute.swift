@@ -1,7 +1,7 @@
 import Foundation
 import g_faraday
 
-//  Created by faraday_cli on 2020-09-23 17:16:33.109903.
+//  Created by faraday_cli on 2020-09-23 18:47:14.233496.
 //
 //    ___                   _
 //   / __\_ _ _ __ __ _  __| | __ _ _   _
@@ -15,27 +15,10 @@ import g_faraday
 
 enum FaradayRoute {
     // ---> enum
-    // ---> enum cli_demo/demo.dart|DemoApp
-    case demoHome
-    case demoHome1(_ id: String)
-    case demoHome2(_ name: String)
-    /// comments open demo home
-    case demoHome3
-    // <--- enum cli_demo/demo.dart|DemoApp
 
     var page: (name: String, arguments: Any?) {
         switch self {
             // ---> enum_page
-            // ---> enum_page cli_demo/demo.dart|DemoApp
-            case .demoHome:
-                return ("demo_home", nil)
-            case let .demoHome1(id):
-                return ("demo_home1", ["id": id])
-            case let .demoHome2(name):
-                return ("demo_home2", ["name": name])
-            case .demoHome3:
-                return ("demo_home3", nil)
-            // <--- enum_page cli_demo/demo.dart|DemoApp
         }
     }
 }
@@ -47,3 +30,4 @@ extension Faraday {
         return Faraday.createFlutterViewController(page.name, arguments: page.arguments, callback: callback)
     }
 }
+
