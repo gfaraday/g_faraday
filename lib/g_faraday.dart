@@ -12,5 +12,5 @@ export 'src/common/entry.dart';
 export 'src/net/net.dart';
 
 // app
-export 'src/app/app.dart';
-export 'src/app/app_combine.dart';
+export 'src/feature/feature.dart';
+export 'src/feature/feature_combine.dart';

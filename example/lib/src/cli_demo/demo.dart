@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:g_faraday/g_faraday.dart';
 import 'package:g_json/g_json.dart';
 
-class DemoApp extends App {
+class DemoApp extends Feature {
   @override
   String get author => 'gix.gong';
 
