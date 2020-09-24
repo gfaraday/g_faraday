@@ -182,13 +182,14 @@ For Android Developer:
         '--no-pub',
         '--no-profile',
         release ? '--no-debug' : '--no-release',
+        '--xcframework',
         '--cocoapods',
       ]);
 
       log.config('Publish ios cocoapods...');
       final flutterPodName = 'Flutter$mode';
       // Flutter
-      log.fine('Start process Flutter.Framework...');
+      log.fine('Start process Flutter.xcframework...');
       final flutterVersion = await processFlutterFramework();
       final dependencyFlutter =
           "   s.dependency '$flutterPodName', '$flutterVersion'";
@@ -199,7 +200,7 @@ For Android Developer:
       final registrantVersion = await processPlugins(dependencyFlutter);
 
       // App
-      log.fine('Start process App.framework...');
+      log.fine('Start process App.xcframework...');
       final appName = await processAppFramework(registrantVersion);
 
       guide += '''
@@ -378,20 +379,21 @@ For iOS Developer:
     //
     shell.navigate(path.join(project, 'build/ios/framework/', mode));
 
+    final zipFileName = '$name.xcframework.zip';
     // zip
     await shell.startAndReadAsString(
-        'zip', ['-r', '-1', '$name.framework.zip', '$name.framework']);
+        'zip', ['-r', '-1', zipFileName, '$name.xcframework']);
 
     // upload
-    final filename = 'ios-frameworks/$podName/$version/$name.framework.zip';
+    final filename = 'ios-frameworks/$podName/$version/$zipFileName';
 
     try {
-      await upload(path.join(shell.workingDirectory, '$name.framework.zip'),
+      await upload(path.join(shell.workingDirectory, zipFileName),
           filename: filename);
     } catch (e) {
       throwToolExit('upload $filename failed. $e');
     } finally {
-      await shell.startAndReadAsString('rm', ['$name.framework.zip']);
+      await shell.startAndReadAsString('rm', [zipFileName]);
     }
 
     shell.navigate(project);
@@ -451,7 +453,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true  
   s.platform     = :ios
   s.ios.deployment_target = '8.0'
-  s.vendored_frameworks = '$name.framework'
+  s.vendored_frameworks = '$name.xcframework'
   s.frameworks = 'SystemConfiguration','Security'
   ${dependency ?? ''}
   s.library = 'z','c++'
