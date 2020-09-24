@@ -142,3 +142,11 @@ func flutterNetBridge(_ name: String, _ arguments: Any?, _ completion: @escaping
     completion(FlutterMethodNotImplemented);
 }
 ''';
+
+String d_debug([String message = 'faraday']) {
+  return '''
+$_header
+
+const debugVersionMessage = '$message';
+''';
+}

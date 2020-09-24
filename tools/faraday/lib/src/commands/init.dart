@@ -10,7 +10,7 @@ import '../template/template.dart' as t;
 
 class InitCommand extends FaradayCommand {
   InitCommand() : super() {
-    argParser.addOption('config-path', abbr: 'p');
+    argParser.addOption('project-path', abbr: 'p');
     argParser.addOption('ios-common', help: '初始化 ios FaradayCommon.swift');
     argParser.addOption('ios-route', help: '初始化 ios FaradayRoute.swift');
     argParser.addOption('ios-net', help: '初始化 ios FaradayNet.swift');
@@ -39,8 +39,18 @@ class InitCommand extends FaradayCommand {
 
     Logger.root.level = Level.ALL;
 
-    final configPath =
-        stringArg('config-path') ?? path.join(path.current, '.faraday.json');
+    var projectPath = stringArg('project-path');
+    if (projectPath == null || projectPath.isEmpty) {
+      projectPath = path.current;
+    }
+
+    log.fine('Init debug message to lib/src/debug/debug.dart');
+    final debugFile = File(path.join(projectPath, 'lib/src/debug/debug.dart'))
+      ..createSync(recursive: true);
+
+    debugFile.writeAsStringSync(t.d_debug(), mode: FileMode.write);
+
+    final configPath = path.join(projectPath, '.faraday.json');
     final config = JSON.parse(File(configPath).readAsStringSync());
 
     final ios_common = stringArg('ios-common') ?? config['ios-common'].string;

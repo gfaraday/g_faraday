@@ -45,8 +45,8 @@
       "program": "bin/faraday.dart",
       "args": [
         "init",
-        "--config-path",
-        "../../.faraday.json"
+        "--project-path",
+        "../../example"
       ],
       "type": "dart"
     }
