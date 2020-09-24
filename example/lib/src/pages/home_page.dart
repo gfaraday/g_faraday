@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:g_faraday_example/pages/first_page.dart';
-import 'package:g_faraday_example/pages/second_page.dart';
+
+import 'first_page.dart';
+import 'second_page.dart';
 
 class HomePage extends StatefulWidget {
   final Map args;
@@ -57,7 +58,10 @@ class _HomePageState extends State<HomePage> {
                 ),
                 button(
                   "open willscope flutter page",
-                  () => Navigator.of(context).push(CupertinoPageRoute(builder: (context) => SecondPage())).then((v) {
+                  () => Navigator.of(context)
+                      .push(CupertinoPageRoute(
+                          builder: (context) => SecondPage()))
+                      .then((v) {
                     setState(() {
                       info += "$v \n";
                     });

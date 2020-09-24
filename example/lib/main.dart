@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
 
-import 'pages/embedding_page.dart';
-import 'pages/first_page.dart';
-import 'pages/home_page.dart';
+import 'src/pages/embedding_page.dart';
+import 'src/pages/first_page.dart';
+import 'src/pages/home_page.dart';
 
 void main() {
   runApp(MyApp());
