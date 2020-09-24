@@ -20,6 +20,9 @@ class TagCommand extends FaradayCommand {
     argParser.addOption('static-file-server-address',
         abbr: 's', help: '文件服务器地址');
     argParser.addOption('repo-name', help: 'private spec repo');
+
+    argParser.addMultiOption('platforms',
+        allowed: ['ios', 'android'], defaultsTo: ['ios', 'android']);
   }
 
   @override
@@ -50,14 +53,18 @@ class TagCommand extends FaradayCommand {
   YamlMap get pubspec => _pubspec;
   YamlMap _pubspec;
 
+  List<String> get platforms => _platforms;
+  List<String> _platforms;
+
   @override
   Future run() async {
+    _platforms = stringsArg('platforms') ?? ['ios', 'android'];
     _project = stringArg('project') ?? path.current;
 
     // 确定存在
     final pubspecFile = File(path.join(project, 'pubspec.yaml'));
     if (!pubspecFile.existsSync()) {
-      throwToolExit('flutter module not found');
+      throwToolExit('flutter module project not found');
     }
 
     _pubspec = loadYaml(pubspecFile.readAsStringSync());
@@ -94,7 +101,7 @@ class TagCommand extends FaradayCommand {
     final repoList =
         (await shell.startAndReadAsString('pod', ['repo'])).split('\n');
     final index = repoList.indexWhere((r) => r.startsWith(repoName));
-    if (index == -1) {
+    if (index == -1 && _platforms.contains('ios')) {
       throwToolExit('cocoapods repo-list $repoList not contain $repoName');
     }
     final _repoURL = repoList[index + 2].split(' ').last;
@@ -114,71 +121,34 @@ class TagCommand extends FaradayCommand {
 
     log.config(await shell.startAndReadAsString('flutter', ['pub', 'get']));
 
-    log.fine('Build android aar $version...');
-    await shell.startAndReadAsString('flutter', [
-      'build',
-      'aar',
-      '--build-number',
-      version,
-      '--no-pub',
-      '--no-profile',
-      release ? '--no-debug' : '--no-release'
-    ]);
+    String guide;
 
-    log.config('Publish android aar...');
-    final repo = Directory(path.join(project, 'build/host/outputs/repo'));
-    try {
-      for (final item in repo.listSync(followLinks: false, recursive: true)) {
-        if (item.statSync().type != FileSystemEntityType.file) continue;
-        final filePath = item.absolute.path;
-        upload(filePath,
-            filename: 'android-aar-' + filePath.split('outputs/').last);
+    if (platforms.contains('android')) {
+      log.fine('Build android aar $version...');
+      await shell.startAndReadAsString('flutter', [
+        'build',
+        'aar',
+        '--build-number',
+        version,
+        '--no-pub',
+        '--no-profile',
+        release ? '--no-debug' : '--no-release'
+      ]);
+
+      log.config('Publish android aar...');
+      final repo = Directory(path.join(project, 'build/host/outputs/repo'));
+      try {
+        for (final item in repo.listSync(followLinks: false, recursive: true)) {
+          if (item.statSync().type != FileSystemEntityType.file) continue;
+          final filePath = item.absolute.path;
+          upload(filePath,
+              filename: 'android-aar-' + filePath.split('outputs/').last);
+        }
+      } catch (e) {
+        throwToolExit('Publish aar error: $e');
       }
-    } catch (e) {
-      throwToolExit('Publish aar error: $e');
-    }
 
-    log.fine('Build ios-framework $version');
-    await shell.startAndReadAsString('flutter', [
-      'build',
-      'ios-framework',
-      '--no-pub',
-      '--no-profile',
-      release ? '--no-debug' : '--no-release',
-      '--cocoapods',
-    ]);
-
-    log.config('Publish ios cocoapods...');
-    final flutterPodName = 'Flutter$mode';
-    // Flutter
-    log.fine('Start process Flutter.Framework...');
-    final flutterVersion = await processFlutterFramework();
-    final dependencyFlutter =
-        "   s.dependency '$flutterPodName', '$flutterVersion'";
-    log.config(dependencyFlutter);
-
-    // Plugins & PluginRegistrant
-    log.fine('Start process Plugins...');
-    final registrantVersion = await processPlugins(dependencyFlutter);
-
-    // App
-    log.fine('Start process App.framework...');
-    final appName = await processAppFramework(registrantVersion);
-
-    // 打印集成提示
-    log.info('\nConsuming the Module:\n');
-    log.info('''
-For iOS Developer:
-  1. Open <native-project>/Podfile
-  2. Ensure you have the $repoName source configured, otherwise add this line: 
-
-    source $_repoURL
-
-  3. Make the host app depend on $appName pod
-
-    pod '$appName', '~> $version', :configuration => ['$mode'], :inhibit_warnings => true
-
-
+      guide = '''
 For Android Developer:
   1. Open <native-project>/app/build.gradle
   2. Ensure you have the repositories configured, otherwise add them:
@@ -199,8 +169,56 @@ For Android Developer:
       ${mode.toLowerCase()}Implementation '$androidPackage:flutter_${mode.toLowerCase()}:1.0'
     }
 
-''');
-    log.config(_repoURL);
+''';
+    }
+
+    if (platforms.contains('ios')) {
+      log.fine('Build ios-framework $version');
+      await shell.startAndReadAsString('flutter', [
+        'build',
+        'ios-framework',
+        '--no-pub',
+        '--no-profile',
+        release ? '--no-debug' : '--no-release',
+        '--cocoapods',
+      ]);
+
+      log.config('Publish ios cocoapods...');
+      final flutterPodName = 'Flutter$mode';
+      // Flutter
+      log.fine('Start process Flutter.Framework...');
+      final flutterVersion = await processFlutterFramework();
+      final dependencyFlutter =
+          "   s.dependency '$flutterPodName', '$flutterVersion'";
+      log.config(dependencyFlutter);
+
+      // Plugins & PluginRegistrant
+      log.fine('Start process Plugins...');
+      final registrantVersion = await processPlugins(dependencyFlutter);
+
+      // App
+      log.fine('Start process App.framework...');
+      final appName = await processAppFramework(registrantVersion);
+
+      guide += '''
+For iOS Developer:
+  1. Open <native-project>/Podfile
+  2. Ensure you have the $repoName source configured, otherwise add this line: 
+
+    source $_repoURL
+
+  3. Make the host app depend on $appName pod
+
+    pod '$appName', '~> $version', :configuration => ['$mode'], :inhibit_warnings => true
+
+''';
+    }
+
+    // 打印集成提示
+    log.info('\nConsuming the Module:\n');
+    log.info(guide);
+
+    return guide;
   }
 
   // return latest flutter version

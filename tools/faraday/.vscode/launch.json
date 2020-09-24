@@ -12,7 +12,7 @@
       "args": [
         "tag",
         "--project",
-        "/Users/gix/Documents/yxr/g_faraday/integrate_example",
+        "../../example",
         "-v",
         "1.0.3+1234",
       ]
