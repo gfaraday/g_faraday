@@ -12,9 +12,9 @@
       "args": [
         "tag",
         "--project",
-        "../../example",
+        "/Users/gix/Documents/yxr/faraday_reborn",
         "-v",
-        "1.0.3+1234",
+        "0.0.1+0"
       ]
     },
     {

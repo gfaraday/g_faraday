@@ -8,6 +8,7 @@ export 'src/faraday.dart';
 // utils
 export 'src/common/common.dart';
 export 'src/common/entry.dart';
+export 'src/utils/notification_listener.dart';
 
 export 'src/net/net.dart';
 

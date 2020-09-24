@@ -70,10 +70,15 @@ public class Faraday {
     }
     
     private weak var navigatorDelegate: FaradayNavigationDelegate? // not retain
-    private(set) var netHandler: FaradayHandler?
-    private(set) var commonHandler: FaradayHandler?
+    private var netHandler: FaradayHandler?
+    private var commonHandler: FaradayHandler?
     
     private var channel: FlutterMethodChannel?
+    private var netChannel: FlutterMethodChannel?
+    private var commonChannel: FlutterMethodChannel?
+    
+    private var notificationChannel: FlutterEventChannel?
+    private let notificationHelper = NotificationHelper()
     
     private(set) var engine: FlutterEngine!
     
@@ -84,6 +89,50 @@ public class Faraday {
         return engine.viewController as? FaradayFlutterViewController
     }
     
+    //
+    func setup(messenger: FlutterBinaryMessenger) {
+        
+        channel = FlutterMethodChannel(name: "g_faraday", binaryMessenger: messenger)
+        
+        channel?.setMethodCallHandler({ [unowned self] (call, result) in
+            if (call.method == "pushNativePage") {
+                self.push(native: call.arguments, callback: result)
+            } else if (call.method == "popContainer") {
+                self.pop(flutterContainer: call.arguments, callback: result)
+            } else if (call.method == "disableHorizontalSwipePopGesture") {
+                self.disableHorizontalSwipePopGesture(arguments: call.arguments, callback: result)
+            } else if (call.method == "postNotification") {
+                let args = call.arguments as? Dictionary<String, Any>
+                guard let name = args?["name"] as? String else {
+                    fatalError("Invalidate notification name")
+                }
+                NotificationCenter.default.post(name: .init(rawValue: name), object: args?["arguments"])
+            }
+        })
+        
+        notificationChannel = FlutterEventChannel(name: "g_faraday/notification", binaryMessenger: messenger)
+        notificationChannel?.setStreamHandler(notificationHelper)
+        
+        if let h = netHandler {
+            netChannel = FlutterMethodChannel(name: "g_faraday/net", binaryMessenger: messenger)
+            netChannel?.setMethodCallHandler({ (call, r) in
+                h(call.method, call.arguments, r)
+            })
+        }
+        
+        if let h = commonHandler {
+            commonChannel = FlutterMethodChannel(name: "g_faraday/common", binaryMessenger: messenger)
+            commonChannel?.setMethodCallHandler({ (call, r) in
+                h(call.method, call.arguments, r)
+            })
+        }
+    }
+    
+    /// 发送通知到 Flutter
+    /// Flutter 可以通过 NotificationListener<NotificationListener> 来监听
+    func pushNotification(name: String, _ arguments: Any? = nil) {
+        notificationHelper.push(name: name, arguments)
+    }
     
     /// 入口方法，用于启动Flutter Engine、 注册插件
     /// - Parameters:
@@ -169,11 +218,7 @@ public class Faraday {
                 result(r)
             }
         })
-    }
-    
-    func setup(channel: FlutterMethodChannel) {
-        self.channel = channel;
-    }
+    }  
     
     func push(native arguments: Any?, callback: @escaping FlutterResult) {
         let uuid = UUID()

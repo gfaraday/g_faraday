@@ -11,10 +11,10 @@ import g_faraday
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         
-        UINavigationController.farady_automaticallyHandleNavigationBarHidenAndValueCallback()
+        UINavigationController.fa.automaticallyHandleNavigationBarHidenAndValueCallback()
         
         Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self, netHandler: flutterNetBridge(_:_:_:), commonHandler: self.handle(_:_:_:))
-        
+            
         return true
     }
 }

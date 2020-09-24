@@ -5,11 +5,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:g_faraday/src/channel.dart';
+import 'package:g_faraday/src/utils/notification.dart';
 
 import 'arg.dart';
 import 'navigator.dart';
 
-const MethodChannel _channel = const MethodChannel('g_faraday');
+const EventChannel _notification = EventChannel('g_faraday/notification');
 
 class FaradayNativeBridge extends StatefulWidget {
   final RouteFactory onGenerateRoute;
@@ -28,10 +30,12 @@ class FaradayNativeBridge extends StatefulWidget {
 
   static FaradayNativeBridgeState of(BuildContext context) {
     FaradayNativeBridgeState faraday;
-    if (context is StatefulElement && context.state is FaradayNativeBridgeState) {
+    if (context is StatefulElement &&
+        context.state is FaradayNativeBridgeState) {
       faraday = context.state as FaradayNativeBridgeState;
     }
-    return faraday ?? context.findAncestorStateOfType<FaradayNativeBridgeState>();
+    return faraday ??
+        context.findAncestorStateOfType<FaradayNativeBridgeState>();
   }
 
   @override
@@ -47,16 +51,36 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   RouteSettings get _mockInitialSettings => widget.mockInitialSettings;
   RouteFactory get _mockNativeRouteFactory => widget.mockNativeRouteFactory;
 
+  StreamSubscription _subscriptionNotification;
+
   @override
   void initState() {
     super.initState();
-    _channel.setMethodCallHandler(_handler);
+    channel.setMethodCallHandler(_handler);
 
+    _subscriptionNotification =
+        _notification.receiveBroadcastStream().listen((data) {
+      if (data is Map) {
+        final name = data['name'];
+        if (name is String && context != null) {
+          FaradayNotification(name, data['arguments']).dispatch(context);
+        }
+      }
+    });
+    //
     if (kDebugMode) {
       if (widget.mockInitialSettings != null) {
-        _handler(MethodCall('pageCreate', {'name': _mockInitialSettings.name, 'arg': _mockInitialSettings.arguments}));
+        _handler(MethodCall('pageCreate', {
+          'name': _mockInitialSettings.name,
+          'arg': _mockInitialSettings.arguments
+        }));
       }
     }
+  }
+
+  void dispose() {
+    _subscriptionNotification.cancel();
+    super.dispose();
   }
 
   Future<T> push<T extends Object>(
@@ -70,19 +94,30 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         if (flutterRoute) {
           final key = _navigatorStack.last.key as LabeledGlobalKey;
           if (key.currentState is FaradayNavigatorState) {
-            return (key.currentState as FaradayNavigatorState).pushNamed(name, arguments: arguments);
+            return (key.currentState as FaradayNavigatorState)
+                .pushNamed(name, arguments: arguments);
           }
         }
-        return Navigator.of(context, rootNavigator: true).push(_mockNativeRouteFactory(RouteSettings(
+        return Navigator.of(context, rootNavigator: true)
+            .push(_mockNativeRouteFactory(RouteSettings(
           name: name,
-          arguments: {'present': present, 'flutterRoute': flutterRoute, if (arguments != null) ...arguments},
+          arguments: {
+            'present': present,
+            'flutterRoute': flutterRoute,
+            if (arguments != null) ...arguments
+          },
         )));
       }
     }
     //
-    return _channel.invokeMethod(
+    return channel.invokeMethod(
       'pushNativePage',
-      {'name': name, 'present': present, 'flutterRoute': flutterRoute, if (arguments != null) 'arguments': arguments},
+      {
+        'name': name,
+        'present': present,
+        'flutterRoute': flutterRoute,
+        if (arguments != null) 'arguments': arguments
+      },
     );
   }
 
@@ -94,7 +129,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     }
     assert(_navigatorStack.isNotEmpty);
     assert(_navigatorStack[_index].arg.key == key);
-    await _channel.invokeMethod('popContainer', result);
+    await channel.invokeMethod('popContainer', result);
   }
 
   Future<void> disableHorizontalSwipePopGesture(bool disable) async {
@@ -103,7 +138,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         return;
       }
     }
-    await _channel.invokeMethod('disableHorizontalSwipePopGesture', disable);
+    await channel.invokeMethod('disableHorizontalSwipePopGesture', disable);
   }
 
   bool isOnTop(Key key) {
@@ -166,20 +201,23 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   FaradayNavigator appRoot(FaradayArguments arg) {
-    final initialSettings = RouteSettings(name: arg.name, arguments: arg.arguments);
+    final initialSettings =
+        RouteSettings(name: arg.name, arguments: arg.arguments);
     return FaradayNavigator(
       key: GlobalKey(debugLabel: 'seq: ${arg.seq}'),
       arg: arg,
       initialRoute: arg.name,
       onGenerateRoute: (settings) {
         if (kDebugMode) {
-          if (settings.name == "/") return widget.onGenerateRoute(initialSettings);
+          if (settings.name == "/")
+            return widget.onGenerateRoute(initialSettings);
         }
         return widget.onGenerateRoute(settings);
       },
       onUnknownRoute: widget.onUnknownRoute,
       onGenerateInitialRoutes: (navigator, initialRoute) => [
-        widget.onGenerateRoute(initialSettings) ?? widget.onUnknownRoute(initialSettings),
+        widget.onGenerateRoute(initialSettings) ??
+            widget.onUnknownRoute(initialSettings),
       ],
     );
   }

@@ -53,6 +53,8 @@ class TagCommand extends FaradayCommand {
   YamlMap get pubspec => _pubspec;
   YamlMap _pubspec;
 
+  String get moduleName => pubspec['name'];
+
   List<String> get platforms => _platforms;
   List<String> _platforms;
 
@@ -96,7 +98,7 @@ class TagCommand extends FaradayCommand {
 
     _shell = Shell(workingDirectory: project);
 
-    _repoName = stringArg('repo-name') ?? fMap['faraday'];
+    _repoName = stringArg('repo-name') ?? fMap['pod_repo_name'];
 
     final repoList =
         (await shell.startAndReadAsString('pod', ['repo'])).split('\n');
@@ -121,7 +123,7 @@ class TagCommand extends FaradayCommand {
 
     log.config(await shell.startAndReadAsString('flutter', ['pub', 'get']));
 
-    String guide;
+    var guide = '';
 
     if (platforms.contains('android')) {
       log.fine('Build android aar $version...');
@@ -205,7 +207,7 @@ For iOS Developer:
   1. Open <native-project>/Podfile
   2. Ensure you have the $repoName source configured, otherwise add this line: 
 
-    source $_repoURL
+    source '$_repoURL'
 
   3. Make the host app depend on $appName pod
 
@@ -278,7 +280,10 @@ For iOS Developer:
       dependencies[plugin] = lockVersion;
     }
 
-    if (hasNewPlugin) {
+    final pv = await findPodLatestVersionInRepo(
+        moduleName + pluginRegistrant + (release ? '' : mode));
+
+    if (hasNewPlugin || pv == null || pv.isEmpty) {
       // FlutterPluginRegistrant
       final buffer = StringBuffer();
       dependencies.forEach((k, v) {
@@ -291,14 +296,13 @@ For iOS Developer:
       return version;
     }
 
-    return await findPodLatestVersionInRepo(
-        pluginRegistrant + (release ? '' : mode));
+    return pv;
   }
 
   // return latest FlutterPluginRegistrant version
   void processFlutterPluginRegistrant(String dependency) async {
     //
-    final podName = pluginRegistrant + (release ? '' : mode);
+    final podName = moduleName + pluginRegistrant + (release ? '' : mode);
     final downloadSource =
         await _zipAndUpload(pluginRegistrant, podName, version);
     final specContent = _generatePluginPodspecContent(
@@ -308,14 +312,14 @@ For iOS Developer:
   }
 
   Future<String> processAppFramework([String registrantVersion]) async {
-    String podName = pubspec['name'] + (release ? '' : mode);
+    final podName = moduleName + (release ? '' : mode);
 
     await publish(
       'App',
       version,
       podName: podName.pascalCase,
       dependency:
-          "s.dependency '$pluginRegistrant${release ? '' : mode}', '$registrantVersion'",
+          "s.dependency '$moduleName$pluginRegistrant${release ? '' : mode}', '$registrantVersion'",
     );
 
     return podName.pascalCase;

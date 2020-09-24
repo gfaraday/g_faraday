@@ -127,6 +127,7 @@ extension FaradayCommonHandler {
 ''';
 
 String s_net = '''import Foundation
+import Flutter
 
 $_header
 

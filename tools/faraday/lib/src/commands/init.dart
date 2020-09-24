@@ -10,7 +10,7 @@ import '../template/template.dart' as t;
 
 class InitCommand extends FaradayCommand {
   InitCommand() : super() {
-    argParser.addOption('project-path', abbr: 'p');
+    argParser.addOption('project', abbr: 'p');
     argParser.addOption('ios-common', help: '初始化 ios FaradayCommon.swift');
     argParser.addOption('ios-route', help: '初始化 ios FaradayRoute.swift');
     argParser.addOption('ios-net', help: '初始化 ios FaradayNet.swift');
@@ -39,7 +39,7 @@ class InitCommand extends FaradayCommand {
 
     Logger.root.level = Level.ALL;
 
-    var projectPath = stringArg('project-path');
+    var projectPath = stringArg('project');
     if (projectPath == null || projectPath.isEmpty) {
       projectPath = path.current;
     }

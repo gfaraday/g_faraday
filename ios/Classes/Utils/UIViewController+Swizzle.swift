@@ -24,19 +24,20 @@ public protocol FaradayResultProvider: UIViewController {
 
 extension FaradayFlutterViewController: FaradayNavigationBarHiddenProtocol { }
 
-public extension UINavigationController {
-    
-    static let farady_automaticallyHandleNavigationBarHidenAndValueCallback: () -> () = {
+public extension FaradayExtension where ExtendedType: UINavigationController {
         
-        swizzle(UINavigationController.self, #selector(pushViewController(_:animated:)), #selector(faraday_pushViewController(_:animated:)))
-        swizzle(UINavigationController.self, #selector(popViewController(animated:)), #selector(faraday_popViewController(animated:)))
-        swizzle(UINavigationController.self, #selector(popToViewController(_:animated:)), #selector(faraday_popToViewController(_:animated:)))
-        swizzle(UINavigationController.self, #selector(popToRootViewController(animated:)), #selector(faraday_popToRootViewController(animated:)))
-        
-        UIViewController.faraday_handleCallback()
+    static func automaticallyHandleNavigationBarHidenAndValueCallback() {
+        swizzle(UINavigationController.self, #selector(UINavigationController.pushViewController(_:animated:)), #selector(UINavigationController.faraday_pushViewController(_:animated:)))
+        swizzle(UINavigationController.self, #selector(UINavigationController.popViewController(animated:)), #selector(UINavigationController.faraday_popViewController(animated:)))
+        swizzle(UINavigationController.self, #selector(UINavigationController.popToViewController(_:animated:)), #selector(UINavigationController.faraday_popToViewController(_:animated:)))
+        swizzle(UINavigationController.self, #selector(UINavigationController.popToRootViewController(animated:)), #selector(UINavigationController.faraday_popToRootViewController(animated:)))
+        swizzle(UIViewController.self, #selector(UIViewController.dismiss(animated:completion:)), #selector(UIViewController.faraday_dismiss(animated:completion:)))
     }
-    
-    @objc private func faraday_pushViewController(_ viewController: UIViewController, animated: Bool) {
+}
+
+extension UINavigationController {
+
+    @objc fileprivate func faraday_pushViewController(_ viewController: UIViewController, animated: Bool) {
         var formHidden = false
         var toHidden = false
         
@@ -53,7 +54,7 @@ public extension UINavigationController {
         }
     }
     
-    @objc private func faraday_popViewController(animated: Bool) -> UIViewController? {
+    @objc fileprivate func faraday_popViewController(animated: Bool) -> UIViewController? {
         if viewControllers.count <= 1 {
             return nil
         }
@@ -81,7 +82,7 @@ public extension UINavigationController {
         return vc
     }
     
-    @objc private func faraday_popToViewController(_ viewController: UIViewController, animated: Bool) -> [UIViewController]? {
+    @objc fileprivate func faraday_popToViewController(_ viewController: UIViewController, animated: Bool) -> [UIViewController]? {
         if viewControllers.count <= 1 {
             return nil
         }
@@ -110,7 +111,7 @@ public extension UINavigationController {
         return vcs;
     }
     
-    @objc private func faraday_popToRootViewController(animated: Bool) -> [UIViewController]? {
+    @objc fileprivate func faraday_popToRootViewController(animated: Bool) -> [UIViewController]? {
         if viewControllers.count <= 1 {
             return nil
         }
@@ -140,12 +141,8 @@ public extension UINavigationController {
 }
 
 extension UIViewController {
-    
-    fileprivate static let faraday_handleCallback: () -> () = {
-        swizzle(UINavigationController.self, #selector(dismiss(animated:completion:)), #selector(faraday_dismiss(animated:completion:)))
-    }
-    
-    @objc private func faraday_dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+      
+    @objc fileprivate func faraday_dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         let callbackToken = self.fa.callbackToken
         if let p = self as? FaradayResultProvider {
             Faraday.callback(callbackToken, result: p.result)

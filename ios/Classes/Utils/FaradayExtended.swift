@@ -45,3 +45,4 @@ public extension FaradayExtended {
 }
 
 extension UIViewController: FaradayExtended { }
+extension NotificationCenter: FaradayExtended { }

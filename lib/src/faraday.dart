@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:g_faraday/src/channel.dart';
 import 'package:g_faraday/src/widgets/404.dart';
 
 import 'route/native_bridge.dart';
@@ -38,7 +39,11 @@ class Faraday {
   /// ```
   ///
   static RouteFactory wrapper(RouteFactory rawFactory,
-      {FaradayDecorator decorator, RouteFactory nativeMockFactory, RouteFactory onUnknownRoute, String mockInitialname, Object mockInitialArguments}) {
+      {FaradayDecorator decorator,
+      RouteFactory nativeMockFactory,
+      RouteFactory onUnknownRoute,
+      String mockInitialname,
+      Object mockInitialArguments}) {
     final f = (settings) {
       return FaradayPageRouteBuilder(
         pageBuilder: (context) {
@@ -48,14 +53,17 @@ class Faraday {
 
               final page = FaradayNativeBridge(
                 onGenerateRoute: rawFactory,
-                mockInitialSettings: RouteSettings(name: mockInitialname, arguments: mockInitialArguments),
+                mockInitialSettings: RouteSettings(
+                    name: mockInitialname, arguments: mockInitialArguments),
                 mockNativeRouteFactory: nativeMockFactory,
                 onUnknownRoute: onUnknownRoute ?? _default404Page,
               );
               return decorator != null ? decorator(context, page) : page;
             }
           }
-          final page = FaradayNativeBridge(onGenerateRoute: rawFactory, onUnknownRoute: onUnknownRoute ?? _default404Page);
+          final page = FaradayNativeBridge(
+              onGenerateRoute: rawFactory,
+              onUnknownRoute: onUnknownRoute ?? _default404Page);
           return decorator != null ? decorator(context, page) : page;
         },
         settings: settings,
@@ -63,10 +71,18 @@ class Faraday {
     };
     return f;
   }
+
+  /// 发送通知到native
+  /// iOS 端直接通过 NotificationCenter 监听即可
+  /// android 
+  ///
+  static postNotification(String name, {dynamic arguments}) {
+    return channel.invokeMethod('postNotification',
+        {'name': name, if (arguments != null) 'arguments': arguments});
+  }
 }
 
-RouteFactory _default404Page = (RouteSettings settings) => CupertinoPageRoute(
-      builder: (context) => NotFoundPage(settings),
-    );
+RouteFactory _default404Page = (RouteSettings settings) =>
+    CupertinoPageRoute(builder: (context) => NotFoundPage(settings));
 
 const faraday = Faraday();

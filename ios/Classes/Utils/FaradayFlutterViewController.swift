@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class FaradayFlutterViewController: FlutterViewController {
+open class FaradayFlutterViewController: FlutterViewController {
     
     public let name: String
     public let arguments: Any?
@@ -19,7 +19,7 @@ public class FaradayFlutterViewController: FlutterViewController {
     
     var seq: Int?
     
-    init(_ name: String, arguments: Any?, engine: FlutterEngine, callback: @escaping (Any?) ->()) {
+    public init(_ name: String, arguments: Any?, engine: FlutterEngine, callback: @escaping (Any?) ->()) {
         self.name = name
         self.arguments = arguments
         self.callback = callback
@@ -33,7 +33,7 @@ public class FaradayFlutterViewController: FlutterViewController {
         }
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
