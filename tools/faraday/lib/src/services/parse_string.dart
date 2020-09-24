@@ -11,7 +11,7 @@ Map<String, Map<String, List<MethodDeclaration>>> parse({String sourceCode}) {
   for (final declaration in unit.declarations) {
     if (declaration is ClassDeclaration) {
       final clazzName = declaration.name.name;
-      if (declaration.extendsClause.superclass.name.name != 'App') {
+      if (declaration.extendsClause.superclass.name.name != 'Feature') {
         result[clazzName] = {};
         break;
       }
