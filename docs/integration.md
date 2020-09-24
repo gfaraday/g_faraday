@@ -122,4 +122,4 @@ For Android Developer:
 ```
 根据以上日志提示，分别在ios和android原生项目中集成module。
 
-到此为止整个`g_faraday`已经成功的和您的原生项目完成集成，开始写第一个页面吧
+到此为止整个`g_faraday`已经成功集成，开始写代码吧
