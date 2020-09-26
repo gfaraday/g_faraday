@@ -31,12 +31,14 @@ class DemoApp extends Feature {
   }
 
   @common
-  static showLoading(String message) {
-    
-  }
+  static showLoading(String message) {}
 
   @common
-  static setSomeData(dynamic data, {@required String id}) {}
+  static setSomeData(dynamic data,
+      {@required String id,
+      @required String id3,
+      @required String id1,
+      @required String id2}) {}
 
   @entry
   static demoHome(BuildContext context) {
@@ -49,6 +51,7 @@ class DemoApp extends Feature {
   }
 
   @entry
+  @common
   static demoHome2(BuildContext context, String name) {
     return Navigator.of(context).pushNamedFromNative('demo_home2');
   }

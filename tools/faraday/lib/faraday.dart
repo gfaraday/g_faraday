@@ -17,5 +17,9 @@ void main(List<String> arguments) {
   Logger.root.onRecord.listen(recordAnsiLog);
   Logger.root.level = Level.ALL; //verbose ? Level.ALL : Level.INFO;
 
+  if (arguments.length == 1 && arguments.first == '--version') {
+    print('1.0.0');
+    return;
+  }
   FaradayCommandRunner().run(arguments).then((v) => print(v));
 }

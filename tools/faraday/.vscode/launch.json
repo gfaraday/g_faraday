@@ -18,14 +18,18 @@
       ]
     },
     {
-      "name": "faraday auto-impl",
+      "name": "faraday completion",
       "type": "dart",
       "request": "launch",
       "program": "bin/faraday.dart",
       "args": [
-        "auto-impl",
-        "-f",
-        "../../example/lib/cli_demo/demo.dart"
+        "completion",
+        "--offset",
+        "1400",
+        "--relative-path",
+        "cli_demo/demo.dart",
+        "--file",
+        "../../example/lib/src/cli_demo/demo.dart"
       ]
     },
     {

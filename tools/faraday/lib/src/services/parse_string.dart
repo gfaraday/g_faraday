@@ -4,7 +4,8 @@ import 'package:analyzer/dart/ast/ast.dart';
 const commonAnnotation = ['common'];
 const routeAnnotation = ['entry'];
 
-Map<String, Map<String, List<MethodDeclaration>>> parse({String sourceCode}) {
+Map<String, Map<String, List<MethodDeclaration>>> parse(
+    {String sourceCode, int offset}) {
   final result = <String, Map<String, List<MethodDeclaration>>>{};
 
   final unit = parseString(content: sourceCode).unit;
@@ -20,32 +21,40 @@ Map<String, Map<String, List<MethodDeclaration>>> parse({String sourceCode}) {
       final routeMethods = <MethodDeclaration>[];
 
       for (final method in declaration.childEntities) {
-        if (method is MethodDeclaration && method.isStatic) {
+        if (method is MethodDeclaration) {
           for (final metadata in method.metadata) {
             if (commonAnnotation.contains(metadata.name.name) ||
                 routeAnnotation.contains(metadata.name.name)) {
-              final rt = method.returnType.toString();
-              final methodName = method.name.name;
-              // 对应的 swift 和 kotlin 返回值为 Any?
-              if ('null' == rt ||
-                  'Future<JSON>' == rt ||
-                  'Future<dynamic>' == rt) {
-                if (commonAnnotation.contains(metadata.name.name)) {
-                  commonMethods.add(method);
+              if (method.isStatic) {
+                final rt = method.returnType.toString();
+                final methodName = method.name.name;
+                // 对应的 swift 和 kotlin 返回值为 Any?
+                if ('null' == rt ||
+                    'Future<JSON>' == rt ||
+                    'Future<dynamic>' == rt) {
+                  if (offset == null ||
+                      (offset > method.offset && method.end > offset)) {
+                    if (commonAnnotation.contains(metadata.name.name)) {
+                      commonMethods.add(method);
+                    } else {
+                      routeMethods.add(method);
+                    }
+                  }
                 } else {
-                  routeMethods.add(method);
+                  throw '${metadata.name.name} 返回值必须为 Future<dynmaic> 或者 Future<JSON>. [${clazzName}:${methodName} -> ${rt}] 不合法';
                 }
               } else {
-                throw '${metadata.name.name} 返回值必须为 Future<dynmaic> 或者 Future<JSON>. [${clazzName}:${methodName} -> ${rt}] 不合法';
+                throw '被@common或者@entry装饰的必须为静态方法. [${clazzName}:${method.name}]不合法';
               }
+
               break;
             }
           }
         }
       }
 
-      print(
-          '🔥 process app: $clazzName\n common(s):\n  ${commonMethods.join(',\n  ')}\nroute(s):\n  ${routeMethods.join(',\n  ')}');
+      // print(
+      //     '🔥 process feature: $clazzName\n common(s):\n  ${commonMethods.join(',\n  ')}\nroute(s):\n  ${routeMethods.join(',\n  ')}');
       result[clazzName] = {'common': commonMethods, 'route': routeMethods};
     }
   }
