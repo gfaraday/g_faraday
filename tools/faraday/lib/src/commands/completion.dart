@@ -1,15 +1,12 @@
-import 'dart:io';
-
 import 'package:faraday/src/commands/command.dart';
 import 'package:faraday/src/services/parse_string.dart';
-import 'package:g_json/g_json.dart';
 import 'package:recase/recase.dart';
 
 class CompletionCommand extends FaradayCommand {
   CompletionCommand() : super() {
     argParser.addOption('offset', help: 'valid zero-based offset');
     argParser.addOption('relative-path', help: '源文件相对于 `lib`目录的相对路径');
-    argParser.addOption('file');
+    // argParser.addOption('file', help: '仅供测试');
   }
 
   @override
@@ -30,8 +27,8 @@ class CompletionCommand extends FaradayCommand {
     final fileIdentifier = stringArg('relative-path');
     if (fileIdentifier == null || fileIdentifier.isEmpty) return '';
 
-    // if (argResults.rest.isEmpty) return '';
-    final sourceCode = File(stringArg('file')).readAsStringSync();
+    if (argResults.rest.isEmpty) return '';
+    final sourceCode = argResults.rest.last;
 
     final r = parse(sourceCode: sourceCode, offset: offset);
 
