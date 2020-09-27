@@ -14,7 +14,8 @@ class PackageGraph {
   /// All [PackageNodes] indexed by package name.
   final Map<String, PackageNode> allPackages;
 
-  PackageGraph._(this.root, Map<String, PackageNode> allPackages) : allPackages = Map.unmodifiable(allPackages);
+  PackageGraph._(this.root, Map<String, PackageNode> allPackages)
+      : allPackages = Map.unmodifiable(allPackages);
 
   /// Creates a [PackageGraph] given the [root] [PackageNode].
   factory PackageGraph.fromRoot(PackageNode root) {
@@ -78,10 +79,12 @@ class PackageGraph {
     /// Create all [PackageNode]s for all deps.
     var nodes = <String, PackageNode>{};
     Map<String, dynamic> rootDeps;
-    PackageNode addNodeAndDeps(YamlMap yaml, PackageDependencyType type, {bool isRoot: false}) {
+    PackageNode addNodeAndDeps(YamlMap yaml, PackageDependencyType type,
+        {bool isRoot = false}) {
       var name = yaml['name'];
       assert(!nodes.containsKey(name));
-      var node = PackageNode(name, yaml['version'], type, packageLocations[name]);
+      var node =
+          PackageNode(name, yaml['version'], type, packageLocations[name]);
       nodes[name] = node;
 
       var deps = _depsFromYaml(yaml, isRoot: isRoot);
@@ -98,7 +101,8 @@ class PackageGraph {
       return node;
     }
 
-    var root = addNodeAndDeps(rootYaml, PackageDependencyType.path, isRoot: true);
+    var root =
+        addNodeAndDeps(rootYaml, PackageDependencyType.path, isRoot: true);
     return PackageGraph._(root, nodes);
   }
 
@@ -171,7 +175,7 @@ PackageDependencyType _dependencyType(source) {
 }
 
 /// Gets the deps from a yaml file, taking into account dependency_overrides.
-Map<String, dynamic> _depsFromYaml(YamlMap yaml, {bool isRoot: false}) {
+Map<String, dynamic> _depsFromYaml(YamlMap yaml, {bool isRoot = false}) {
   var deps = Map<String, dynamic>.from(yaml['dependencies'] ?? {});
   if (isRoot) {
     deps.addAll(Map.from(yaml['dev_dependencies'] ?? {}));

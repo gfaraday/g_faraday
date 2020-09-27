@@ -42,8 +42,6 @@ void process(String sourceCode, String projectRoot, String identifier,
 
   void _flushKotlin(String token, String clazz,
       {List<JSON> commonMethods, List<JSON> routeMethods}) {
-    print('kotlin todo --> $clazz');
-
     final kotlinCommonFile = outputs['android-common'];
     if (kotlinCommonFile != null) {
       final interface = generateKotlin(
@@ -69,12 +67,16 @@ void process(String sourceCode, String projectRoot, String identifier,
 
   // 遍历信息 准备生成 代码
   r.forEach((clazz, info) {
-    final commons = info['common']?.map((m) => JSON(m.info))?.toList();
-    final routes = info['route']?.map((m) => JSON(m.info))?.toList();
-    // 注意 AutoImplCommand 用到了这个token值
-    final token = '$identifier|$clazz';
-    _flushSwift(token, clazz, commonMethods: commons, routeMethods: routes);
-    _flushKotlin(token, clazz, commonMethods: commons, routeMethods: routes);
+    final commons = info['common']?.map((m) => JSON(m.info))?.toList() ?? [];
+    final routes = info['route']?.map((m) => JSON(m.info))?.toList() ?? [];
+    if (commons.isNotEmpty || routes.isNotEmpty) {
+      // 注意 AutoImplCommand 用到了这个token值
+      final token = '$identifier|$clazz';
+      _flushSwift(token, clazz, commonMethods: commons, routeMethods: routes);
+      _flushKotlin(token, clazz, commonMethods: commons, routeMethods: routes);
+      print(
+          'flush $token [${commons.length}]common(s) & [${routes.length}]route(s)');
+    }
   });
 }
 

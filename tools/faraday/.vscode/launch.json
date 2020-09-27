@@ -38,8 +38,12 @@
       "program": "bin/faraday.dart",
       "args": [
         "generate",
-        "-f",
-        "../../example/lib/cli_demo/demo.dart",
+        "--ios-common",
+        "/Users/gix/Documents/yxr/iosb4reborn/YuxiaorReborn/Faraday/FaradayCommon.swift",
+        "--ios-route",
+        "/Users/gix/Documents/yxr/iosb4reborn/YuxiaorReborn/Faraday/FaradayRoute.swift",
+        "--file",
+        "/Users/gix/Documents/yxr/g_faraday/example/lib/src/cli_demo/demo.dart"
       ],
       "type": "dart"
     },

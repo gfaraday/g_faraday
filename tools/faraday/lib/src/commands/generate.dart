@@ -7,11 +7,11 @@ import 'package:path/path.dart' as path;
 
 class GenerateCommand extends FaradayCommand {
   GenerateCommand() : super() {
-    argParser.addOption('file', abbr: 'f', help: '解析指定文件');
     argParser.addOption('ios-common', help: 'ios FaradayCommon.swift');
     argParser.addOption('ios-route', help: 'ios FaradayRoute.swift');
     argParser.addOption('android-common', help: 'android FaradayCommon.kt');
     argParser.addOption('android-route', help: 'android FaradayRoute.kt');
+    argParser.addOption('file', abbr: 'f', help: '解析指定文件');
   }
 
   @override
@@ -53,12 +53,12 @@ class GenerateCommand extends FaradayCommand {
     // 从当前目录开始查找 项目根目录
     //
     final pwd = path.current;
-
-    if (pwd.contains('lib')) {
-      projectRoot = filePath.split('lib').first;
+    if (File(path.join(pwd, 'pubspec.yaml')).existsSync()) {
+      projectRoot = pwd;
     } else {
-      if (File(path.join(pwd, 'pubspec.yaml')).existsSync()) {
-        projectRoot = pwd;
+      if (pwd.contains('lib')) {
+        final paths = filePath.split('lib');
+        projectRoot = paths[paths.length - 2];
       } else {
         throwToolExit('必须在flutter module项目下执行，或者指定--file');
       }

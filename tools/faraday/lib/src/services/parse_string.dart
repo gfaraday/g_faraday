@@ -12,7 +12,8 @@ Map<String, Map<String, List<MethodDeclaration>>> parse(
   for (final declaration in unit.declarations) {
     if (declaration is ClassDeclaration) {
       final clazzName = declaration.name.name;
-      if (declaration.extendsClause.superclass.name.name != 'Feature') {
+      if (declaration.extendsClause == null ||
+          declaration.extendsClause.superclass.name.name != 'Feature') {
         result[clazzName] = {};
         break;
       }
