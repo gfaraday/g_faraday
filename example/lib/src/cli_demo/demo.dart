@@ -19,10 +19,8 @@ class DemoApp extends Feature {
         )
   };
 
-  /// document commnets
-  /// will be
-  /// send
-  /// to native
+  /// document commnets will be show on native methods
+  /// get some data from native
   @common
   static getSomeData(String id, {bool optionalArg}) {
     return FaradayCommon.invokeMethod('cli_demo/demo.dart|DemoApp#getSomeData',
@@ -30,29 +28,37 @@ class DemoApp extends Feature {
         .then((r) => JSON(r));
   }
 
-  @common
-  static showLoading(String message) {}
-
-  @common
-  static setSomeData(dynamic data, {String id}) {}
-
+  /// entry
   @entry
   static demoHome(BuildContext context) {
     return Navigator.of(context).pushNamedFromNative('demo_home');
   }
 
-  @entry
-  static demoHome1(BuildContext context, String id) {
-    return Navigator.of(context).pushNamedFromNative('demo_home1');
+  static postUser(dynamic user) {
+    return FaradayNet.post(user);
   }
+}
 
-  @entry
+class Home extends Feature {
+  @override
+  String get name => 'Home';
+
+  @override
+  Map<String, RouteFactory> get pageBuilders => {
+        'Home_home': (settings) =>
+            CupertinoPageRoute(builder: (context) => Text('Home')),
+      };
+
+  // common method
   @common
-  static demoHome2(BuildContext context, {@required String name}) {
-    return Navigator.of(context).pushNamedFromNative('demo_home2');
-  }
+  static getData(int id) {}
 
-  /// comments open demo home
+  // entry
   @entry
-  static demoHome3() {}
+  static homeHome() {}
+
+  // api
+  fetchUser(String id) {
+    return FaradayNet.get(id);
+  }
 }

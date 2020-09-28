@@ -48,18 +48,18 @@ class Faraday {
       return FaradayPageRouteBuilder(
         pageBuilder: (context) {
           if (kDebugMode) {
-            if (nativeMockFactory != null) {
-              assert(mockInitialname != null && mockInitialname.isNotEmpty);
-
-              final page = FaradayNativeBridge(
-                onGenerateRoute: rawFactory,
-                mockInitialSettings: RouteSettings(
-                    name: mockInitialname, arguments: mockInitialArguments),
-                mockNativeRouteFactory: nativeMockFactory,
-                onUnknownRoute: onUnknownRoute ?? _default404Page,
-              );
-              return decorator != null ? decorator(context, page) : page;
-            }
+            final page = FaradayNativeBridge(
+              onGenerateRoute: rawFactory,
+              mockInitialSettings:
+                  (mockInitialname != null && mockInitialname.isNotEmpty)
+                      ? RouteSettings(
+                          name: mockInitialname,
+                          arguments: mockInitialArguments)
+                      : null,
+              mockNativeRouteFactory: nativeMockFactory,
+              onUnknownRoute: onUnknownRoute ?? _default404Page,
+            );
+            return decorator != null ? decorator(context, page) : page;
           }
           final page = FaradayNativeBridge(
               onGenerateRoute: rawFactory,
@@ -74,7 +74,7 @@ class Faraday {
 
   /// 发送通知到native
   /// iOS 端直接通过 NotificationCenter 监听即可
-  /// android 
+  /// android
   ///
   static postNotification(String name, {dynamic arguments}) {
     return channel.invokeMethod('postNotification',

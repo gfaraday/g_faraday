@@ -9,9 +9,6 @@ void _validate([List<Feature> features]) {
     throw '请勿添加重复名称的feature';
   }
   for (final feature in features) {
-    if (feature.description == null || feature.description.isEmpty) {
-      print('请为 ${feature.name} 添加描述 description');
-    }
     if (feature.pageBuilders.keys
         .where((element) => !element.startsWith('${feature.name}'))
         .isNotEmpty) {
@@ -20,7 +17,12 @@ void _validate([List<Feature> features]) {
   }
 }
 
-RouteFactory route(List<Feature> features) {
+RouteFactory route(List<Feature> features,
+    {FaradayDecorator decorator,
+    RouteFactory nativeMockFactory,
+    RouteFactory onUnknownRoute,
+    String mockInitialname,
+    Object mockInitialArguments}) {
   if (features == null || features.isEmpty) return (_) => null;
 
   if (kDebugMode) _validate(features);
@@ -31,5 +33,10 @@ RouteFactory route(List<Feature> features) {
     final builder = rcs[settings.name];
     if (builder == null) return null;
     return builder(settings.arguments);
-  });
+  },
+      decorator: decorator,
+      nativeMockFactory: nativeMockFactory,
+      onUnknownRoute: onUnknownRoute,
+      mockInitialname: mockInitialname,
+      mockInitialArguments: mockInitialArguments);
 }
