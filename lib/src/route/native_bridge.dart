@@ -11,8 +11,6 @@ import 'package:g_faraday/src/utils/notification.dart';
 import 'arg.dart';
 import 'navigator.dart';
 
-const EventChannel _notification = EventChannel('g_faraday/notification');
-
 class FaradayNativeBridge extends StatefulWidget {
   final RouteFactory onGenerateRoute;
   final RouteFactory onUnknownRoute;
@@ -51,22 +49,17 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   RouteSettings get _mockInitialSettings => widget.mockInitialSettings;
   RouteFactory get _mockNativeRouteFactory => widget.mockNativeRouteFactory;
 
-  StreamSubscription _subscriptionNotification;
-
   @override
   void initState() {
     super.initState();
     channel.setMethodCallHandler(_handler);
 
-    _subscriptionNotification =
-        _notification.receiveBroadcastStream().listen((data) {
-      if (data is Map) {
-        final name = data['name'];
-        if (name is String && context != null) {
-          FaradayNotification(name, data['arguments']).dispatch(context);
-        }
-      }
+    notification.setMethodCallHandler((call) {
+      FaradayNotification(call.method, call.arguments['arguments'])
+          .dispatch(context);
+      return null;
     });
+
     //
     if (kDebugMode) {
       if (widget.mockInitialSettings != null) {
@@ -79,7 +72,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   void dispose() {
-    _subscriptionNotification.cancel();
+    notification.setMethodCallHandler(null);
     super.dispose();
   }
 

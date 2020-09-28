@@ -77,8 +77,7 @@ public class Faraday {
     private var netChannel: FlutterMethodChannel?
     private var commonChannel: FlutterMethodChannel?
     
-    private var notificationChannel: FlutterEventChannel?
-    private let notificationHelper = NotificationHelper()
+    private var notificationChannel: FlutterMethodChannel?
     
     private(set) var engine: FlutterEngine!
     
@@ -101,17 +100,14 @@ public class Faraday {
                 self.pop(flutterContainer: call.arguments, callback: result)
             } else if (call.method == "disableHorizontalSwipePopGesture") {
                 self.disableHorizontalSwipePopGesture(arguments: call.arguments, callback: result)
-            } else if (call.method == "postNotification") {
-                let args = call.arguments as? Dictionary<String, Any>
-                guard let name = args?["name"] as? String else {
-                    fatalError("Invalidate notification name")
-                }
-                NotificationCenter.default.post(name: .init(rawValue: name), object: args?["arguments"])
             }
         })
         
-        notificationChannel = FlutterEventChannel(name: "g_faraday/notification", binaryMessenger: messenger)
-        notificationChannel?.setStreamHandler(notificationHelper)
+        notificationChannel = FlutterMethodChannel(name: "g_faraday/notification", binaryMessenger: messenger)
+        notificationChannel?.setMethodCallHandler({ (call, result) in
+            let args = call.arguments as? Dictionary<String, Any>
+            NotificationCenter.default.post(name: .init(rawValue: call.method), object: args?["arguments"])
+        })
         
         if let h = netHandler {
             netChannel = FlutterMethodChannel(name: "g_faraday/net", binaryMessenger: messenger)
@@ -131,7 +127,7 @@ public class Faraday {
     /// 发送通知到 Flutter
     /// Flutter 可以通过 NotificationListener<NotificationListener> 来监听
     func pushNotification(name: String, _ arguments: Any? = nil) {
-        notificationHelper.push(name: name, arguments)
+        notificationChannel?.invokeMethod(name, arguments: arguments)
     }
     
     /// 入口方法，用于启动Flutter Engine、 注册插件

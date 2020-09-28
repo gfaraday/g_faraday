@@ -77,8 +77,7 @@ class Faraday {
   /// android
   ///
   static postNotification(String name, {dynamic arguments}) {
-    return channel.invokeMethod('postNotification',
-        {'name': name, if (arguments != null) 'arguments': arguments});
+    return notification.invokeMethod(name, arguments);
   }
 }
 
