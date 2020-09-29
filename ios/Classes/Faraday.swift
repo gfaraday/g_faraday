@@ -33,6 +33,11 @@ public protocol FaradayNavigationDelegate: NSObjectProtocol {
     func pop() -> FaradayFlutterViewController?
 }
 
+public protocol FaradayHttpProvider: NSObjectProtocol {
+    
+    func request(method: String, url: String, parameters: [String: Any]?, headers: [String: String]?, completion: @escaping (_ result: Any?) -> Void) -> Void
+}
+
 public protocol FaradayMethodHandler: NSObjectProtocol {
 
     func handle(_ method: String, arguments: Any?, completion: (Any?) -> Void);
@@ -70,7 +75,8 @@ public class Faraday {
     }
     
     private weak var navigatorDelegate: FaradayNavigationDelegate? // not retain
-    private var netHandler: FaradayHandler?
+    private weak var netProvider: FaradayHttpProvider?
+    
     private var commonHandler: FaradayHandler?
     
     private var channel: FlutterMethodChannel?
@@ -109,12 +115,24 @@ public class Faraday {
             NotificationCenter.default.post(name: .init(rawValue: call.method), object: args?["arguments"])
         })
         
-        if let h = netHandler {
-            netChannel = FlutterMethodChannel(name: "g_faraday/net", binaryMessenger: messenger)
-            netChannel?.setMethodCallHandler({ (call, r) in
-                h(call.method, call.arguments, r)
-            })
-        }
+        netChannel = FlutterMethodChannel(name: "g_faraday/net", binaryMessenger: messenger)
+        netChannel?.setMethodCallHandler({ [unowned self] (call, r) in
+            if let np = self.netProvider {
+                let args = call.arguments as? [String: Any]
+                
+                let method = call.method; // REQUEST/GET/PUT/POST/DELETE
+                guard let url = args?["url"] as? String else {
+                    r(FlutterError(code: "1", message: "url must not be null", details: args))
+                    return
+                }
+                
+                let parameters = args?["parameters"] as? [String: Any]
+                let headers = args?["headers"] as? [String: String]
+                
+                np.request(method: method, url: url, parameters: parameters, headers: headers, completion: r)
+            }
+        })
+        
         
         if let h = commonHandler {
             commonChannel = FlutterMethodChannel(name: "g_faraday/common", binaryMessenger: messenger)
@@ -127,6 +145,9 @@ public class Faraday {
     /// 发送通知到 Flutter
     /// Flutter 可以通过 NotificationListener<NotificationListener> 来监听
     func pushNotification(name: String, _ arguments: Any? = nil) {
+        guard notificationChannel != nil else {
+            fatalError("start flutter engine before push notification.")
+        }
         notificationChannel?.invokeMethod(name, arguments: arguments)
     }
     
@@ -136,9 +157,9 @@ public class Faraday {
     ///   - automaticallyRegisterPlugins: 是否自动注册插件，如果不自动注册请及时手动注册所有插件
     /// - Returns: 插件Registry 用于注册插件
     @discardableResult
-    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, netHandler: FaradayHandler? = nil, commonHandler: FaradayHandler? = nil, automaticallyRegisterPlugins: Bool = true) -> FlutterPluginRegistry {
+    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, httpProvider: FaradayHttpProvider? = nil, commonHandler: FaradayHandler? = nil, automaticallyRegisterPlugins: Bool = true) -> FlutterPluginRegistry {
         self.navigatorDelegate = navigatorDelegate
-        self.netHandler = netHandler
+        self.netProvider = httpProvider
         self.commonHandler = commonHandler
         
         engine = FlutterEngine(name: "io.flutter.faraday", project: nil, allowHeadlessExecution: false)

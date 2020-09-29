@@ -1,5 +1,6 @@
 import UIKit
 import g_faraday
+import Alamofire
 
 @UIApplicationMain
 @objc class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,7 +14,7 @@ import g_faraday
         
         UINavigationController.fa.automaticallyHandleNavigationBarHidenAndValueCallback()
         
-        Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self, netHandler: flutterNetBridge(_:_:_:), commonHandler: self.handle(_:_:_:))
+        Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self, httpProvider: self, commonHandler: self.handle(_:_:_:), automaticallyRegisterPlugins: true)
             
         return true
     }
@@ -98,4 +99,21 @@ extension AppDelegate: FaradayCommonHandler {
         return true
     }
     
+}
+
+extension AppDelegate: FaradayHttpProvider {
+
+    func request(method: String, url: String, parameters: [String : Any]?, headers: [String : String]?, completion: @escaping (Any?) -> Void) {
+        let afHeaders = headers.map { HTTPHeaders($0) }
+        let dataRequest = AF.request(url, method: HTTPMethod(rawValue: method.uppercased()), parameters: parameters, headers: afHeaders)
+        dataRequest.responseJSON { response in
+            switch response.result {
+                case .success(let data):
+                    completion(["data": data, "errorCode": 0])
+                case .failure(let error):
+                    completion(["message": error.localizedDescription, "errorCode": error.responseCode ?? 1])
+            }
+        }
+    }
+
 }
