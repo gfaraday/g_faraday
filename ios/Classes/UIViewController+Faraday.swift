@@ -9,6 +9,7 @@ import Foundation
 
 private struct AssociatedKeys {
     static var CallbackName = "faraday_CallbackName"
+    static var ResultName = "faraday_ResultName";
 }
 
 public extension FaradayExtension where ExtendedType: UIViewController {
@@ -21,6 +22,15 @@ public extension FaradayExtension where ExtendedType: UIViewController {
             if let newValue = newValue {
                 objc_setAssociatedObject(UIViewController.self, &AssociatedKeys.CallbackName, newValue as CallbackToken?, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
+        }
+    }
+    
+    var result: Any? {
+        get {
+            return objc_getAssociatedObject(UIViewController.self, &AssociatedKeys.ResultName)
+        }
+        nonmutating set {
+            objc_setAssociatedObject(UIViewController.self, &AssociatedKeys.ResultName, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     

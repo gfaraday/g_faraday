@@ -18,8 +18,14 @@ let swizzle: (AnyClass, Selector, Selector) -> () = { fromClass, originalSelecto
 // 当前 ViewController 需要隐藏navigationBar时，需遵循此协议,此外如果是rootVC，则需要单独设置navigationBarHidden
 public protocol FaradayNavigationBarHiddenProtocol {}
 
-public protocol FaradayResultProvider: UIViewController {
+public protocol FaradayResultProvider {
     var result: Any? { get }
+}
+
+extension FaradayResultProvider where Self: UIViewController {
+    var result: Any? {
+        return fa.result
+    }
 }
 
 extension FaradayFlutterViewController: FaradayNavigationBarHiddenProtocol { }
