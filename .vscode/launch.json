@@ -5,13 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Flutter: Attach to Device",
+      "name": "g_faraday attach",
       "type": "dart",
       "request": "attach",
       "program": "example/lib/main.dart"
     },
     {
-      "name": "Flutter",
+      "name": "g_faraday debug",
       "program": "example/lib/main.dart",
       "request": "launch",
       "type": "dart"
