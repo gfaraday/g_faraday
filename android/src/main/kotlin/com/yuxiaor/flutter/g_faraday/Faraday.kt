@@ -27,13 +27,29 @@ object Faraday {
      *  start engine
      */
     @JvmStatic
-    fun startFlutterEngine(navigator: FaradayNavigator) {
+    fun initEngine(navigator: FaradayNavigator) {
         faradayPlugin.setNavigator(navigator)
         //注册插件
         registerPlugin(faradayPlugin)
         registerPlugin(activityAwarePlugin)
         //开始执行dart代码，启动引擎
         engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+    }
+
+    /**
+     * To handle network form flutter on native side
+     */
+    @JvmStatic
+    fun setNetHandler(handler: MethodChannel.MethodCallHandler) {
+        InternalChannels.setNetHandler(handler)
+    }
+
+    /**
+     * To handle common events form flutter
+     */
+    @JvmStatic
+    fun setCommonHandler(handler: MethodChannel.MethodCallHandler) {
+        InternalChannels.setCommonHandler(handler)
     }
 
     /**
@@ -93,6 +109,25 @@ object Faraday {
     @JvmStatic
     fun openFlutter(activity: Activity, routeName: String, requestCode: Int, params: HashMap<String, Any>? = null) {
         activity.startActivityForResult(FaradayActivity.build(activity, routeName, params), requestCode)
+    }
+
+
+    /**
+     * post notification  form native to flutter
+     */
+    fun postNotification(key: String, arguments: Any?) {
+        FaradayNotice.post(key, arguments)
+    }
+
+    /**
+     * receive notification from flutter
+     */
+    fun registerNotification(key: String, callback: (arguments: Any?) -> Unit) {
+        FaradayNotice.register(key, callback)
+    }
+
+    fun unregisterNotification(key: String) {
+        FaradayNotice.unregister(key)
     }
 
 }
