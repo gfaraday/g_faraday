@@ -17,6 +17,7 @@ void _validate([List<Feature> features]) {
   }
 }
 
+/// 将一系列Feature转换为Faraday的路由
 RouteFactory route(List<Feature> features,
     {FaradayDecorator decorator,
     RouteFactory nativeMockFactory,

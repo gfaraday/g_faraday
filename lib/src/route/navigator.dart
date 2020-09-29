@@ -4,9 +4,12 @@ import 'arg.dart';
 import 'native_bridge.dart';
 import 'observer.dart';
 
+/// FaradayNavigator is a root widget for each native container
 class FaradayNavigator extends Navigator {
+  ///
   final FaradayArguments arg;
 
+  ///
   FaradayNavigator(
       {Key key,
       List pages = const <Page<dynamic>>[],
@@ -15,7 +18,8 @@ class FaradayNavigator extends Navigator {
       RouteListFactory onGenerateInitialRoutes,
       RouteFactory onGenerateRoute,
       RouteFactory onUnknownRoute,
-      DefaultTransitionDelegate transitionDelegate = const DefaultTransitionDelegate<dynamic>(),
+      DefaultTransitionDelegate transitionDelegate =
+          const DefaultTransitionDelegate<dynamic>(),
       this.arg,
       List<NavigatorObserver> observers})
       : super(
@@ -35,6 +39,7 @@ class FaradayNavigator extends Navigator {
   @override
   FaradayNavigatorState createState() => FaradayNavigatorState();
 
+  ///
   static FaradayNavigatorState of(BuildContext context) {
     FaradayNavigatorState faraday;
     if (context is StatefulElement && context.state is FaradayNavigatorState) {
@@ -44,34 +49,36 @@ class FaradayNavigator extends Navigator {
   }
 }
 
-class FaradayNavigatorState extends NavigatorState with WidgetsBindingObserver {
+///
+class FaradayNavigatorState extends NavigatorState {
+  _FaradayWidgetsBindingObserver _observerForAndroid;
+
   @override
   FaradayNavigator get widget => super.widget;
 
+  ///
   FaradayNavigatorObserver get observer => widget.arg.observer;
 
   @override
   void initState() {
-    observer.disableHorizontalSwipePopGesture.addListener(notifyNativeDisableOrEnableBackGesture);
-    WidgetsBinding.instance.addObserver(this);
+    observer.disableHorizontalSwipePopGesture
+        .addListener(notifyNativeDisableOrEnableBackGesture);
+    _observerForAndroid = _FaradayWidgetsBindingObserver(this);
+    WidgetsBinding.instance.addObserver(_observerForAndroid);
     super.initState();
-  }
-
-  void notifyNativeDisableOrEnableBackGesture() {
-    FaradayNativeBridge.of(context).disableHorizontalSwipePopGesture(observer.disableHorizontalSwipePopGesture.value);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(_observerForAndroid);
+    _observerForAndroid = null;
     super.dispose();
   }
 
-  // WidgetsBindingObserver
-  @override
-  Future<bool> didPopRoute() {
-    if (!FaradayNativeBridge.of(context).isOnTop(widget.arg.key)) return Future.value(false);
-    return maybePop();
+  ///
+  void notifyNativeDisableOrEnableBackGesture() {
+    FaradayNativeBridge.of(context).disableHorizontalSwipePopGesture(
+        disable: observer.disableHorizontalSwipePopGesture.value);
   }
 
   @override
@@ -81,5 +88,20 @@ class FaradayNavigatorState extends NavigatorState with WidgetsBindingObserver {
     } else {
       super.pop();
     }
+  }
+}
+
+class _FaradayWidgetsBindingObserver extends WidgetsBindingObserver {
+  final FaradayNavigatorState navigator;
+
+  _FaradayWidgetsBindingObserver(this.navigator);
+
+  @override
+  Future<bool> didPopRoute() {
+    if (!FaradayNativeBridge.of(navigator.context)
+        .isOnTop(navigator.widget.arg.key)) {
+      return Future.value(false);
+    }
+    return navigator.maybePop();
   }
 }

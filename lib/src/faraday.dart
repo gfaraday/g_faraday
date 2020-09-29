@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:g_faraday/src/channel.dart';
-import 'package:g_faraday/src/widgets/404.dart';
 
+import 'channel.dart';
 import 'route/native_bridge.dart';
 import 'route/route.dart';
+import 'widgets/not_found_page.dart';
 
 typedef FaradayDecorator = Widget Function(BuildContext context, Widget child);
 
+/// 核心入口类
 class Faraday {
+  ///
   const Faraday();
 
   ///
@@ -44,7 +46,7 @@ class Faraday {
       RouteFactory onUnknownRoute,
       String mockInitialname,
       Object mockInitialArguments}) {
-    final f = (settings) {
+    routeFactory(settings) {
       return FaradayPageRouteBuilder(
         pageBuilder: (context) {
           if (kDebugMode) {
@@ -68,20 +70,22 @@ class Faraday {
         },
         settings: settings,
       );
-    };
-    return f;
+    }
+
+    return routeFactory;
   }
 
   /// 发送通知到native
   /// iOS 端直接通过 NotificationCenter 监听即可
   /// android
   ///
-  static postNotification(String name, {dynamic arguments}) {
+  static Future<dynamic> postNotification(String name, {dynamic arguments}) {
     return notification.invokeMethod(name, arguments);
   }
 }
 
-RouteFactory _default404Page = (RouteSettings settings) =>
+_default404Page(RouteSettings settings) =>
     CupertinoPageRoute(builder: (context) => NotFoundPage(settings));
 
+///
 const faraday = Faraday();

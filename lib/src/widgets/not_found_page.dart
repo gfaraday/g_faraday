@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
+/// Default not found page
 class NotFoundPage extends StatefulWidget {
+  ///
   final RouteSettings settings;
 
+  ///
   NotFoundPage(this.settings);
 
   @override

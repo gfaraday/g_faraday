@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+/// Debugger todo:
 class FaradayDebugger extends StatefulWidget {
   @override
   _FaradayDebuggerState createState() => _FaradayDebuggerState();

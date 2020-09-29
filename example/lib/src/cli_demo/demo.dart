@@ -35,7 +35,7 @@ class DemoApp extends Feature {
   }
 
   static postUser(dynamic user) {
-    return FaradayNet.post(user);
+    return FaradayNet.request('post', '');
   }
 }
 
@@ -58,7 +58,5 @@ class Home extends Feature {
   static homeHome() {}
 
   // api
-  fetchUser(String id) {
-    return FaradayNet.get(id);
-  }
+  fetchUser(String id) {}
 }

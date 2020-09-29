@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/services.dart';
 
-const MethodChannel _channel = const MethodChannel('g_faraday_helper/common');
+const _channel = MethodChannel('g_faraday_helper/common');
 
 class FaradayCommon {
   const FaradayCommon();

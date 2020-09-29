@@ -2,10 +2,13 @@ import 'package:flutter/widgets.dart';
 
 import 'notification.dart';
 
+/// Receive native notification
 class FaradayNotificationListener
     extends NotificationListener<FaradayNotification> {
+  ///
   final String name;
 
+  ///
   FaradayNotificationListener(this.name,
       {Key key,
       @required Widget child,

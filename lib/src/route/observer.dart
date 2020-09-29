@@ -1,11 +1,13 @@
 import 'package:flutter/widgets.dart';
 
+// ignore_for_file: public_member_api_docs
 class FaradayNavigatorObserver extends NavigatorObserver {
   int _pageNumInStack = 0;
 
   bool get onlyOnePage => _pageNumInStack == 1;
 
-  ValueNotifier<bool> get disableHorizontalSwipePopGesture => _disableHorizontalSwipePopGesture;
+  ValueNotifier<bool> get disableHorizontalSwipePopGesture =>
+      _disableHorizontalSwipePopGesture;
   final _disableHorizontalSwipePopGesture = ValueNotifier<bool>(false);
 
   @override
@@ -39,8 +41,9 @@ class FaradayNavigatorObserver extends NavigatorObserver {
     _pageNumInStack = page;
     Future.delayed(Duration(milliseconds: 200)).then((_) {
       if (route is ModalRoute) {
-        // ignore: invalid_use_of_protected_member
-        _disableHorizontalSwipePopGesture.value = route.hasScopedWillPopCallback || !onlyOnePage;
+        _disableHorizontalSwipePopGesture.value =
+            // ignore: invalid_use_of_protected_member
+            route.hasScopedWillPopCallback || !onlyOnePage;
       } else {
         _disableHorizontalSwipePopGesture.value = !onlyOnePage;
       }

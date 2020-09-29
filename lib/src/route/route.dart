@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
+// ignore: public_member_api_docs
 class FaradayPageRouteBuilder<T> extends PageRouteBuilder<T> {
+  // ignore: public_member_api_docs
   FaradayPageRouteBuilder({
     RouteSettings settings,
     @required WidgetBuilder pageBuilder,

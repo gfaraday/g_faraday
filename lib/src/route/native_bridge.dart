@@ -1,12 +1,13 @@
-import 'dart:async';
+// ignore_for_file: public_member_api_docs
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:g_faraday/src/channel.dart';
-import 'package:g_faraday/src/utils/notification.dart';
+
+import '../channel.dart';
+import '../utils/notification.dart';
 
 import 'arg.dart';
 import 'navigator.dart';
@@ -41,7 +42,7 @@ class FaradayNativeBridge extends StatefulWidget {
 }
 
 class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
-  List<FaradayNavigator> _navigatorStack = [];
+  final List<FaradayNavigator> _navigatorStack = [];
   int _index;
   int _preIndex = 0;
   int _seq = 0;
@@ -125,7 +126,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     await channel.invokeMethod('popContainer', result);
   }
 
-  Future<void> disableHorizontalSwipePopGesture(bool disable) async {
+  Future<void> disableHorizontalSwipePopGesture({bool disable}) async {
     if (kDebugMode) {
       if (_mockNativeRouteFactory != null) {
         return;
@@ -140,7 +141,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   @override
   Widget build(BuildContext context) {
-    if (_index == -1 || _navigatorStack.isEmpty)
+    if (_index == -1 || _navigatorStack.isEmpty) {
       return Container(
         alignment: Alignment.center,
         child: Text(
@@ -148,6 +149,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           textAlign: TextAlign.center,
         ),
       );
+    }
 
     return IndexedStack(
       children: _navigatorStack,
@@ -157,7 +159,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   Future<dynamic> _handler(MethodCall call) {
     int index() {
-      int seq = call.arguments as int;
+      var seq = call.arguments as int;
       final index = _navigatorStack.indexWhere((n) => n.arg.seq == seq);
       return index;
     }
@@ -202,8 +204,9 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       initialRoute: arg.name,
       onGenerateRoute: (settings) {
         if (kDebugMode) {
-          if (settings.name == "/")
+          if (settings.name == "/") {
             return widget.onGenerateRoute(initialSettings);
+          }
         }
         return widget.onGenerateRoute(settings);
       },
