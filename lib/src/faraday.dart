@@ -46,7 +46,7 @@ class Faraday {
       RouteFactory onUnknownRoute,
       String mockInitialname,
       Object mockInitialArguments}) {
-    routeFactory(settings) {
+    Route<dynamic> routeFactory(settings) {
       return FaradayPageRouteBuilder(
         pageBuilder: (context) {
           if (kDebugMode) {
@@ -84,7 +84,7 @@ class Faraday {
   }
 }
 
-_default404Page(RouteSettings settings) =>
+Route<dynamic> _default404Page(RouteSettings settings) =>
     CupertinoPageRoute(builder: (context) => NotFoundPage(settings));
 
 ///
