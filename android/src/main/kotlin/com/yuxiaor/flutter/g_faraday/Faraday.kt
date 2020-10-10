@@ -1,8 +1,8 @@
 package com.yuxiaor.flutter.g_faraday
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import com.yuxiaor.flutter.g_faraday.utils.ContextProvider
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -21,19 +21,20 @@ object Faraday {
     internal val faradayPlugin = GFaradayPlugin()
 
     @JvmStatic
-    val engine by lazy { FlutterEngine(ContextProvider.context) }
+    var engine: FlutterEngine? = null
 
     /**
      *  start engine
      */
     @JvmStatic
-    fun initEngine(navigator: FaradayNavigator) {
+    fun initEngine(context: Context, navigator: FaradayNavigator) {
+        engine = FlutterEngine(context)
         faradayPlugin.setNavigator(navigator)
         //注册插件
         registerPlugin(faradayPlugin)
         registerPlugin(activityAwarePlugin)
         //开始执行dart代码，启动引擎
-        engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+        engine?.dartExecutor?.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
     }
 
     /**
@@ -57,7 +58,7 @@ object Faraday {
      */
     @JvmStatic
     fun registerChannel(channelName: String, handler: MethodChannel.MethodCallHandler): MethodChannel {
-        return MethodChannel(engine.dartExecutor, channelName).apply {
+        return MethodChannel(engine?.dartExecutor, channelName).apply {
             setMethodCallHandler(handler)
         }
     }
@@ -67,7 +68,7 @@ object Faraday {
      */
     @JvmStatic
     fun registerPlugin(plugin: FlutterPlugin) {
-        engine.plugins.add(plugin)
+        engine?.plugins?.add(plugin)
     }
 
     /**

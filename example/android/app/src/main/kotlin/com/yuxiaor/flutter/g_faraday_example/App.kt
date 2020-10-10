@@ -12,6 +12,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Faraday.initEngine(MyFlutterNavigator())
+        Faraday.initEngine(this, MyFlutterNavigator())
     }
 }

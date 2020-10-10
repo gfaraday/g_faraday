@@ -3,10 +3,6 @@
     package="com.yuxiaor.flutter.g_faraday">
 
     <application tools:node="merge">
-        <provider
-            android:name=".utils.ContextProvider"
-            android:authorities="${applicationId}.app.provider"
-            android:exported="false" />
 
         <activity
             android:name=".FaradayActivity"
