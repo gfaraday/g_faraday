@@ -100,7 +100,7 @@ object Faraday {
         val nextRequestCode = nextCode.getAndIncrement()
         getCurrentActivity()?.startActivityForResult(intent, nextRequestCode)
         ResultListener(activityAwarePlugin) { requestCode, resultCode, data ->
-            if (requestCode == nextRequestCode && resultCode == Activity.RESULT_OK) {
+            if (requestCode == nextRequestCode) {
                 callback.invoke(resultCode, data)
             }
         }
