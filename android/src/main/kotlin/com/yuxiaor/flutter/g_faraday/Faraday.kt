@@ -96,6 +96,12 @@ object Faraday {
         }
     }
 
+    fun startNativeForResult(intent: Intent, callback: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
+        val nextRequestCode = nextCode.getAndIncrement()
+        getCurrentActivity()?.startActivityForResult(intent, nextRequestCode)
+        ResultListener(activityAwarePlugin, callback)
+    }
+
     /**
      *  open flutter page
      */
