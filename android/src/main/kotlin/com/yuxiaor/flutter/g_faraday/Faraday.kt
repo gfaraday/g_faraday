@@ -96,10 +96,14 @@ object Faraday {
         }
     }
 
-    fun startNativeForResult(intent: Intent, callback: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
+    fun startNativeForResult(intent: Intent, callback: (resultCode: Int, data: Intent?) -> Unit) {
         val nextRequestCode = nextCode.getAndIncrement()
         getCurrentActivity()?.startActivityForResult(intent, nextRequestCode)
-        ResultListener(activityAwarePlugin, callback)
+        ResultListener(activityAwarePlugin) { requestCode, resultCode, data ->
+            if (requestCode == nextRequestCode && resultCode == Activity.RESULT_OK) {
+                callback.invoke(resultCode, data)
+            }
+        }
     }
 
     /**
