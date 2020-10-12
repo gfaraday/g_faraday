@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.yuxiaor.flutter.g_faraday.openFlutter
+import com.yuxiaor.flutter.g_faraday.openFlutterForResult
 import com.yuxiaor.flutter.g_faraday_example.R
 import com.yuxiaor.flutter.g_faraday_example.fragment.FragmentPage
 
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         //push to flutter
         btn1.setOnClickListener {
-            openFlutter("home", 1, "data" to "data form native MainActivity")
+            openFlutterForResult("home", 1, "data" to "data form native MainActivity")
         }
 
         //flutter fragment demo

@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.yuxiaor.flutter.g_faraday.openFlutter
+import com.yuxiaor.flutter.g_faraday.openFlutterForResult
 import com.yuxiaor.flutter.g_faraday_example.R
 
 /**
@@ -33,7 +34,7 @@ class FirstActivity : AppCompatActivity() {
 
         //open flutter for result
         btn1.setOnClickListener {
-            openFlutter("first_page", 1, "data" to "data form native FirstActivity")
+            openFlutterForResult("first_page", 1, "data" to "data form native FirstActivity")
         }
 
         //pop to flutter
