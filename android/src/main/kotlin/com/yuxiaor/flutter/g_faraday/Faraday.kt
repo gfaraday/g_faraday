@@ -100,15 +100,15 @@ object Faraday {
      *  open flutter page
      */
     @JvmStatic
-    fun openFlutter(activity: Activity, routeName: String, params: HashMap<String, Any>? = null) {
-        activity.startActivity(FaradayActivity.build(activity, routeName, params))
+    fun openFlutter(context: Context, routeName: String, params: HashMap<String, Any>? = null) {
+        context.startActivity(FaradayActivity.build(context, routeName, params))
     }
 
     /**
      *  open flutter page,and request for result
      */
     @JvmStatic
-    fun openFlutter(activity: Activity, routeName: String, requestCode: Int, params: HashMap<String, Any>? = null) {
+    fun openFlutterForResult(activity: Activity, routeName: String, requestCode: Int, params: HashMap<String, Any>? = null) {
         activity.startActivityForResult(FaradayActivity.build(activity, routeName, params), requestCode)
     }
 

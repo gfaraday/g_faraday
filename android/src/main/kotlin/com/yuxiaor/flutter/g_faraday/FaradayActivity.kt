@@ -23,8 +23,8 @@ class FaradayActivity : FlutterActivity() {
         private const val ARGS_KEY = "_flutter_args"
         private const val ROUTE_KEY = "_flutter_route"
 
-        fun build(activity: Activity, routeName: String, params: HashMap<String, Any>? = null): Intent {
-            return Intent(activity, FaradayActivity::class.java).apply {
+        fun build(context: Context, routeName: String, params: HashMap<String, Any>? = null): Intent {
+            return Intent(context, FaradayActivity::class.java).apply {
                 putExtra(ROUTE_KEY, routeName)
                 putExtra(ARGS_KEY, params)
             }
@@ -67,7 +67,7 @@ class FaradayActivity : FlutterActivity() {
  * @param routeName flutter router
  * @param params params from native to flutter
  */
-fun Activity.openFlutter(routeName: String, vararg params: Pair<String, Any>) {
+fun Context.openFlutter(routeName: String, vararg params: Pair<String, Any>) {
     startActivity(FaradayActivity.build(this, routeName, hashMapOf(*params)))
 }
 
@@ -79,7 +79,7 @@ fun Activity.openFlutter(routeName: String, vararg params: Pair<String, Any>) {
  *
  * You need to override [Activity.onActivityResult] in your Activity to get the result
  */
-fun Activity.openFlutter(routeName: String, requestCode: Int, vararg params: Pair<String, Any>) {
+fun Activity.openFlutterForResult(routeName: String, requestCode: Int, vararg params: Pair<String, Any>) {
     startActivityForResult(FaradayActivity.build(this, routeName, hashMapOf(*params)), requestCode)
 }
 
