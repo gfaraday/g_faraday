@@ -9,10 +9,10 @@ import io.flutter.plugin.common.MethodChannel
  */
 internal object InternalChannels {
     //网络
-    private val netChannel by lazy { MethodChannel(Faraday.engine?.dartExecutor, "g_faraday/net") }
+    private val netChannel by lazy { MethodChannel(Faraday.engine.dartExecutor, "g_faraday/net") }
 
     //通用
-    private val commonChannel by lazy { MethodChannel(Faraday.engine?.dartExecutor, "g_faraday/common") }
+    private val commonChannel by lazy { MethodChannel(Faraday.engine.dartExecutor, "g_faraday/common") }
 
 
     fun setNetHandler(handler: MethodChannel.MethodCallHandler) {

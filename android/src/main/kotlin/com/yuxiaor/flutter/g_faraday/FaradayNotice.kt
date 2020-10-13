@@ -11,7 +11,7 @@ import io.flutter.plugin.common.MethodChannel
 internal object FaradayNotice : MethodChannel.MethodCallHandler {
 
     private val channel by lazy {
-        MethodChannel(Faraday.engine?.dartExecutor, "g_faraday/notification").apply {
+        MethodChannel(Faraday.engine.dartExecutor, "g_faraday/notification").apply {
             setMethodCallHandler(this@FaradayNotice)
         }
     }

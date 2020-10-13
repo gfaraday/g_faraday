@@ -1,37 +1,32 @@
 package com.yuxiaor.flutter.g_faraday
 
+import android.content.Intent
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
+import io.flutter.plugin.common.PluginRegistry
 import java.io.Serializable
 
 /** GFaradayPlugin */
-class GFaradayPlugin : FlutterPlugin, MethodCallHandler {
-    private var channel: MethodChannel? = null
-    private var navigator: FaradayNavigator? = null
+class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
-    companion object {
-        @JvmStatic
-        fun registerWith(registrar: Registrar) {
-            val channel = MethodChannel(registrar.messenger(), "g_faraday")
-            channel.setMethodCallHandler(GFaradayPlugin())
-
+    private val channel by lazy {
+        MethodChannel(Faraday.engine.dartExecutor, "g_faraday").apply {
+            setMethodCallHandler(this@GFaradayPlugin)
         }
     }
 
-    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.flutterEngine.dartExecutor, "g_faraday")
-        channel?.setMethodCallHandler(this)
-    }
+    private var navigator: FaradayNavigator? = null
+    internal var binding: ActivityPluginBinding? = null
 
-    fun setNavigator(navigator: FaradayNavigator) {
+    fun setup(navigator: FaradayNavigator) {
         this.navigator = navigator
     }
-
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
@@ -65,29 +60,46 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler {
         if (args != null) {
             data["arguments"] = args
         }
-        channel?.invoke("pageCreate", data) {
+        channel.invoke("pageCreate", data) {
             val seqId = it as Int
             callback.invoke(seqId)
         }
     }
 
     internal fun onPageShow(seqId: Int) {
-        channel?.invokeMethod("pageShow", seqId)
+        channel.invokeMethod("pageShow", seqId)
     }
 
     internal fun onPageHidden(seqId: Int) {
-        channel?.invokeMethod("pageHidden", seqId)
+        channel.invokeMethod("pageHidden", seqId)
     }
 
     internal fun onPageDealloc(seqId: Int) {
-        channel?.invokeMethod("pageDealloc", seqId)
+        channel.invokeMethod("pageDealloc", seqId)
     }
 
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-        channel?.setMethodCallHandler(null)
+        channel.setMethodCallHandler(null)
     }
 
+
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        this.binding = binding
+    }
+
+    override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+    }
+
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+    }
+
+    override fun onDetachedFromActivity() {
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+    }
 
     private fun MethodChannel.invoke(method: String, arguments: Any?, callback: ((result: Any?) -> Unit)? = null) {
         invokeMethod(method, arguments, object : Result {
@@ -103,4 +115,19 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler {
             }
         })
     }
+}
+
+
+class ResultListener(private val callback: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) : PluginRegistry.ActivityResultListener {
+
+    init {
+        Faraday.plugin.binding?.addActivityResultListener(this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        callback.invoke(requestCode, resultCode, data)
+        Faraday.plugin.binding?.removeActivityResultListener(this)
+        return false
+    }
+
 }

@@ -33,7 +33,7 @@ RouteFactory route(List<Feature> features,
   return Faraday.wrapper((settings) {
     final builder = rcs[settings.name];
     if (builder == null) return null;
-    return builder(settings.arguments);
+    return builder(settings);
   },
       decorator: decorator,
       nativeMockFactory: nativeMockFactory,

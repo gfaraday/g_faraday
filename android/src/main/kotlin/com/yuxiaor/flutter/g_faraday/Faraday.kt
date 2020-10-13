@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
-import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodChannel
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -17,24 +16,23 @@ import java.util.concurrent.atomic.AtomicInteger
 object Faraday {
 
     private val nextCode = AtomicInteger()
-    private val activityAwarePlugin = ActivityAwarePlugin()
-    internal val faradayPlugin = GFaradayPlugin()
 
     @JvmStatic
-    var engine: FlutterEngine? = null
+    internal lateinit var engine: FlutterEngine
+        private set
+
+    internal val plugin: GFaradayPlugin by lazy {
+        engine.plugins.get(GFaradayPlugin::class.java) as GFaradayPlugin
+    }
 
     /**
-     *  start engine
+     *  init engine
      */
     @JvmStatic
     fun initEngine(context: Context, navigator: FaradayNavigator) {
         engine = FlutterEngine(context)
-        faradayPlugin.setNavigator(navigator)
-        //注册插件
-        registerPlugin(faradayPlugin)
-        registerPlugin(activityAwarePlugin)
-        //开始执行dart代码，启动引擎
-        engine?.dartExecutor?.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+        plugin.setup(navigator)
+        engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
     }
 
     /**
@@ -54,29 +52,11 @@ object Faraday {
     }
 
     /**
-     * register channel
-     */
-    @JvmStatic
-    fun registerChannel(channelName: String, handler: MethodChannel.MethodCallHandler): MethodChannel {
-        return MethodChannel(engine?.dartExecutor, channelName).apply {
-            setMethodCallHandler(handler)
-        }
-    }
-
-    /**
-     * register plugin
-     */
-    @JvmStatic
-    fun registerPlugin(plugin: FlutterPlugin) {
-        engine?.plugins?.add(plugin)
-    }
-
-    /**
      * The current flutter container Activity
      */
     @JvmStatic
     fun getCurrentActivity(): Activity? {
-        return activityAwarePlugin.binding?.activity
+        return plugin.binding?.activity
     }
 
     /**
@@ -85,7 +65,7 @@ object Faraday {
     fun startNativeForResult(intent: Intent, callback: (result: HashMap<String, Any?>?) -> Unit) {
         val nextRequestCode = nextCode.getAndIncrement()
         getCurrentActivity()?.startActivityForResult(intent, nextRequestCode)
-        ResultListener(activityAwarePlugin) { requestCode, resultCode, data ->
+        ResultListener { requestCode, resultCode, data ->
             if (requestCode == nextRequestCode && resultCode == Activity.RESULT_OK) {
                 val map = hashMapOf<String, Any?>()
                 data?.extras?.keySet()?.forEach {
@@ -99,7 +79,7 @@ object Faraday {
     fun startNativeForResult(intent: Intent, callback: (resultCode: Int, data: Intent?) -> Unit) {
         val nextRequestCode = nextCode.getAndIncrement()
         getCurrentActivity()?.startActivityForResult(intent, nextRequestCode)
-        ResultListener(activityAwarePlugin) { requestCode, resultCode, data ->
+        ResultListener { requestCode, resultCode, data ->
             if (requestCode == nextRequestCode) {
                 callback.invoke(resultCode, data)
             }

@@ -14,7 +14,6 @@ import io.flutter.embedding.engine.FlutterEngine
 class FaradayFragment private constructor() : FlutterFragment() {
 
     private var seqId: Int? = null
-    private val plugin = Faraday.faradayPlugin
 
     companion object {
 
@@ -42,40 +41,40 @@ class FaradayFragment private constructor() : FlutterFragment() {
         val route = arguments?.getString(ROUTE_KEY)
         require(route != null) { "route must not be null!" }
         val args = arguments?.getSerializable(ARGS_KEY)
-        plugin.onPageCreate(route, args) {
+        Faraday.plugin.onPageCreate(route, args) {
             seqId = it
-            plugin.onPageShow(it)
+            Faraday.plugin.onPageShow(it)
         }
     }
 
 
     override fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) {
-            seqId?.let { plugin.onPageShow(it) }
+            seqId?.let { Faraday.plugin.onPageShow(it) }
         } else {
-            seqId?.let { plugin.onPageHidden(it) }
+            seqId?.let { Faraday.plugin.onPageHidden(it) }
         }
         super.onHiddenChanged(hidden)
     }
 
     override fun onResume() {
         super.onResume()
-        seqId?.let { plugin.onPageShow(it) }
+        seqId?.let { Faraday.plugin.onPageShow(it) }
     }
 
     override fun onPause() {
         super.onPause()
-        seqId?.let { plugin.onPageHidden(it) }
+        seqId?.let { Faraday.plugin.onPageHidden(it) }
     }
 
     override fun onDetach() {
         super.onDetach()
-        seqId?.let { plugin.onPageDealloc(it) }
+        seqId?.let { Faraday.plugin.onPageDealloc(it) }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        seqId?.let { plugin.onPageDealloc(it) }
+        seqId?.let { Faraday.plugin.onPageDealloc(it) }
     }
 
 }
