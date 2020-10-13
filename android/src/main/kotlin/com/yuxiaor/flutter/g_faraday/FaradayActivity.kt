@@ -43,6 +43,11 @@ class FaradayActivity : FlutterActivity() {
         return Faraday.engine
     }
 
+
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        //ignore
+    }
+
     override fun onResume() {
         super.onResume()
         seqId?.let { Faraday.plugin.onPageShow(it) }
