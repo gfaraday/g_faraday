@@ -1,4 +1,4 @@
-集成
+# 集成
 
 ## 0x00 前置条件准备
 
@@ -18,6 +18,7 @@ pub global active faraday
 faraday version
 
 ```
+
 我们也开发了对应的`vscode extension`您可以选择安装。在`vscode extensions tab`搜索 `faraday` 即可。
 
 ### 文件服务器
@@ -47,13 +48,14 @@ flutter create --help
 
 ## 0x03 修改 `pubspec.yaml`
 
-#### 添加`g_faraday`依赖
+### 添加`g_faraday`依赖
+
 ``` yaml
 dependencies:
   g_faraday: ^version
 ```
 
-#### 添加faraday配置信息
+### 添加faraday配置信息
 
 ``` yaml
 
@@ -66,7 +68,6 @@ faraday:
 ...
 
 ```
-
 
 ## 0x03 Tag
 
@@ -84,7 +85,8 @@ faraday tag --version 0.0.1+2 --release
 
 如果一切顺利 你应该会看到以下日志
 
-```
+``` shell
+
 Consuming the Module:
 
 For iOS Developer:
@@ -102,7 +104,7 @@ For iOS Developer:
 For Android Developer:
   1. Open <native-project>/app/build.gradle
   2. Ensure you have the repositories configured, otherwise add them:
-      
+
       String storageUrl = System.env.FLUTTER_STORAGE_BASE_URL ?: "https://storage.googleapis.com"
       repositories {
         maven {
@@ -120,6 +122,7 @@ For Android Developer:
     }
 
 ```
+
 根据以上日志提示，分别在ios和android原生项目中集成module。
 
 到此为止整个`g_faraday`已经成功集成，开始写代码吧

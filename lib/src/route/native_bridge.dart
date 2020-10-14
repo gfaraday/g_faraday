@@ -8,7 +8,6 @@ import 'package:flutter/widgets.dart';
 
 import '../channel.dart';
 import '../utils/notification.dart';
-
 import 'arg.dart';
 import 'navigator.dart';
 
@@ -104,7 +103,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       }
     }
     //
-    return channel.invokeMethod(
+    return channel.invokeMethod<T>(
       'pushNativePage',
       {
         'name': name,

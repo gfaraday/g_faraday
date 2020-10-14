@@ -1,3 +1,6 @@
+// json
+export 'package:g_json/g_json.dart';
+
 // utils
 export 'src/common/common.dart';
 export 'src/common/entry.dart';

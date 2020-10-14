@@ -6,15 +6,15 @@ import 'navigator.dart';
 ///
 extension NavigatorStateX on NavigatorState {
   /// pop native flutter container
-  Future<void> popUntilNative<T>(BuildContext context, [T result]) {
+  Future<void> nativePopUntil<T>(BuildContext context, [T result]) {
     return FaradayNativeBridge.of(context)
         .pop(FaradayNavigator.of(context).widget.arg.key, result);
   }
 
   /// push native flutter container
-  Future<T> pushNamedFromNative<T extends Object>(String routeName,
+  Future<T> nativePushNamed<T extends Object>(String routeName,
       {Object arguments, bool present = false, bool flutterRoute = false}) {
-    return FaradayNativeBridge.of(context).push(
+    return FaradayNativeBridge.of(context).push<T>(
       routeName,
       arguments: arguments,
       flutterRoute: flutterRoute,

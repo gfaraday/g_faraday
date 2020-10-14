@@ -31,7 +31,7 @@ class DemoApp extends Feature {
   /// entry
   @entry
   static demoHome(BuildContext context) {
-    return Navigator.of(context).pushNamedFromNative('demo_home');
+    return Navigator.of(context).nativePushNamed('demo_home');
   }
 
   static postUser(dynamic user) {
