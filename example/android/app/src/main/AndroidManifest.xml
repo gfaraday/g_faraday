@@ -30,5 +30,9 @@
         </activity>
         <activity android:name=".fragment.FragmentPage" />
 
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+
     </application>
 </manifest>
