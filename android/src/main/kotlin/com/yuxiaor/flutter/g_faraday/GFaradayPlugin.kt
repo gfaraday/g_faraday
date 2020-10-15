@@ -50,6 +50,10 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 navigator?.onSwipeBack(!disable)
                 result.success(null)
             }
+            "reCreateLastPage" -> {
+                Faraday.getCurrentActivity()?.createFlutterPage()
+                result.success(null)
+            }
             else -> result.notImplemented()
         }
     }

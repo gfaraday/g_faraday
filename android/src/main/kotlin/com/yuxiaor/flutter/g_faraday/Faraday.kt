@@ -59,8 +59,8 @@ object Faraday {
      * The current flutter container Activity
      */
     @JvmStatic
-    fun getCurrentActivity(): Activity? {
-        return plugin.binding?.activity
+    fun getCurrentActivity(): FaradayActivity? {
+        return plugin.binding?.activity as? FaradayActivity
     }
 
     /**
