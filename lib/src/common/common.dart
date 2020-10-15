@@ -2,7 +2,7 @@
 
 import 'package:flutter/services.dart';
 
-const _channel = MethodChannel('g_faraday_helper/common');
+const _channel = MethodChannel('g_faraday/common');
 
 class FaradayCommon {
   const FaradayCommon();

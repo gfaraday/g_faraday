@@ -3,6 +3,10 @@ package com.yuxiaor.flutter.g_faraday
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import com.yuxiaor.flutter.g_faraday.channels.CommonChannel
+import com.yuxiaor.flutter.g_faraday.channels.FaradayNotice
+import com.yuxiaor.flutter.g_faraday.channels.NetChannel
+import com.yuxiaor.flutter.g_faraday.channels.NetHandler
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.plugin.common.MethodChannel
@@ -39,8 +43,8 @@ object Faraday {
      * To handle network form flutter on native side
      */
     @JvmStatic
-    fun setNetHandler(handler: MethodChannel.MethodCallHandler) {
-        InternalChannels.setNetHandler(handler)
+    fun setNetHandler(handler: NetHandler) {
+        NetChannel(engine.dartExecutor, handler)
     }
 
     /**
@@ -48,7 +52,7 @@ object Faraday {
      */
     @JvmStatic
     fun setCommonHandler(handler: MethodChannel.MethodCallHandler) {
-        InternalChannels.setCommonHandler(handler)
+        CommonChannel(engine.dartExecutor, handler)
     }
 
     /**

@@ -1,5 +1,6 @@
-package com.yuxiaor.flutter.g_faraday
+package com.yuxiaor.flutter.g_faraday.channels
 
+import com.yuxiaor.flutter.g_faraday.Faraday
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
@@ -11,7 +12,7 @@ import io.flutter.plugin.common.MethodChannel
 internal object FaradayNotice : MethodChannel.MethodCallHandler {
 
     private val channel by lazy {
-        MethodChannel(Faraday.engine.dartExecutor, "g_faraday_helper/notification").apply {
+        MethodChannel(Faraday.engine.dartExecutor, "g_faraday/notification").apply {
             setMethodCallHandler(this@FaradayNotice)
         }
     }
