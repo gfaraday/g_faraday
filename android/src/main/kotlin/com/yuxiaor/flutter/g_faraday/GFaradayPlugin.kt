@@ -2,6 +2,7 @@ package com.yuxiaor.flutter.g_faraday
 
 import android.content.Intent
 import androidx.annotation.NonNull
+import androidx.fragment.app.FragmentActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -51,8 +52,19 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success(null)
             }
             "reCreateLastPage" -> {
-                Faraday.getCurrentActivity()?.createFlutterPage()
-                result.success(null)
+                when (val activity = Faraday.getCurrentActivity()) {
+                    is FaradayActivity -> {
+                        result.success(activity.seqId)
+                        activity.createFlutterPage()
+                    }
+                    is FragmentActivity -> {
+                        val fragment = activity.supportFragmentManager.fragments.first { it.isVisible }
+                        if (fragment is FaradayFragment) {
+                            result.success(fragment.seqId)
+                            fragment.createFlutterPage()
+                        }
+                    }
+                }
             }
             else -> result.notImplemented()
         }

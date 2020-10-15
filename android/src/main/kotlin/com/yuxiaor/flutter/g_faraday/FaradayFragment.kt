@@ -13,7 +13,7 @@ import io.flutter.embedding.engine.FlutterEngine
  */
 class FaradayFragment private constructor() : FlutterFragment() {
 
-    private var seqId: Int? = null
+    internal var seqId: Int? = null
 
     companion object {
 
@@ -38,6 +38,10 @@ class FaradayFragment private constructor() : FlutterFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createFlutterPage()
+    }
+
+    internal fun createFlutterPage() {
         val route = arguments?.getString(ROUTE_KEY)
         require(route != null) { "route must not be null!" }
         val args = arguments?.getSerializable(ARGS_KEY)

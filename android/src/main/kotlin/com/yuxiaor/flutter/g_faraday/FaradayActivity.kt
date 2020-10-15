@@ -14,7 +14,7 @@ import io.flutter.embedding.engine.FlutterEngine
  */
 class FaradayActivity : FlutterActivity() {
 
-    private var seqId: Int? = null
+    internal var seqId: Int? = null
 
     companion object {
 
@@ -33,7 +33,7 @@ class FaradayActivity : FlutterActivity() {
         super.onCreate(savedInstanceState)
         createFlutterPage()
     }
-    
+
     internal fun createFlutterPage() {
         val route = intent.getStringExtra(ROUTE_KEY)
         val args = intent.getSerializableExtra(ARGS_KEY)
