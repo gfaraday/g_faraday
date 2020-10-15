@@ -73,7 +73,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         val data = hashMapOf<String, Any>()
         data["name"] = route
         if (args != null) {
-            data["arguments"] = args
+            data["args"] = args
         }
         data["seq"] = seq ?: -1
         channel.invoke("pageCreate", data) {
