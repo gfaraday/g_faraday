@@ -141,11 +141,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   @override
   Widget build(BuildContext context) {
     if (_index == -1 || _navigatorStack.isEmpty) {
-      channel.invokeMethod('reCreateLastPage').then((seq) {
-        if (seq is int) {
-          _seq = seq;
-        }
-      });
+      channel.invokeMethod('reCreateLastPage');
       return Container(
         alignment: Alignment.center,
         child: Text(
@@ -171,6 +167,11 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     switch (call.method) {
       case 'pageCreate':
         String name = call.arguments['name'];
+        final seq = call.arguments['seq'] as int;
+        if (seq != null && seq != -1) {
+          _seq = seq;
+          debugPrint('recreate page: $name seq: $seq');
+        }
         final arg = FaradayArguments(call.arguments['arguments'], name, _seq++);
         _navigatorStack.add(appRoot(arg));
         _updateIndex(_navigatorStack.length - 1);
