@@ -70,6 +70,8 @@ class FaradayNavigatorState extends NavigatorState {
 
   @override
   void dispose() {
+    observer.disableHorizontalSwipePopGesture
+        .removeListener(notifyNativeDisableOrEnableBackGesture);
     WidgetsBinding.instance.removeObserver(_observerForAndroid);
     _observerForAndroid = null;
     super.dispose();
