@@ -141,7 +141,11 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   @override
   Widget build(BuildContext context) {
     if (_index == -1 || _navigatorStack.isEmpty) {
-      channel.invokeMethod('reCreateLastPage');
+      channel.invokeMethod('reCreateLastPage').then((seq) {
+        if (seq is int) {
+          _seq = seq;
+        }
+      });
       return Container(
         alignment: Alignment.center,
         child: Text(
