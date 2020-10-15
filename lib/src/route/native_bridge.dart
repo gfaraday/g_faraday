@@ -141,23 +141,14 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   @override
   Widget build(BuildContext context) {
     if (_index == -1 || _navigatorStack.isEmpty) {
-      if (kDebugMode) {
-        if (_mockInitialSettings != null) {
-          _handler(MethodCall('pageCreate', {
-            'name': _mockInitialSettings.name,
-            if (_mockInitialSettings.arguments != null)
-              'arguments': _mockInitialSettings.arguments
-          }));
-        }
-        return Container(
-          alignment: Alignment.center,
-          child: Text(
-            'hot restart losts all states, please set _mockInitialRoutes',
-            textAlign: TextAlign.center,
-          ),
-        );
-      }
-      throw FlutterError('抱歉发生了未知错误，请联系g_faraday开发者');
+      channel.invokeMethod('reCreateLastPage');
+      return Container(
+        alignment: Alignment.center,
+        child: Text(
+          're-creating ...',
+          textAlign: TextAlign.center,
+        ),
+      );
     }
 
     return IndexedStack(

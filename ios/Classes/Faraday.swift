@@ -106,6 +106,9 @@ public class Faraday {
                 self.pop(flutterContainer: call.arguments, callback: result)
             } else if (call.method == "disableHorizontalSwipePopGesture") {
                 self.disableHorizontalSwipePopGesture(arguments: call.arguments, callback: result)
+            } else if (call.method == "reCreateLastPage") {
+                self.currentFlutterViewController?.createFlutterPage()
+                result(nil)
             }
         })
         
