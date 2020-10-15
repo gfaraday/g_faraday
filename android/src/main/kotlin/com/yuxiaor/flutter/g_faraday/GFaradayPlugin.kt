@@ -54,31 +54,30 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "reCreateLastPage" -> {
                 when (val activity = Faraday.getCurrentActivity()) {
                     is FaradayActivity -> {
-                        result.success(activity.seqId)
                         activity.createFlutterPage()
                     }
                     is FragmentActivity -> {
                         val fragment = activity.supportFragmentManager.fragments.first { it.isVisible }
                         if (fragment is FaradayFragment) {
-                            result.success(fragment.seqId)
                             fragment.createFlutterPage()
                         }
                     }
                 }
+                result.success(null)
             }
             else -> result.notImplemented()
         }
     }
 
-    internal fun onPageCreate(route: String, args: Any?, callback: (seqId: Int) -> Unit) {
+    internal fun onPageCreate(route: String, args: Any?, seq: Int?, callback: (seqId: Int) -> Unit) {
         val data = hashMapOf<String, Any>()
         data["name"] = route
         if (args != null) {
             data["arguments"] = args
         }
+        data["seq"] = seq ?: -1
         channel.invoke("pageCreate", data) {
-            val seqId = it as Int
-            callback.invoke(seqId)
+            callback.invoke(it as Int)
         }
     }
 
