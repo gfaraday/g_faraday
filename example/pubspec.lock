@@ -75,12 +75,12 @@ packages:
     source: path
     version: "1.0.0+1"
   g_json:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: g_json
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.2"
+    version: "3.0.0"
   matcher:
     dependency: transitive
     description:

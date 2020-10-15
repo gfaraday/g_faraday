@@ -172,7 +172,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           _seq = seq;
           debugPrint('recreate page: $name seq: $seq');
         }
-        final arg = FaradayArguments(call.arguments['arguments'], name, _seq++);
+        final arg = FaradayArguments(call.arguments['args'], name, _seq++);
         _navigatorStack.add(appRoot(arg));
         _updateIndex(_navigatorStack.length - 1);
         return Future.value(arg.seq);
@@ -207,14 +207,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       key: GlobalKey(debugLabel: 'seq: ${arg.seq}'),
       arg: arg,
       initialRoute: arg.name,
-      onGenerateRoute: (settings) {
-        if (kDebugMode) {
-          if (settings.name == "/") {
-            return widget.onGenerateRoute(initialSettings);
-          }
-        }
-        return widget.onGenerateRoute(settings);
-      },
+      onGenerateRoute: widget.onGenerateRoute,
       onUnknownRoute: widget.onUnknownRoute,
       onGenerateInitialRoutes: (navigator, initialRoute) => [
         widget.onGenerateRoute(initialSettings) ??
