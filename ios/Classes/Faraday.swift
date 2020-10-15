@@ -144,7 +144,7 @@ public class Faraday {
     
     /// 发送通知到 Flutter
     /// Flutter 可以通过 NotificationListener<NotificationListener> 来监听
-    func pushNotification(name: String, _ arguments: Any? = nil) {
+    func postNotification(name: String, _ arguments: Any? = nil) {
         guard notificationChannel != nil else {
             fatalError("start flutter engine before push notification.")
         }

@@ -15,7 +15,7 @@ import Alamofire
         UINavigationController.fa.automaticallyHandleNavigationBarHidenAndValueCallback()
         
         Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self, httpProvider: self, commonHandler: self.handle(_:_:_:), automaticallyRegisterPlugins: true)
-            
+        NotificationCenter.fa.post(name: "");
         return true
     }
 }
