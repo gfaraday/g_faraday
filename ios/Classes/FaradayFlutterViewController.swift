@@ -31,7 +31,7 @@ open class FaradayFlutterViewController: FlutterViewController {
     }
     
     func createFlutterPage() {
-        Faraday.sendPageState(.create(name, arguments)) { [weak self] r in
+        Faraday.sendPageState(.create(name, arguments, seq)) { [weak self] r in
             self?.seq = r as? Int
             debugPrint("seq: \(r!) create page succeed")
         }

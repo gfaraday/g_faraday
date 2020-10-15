@@ -45,15 +45,15 @@ public protocol FaradayMethodHandler: NSObjectProtocol {
 
 enum PageState {
     
-    case create(String, Any?) // name, arguments
+    case create(String, Any?, Int?) // name, arguments, seq
     case show(Int) // seq
     case hiden(Int) // seq
     case dealloc(Int) //seq
     
     var info: (String, Any?) {
         switch self {
-        case .create(let name, let arguments):
-            return ("pageCreate", ["name": name, "args": arguments])
+        case .create(let name, let arguments, let seq):
+            return ("pageCreate", ["name": name, "args": arguments, "seq": seq ?? -1])
         case .show(let seq):
             return ("pageShow", seq)
         case .hiden(let seq):
