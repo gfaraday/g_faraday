@@ -60,7 +60,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       return null;
     });
 
-    //
+    // mock
     if (kDebugMode) {
       if (widget.mockInitialSettings != null) {
         _handler(MethodCall('pageCreate', {
@@ -102,7 +102,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           name: name,
           arguments: {
             'present': present,
-            'flutterRoute': flutterRoute,
+            'flutterRoute': false,
             if (arguments != null) ...arguments
           },
         )));

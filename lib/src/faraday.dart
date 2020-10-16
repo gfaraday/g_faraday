@@ -42,24 +42,18 @@ class Faraday {
   ///
   static RouteFactory wrapper(RouteFactory rawFactory,
       {FaradayDecorator decorator,
-      RouteFactory nativeMockFactory,
       RouteFactory onUnknownRoute,
-      String mockInitialname,
-      Object mockInitialArguments}) {
+      RouteFactory nativeMockFactory,
+      RouteSettings mockInitialSettings}) {
     Route<dynamic> routeFactory(settings) {
       return FaradayPageRouteBuilder(
         pageBuilder: (context) {
           if (kDebugMode) {
             final page = FaradayNativeBridge(
               onGenerateRoute: rawFactory,
-              mockInitialSettings:
-                  (mockInitialname != null && mockInitialname.isNotEmpty)
-                      ? RouteSettings(
-                          name: mockInitialname,
-                          arguments: mockInitialArguments)
-                      : null,
-              mockNativeRouteFactory: nativeMockFactory,
               onUnknownRoute: onUnknownRoute ?? _default404Page,
+              mockInitialSettings: mockInitialSettings,
+              mockNativeRouteFactory: nativeMockFactory,
             );
             return decorator != null ? decorator(context, page) : page;
           }
