@@ -71,6 +71,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     }
   }
 
+  @override
+  void reassemble() {
+    channel.invokeMethod('reCreateLastPage');
+    super.reassemble();
+  }
+
   void dispose() {
     notification.setMethodCallHandler(null);
     super.dispose();
@@ -141,12 +147,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   @override
   Widget build(BuildContext context) {
     if (_index == -1 || _navigatorStack.isEmpty) {
-      channel.invokeMethod('reCreateLastPage');
       return Container(
-        alignment: Alignment.center,
-        child: Text(
-          're-creating ...',
-          textAlign: TextAlign.center,
+        child: Center(
+          child: CupertinoButton.filled(
+            child: Text('Reassemble Application'),
+            onPressed: WidgetsBinding.instance.reassembleApplication,
+          ),
         ),
       );
     }
@@ -170,10 +176,17 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         final seq = call.arguments['seq'] as int;
         if (seq != null && seq != -1) {
           _seq = seq;
-          debugPrint('recreate page: $name seq: $seq');
+        }
+        if (_navigatorStack.indexWhere((n) => n.arg.seq == _seq) != -1) {
+          return Future.value(false);
+        }
+        if (kDebugMode) {
+          if (seq != null && seq != -1) {
+            debugPrint('recreate page: $name seq: $seq');
+          }
         }
         final arg = FaradayArguments(call.arguments['args'], name, _seq++);
-        _navigatorStack.add(appRoot(arg));
+        _navigatorStack.add(_appRoot(arg));
         _updateIndex(_navigatorStack.length - 1);
         return Future.value(arg.seq);
       case 'pageShow':
@@ -200,7 +213,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     });
   }
 
-  FaradayNavigator appRoot(FaradayArguments arg) {
+  FaradayNavigator _appRoot(FaradayArguments arg) {
     final initialSettings =
         RouteSettings(name: arg.name, arguments: arg.arguments);
     return FaradayNavigator(
