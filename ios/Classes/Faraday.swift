@@ -161,7 +161,7 @@ public class Faraday {
     ///   - automaticallyRegisterPlugins: 是否自动注册插件，如果不自动注册请及时手动注册所有插件
     /// - Returns: 插件Registry 用于注册插件
     @discardableResult
-    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, httpProvider: FaradayHttpProvider? = nil, commonHandler: FaradayHandler? = nil, automaticallyRegisterPlugins: Bool = true) -> FlutterPluginRegistry {
+    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, httpProvider: FaradayHttpProvider? = nil, commonHandler: FaradayHandler? = nil, automaticallyRegisterPlugins: Bool = true, initialRoute: String? = nil) -> FlutterPluginRegistry {
         self.navigatorDelegate = navigatorDelegate
         self.netProvider = httpProvider
         self.commonHandler = commonHandler
@@ -169,7 +169,7 @@ public class Faraday {
         engine = FlutterEngine(name: "io.flutter.faraday", project: nil, allowHeadlessExecution: false)
         
         // 1.1 run
-        engine.run(withEntrypoint: nil)
+        engine.run(withEntrypoint: nil, initialRoute: initialRoute)
         
         if (automaticallyRegisterPlugins) {
             guard let clazz: AnyObject = NSClassFromString("GeneratedPluginRegistrant") else {
