@@ -111,6 +111,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onDetachedFromActivity() {
+        this.binding = null
     }
 
     override fun onDetachedFromActivityForConfigChanges() {

@@ -1,6 +1,5 @@
 package com.yuxiaor.flutter.g_faraday
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -36,6 +35,7 @@ class FaradayActivity : FlutterActivity() {
 
     internal fun createFlutterPage() {
         val route = intent.getStringExtra(ROUTE_KEY)
+        require(route != null) { "route must not be null!" }
         val args = intent.getSerializableExtra(ARGS_KEY)
         Faraday.plugin.onPageCreate(route, args, seqId) {
             seqId = it
@@ -67,26 +67,3 @@ class FaradayActivity : FlutterActivity() {
         seqId?.let { Faraday.plugin.onPageDealloc(it) }
     }
 }
-
-
-/**
- * Native to flutter
- * @param routeName flutter router
- * @param params params from native to flutter
- */
-fun Context.openFlutter(routeName: String, vararg params: Pair<String, Any>) {
-    startActivity(FaradayActivity.build(this, routeName, hashMapOf(*params)))
-}
-
-
-/**
- * Native to flutter
- * @param routeName flutter router
- * @param params params from native to flutter
- *
- * You need to override [Activity.onActivityResult] in your Activity to get the result
- */
-fun Activity.openFlutterForResult(routeName: String, requestCode: Int, vararg params: Pair<String, Any>) {
-    startActivityForResult(FaradayActivity.build(this, routeName, hashMapOf(*params)), requestCode)
-}
-
