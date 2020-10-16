@@ -18,7 +18,7 @@ void _validate([List<Feature> features]) {
 }
 
 /// 将一系列Feature转换为Faraday的路由
-InitialRouteListFactory route(List<Feature> features,
+RouteFactory route(List<Feature> features,
     {FaradayDecorator decorator,
     RouteFactory onUnknownRoute,
     RouteFactory nativeMockFactory,
@@ -30,16 +30,13 @@ InitialRouteListFactory route(List<Feature> features,
   final rcs = features.fold<Map<String, RouteFactory>>(
       {}, (builders, f) => builders..addAll(f.pageBuilders));
 
-  return (initialRoute) => [
-        Faraday.wrapper((settings) {
-          final builder = rcs[settings.name];
-          if (builder == null) return null;
-          return builder(settings);
-        },
-            decorator: decorator,
-            nativeMockFactory: nativeMockFactory,
-            onUnknownRoute: onUnknownRoute,
-            mockInitialSettings:
-                mockInitialSettings)(RouteSettings(name: initialRoute))
-      ];
+  return Faraday.wrapper((settings) {
+    final builder = rcs[settings.name];
+    if (builder == null) return null;
+    return builder(settings);
+  },
+      decorator: decorator,
+      nativeMockFactory: nativeMockFactory,
+      onUnknownRoute: onUnknownRoute,
+      mockInitialSettings: mockInitialSettings);
 }
