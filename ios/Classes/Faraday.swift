@@ -91,6 +91,7 @@ public class Faraday {
     
     /// 当前attach在Engine的viewController 不一定可见
     public var currentFlutterViewController: FaradayFlutterViewController? {
+        assert(engine != nil, "Please init faraday engine first.")
         return engine.viewController as? FaradayFlutterViewController
     }
     
@@ -161,7 +162,7 @@ public class Faraday {
     ///   - automaticallyRegisterPlugins: 是否自动注册插件，如果不自动注册请及时手动注册所有插件
     /// - Returns: 插件Registry 用于注册插件
     @discardableResult
-    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, httpProvider: FaradayHttpProvider? = nil, commonHandler: FaradayHandler? = nil, automaticallyRegisterPlugins: Bool = true, initialRoute: String? = nil) -> FlutterPluginRegistry {
+    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, httpProvider: FaradayHttpProvider? = nil, commonHandler: FaradayHandler? = nil, automaticallyRegisterPlugins: Bool = true) -> FlutterPluginRegistry {
         self.navigatorDelegate = navigatorDelegate
         self.netProvider = httpProvider
         self.commonHandler = commonHandler
@@ -169,7 +170,9 @@ public class Faraday {
         engine = FlutterEngine(name: "io.flutter.faraday", project: nil, allowHeadlessExecution: false)
         
         // 1.1 run
-        engine.run(withEntrypoint: nil, initialRoute: initialRoute)
+        guard engine.run(withEntrypoint: nil) else {
+            fatalError("run FlutterEngine failed")
+        }
         
         if (automaticallyRegisterPlugins) {
             guard let clazz: AnyObject = NSClassFromString("GeneratedPluginRegistrant") else {

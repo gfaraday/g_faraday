@@ -148,6 +148,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   Widget build(BuildContext context) {
     if (_index == -1 || _navigatorStack.isEmpty) {
       return Container(
+        color: CupertinoDynamicColor.resolve(CupertinoColors.white, context),
         child: Center(
           child: CupertinoButton.filled(
             child: Text('Reassemble Application'),

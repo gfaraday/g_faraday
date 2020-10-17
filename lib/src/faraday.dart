@@ -40,33 +40,28 @@ class Faraday {
   /// }
   /// ```
   ///
-  static RouteFactory wrapper(RouteFactory rawFactory,
+  static Route<dynamic> wrapper(RouteFactory rawFactory,
       {FaradayDecorator decorator,
       RouteFactory onUnknownRoute,
       RouteFactory nativeMockFactory,
       RouteSettings mockInitialSettings}) {
-    Route<dynamic> routeFactory(settings) {
-      return FaradayPageRouteBuilder(
-        pageBuilder: (context) {
-          if (kDebugMode) {
-            final page = FaradayNativeBridge(
-              onGenerateRoute: rawFactory,
-              onUnknownRoute: onUnknownRoute ?? _default404Page,
-              mockInitialSettings: mockInitialSettings,
-              mockNativeRouteFactory: nativeMockFactory,
-            );
-            return decorator != null ? decorator(context, page) : page;
-          }
+    return FaradayPageRouteBuilder(
+      pageBuilder: (context) {
+        if (kDebugMode) {
           final page = FaradayNativeBridge(
-              onGenerateRoute: rawFactory,
-              onUnknownRoute: onUnknownRoute ?? _default404Page);
+            onGenerateRoute: rawFactory,
+            onUnknownRoute: onUnknownRoute ?? _default404Page,
+            mockInitialSettings: mockInitialSettings,
+            mockNativeRouteFactory: nativeMockFactory,
+          );
           return decorator != null ? decorator(context, page) : page;
-        },
-        settings: settings,
-      );
-    }
-
-    return routeFactory;
+        }
+        final page = FaradayNativeBridge(
+            onGenerateRoute: rawFactory,
+            onUnknownRoute: onUnknownRoute ?? _default404Page);
+        return decorator != null ? decorator(context, page) : page;
+      },
+    );
   }
 
   /// 发送通知到native

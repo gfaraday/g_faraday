@@ -96,6 +96,10 @@ open class FaradayFlutterViewController: FlutterViewController {
         }
         super.viewDidAppear(animated)
     }
+    
+//    open override func loadDefaultSplashScreenView() -> Bool {
+//        return false
+//    }
         
     deinit {
         if let s = seq {
