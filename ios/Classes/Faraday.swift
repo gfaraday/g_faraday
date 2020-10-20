@@ -31,6 +31,15 @@ public protocol FaradayNavigationDelegate: NSObjectProtocol {
     
     /// flutter widget request pop(dismiss) current FaradayFlutterViewcontroller
     func pop() -> FaradayFlutterViewController?
+    
+    func splashScreenView(_ name: String, arguments: Any?) -> UIView?
+}
+
+public extension FaradayNavigationDelegate {
+    
+    func splashScreenView(_ name: String, arguments: Any?) -> UIView? {
+        return UIActivityIndicatorView(style: .gray)
+    }
 }
 
 public protocol FaradayHttpProvider: NSObjectProtocol {
@@ -187,7 +196,7 @@ public class Faraday {
     }
     
     
-    /// 唯一创建 FaradayFlutterViewController实例的方法， 全局所有flutter容器必须由次方法创建
+    /// 唯一创建 FaradayFlutterViewController实例的方法， 全局所有flutter容器必须由此方法创建
     /// - Parameters:
     ///   - name: flutter 侧路由信息
     ///   - arguments: route arguments
@@ -202,6 +211,10 @@ public class Faraday {
         }
         
         let vc = FaradayFlutterViewController(name, arguments: arguments, engine: faraday.engine, callback: callback)
+        
+        if let view = faraday.navigatorDelegate?.splashScreenView(name, arguments: arguments) {
+            vc.splashScreenView = view
+        }
         
         return vc
     }

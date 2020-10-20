@@ -62,18 +62,26 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
     // mock
     if (kDebugMode) {
-      if (widget.mockInitialSettings != null) {
-        _handler(MethodCall('pageCreate', {
-          'name': _mockInitialSettings.name,
-          'arg': _mockInitialSettings.arguments
-        }));
-      }
+      _mockPageCreate();
+    }
+  }
+
+  void _mockPageCreate() {
+    if (_mockInitialSettings != null) {
+      _handler(MethodCall('pageCreate', {
+        'name': _mockInitialSettings.name,
+        'arg': _mockInitialSettings.arguments
+      }));
     }
   }
 
   @override
   void reassemble() {
-    channel.invokeMethod('reCreateLastPage');
+    if (_mockInitialSettings != null) {
+      _mockPageCreate();
+    } else {
+      channel.invokeMethod('reCreateLastPage');
+    }
     super.reassemble();
   }
 
