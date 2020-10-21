@@ -19,15 +19,22 @@ open class FaradayFlutterViewController: FlutterViewController {
     
     var seq: Int?
     
-    public init(_ name: String, arguments: Any?, engine: FlutterEngine, callback: @escaping (Any?) ->()) {
+    public init(_ name: String, arguments: Any? = nil, callback: ((Any?) -> ())? = nil) {
         self.name = name
         self.arguments = arguments
         self.callback = callback
+        guard let engine = Faraday.sharedInstance.engine else {
+            fatalError("Please Start Faraday Flutter Engine")
+        }
         previousFlutterViewController = engine.viewController as? FaradayFlutterViewController
         engine.viewController = nil
         super.init(engine: engine, nibName: nil, bundle: nil)
         isShowing = true
         createFlutterPage()
+    }
+    
+    required public init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func createFlutterPage() {
@@ -37,21 +44,13 @@ open class FaradayFlutterViewController: FlutterViewController {
         }
     }
     
-    required public init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     weak var interactivePopGestureRecognizerDelegate: UIGestureRecognizerDelegate?
-
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-    }
         
     public func disableHorizontalSwipePopGesture(disable: Bool) {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = !disable
     }
     
-    public func callbackValueToCreator(_ value: Any?) {
+    func callbackValueToCreator(_ value: Any?) {
         guard let cb = callback else {
             fatalError("don't support callback or did callback-ed")
         }
@@ -59,7 +58,12 @@ open class FaradayFlutterViewController: FlutterViewController {
         callback = nil
     }
     
-    public override func viewWillAppear(_ animated: Bool) {
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+    }
+    
+    open override func viewWillAppear(_ animated: Bool) {
         if let s = seq {
             engine?.viewController = self
             isShowing = true
@@ -71,20 +75,20 @@ open class FaradayFlutterViewController: FlutterViewController {
         super.viewWillAppear(animated)
     }
     
-    public override func viewDidAppear(_ animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         interactivePopGestureRecognizerDelegate = navigationController?.interactivePopGestureRecognizer?.delegate
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         super.viewDidAppear(animated)
     }
     
-    public override func viewWillDisappear(_ animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         if let p = previousFlutterViewController, p.isShowing {
             Faraday.refreshViewController(p)
         }
         super.viewWillDisappear(animated)
     }
     
-    public override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         navigationController?.interactivePopGestureRecognizer?.delegate = interactivePopGestureRecognizerDelegate
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         if let s = seq {
@@ -96,11 +100,7 @@ open class FaradayFlutterViewController: FlutterViewController {
         }
         super.viewDidAppear(animated)
     }
-    
-    open override func loadDefaultSplashScreenView() -> Bool {
-        return false
-    }
-        
+            
     deinit {
         if let s = seq {
             Faraday.sendPageState(.dealloc(s)) { r in

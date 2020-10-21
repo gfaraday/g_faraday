@@ -25,21 +25,12 @@ public protocol FaradayNavigationDelegate: NSObjectProtocol {
     func push(_ callbackToken: CallbackToken, name: String, isFlutterRoute: Bool, isPresent: Bool, arguments: Dictionary<String, Any>?)
     
     
-    /// flutter widget require disbale native swipe back func
+    /// flutter widget require disbale native swipeback func
     /// - Parameter disable: disable or not
     func disableHorizontalSwipePopGesture(_ disable: Bool)
     
     /// flutter widget request pop(dismiss) current FaradayFlutterViewcontroller
     func pop() -> FaradayFlutterViewController?
-    
-    func splashScreenView(_ name: String, arguments: Any?) -> UIView?
-}
-
-public extension FaradayNavigationDelegate {
-    
-    func splashScreenView(_ name: String, arguments: Any?) -> UIView? {
-        return UIActivityIndicatorView(style: .gray)
-    }
 }
 
 public protocol FaradayHttpProvider: NSObjectProtocol {
@@ -100,7 +91,6 @@ public class Faraday {
     
     /// 当前attach在Engine的viewController 不一定可见
     public var currentFlutterViewController: FaradayFlutterViewController? {
-        assert(engine != nil, "Please init faraday engine first.")
         return engine.viewController as? FaradayFlutterViewController
     }
     
@@ -169,9 +159,8 @@ public class Faraday {
     /// - Parameters:
     ///   - navigatorDelegate: native 侧路由代理
     ///   - automaticallyRegisterPlugins: 是否自动注册插件，如果不自动注册请及时手动注册所有插件
-    /// - Returns: 插件Registry 用于注册插件
-    @discardableResult
-    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, httpProvider: FaradayHttpProvider? = nil, commonHandler: FaradayHandler? = nil, automaticallyRegisterPlugins: Bool = true) -> FlutterPluginRegistry {
+    ///
+    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, httpProvider: FaradayHttpProvider? = nil, commonHandler: FaradayHandler? = nil, automaticallyRegisterPlugins: Bool = true) {
         self.navigatorDelegate = navigatorDelegate
         self.netProvider = httpProvider
         self.commonHandler = commonHandler
@@ -191,35 +180,8 @@ public class Faraday {
             let registerSelector: Selector = Selector(("registerWithRegistry:"))
             let _ = clazz.perform(registerSelector, with: engine)
         }
-        
-        return engine
     }
-    
-    
-    /// 唯一创建 FaradayFlutterViewController实例的方法， 全局所有flutter容器必须由此方法创建
-    /// - Parameters:
-    ///   - name: flutter 侧路由信息
-    ///   - arguments: route arguments
-    ///   - callback: flutter测页面pop时会调用此block
-    /// - Returns: FaradyViewController实例
-    public static func createFlutterViewController(_ name: String, arguments: Any? = nil, callback:  @escaping (Any?) -> () = { r in debugPrint("result don't be used \(String(describing: r))")}) -> FaradayFlutterViewController {
-        
-        let faraday = Faraday.sharedInstance
-        
-        guard faraday.engine != nil else {
-            fatalError("Please start engine before create any FaradayViewController")
-        }
-        
-        let vc = FaradayFlutterViewController(name, arguments: arguments, engine: faraday.engine, callback: callback)
-        
-        if let view = faraday.navigatorDelegate?.splashScreenView(name, arguments: arguments) {
-            vc.splashScreenView = view
-        }
-        
-        return vc
-    }
-    
-    
+   
     /// 强制刷新某个 `FaradayFlutterViewController` 实例的渲染状态。 一般情况下不需要调用此方法。
     /// 推荐在FaradayFlutterViewController生命周期没有按照预期执行的时候调用
     /// 例如 在iOS13 以上从FaradayFlutterViewController `present`新页面的时候 生命周期调用不符合预期

@@ -27,7 +27,8 @@ extension Faraday {
     
     static func createFlutterViewController(route: FaradayRoute, callback:  @escaping (Any?) -> () = { r in debugPrint("result don't be used (String(describing: r))")}) -> FaradayFlutterViewController {
         let page = route.page
-        return Faraday.createFlutterViewController(page.name, arguments: page.arguments, callback: callback)
+        let vc = FaradayFlutterViewController(page.name, arguments: page.arguments, callback: callback)
+        return vc
     }
 }
 

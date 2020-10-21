@@ -80,7 +80,7 @@ enum FPage: FlutterPage {
 extension FlutterPage {
     
     func flutterViewController(callback: @escaping (Any?) -> Void) -> UIViewController {
-        return Faraday.createFlutterViewController(name, arguments: arguments, callback: callback)
+        return FaradayFlutterViewController(name, arguments: arguments, callback: callback)
     }
 }
 
