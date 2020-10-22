@@ -66,8 +66,8 @@ class _FirstPageState extends State<FirstPage> {
                         result: 'pop popAndPushNamed')),
                 CupertinoButton(
                     child: Text('pop to native'),
-                    onPressed: () => Navigator.of(context)
-                        .nativePopUntil(context, 'pop popUntilNative')),
+                    onPressed: () =>
+                        Navigator.of(context).nativePop('pop popUntilNative')),
                 FaradayNotificationListener('update',
                     child: Text(''), onNotification: (data) => true)
               ]),

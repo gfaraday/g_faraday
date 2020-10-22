@@ -1,7 +1,8 @@
-## 页面间传值
+# 页面间传值
 
-### Flutter侧
-在flutter这边传值比较容易，不管是`flutter->flutter`还是`flutter->native`都和原生写法并无差异例如：
+## Flutter侧
+
+在`flutter`这边传值比较容易，不管是`flutter->flutter`还是`flutter->native`或者`native-flutter`都和原生写法无任何差异例如：
 
 ``` dart
 
@@ -9,32 +10,82 @@
 final result = await Navigator.of(context).push(route);
 
 // 关闭当前flutter页面，并将result传递到上一个页面
-Navigator.of(context).pop(result);
+Navigator.of(context).pop({'id': 1});
 
 ```
 
-### iOS侧
-在ios侧传值有2中情况
+## iOS
 
+一共有两种情况需要处理
 
-
-> `flutter->native` 在native关闭的时候，需要将结果回调至flutter。目前的处理方式
-
+- native 打开一个flutter页面然后等待返回值
 
 ``` swift
-// 在flutter侧请求打开一个native vc时，会一并传递一个 callback token到 delegate
 
-// FaradayNavigationDelegate
-func push(_ callbackToken: CallbackToken, name: String, isFlutterRoute: Bool, isPresent: Bool, arguments: Dictionary<String, Any>?)
+// 初始化一个 FaradayFlutterViewController 的对象
+let vc = FaradayFlutterViewController(page.name, arguments: page.arguments) { result in 
+    /** 
+        这里的 result 即flutter侧关闭页面时的回调
 
-// 被flutter打开的native 页面在关闭时，如果需要回调数据，利用打开时flutter传递过来的 callback token 回调至flutter
-
-// Faraday
-public static func  callback(_ token: CallbackToken?, result: Any?)
+        ``` dart
+        // 关闭并且传值
+        Navigator.of(context).pop({'id': 1});
+        
+        ```
+    */
+    debugPrint(result.toString() ?? '') // print {'id': 1}
+}
 ```
 
+- 从flutter侧打开一个native页面， 然后等待native页面返回值
+
+``` dart
+
+// 从flutter打开native页面只需要调用
+final result = await Navigator.of(context).nativePushNamed('native_page_name');
+
+```
+flutter侧调用`nativePushNamed(:)`以后，native侧的`FaradayNavigationDelegate` `push`方法会被调用，只需要在此方法中 `push`一个对应页面的控制器即可，那么这个控制器如何回调给flutter层呢
+
+``` swift
+
+// flutter打开native，native回调值给flutter一共有3种情况
+
+// 假设被打开的控制器为：vc
+
+// 1.控制器是被 push的
+vc.navigatorController?.fa.popViewController(withResult: result, animation: true)
+
+// 2. 控制器是被 present的
+vc.fa.dismiss(withResult: result, animation: true)
+
+// 3. 控制器是被 `addChild` 等其他方式加载到当前堆栈的
+//    那么需要在 vc 移除堆栈时调用
+vc.fa.callback(result: result)
+
+```
+
+## Android
+
+[TODO]()
 
 
-> `native->flutter` native构造flutter vc的时候需要传递一个接受回调的block。注意如果 flutter vc 被native逻辑主动关闭，如果需要传值，需要手动调用 `FaradayFlutterViewController` 对象的`callbackValueToCreator`方法
-### Android侧
-##### TODO
+## 其他特殊场景路由处理
+
+### 在`flutter`中打开一个新的native页面用来`push` `flutter`路由
+
+``` dart
+
+// 在原生`ios|android`的`FaradayNavigationDelegate`中根据对应的`name`和`arguments`返回`FaradayFlutterViewController`即可
+// flutter侧只需要多修改一个参数即可
+Navigator.of(context).nativePushNamed('native_page_name', isFlutterRoute: true);
+
+```
+
+### 关闭当前`flutter`容器
+
+``` dart
+
+Navigator.of(context).nativePop(result);
+
+```
