@@ -67,8 +67,49 @@ vc.fa.callback(result: result)
 
 ## Android
 
-[TODO]()
+- 从`native`打开一个`flutter`页面，然后等待`flutter`返回值,与打开原生页面无异
+``` kotlin
 
+   //以 startActivityForResult方式打开flutter页面,FaradayActivity为flutter页面容器
+val intent = FaradayActivity.build(context, route,arguments)
+startActivityForResult(intent, requestCode)
+
+...
+   //重写onActivityResult方法获得返回值
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    val value = data?.getStringExtra("key")
+    //TODO ...
+        
+}
+
+```
+- 从`flutter`打开一个`native`页面， 然后等待`native`页面返回值
+
+打开`native`页面,并等待返回值
+```dart
+Navigator.of(context).nativePushNamed('native route').then((result) {
+      print('返回值：$result')
+});
+```
+`native`页面返回值给`flutter`，只能传递flutter支持的数据类型
+```kotlin
+//传递基础数据类型
+setResult(RESULT_OK, Intent().apply {
+    putExtra("result", "data form native")
+}
+//传递HashMap，map泛型须为基础类型
+setResult(RESULT_OK, Intent().apply {
+    putExtra("result", hashMapOf("data" to 123))
+}
+//传递ArrayList,ArrayList中只能是String或Int
+setResult(RESULT_OK, Intent().apply {
+    putStringArrayListExtra("result", ArrayList())
+})
+
+//复杂数据建议转换成json字符串传递
+});
+```
 
 ## 其他特殊场景路由处理
 
