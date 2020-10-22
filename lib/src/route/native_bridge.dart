@@ -77,10 +77,14 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   @override
   void reassemble() {
-    if (_mockInitialSettings != null) {
-      _mockPageCreate();
-    } else {
+    try {
       channel.invokeMethod('reCreateLastPage');
+    } on MissingPluginException catch (_) {
+      if (_mockInitialSettings != null) {
+        _mockPageCreate();
+      } else {
+        debugPrint('reCreateLastPage failed !!');
+      }
     }
     super.reassemble();
   }
@@ -115,14 +119,11 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       }
     }
     //
-    return channel.invokeMethod<T>(
-      'pushNativePage',
-      {
-        'name': name,
-        if (options != null) 'options': options,
-        if (arguments != null) 'arguments': arguments
-      },
-    );
+    return channel.invokeMethod<T>('pushNativePage', {
+      'name': name,
+      if (options != null) 'options': options,
+      if (arguments != null) 'arguments': arguments
+    });
   }
 
   Future<void> pop<T extends Object>(Key key, [T result]) async {
@@ -202,6 +203,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         if (index() == _index) _updateIndex(_preIndex);
         return Future.value(true);
       case 'pageDealloc':
+        if (_index == -1) return Future.value(false);
         final current = _navigatorStack[_index];
         _navigatorStack.removeAt(index());
         _updateIndex(_navigatorStack.indexOf(current));
