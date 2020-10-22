@@ -11,9 +11,10 @@ import io.flutter.embedding.engine.FlutterEngine
  * Date: 2020-09-01
  * Description:
  */
-class FaradayActivity : FlutterActivity() {
+class FaradayActivity : FlutterActivity(), ResultProvider {
 
     private var seqId: Int? = null
+    private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
     companion object {
 
@@ -65,5 +66,15 @@ class FaradayActivity : FlutterActivity() {
     override fun onDestroy() {
         super.onDestroy()
         seqId?.let { Faraday.plugin.onPageDealloc(it) }
+    }
+
+    override fun addResultListener(resultListener: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
+        this.resultListener = resultListener
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        resultListener?.invoke(requestCode, resultCode, data)
+        resultListener = null
     }
 }

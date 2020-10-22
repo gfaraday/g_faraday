@@ -3,6 +3,7 @@ package com.yuxiaor.flutter.g_faraday
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.fragment.app.FragmentActivity
 import com.yuxiaor.flutter.g_faraday.channels.CommonChannel
 import com.yuxiaor.flutter.g_faraday.channels.FaradayNotice
 import com.yuxiaor.flutter.g_faraday.channels.NetChannel
@@ -67,10 +68,9 @@ object Faraday {
      * start native Activity,and request for Activity result
      */
     fun startNativeForResult(intent: Intent, callback: (result: HashMap<String, Any?>?) -> Unit) {
-        val nextRequestCode = nextCode.getAndIncrement()
-        getCurrentActivity()?.startActivityForResult(intent, nextRequestCode)
-        ResultListener { requestCode, resultCode, data ->
-            if (requestCode == nextRequestCode && resultCode == Activity.RESULT_OK) {
+        val code = nextCode.getAndIncrement()
+        startNativeForResult(intent, code) { requestCode, resultCode, data ->
+            if (requestCode == code && resultCode == Activity.RESULT_OK) {
                 val map = hashMapOf<String, Any?>()
                 data?.extras?.keySet()?.forEach {
                     map[it] = data.extras?.get(it)
@@ -80,12 +80,21 @@ object Faraday {
         }
     }
 
-    fun startNativeForResult(intent: Intent, callback: (resultCode: Int, data: Intent?) -> Unit) {
-        val nextRequestCode = nextCode.getAndIncrement()
-        getCurrentActivity()?.startActivityForResult(intent, nextRequestCode)
-        ResultListener { requestCode, resultCode, data ->
-            if (requestCode == nextRequestCode) {
-                callback.invoke(resultCode, data)
+    @JvmStatic
+    fun startNativeForResult(intent: Intent, requestCode: Int, callback: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
+        val activity = getCurrentActivity()
+
+        if (activity is ResultProvider) {
+            activity.addResultListener(callback)
+            activity.startActivityForResult(intent, requestCode)
+            return
+        }
+
+        if (activity is FragmentActivity) {
+            val frag = activity.supportFragmentManager.fragments.first { it.isVisible }
+            if (frag is ResultProvider) {
+                frag.addResultListener(callback)
+                frag.startActivityForResult(intent, requestCode)
             }
         }
     }

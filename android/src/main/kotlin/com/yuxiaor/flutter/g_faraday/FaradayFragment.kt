@@ -1,6 +1,7 @@
 package com.yuxiaor.flutter.g_faraday
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterFragment
 import io.flutter.embedding.android.TransparencyMode
@@ -11,9 +12,10 @@ import io.flutter.embedding.engine.FlutterEngine
  * Date: 2020-09-07
  * Description:
  */
-class FaradayFragment private constructor() : FlutterFragment() {
+class FaradayFragment private constructor() : FlutterFragment(), ResultProvider {
 
     private var seqId: Int? = null
+    private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
     companion object {
 
@@ -51,7 +53,6 @@ class FaradayFragment private constructor() : FlutterFragment() {
         }
     }
 
-
     override fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) {
             seqId?.let { Faraday.plugin.onPageShow(it) }
@@ -81,4 +82,18 @@ class FaradayFragment private constructor() : FlutterFragment() {
         seqId?.let { Faraday.plugin.onPageDealloc(it) }
     }
 
+    override fun shouldAttachEngineToActivity(): Boolean {
+        return true
+    }
+
+    override fun addResultListener(resultListener: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
+        this.resultListener = resultListener
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        resultListener?.invoke(requestCode, resultCode, data)
+        resultListener = null
+    }
 }

@@ -1,6 +1,5 @@
 package com.yuxiaor.flutter.g_faraday
 
-import android.content.Intent
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -10,7 +9,6 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry
 import java.io.Serializable
 
 /** GFaradayPlugin */
@@ -133,19 +131,4 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
         })
     }
-}
-
-
-class ResultListener(private val callback: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) : PluginRegistry.ActivityResultListener {
-
-    init {
-        Faraday.plugin.binding?.addActivityResultListener(this)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        callback.invoke(requestCode, resultCode, data)
-        Faraday.plugin.binding?.removeActivityResultListener(this)
-        return false
-    }
-
 }
