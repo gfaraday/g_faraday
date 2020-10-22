@@ -24,7 +24,7 @@ class MyFlutterNavigator : FaradayNavigator {
      * @param arguments data from flutter page to native page
      * @param callback  onActivityResult callback
      */
-    override fun push(name: String, arguments: Serializable?, callback: (result: HashMap<String, Any?>?) -> Unit) {
+    override fun push(name: String, arguments: Serializable?, options: HashMap<String, *>?, callback: (result: HashMap<String, *>?) -> Unit) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(name)
         intent.putExtra(KEY_ARGS, arguments)
@@ -46,8 +46,7 @@ class MyFlutterNavigator : FaradayNavigator {
     /**
      * 是否允许滑动返回
      */
-    override fun onSwipeBack(enable: Boolean) {
-
+    override fun enableSwipeBack(enable: Boolean) {
     }
 
 }

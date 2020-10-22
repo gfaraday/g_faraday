@@ -13,7 +13,7 @@ interface FaradayNavigator {
     /**
      * open native Activity
      */
-    fun push(name: String, arguments: Serializable?, callback: (result: HashMap<String, Any?>?) -> Unit)
+    fun push(name: String, arguments: Serializable?, options: HashMap<String, *>?, callback: (result: HashMap<String, *>?) -> Unit)
 
     /**
      * finish flutter container Activity
@@ -23,5 +23,5 @@ interface FaradayNavigator {
     /**
      * 是否允许滑动返回
      */
-    fun onSwipeBack(enable: Boolean)
+    fun enableSwipeBack(enable: Boolean)
 }

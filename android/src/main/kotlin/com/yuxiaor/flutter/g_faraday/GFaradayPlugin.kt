@@ -35,7 +35,9 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "pushNativePage" -> {
                 val name = call.argument<String>("name")
                 require(name != null) { "page route name should not be null" }
-                navigator?.push(name, call.argument("arguments")) { result.success(it) }
+                val arguments = call.argument<Serializable>("arguments")
+                val options = call.argument<HashMap<String, *>>("options")
+                navigator?.push(name, arguments, options) { result.success(it) }
             }
             "popContainer" -> {
                 val arg = call.arguments
@@ -48,7 +50,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "disableHorizontalSwipePopGesture" -> {
                 val disable = call.arguments as? Boolean ?: false
                 print(if (!disable) "enable" else "disable" + " Horizontal Swipe PopGesture")
-                navigator?.onSwipeBack(!disable)
+                navigator?.enableSwipeBack(!disable)
                 result.success(null)
             }
             "reCreateLastPage" -> {
