@@ -92,13 +92,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   Future<T> push<T extends Object>(
     String name, {
-    Map<String, dynamic> arguments,
-    bool present = false,
-    bool flutterRoute = false,
+    Object arguments,
+    Map<String, dynamic> options,
   }) async {
     if (kDebugMode) {
       if (_mockNativeRouteFactory != null) {
-        if (flutterRoute) {
+        if (options != null && options['flutterRoute']) {
           final key = _navigatorStack.last.key as LabeledGlobalKey;
           if (key.currentState is FaradayNavigatorState) {
             return (key.currentState as FaradayNavigatorState)
@@ -109,9 +108,8 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
             .push(_mockNativeRouteFactory(RouteSettings(
           name: name,
           arguments: {
-            'present': present,
-            'flutterRoute': false,
-            if (arguments != null) ...arguments
+            if (options != null) 'options': options,
+            if (arguments != null) 'arguments': arguments
           },
         )));
       }
@@ -121,8 +119,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       'pushNativePage',
       {
         'name': name,
-        'present': present,
-        'flutterRoute': flutterRoute,
+        if (options != null) 'options': options,
         if (arguments != null) 'arguments': arguments
       },
     );

@@ -13,12 +13,8 @@ extension NavigatorStateX on NavigatorState {
 
   /// push native flutter container
   Future<T> nativePushNamed<T extends Object>(String routeName,
-      {Object arguments, bool present = false, bool flutterRoute = false}) {
-    return FaradayNativeBridge.of(context).push<T>(
-      routeName,
-      arguments: arguments,
-      flutterRoute: flutterRoute,
-      present: present,
-    );
+      {Object arguments, Map<String, dynamic> options}) {
+    return FaradayNativeBridge.of(context)
+        .push<T>(routeName, arguments: arguments, options: options);
   }
 }

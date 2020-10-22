@@ -77,8 +77,7 @@ vc.fa.callback(result: result)
 ``` dart
 
 // 在原生`ios|android`的`FaradayNavigationDelegate`中根据对应的`name`和`arguments`返回`FaradayFlutterViewController`即可
-// flutter侧只需要多修改一个参数即可
-Navigator.of(context).nativePushNamed('native_page_name', isFlutterRoute: true);
+Navigator.of(context).nativePushNamed('native_page_name', options: {'flutter': true});
 
 ```
 

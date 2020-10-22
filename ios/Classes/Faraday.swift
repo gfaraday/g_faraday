@@ -18,11 +18,9 @@ public protocol FaradayNavigationDelegate: AnyObject {
     /// flutter widget request `open`(push or present) a new native viewcontroller
     /// - Parameters:
     ///   - name: native or flutter route name
-    ///   - isFlutterRoute: indicator this route is flutter route. if this is flutter route you need create a new `FaradayFlutterViewController` instance and `open` it
-    ///   - isPresent: require present or push
     ///   - arguments: route arguments
     /// - Returns: pushed viewController
-    func push(_ name: String, isFlutterRoute: Bool, isPresent: Bool, arguments: Dictionary<String, Any>?) -> UIViewController?
+    func push(_ name: String, arguments: Any?, options: [String: Any]?) -> UIViewController?
     
     /// flutter widget require disbale native swipeback func
     /// - Parameter disable: disable or not
@@ -242,10 +240,7 @@ public class Faraday {
             fatalError("arguments invalid")
         }
         
-        let isFlutterRoute = arg["flutterRoute"] as? Bool ?? false
-        let isPresent = arg["present"] as? Bool ?? false
-        
-        if let vc = navigatorDelegate?.push(name, isFlutterRoute: isFlutterRoute, isPresent: isPresent, arguments: arg["arguments"] as? [String: Any]) {
+        if let vc = navigatorDelegate?.push(name, arguments: arg["arguments"], options: arg["options"] as? [String: Any]) {
             let uuid = UUID()
             vc.fa.callbackToken = uuid
             callbackCache[uuid] = callback
@@ -260,7 +255,7 @@ public class Faraday {
         }
         viewController.callbackValueToCreator(arguments)
         if (viewController.fa.callbackToken != nil) {
-            viewController.fa.callback(reslult: arguments)
+            viewController.fa.callback(result: arguments)
         }
         callback(navigatorDelegate?.pop(viewController) ?? false)
     }
