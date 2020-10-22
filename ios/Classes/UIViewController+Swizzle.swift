@@ -32,7 +32,7 @@ public extension FaradayExtension where ExtendedType: UINavigationController {
     @discardableResult
     func popViewController(withResult result: Any?, animated: Bool) -> UIViewController? {
         let vc = type.popViewController(animated: animated)
-        vc?.fa.callback(reslult: result)
+        vc?.fa.callback(result: result)
         return vc
     }
 }

@@ -2,7 +2,7 @@
 
 ## Flutter侧
 
-在`flutter`这边传值比较容易，不管是`flutter->flutter`还是`flutter->native`或者`native-flutter`都和原生写法无任何差异例如：
+在`flutter`这边传值比较容易，不管是`flutter->flutter`还是`flutter->native`或者`native-flutter`都和`纯flutter`写法无任何差异例如：
 
 ``` dart
 
@@ -77,8 +77,7 @@ vc.fa.callback(result: result)
 ``` dart
 
 // 在原生`ios|android`的`FaradayNavigationDelegate`中根据对应的`name`和`arguments`返回`FaradayFlutterViewController`即可
-// flutter侧只需要多修改一个参数即可
-Navigator.of(context).nativePushNamed('native_page_name', isFlutterRoute: true);
+Navigator.of(context).nativePushNamed('native_page_name', options: {'flutter': true});
 
 ```
 
@@ -87,5 +86,19 @@ Navigator.of(context).nativePushNamed('native_page_name', isFlutterRoute: true);
 ``` dart
 
 Navigator.of(context).nativePop(result);
+
+```
+
+### 需要获取`rootNavigator`
+
+``` dart
+
+// 由于faraday对页面路由进行了封装，如果你有以下逻辑的代码
+
+Navigator.of(context, rootNavigator: true)
+
+// 需要迁移为
+
+FaradayNavigator.of(context) // FaradayNavigator 是 Navigator的子类
 
 ```
