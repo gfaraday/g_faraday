@@ -23,11 +23,8 @@ class FirstViewController: UIViewController {
         if (fa.isModal) {
             present(vc, animated: true, completion: nil)
         } else {
-            navigationController?.fa.popViewController(withResult: ["id": 234], animated: true)
-        }
-        
-        navigationController?.pushViewController(vc, animated: true)
-        
+            navigationController?.pushViewController(vc, animated: true)
+        }     
     }
     
     @IBAction func back(sender: UIButton) {
