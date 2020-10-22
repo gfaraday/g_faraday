@@ -37,8 +37,7 @@ class _EmbeddingPageState extends State<EmbeddingPage> {
                       setState(() {
                         value += 2;
                       });
-                      Navigator.of(context)
-                          .nativePushNamed('tab', options: {'present': true});
+                      Navigator.of(context).nativePushNamed('tab');
                     }),
               )
             ],

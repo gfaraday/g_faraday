@@ -186,7 +186,7 @@ public class Faraday {
         self.netProvider = httpProvider
         self.commonHandler = commonHandler
         
-        engine = FlutterEngine(name: "io.flutter.faraday", project: nil, allowHeadlessExecution: false)
+        engine = FlutterEngine(name: "io.flutter.faraday", project: nil, allowHeadlessExecution: true)
         
         // 1.1 run
         guard engine.run(withEntrypoint: nil) else {

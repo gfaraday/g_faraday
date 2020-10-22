@@ -12,7 +12,7 @@ import Alamofire
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         
-        UINavigationController.fa.automaticallyHandleNavigationBarHidenAndValueCallback()
+        UINavigationController.fa.automaticallyHandleNavigationBarHiden()
         
         Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self, httpProvider: self, commonHandler: self.handle(_:_:_:), automaticallyRegisterPlugins: true)
         
@@ -22,10 +22,12 @@ import Alamofire
 
 extension AppDelegate: FaradayNavigationDelegate {
     
-    func push(_ callbackToken: CallbackToken, name: String, isFlutterRoute: Bool, isPresent: Bool, arguments: Dictionary<String, Any>?) {
-        let vc = isFlutterRoute ? FPage.flutter.flutterViewController(callback: { r in
-            debugPrint(r.debugDescription)
-        }) : FirstViewController()
+    func push(_ name: String, arguments: Any?, options: [String : Any]?) -> UIViewController? {
+        
+        let isFultter = options?["flutterRoute"] as? Bool ?? false
+        let isPresent = options?["present"] as? Bool ?? false
+        
+        let vc = isFultter ? FaradayFlutterViewController(name, arguments: arguments) : FirstViewController()
         
         let topMost = UIViewController.fa.topMost
         if (isPresent) {
@@ -33,22 +35,9 @@ extension AppDelegate: FaradayNavigationDelegate {
         } else {
             topMost?.navigationController?.pushViewController(vc, animated: true)
         }
-    }
-    
-    func disableHorizontalSwipePopGesture(_ disable: Bool) {
-        Faraday.sharedInstance.currentFlutterViewController?.disableHorizontalSwipePopGesture(disable: disable)
-    }
-    
-    func pop() -> FaradayFlutterViewController? {
-        let vc = Faraday.sharedInstance.currentFlutterViewController;
-        if (vc?.presentingViewController != nil) {
-            vc?.dismiss(animated: true, completion: nil)
-            return vc
-        }
         
-        return vc?.navigationController?.popViewController(animated: true) as? FaradayFlutterViewController
+        return vc
     }
-    
 }
 
 public protocol FlutterPage {
