@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.yuxiaor.flutter.g_faraday.Faraday
 import com.yuxiaor.flutter.g_faraday_example.R
-import com.yuxiaor.flutter.g_faraday_example.fragment.FragmentPage
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         //flutter fragment demo
         btn2.text = "flutter fragment"
         btn2.setOnClickListener {
-            startActivity(Intent(this, FragmentPage::class.java))
+            startActivity(Intent(this, FragActivity::class.java))
         }
     }
 

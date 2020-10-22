@@ -28,7 +28,7 @@
                     android:scheme="native" />
             </intent-filter>
         </activity>
-        <activity android:name=".fragment.FragmentPage" />
+        <activity android:name=".activity.FragActivity" />
 
         <meta-data
             android:name="flutterEmbedding"

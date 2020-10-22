@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:g_faraday/g_faraday.dart';
 
 import 'first_page.dart';
 import 'second_page.dart';
@@ -81,7 +82,7 @@ class _HomePageState extends State<HomePage> {
   /// 打开原生页面，并等待返回结果
   ///
   openNativeForResult() async {
-    final result = await Navigator.of(context).pushNamed(
+    final result = await Navigator.of(context).nativePushNamed(
       "native://native_page_first",
       arguments: {'data': 'data form flutter home'},
     );

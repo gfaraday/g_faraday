@@ -1,19 +1,19 @@
-package com.yuxiaor.flutter.g_faraday_example.fragment
+package com.yuxiaor.flutter.g_faraday_example.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.yuxiaor.flutter.g_faraday.FaradayFragment
 import com.yuxiaor.flutter.g_faraday_example.R
+import com.yuxiaor.flutter.g_faraday_example.fragment.TestFragment
 
 /**
  * Author: Edward
  * Date: 2020-09-07
  * Description:
  */
-class FragmentPage : AppCompatActivity() {
+class FragActivity : AppCompatActivity() {
 
     private var tempFragment: Fragment? = null
     private val flutterFrag1 = FaradayFragment.newInstance("home")
@@ -51,12 +51,5 @@ class FragmentPage : AppCompatActivity() {
         tempFragment?.let { transaction.hide(it) }
         tempFragment = fragment
         transaction.commitNow()
-
-        val frags = supportFragmentManager.fragments
-        Log.e("FARADAY", "fragment size: ${frags.size}")
-        frags.forEach {
-            val state = if (it.isHidden) "Hidden" else "Show"
-            Log.e("FARADAY", "${it.tag} is $state")
-        }
     }
 }
