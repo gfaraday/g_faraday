@@ -9,12 +9,11 @@ import Foundation
 
 private struct AssociatedKeys {
     static var CallbackName = "faraday_CallbackName"
-    static var ResultName = "faraday_ResultName";
 }
 
 public extension FaradayExtension where ExtendedType: UIViewController {
     
-    var callbackToken: CallbackToken? {
+    internal var callbackToken: CallbackToken? {
         get {
             return objc_getAssociatedObject(UIViewController.self, &AssociatedKeys.CallbackName) as? CallbackToken
         }
@@ -25,26 +24,30 @@ public extension FaradayExtension where ExtendedType: UIViewController {
         }
     }
     
-    var result: Any? {
-        get {
-            return objc_getAssociatedObject(UIViewController.self, &AssociatedKeys.ResultName)
+    var isModal: Bool {
+        if let index = type.navigationController?.viewControllers.firstIndex(of: type), index > 0 {
+            return false
+        } else if type.presentingViewController != nil {
+            if let parent = type.parent, !(parent is UINavigationController || parent is UITabBarController) {
+               return false
+            }
+            return true
+        } else if let navController = type.navigationController, navController.presentingViewController?.presentedViewController == navController {
+            return true
+        } else if type.tabBarController?.presentingViewController is UITabBarController {
+            return true
         }
-        nonmutating set {
-            objc_setAssociatedObject(UIViewController.self, &AssociatedKeys.ResultName, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        return false
+    }
+       
+    func callback(result: Any?) {
+        if (callbackToken != nil) {
+            Faraday.callback(callbackToken, result: result)
         }
     }
     
-    func present(_ viewControllerToPresent: UIViewController, with callbackToken: CallbackToken,  animated flag: Bool, completion: (() -> Void)? = nil) {
-        viewControllerToPresent.fa.callbackToken = callbackToken
-        type.present(viewControllerToPresent, animated: flag, completion: completion)
+    func dismiss(withResult result: Any?, animated flag: Bool, completion: (() -> Void)? = nil) {
+        type.fa.callback(result: result)
+        type.dismiss(animated: flag, completion: completion)
     }
-}
-
-public extension FaradayExtension where ExtendedType: UINavigationController {
-    
-    func pushViewController(_ viewController: UIViewController, with callbackToken: CallbackToken, animated: Bool) {
-        viewController.fa.callbackToken = callbackToken
-        type.pushViewController(viewController, animated: animated)
-    }
-    
 }

@@ -6,7 +6,7 @@ import 'navigator.dart';
 ///
 extension NavigatorStateX on NavigatorState {
   /// pop native flutter container
-  Future<void> nativePopUntil<T>(BuildContext context, [T result]) {
+  Future<void> nativePop<T extends Object>([T result]) {
     return FaradayNativeBridge.of(context)
         .pop(FaradayNavigator.of(context).widget.arg.key, result);
   }

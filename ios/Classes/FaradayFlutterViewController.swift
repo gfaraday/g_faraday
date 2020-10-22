@@ -50,12 +50,11 @@ open class FaradayFlutterViewController: FlutterViewController {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = !disable
     }
     
-    func callbackValueToCreator(_ value: Any?) {
-        guard let cb = callback else {
-            fatalError("don't support callback or did callback-ed")
+    public func callbackValueToCreator(_ value: Any?) {
+        if let cb = callback {
+          cb(value)
+          callback = nil
         }
-        cb(value)
-        callback = nil
     }
     
     open override func viewDidLoad() {

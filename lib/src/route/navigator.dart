@@ -84,6 +84,19 @@ class FaradayNavigatorState extends NavigatorState {
   }
 
   @override
+  Future<T> pushNamed<T extends Object>(String routeName, {Object arguments}) {
+    try {
+      return super.pushNamed(routeName, arguments: arguments);
+      // ignore: avoid_catching_errors
+    } on FlutterError catch (e) {
+      debugPrint('g_faraday FaradayNavigator $e');
+      debugPrint('fallback to native. name: $routeName, arguments: $arguments');
+      return FaradayNativeBridge.of(context)
+          .push(routeName, arguments: arguments);
+    }
+  }
+
+  @override
   void pop<T extends Object>([T result]) {
     if (observer.onlyOnePage) {
       FaradayNativeBridge.of(context).pop(widget.arg.key, result);

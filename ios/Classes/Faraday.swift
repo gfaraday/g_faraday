@@ -12,25 +12,43 @@ import Flutter
 public typealias CallbackToken = UUID
 
 /// Manager flutter native viewcontroller push&pop、present&dissmis
-public protocol FaradayNavigationDelegate: NSObjectProtocol {
+public protocol FaradayNavigationDelegate: AnyObject {
     
     
     /// flutter widget request `open`(push or present) a new native viewcontroller
     /// - Parameters:
-    ///   - callbackToken: used callback result to flutter widget. ```Faraday.callback(token, result)```
     ///   - name: native or flutter route name
     ///   - isFlutterRoute: indicator this route is flutter route. if this is flutter route you need create a new `FaradayFlutterViewController` instance and `open` it
     ///   - isPresent: require present or push
     ///   - arguments: route arguments
-    func push(_ callbackToken: CallbackToken, name: String, isFlutterRoute: Bool, isPresent: Bool, arguments: Dictionary<String, Any>?)
-    
+    /// - Returns: pushed viewController
+    func push(_ name: String, isFlutterRoute: Bool, isPresent: Bool, arguments: Dictionary<String, Any>?) -> UIViewController?
     
     /// flutter widget require disbale native swipeback func
     /// - Parameter disable: disable or not
     func disableHorizontalSwipePopGesture(_ disable: Bool)
     
     /// flutter widget request pop(dismiss) current FaradayFlutterViewcontroller
-    func pop() -> FaradayFlutterViewController?
+    /// - Parameters:
+    ///   - viewController: current viewcontroller attached on engine
+    /// - Returns: pop succeed or not
+    func pop(_ viewController: FaradayFlutterViewController) -> Bool
+}
+
+public extension FaradayNavigationDelegate {
+    
+    func disableHorizontalSwipePopGesture(_ disable: Bool) {
+        Faraday.sharedInstance.currentFlutterViewController?.disableHorizontalSwipePopGesture(disable: disable)
+    }
+        
+    func pop(_ viewController: FaradayFlutterViewController) -> Bool {
+        if (viewController.fa.isModal) {
+            viewController.dismiss(animated: true, completion: nil)
+        } else {
+            viewController.navigationController?.popViewController(animated: true)
+        }
+        return true
+    }
 }
 
 public protocol FaradayHttpProvider: NSObjectProtocol {
@@ -65,7 +83,12 @@ enum PageState {
 }
 
 public typealias FaradayHandler = (_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Void
-/// Faraday 核心类，负责管理Flutter Engine 已经处理flutter侧的方法调用
+
+/**
+ 
+    核心类，负责管理`Flutter Engine、ViewController`以及其他一些辅助功能主要包含`net、common`
+
+*/
 public class Faraday {
     
     public static let sharedInstance = Faraday()
@@ -194,12 +217,7 @@ public class Faraday {
         viewController.viewDidAppear(false)
     }
     
-    
-    /// native侧页面回调数据给flutter widget
-    /// - Parameters:
-    ///   - token: flutter widget 请求打开native页面时，会携带callback token给native侧
-    ///   - result: 回调信息
-    public static func callback(_ token: CallbackToken?, result: Any?) {
+    static func callback(_ token: CallbackToken?, result: Any?) {
         if let t = token {
             if let cb = Faraday.sharedInstance.callbackCache.removeValue(forKey: t) {
                 cb(result)
@@ -220,23 +238,31 @@ public class Faraday {
     }  
     
     func push(native arguments: Any?, callback: @escaping FlutterResult) {
-        let uuid = UUID()
-        callbackCache[uuid] = callback
-        
         guard let arg = arguments as? Dictionary<String, Any>, let name = arg["name"] as? String else {
             fatalError("arguments invalid")
         }
         
-        let isFlutterRoute = arg["isFlutterRoute"] as? Bool ?? false
+        let isFlutterRoute = arg["flutterRoute"] as? Bool ?? false
         let isPresent = arg["present"] as? Bool ?? false
         
-        navigatorDelegate?.push(uuid, name: name, isFlutterRoute: isFlutterRoute, isPresent: isPresent, arguments: arg["arguments"] as? [String: Any])
+        if let vc = navigatorDelegate?.push(name, isFlutterRoute: isFlutterRoute, isPresent: isPresent, arguments: arg["arguments"] as? [String: Any]) {
+            let uuid = UUID()
+            vc.fa.callbackToken = uuid
+            callbackCache[uuid] = callback
+        }
     }
     
     func pop(flutterContainer arguments: Any?, callback: FlutterResult) {
-        let vc = navigatorDelegate?.pop()
-        vc?.callbackValueToCreator(arguments)
-        callback(vc != nil)
+        guard let viewController = currentFlutterViewController else {
+            debugPrint("[Faraday] Error current flutter viewController not found. can't pop");
+            callback(false)
+            return
+        }
+        viewController.callbackValueToCreator(arguments)
+        if (viewController.fa.callbackToken != nil) {
+            viewController.fa.callback(reslult: arguments)
+        }
+        callback(navigatorDelegate?.pop(viewController) ?? false)
     }
     
     func disableHorizontalSwipePopGesture(arguments: Any?, callback: FlutterResult) {

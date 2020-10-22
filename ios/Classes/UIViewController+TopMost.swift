@@ -7,7 +7,7 @@
 
 import UIKit
 
-public extension FaradayExtension where ExtendedType: UIViewController{
+public extension FaradayExtension where ExtendedType: UIViewController {
     
     private static var sharedApplication: UIApplication? {
         return UIApplication.shared
