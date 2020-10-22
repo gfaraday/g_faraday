@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.yuxiaor.flutter.g_faraday.openFlutter
-import com.yuxiaor.flutter.g_faraday.openFlutterForResult
+import com.yuxiaor.flutter.g_faraday.Faraday
 import com.yuxiaor.flutter.g_faraday_example.R
 import com.yuxiaor.flutter.g_faraday_example.fragment.FragmentPage
 
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         //push to flutter
         btn1.setOnClickListener {
-            openFlutterForResult("home", 1, "data" to "data form native MainActivity")
+            Faraday.openFlutterForResult(this, "home", 1, hashMapOf("data" to "data form native MainActivity"))
         }
 
         //flutter fragment demo
@@ -39,7 +38,6 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         val map = hashMapOf<String, Any?>()
         data?.extras?.keySet()?.forEach {
             map[it] = data.extras?.get(it)
