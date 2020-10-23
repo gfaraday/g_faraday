@@ -11,6 +11,10 @@ private struct AssociatedKeys {
     static var CallbackName = "faraday_CallbackName"
 }
 
+
+//
+typealias CallbackToken = UUID
+
 public extension FaradayExtension where ExtendedType: UIViewController {
     
     internal var callbackToken: CallbackToken? {

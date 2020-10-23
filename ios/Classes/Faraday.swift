@@ -8,9 +8,6 @@
 import Foundation
 import Flutter
 
-//
-public typealias CallbackToken = UUID
-
 /// Manager flutter native viewcontroller push&pop、present&dissmis
 public protocol FaradayNavigationDelegate: AnyObject {
     
@@ -49,35 +46,9 @@ public extension FaradayNavigationDelegate {
     }
 }
 
-public protocol FaradayHttpProvider: NSObjectProtocol {
+public protocol FaradayHttpProvider: AnyObject {
     
     func request(method: String, url: String, parameters: [String: Any]?, headers: [String: String]?, completion: @escaping (_ result: Any?) -> Void) -> Void
-}
-
-public protocol FaradayMethodHandler: NSObjectProtocol {
-
-    func handle(_ method: String, arguments: Any?, completion: (Any?) -> Void);
-}
-
-enum PageState {
-    
-    case create(String, Any?, Int?) // name, arguments, seq
-    case show(Int) // seq
-    case hiden(Int) // seq
-    case dealloc(Int) //seq
-    
-    var info: (String, Any?) {
-        switch self {
-        case .create(let name, let arguments, let seq):
-            return ("pageCreate", ["name": name, "args": arguments, "seq": seq ?? -1])
-        case .show(let seq):
-            return ("pageShow", seq)
-        case .hiden(let seq):
-            return ("pageHidden", seq)
-        case .dealloc(let seq):
-            return ("pageDealloc", seq)
-        }
-    }
 }
 
 public typealias FaradayHandler = (_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Void
@@ -104,7 +75,7 @@ public class Faraday {
     private var netChannel: FlutterMethodChannel?
     private var commonChannel: FlutterMethodChannel?
     
-    private var notificationChannel: FlutterMethodChannel?
+    fileprivate var notificationChannel: FlutterMethodChannel?
     
     private(set) var engine: FlutterEngine!
     
@@ -167,15 +138,6 @@ public class Faraday {
         }
     }
     
-    /// 发送通知到 Flutter
-    /// Flutter 可以通过 NotificationListener<NotificationListener> 来监听
-    func postNotification(name: String, _ arguments: Any? = nil) {
-        guard notificationChannel != nil else {
-            fatalError("start flutter engine before push notification.")
-        }
-        notificationChannel?.invokeMethod(name, arguments: arguments)
-    }
-    
     /// 入口方法，用于启动Flutter Engine、 注册插件
     /// - Parameters:
     ///   - navigatorDelegate: native 侧路由代理
@@ -222,19 +184,7 @@ public class Faraday {
             }
         }
     }
-    
-    static func sendPageState(_ state: PageState, result: @escaping (Any?) -> Void) {
-        let faraday = Faraday.sharedInstance
-        let info = state.info;
-        faraday.channel?.invokeMethod(info.0, arguments: info.1, result: { r in
-            if (r is FlutterError) {
-                fatalError((r as! FlutterError).message ?? "unkonwn error")
-            } else {
-                result(r)
-            }
-        })
-    }  
-    
+  
     func push(native arguments: Any?, callback: @escaping FlutterResult) {
         guard let arg = arguments as? Dictionary<String, Any>, let name = arg["name"] as? String else {
             fatalError("arguments invalid")
@@ -265,4 +215,54 @@ public class Faraday {
         callback(true)
     }
     
+}
+
+// 处理 page 生命周期相关内容
+extension Faraday {
+
+    enum PageState {
+        
+        case create(String, Any?, Int?) // name, arguments, seq
+        case show(Int) // seq
+        case hiden(Int) // seq
+        case dealloc(Int) //seq
+        
+        var info: (String, Any?) {
+            switch self {
+            case .create(let name, let arguments, let seq):
+                return ("pageCreate", ["name": name, "args": arguments, "seq": seq ?? -1])
+            case .show(let seq):
+                return ("pageShow", seq)
+            case .hiden(let seq):
+                return ("pageHidden", seq)
+            case .dealloc(let seq):
+                return ("pageDealloc", seq)
+            }
+        }
+    }
+    
+    static func sendPageState(_ state: Faraday.PageState, result: @escaping (Any?) -> Void) {
+        let faraday = Faraday.sharedInstance
+        let info = state.info;
+        faraday.channel?.invokeMethod(info.0, arguments: info.1, result: { r in
+            if (r is FlutterError) {
+                fatalError((r as! FlutterError).message ?? "unkonwn error")
+            } else {
+                result(r)
+            }
+        })
+    }
+}
+
+// 发送通知
+public extension Faraday {
+    
+    /// 发送通知到 Flutter
+    /// Flutter 可以通过 NotificationListener<NotificationListener> 来监听
+    func postNotification(name: String, _ arguments: Any? = nil) {
+        guard notificationChannel != nil else {
+            fatalError("start flutter engine before push notification.")
+        }
+        notificationChannel?.invokeMethod(name, arguments: arguments)
+    }
 }
