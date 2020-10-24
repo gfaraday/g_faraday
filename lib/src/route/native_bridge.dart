@@ -183,18 +183,17 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         final seq = call.arguments['seq'] as int;
         // crate的时候携带 seq，需要判断此seq 是否已经存在于堆栈中
         if (seq != null && seq != -1) {
-          // 堆栈中存在此页面
+          // 堆栈中是否存在此页面
           if (seq > _seq) _seq = seq;
           if (_navigatorStack.indexWhere((n) => n.arg.seq == seq) != -1) {
             _updateIndex(seq);
             return Future.value(seq);
           }
-        }
-        if (kDebugMode) {
-          if (seq != null && seq != -1) {
+          if (kDebugMode) {
             debugPrint('recreate page: $name seq: $seq');
           }
         }
+
         final arg = FaradayArguments(call.arguments['args'], name, _seq++);
         _navigatorStack.add(_appRoot(arg));
         _updateIndex(_navigatorStack.length - 1);
