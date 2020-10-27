@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  g_json: ^3.0.0
+  g_json: ^3.0.2
 
 dev_dependencies:
   flutter_test:

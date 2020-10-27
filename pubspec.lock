@@ -73,7 +73,7 @@ packages:
       name: g_json
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.0.0"
+    version: "3.0.2"
   matcher:
     dependency: transitive
     description:
