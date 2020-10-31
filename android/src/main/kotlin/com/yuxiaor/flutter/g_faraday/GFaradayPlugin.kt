@@ -2,6 +2,7 @@ package com.yuxiaor.flutter.g_faraday
 
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
+import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -23,7 +24,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private var navigator: FaradayNavigator? = null
     internal var binding: ActivityPluginBinding? = null
 
-    fun setup(navigator: FaradayNavigator) {
+    private fun setup(navigator: FaradayNavigator) {
         this.navigator = navigator
     }
 
@@ -104,6 +105,10 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        setup(Faraday.navigator)
+        if (!Faraday.engine.dartExecutor.isExecutingDart) {
+            Faraday.engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+        }
     }
 
 

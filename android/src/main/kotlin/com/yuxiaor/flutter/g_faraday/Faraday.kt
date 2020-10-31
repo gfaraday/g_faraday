@@ -23,21 +23,33 @@ object Faraday {
     private val nextCode = AtomicInteger()
 
     @JvmStatic
-    internal lateinit var engine: FlutterEngine
+    lateinit var engine: FlutterEngine
         private set
 
     internal val plugin: GFaradayPlugin by lazy {
         engine.plugins.get(GFaradayPlugin::class.java) as GFaradayPlugin
     }
 
+    internal lateinit var navigator: FaradayNavigator
     /**
      *  init engine
+     *
+     *  @param context Application Context
+     *  @param navigator handle native route
+     *
+     *  @return true if plugins registered otherwise return false.
+     *
+     *  @sample
+     *  if (!Faraday.initEngine(this, MyFlutterNavigator())) {
+     *       GeneratedPluginRegister.registerGeneratedPlugins(Faraday.engine)
+     *   }
+     *
      */
     @JvmStatic
-    fun initEngine(context: Context, navigator: FaradayNavigator) {
+    fun initEngine(context: Context, navigator: FaradayNavigator): Boolean {
         engine = FlutterEngine(context)
-        plugin.setup(navigator)
-        engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+        this.navigator = navigator
+        return plugin != null;
     }
 
     /**

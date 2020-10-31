@@ -2,6 +2,7 @@ package com.yuxiaor.flutter.g_faraday_example
 
 import android.app.Application
 import com.yuxiaor.flutter.g_faraday.Faraday
+import io.flutter.embedding.engine.plugins.util.GeneratedPluginRegister
 
 /**
  * Author: Edward
@@ -12,6 +13,8 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Faraday.initEngine(this, MyFlutterNavigator())
+        if (!Faraday.initEngine(this, MyFlutterNavigator())) {
+            GeneratedPluginRegister.registerGeneratedPlugins(Faraday.engine)
+        }
     }
 }
