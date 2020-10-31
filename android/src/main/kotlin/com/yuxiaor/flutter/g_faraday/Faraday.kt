@@ -9,7 +9,6 @@ import com.yuxiaor.flutter.g_faraday.channels.FaradayNotice
 import com.yuxiaor.flutter.g_faraday.channels.NetChannel
 import com.yuxiaor.flutter.g_faraday.channels.NetHandler
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.plugin.common.MethodChannel
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -26,11 +25,12 @@ object Faraday {
     lateinit var engine: FlutterEngine
         private set
 
-    internal val plugin: GFaradayPlugin by lazy {
-        engine.plugins.get(GFaradayPlugin::class.java) as GFaradayPlugin
+    internal val plugin: GFaradayPlugin? by lazy {
+        engine.plugins.get(GFaradayPlugin::class.java) as? GFaradayPlugin
     }
 
     internal lateinit var navigator: FaradayNavigator
+
     /**
      *  init engine
      *
@@ -49,7 +49,7 @@ object Faraday {
     fun initEngine(context: Context, navigator: FaradayNavigator): Boolean {
         engine = FlutterEngine(context)
         this.navigator = navigator
-        return plugin != null;
+        return plugin != null
     }
 
     /**
@@ -73,7 +73,7 @@ object Faraday {
      */
     @JvmStatic
     fun getCurrentActivity(): Activity? {
-        return plugin.binding?.activity
+        return plugin?.binding?.activity
     }
 
     /**
