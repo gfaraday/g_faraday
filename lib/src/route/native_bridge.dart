@@ -15,16 +15,9 @@ class FaradayNativeBridge extends StatefulWidget {
   final RouteFactory onGenerateRoute;
   final RouteFactory onUnknownRoute;
 
-  final RouteFactory mockNativeRouteFactory;
-  final RouteSettings mockInitialSettings;
-
-  FaradayNativeBridge({
-    Key key,
-    @required this.onGenerateRoute,
-    this.onUnknownRoute,
-    this.mockNativeRouteFactory,
-    this.mockInitialSettings,
-  }) : super(key: key);
+  FaradayNativeBridge(
+      {Key key, @required this.onGenerateRoute, this.onUnknownRoute})
+      : super(key: key);
 
   static FaradayNativeBridgeState of(BuildContext context) {
     FaradayNativeBridgeState faraday;
@@ -46,9 +39,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   int _preIndex = 0;
   int _seq = 0;
 
-  RouteSettings get _mockInitialSettings => widget.mockInitialSettings;
-  RouteFactory get _mockNativeRouteFactory => widget.mockNativeRouteFactory;
-
   @override
   void initState() {
     super.initState();
@@ -59,20 +49,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           .dispatch(context);
       return null;
     });
-
-    // mock
-    if (kDebugMode) {
-      _mockPageCreate();
-    }
-  }
-
-  void _mockPageCreate() {
-    if (_mockInitialSettings != null) {
-      _handler(MethodCall('pageCreate', {
-        'name': _mockInitialSettings.name,
-        'arg': _mockInitialSettings.arguments
-      }));
-    }
   }
 
   @override
@@ -80,11 +56,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     try {
       channel.invokeMethod('reCreateLastPage');
     } on MissingPluginException catch (_) {
-      if (_mockInitialSettings != null) {
-        _mockPageCreate();
-      } else {
-        debugPrint('reCreateLastPage failed !!');
-      }
+      debugPrint('reCreateLastPage failed !!');
     }
     super.reassemble();
   }
@@ -99,25 +71,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     Object arguments,
     Map<String, dynamic> options,
   }) async {
-    if (kDebugMode) {
-      if (_mockNativeRouteFactory != null) {
-        if (options != null && options['flutterRoute']) {
-          final key = _navigatorStack.last.key as LabeledGlobalKey;
-          if (key.currentState is FaradayNavigatorState) {
-            return (key.currentState as FaradayNavigatorState)
-                .pushNamed(name, arguments: arguments);
-          }
-        }
-        return Navigator.of(context, rootNavigator: true)
-            .push(_mockNativeRouteFactory(RouteSettings(
-          name: name,
-          arguments: {
-            if (options != null) 'options': options,
-            if (arguments != null) 'arguments': arguments
-          },
-        )));
-      }
-    }
     //
     return channel.invokeMethod<T>('pushNativePage', {
       'name': name,
@@ -127,22 +80,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   Future<void> pop<T extends Object>(Key key, [T result]) async {
-    if (kDebugMode) {
-      if (_mockNativeRouteFactory != null) {
-        return Navigator.of(context, rootNavigator: true).maybePop(result);
-      }
-    }
     assert(_navigatorStack.isNotEmpty);
     assert(_navigatorStack[_index].arg.key == key);
     await channel.invokeMethod('popContainer', result);
   }
 
   Future<void> disableHorizontalSwipePopGesture({bool disable}) async {
-    if (kDebugMode) {
-      if (_mockNativeRouteFactory != null) {
-        return;
-      }
-    }
     await channel.invokeMethod('disableHorizontalSwipePopGesture', disable);
   }
 
@@ -152,16 +95,22 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   @override
   Widget build(BuildContext context) {
-    if (_index == -1 || _navigatorStack.isEmpty) {
-      return Container(
-        color: CupertinoDynamicColor.resolve(CupertinoColors.white, context),
-        child: Center(
-          child: CupertinoButton.filled(
-            child: Text('Reassemble Application'),
-            onPressed: WidgetsBinding.instance.reassembleApplication,
+    if (_index == null || _navigatorStack.isEmpty) {
+      if (kDebugMode) {
+        return Container(
+          color: CupertinoDynamicColor.resolve(CupertinoColors.white, context),
+          child: Center(
+            child: CupertinoButton.filled(
+              child: Text('Reassemble Application'),
+              onPressed: WidgetsBinding.instance.reassembleApplication,
+            ),
           ),
-        ),
-      );
+        );
+      }
+      return Center(
+          child: CupertinoActivityIndicator(
+        animating: true,
+      ));
     }
 
     return IndexedStack(
@@ -171,43 +120,45 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   Future<dynamic> _handler(MethodCall call) {
-    int index() {
-      var seq = call.arguments as int;
-      final index = _navigatorStack.indexWhere((n) => n.arg.seq == seq);
-      return index;
-    }
-
     switch (call.method) {
       case 'pageCreate':
         String name = call.arguments['name'];
         final seq = call.arguments['seq'] as int;
-        // crate的时候携带 seq，需要判断此seq 是否已经存在于堆栈中
-        if (seq != null && seq != -1) {
-          // 堆栈中是否存在此页面
-          if (seq > _seq) _seq = seq;
-          if (_navigatorStack.indexWhere((n) => n.arg.seq == seq) != -1) {
-            _updateIndex(seq);
-            return Future.value(seq);
-          }
-          if (kDebugMode) {
+        // seq 不等于null 证明整个app 部分状态丢失，此时需要重建页面
+        if (seq != null) {
+          if (seq == -1) {
             debugPrint('recreate page: $name seq: $seq');
+          } else {
+            // seq 不为空 native可能重复调用了oncreate 方法
+            final index = _findIndexBy(seq: seq);
+            if (index != null) {
+              _updateIndex(index);
+              return Future.value(true);
+            }
+            _seq = seq;
           }
         }
-
         final arg = FaradayArguments(call.arguments['args'], name, _seq++);
         _navigatorStack.add(_appRoot(arg));
         _updateIndex(_navigatorStack.length - 1);
         return Future.value(arg.seq);
       case 'pageShow':
-        _updateIndex(index());
-        return Future.value(true);
+        final index = _findIndexBy(seq: call.arguments);
+        _updateIndex(index);
+        return Future.value(index != null);
       case 'pageHidden':
-        if (index() == _index) _updateIndex(_preIndex);
-        return Future.value(true);
+        final index = _findIndexBy(seq: call.arguments);
+        if (index == _index) {
+          _updateIndex(_preIndex);
+          return Future.value(true);
+        }
+        return Future.value(false);
       case 'pageDealloc':
-        if (_index == -1) return Future.value(false);
+        assert(_index != null, _index < _navigatorStack.length);
         final current = _navigatorStack[_index];
-        _navigatorStack.removeAt(index());
+        final index = _findIndexBy(seq: call.arguments);
+        assert(index != null, 'page not found seq: ${call.arguments}');
+        _navigatorStack.removeAt(index);
         _updateIndex(_navigatorStack.indexOf(current));
         return Future.value(true);
       default:
@@ -215,7 +166,16 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     }
   }
 
+  // 如果找不到返回null，不会返回-1
+  int _findIndexBy({@required int seq}) {
+    assert(seq != null);
+    final index = _navigatorStack.indexWhere((n) => n.arg.seq == seq);
+    return index != -1 ? index : null;
+  }
+
   void _updateIndex(int index) {
+    if (index == null) return;
+    if (index == _index) return;
     setState(() {
       _preIndex = _index;
       _index = index;

@@ -19,10 +19,7 @@ void _validate([List<Feature> features]) {
 
 /// 将一系列Feature转换为Faraday的路由
 Route<dynamic> route(List<Feature> features,
-    {FaradayDecorator decorator,
-    RouteFactory onUnknownRoute,
-    RouteFactory nativeMockFactory,
-    RouteSettings mockInitialSettings}) {
+    {FaradayDecorator decorator, RouteFactory onUnknownRoute}) {
   if (features == null || features.isEmpty) return null;
 
   if (kDebugMode) _validate(features);
@@ -34,9 +31,5 @@ Route<dynamic> route(List<Feature> features,
     final builder = rcs[settings.name];
     if (builder == null) return null;
     return builder(settings);
-  },
-      decorator: decorator,
-      nativeMockFactory: nativeMockFactory,
-      onUnknownRoute: onUnknownRoute,
-      mockInitialSettings: mockInitialSettings);
+  }, decorator: decorator, onUnknownRoute: onUnknownRoute);
 }

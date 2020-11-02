@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 
 import 'channel.dart';
 import 'route/native_bridge.dart';
@@ -41,21 +40,9 @@ class Faraday {
   /// ```
   ///
   static Route<dynamic> wrapper(RouteFactory rawFactory,
-      {FaradayDecorator decorator,
-      RouteFactory onUnknownRoute,
-      RouteFactory nativeMockFactory,
-      RouteSettings mockInitialSettings}) {
+      {FaradayDecorator decorator, RouteFactory onUnknownRoute}) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {
-        if (kDebugMode) {
-          final page = FaradayNativeBridge(
-            onGenerateRoute: rawFactory,
-            onUnknownRoute: onUnknownRoute ?? _default404Page,
-            mockInitialSettings: mockInitialSettings,
-            mockNativeRouteFactory: nativeMockFactory,
-          );
-          return decorator != null ? decorator(context, page) : page;
-        }
         final page = FaradayNativeBridge(
             onGenerateRoute: rawFactory,
             onUnknownRoute: onUnknownRoute ?? _default404Page);

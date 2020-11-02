@@ -47,7 +47,13 @@ open class FaradayFlutterViewController: FlutterViewController {
     weak var interactivePopGestureRecognizerDelegate: UIGestureRecognizerDelegate?
         
     public func disableHorizontalSwipePopGesture(disable: Bool) {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = !disable
+        // 这里不能无脑设置为 !disable 具体原因：
+        //
+        // ref: https://stackoverflow.com/questions/36503224/ios-app-freezes-on-pushviewcontroller
+        //
+        if ((navigationController?.viewControllers.count ?? 0) > 1) {
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = !disable
+        }
     }
     
     public func callbackValueToCreator(_ value: Any?) {
@@ -75,8 +81,11 @@ open class FaradayFlutterViewController: FlutterViewController {
     }
     
     open override func viewDidAppear(_ animated: Bool) {
-        interactivePopGestureRecognizerDelegate = navigationController?.interactivePopGestureRecognizer?.delegate
-        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        if ((navigationController?.viewControllers.count ?? 0) > 1) {
+            interactivePopGestureRecognizerDelegate = navigationController?.interactivePopGestureRecognizer?.delegate
+            navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        }
+        
         super.viewDidAppear(animated)
     }
     
@@ -88,8 +97,14 @@ open class FaradayFlutterViewController: FlutterViewController {
     }
     
     open override func viewDidDisappear(_ animated: Bool) {
-        navigationController?.interactivePopGestureRecognizer?.delegate = interactivePopGestureRecognizerDelegate
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        //
+        // ref: https://stackoverflow.com/questions/36503224/ios-app-freezes-on-pushviewcontroller
+        //
+        if (interactivePopGestureRecognizerDelegate != nil) {
+            navigationController?.interactivePopGestureRecognizer?.delegate = interactivePopGestureRecognizerDelegate
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        }
+        
         if let s = seq {
             isShowing = false
             Faraday.sendPageState(.hiden(s)) { r in
