@@ -74,8 +74,6 @@ object Faraday {
      */
     @JvmStatic
     fun getCurrentActivity(): Activity? {
-
-
         return plugin?.binding?.activity
     }
 
