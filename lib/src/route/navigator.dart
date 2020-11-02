@@ -101,7 +101,7 @@ class FaradayNavigatorState extends NavigatorState {
     if (observer.onlyOnePage) {
       FaradayNativeBridge.of(context).pop(widget.arg.key, result);
     } else {
-      super.pop();
+      super.pop(result);
     }
   }
 }
