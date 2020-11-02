@@ -11,6 +11,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import java.io.Serializable
+import java.lang.ref.WeakReference
 
 /** GFaradayPlugin */
 class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
@@ -23,10 +24,6 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private var navigator: FaradayNavigator? = null
     internal var binding: ActivityPluginBinding? = null
-
-    private fun setup(navigator: FaradayNavigator) {
-        this.navigator = navigator
-    }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
@@ -105,7 +102,8 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        setup(Faraday.navigator)
+        this.navigator = Faraday.navigator
+        Faraday.pluginRef = WeakReference(this)
         if (!Faraday.engine.dartExecutor.isExecutingDart) {
             Faraday.engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
         }
