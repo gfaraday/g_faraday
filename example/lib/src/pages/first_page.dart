@@ -68,7 +68,7 @@ class _FirstPageState extends State<FirstPage> {
                     child: Text('pop to native'),
                     onPressed: () =>
                         Navigator.of(context).nativePop('pop popUntilNative')),
-                FaradayNotificationListener('update',
+                FaradayNotificationListener(['update'],
                     child: Text(''), onNotification: (data) => true)
               ]),
             ),
