@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import '../channel.dart';
-import '../utils/notification.dart';
 import 'arg.dart';
 import 'navigator.dart';
 
@@ -43,12 +44,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   void initState() {
     super.initState();
     channel.setMethodCallHandler(_handler);
-
-    notification.setMethodCallHandler((call) {
-      FaradayNotification(call.method, call.arguments['arguments'])
-          .dispatch(context);
-      return null;
-    });
   }
 
   @override
@@ -62,7 +57,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   void dispose() {
-    notification.setMethodCallHandler(null);
+    _navigatorStack.clear();
     super.dispose();
   }
 

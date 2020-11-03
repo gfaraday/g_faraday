@@ -1,7 +1,9 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
+
+import '../../g_faraday.dart';
 
 /// FaradayNotification dispatched by native channel
-class FaradayNotification extends Notification {
+class FaradayNotification {
   ///
   final String name;
 
@@ -12,4 +14,12 @@ class FaradayNotification extends Notification {
   FaradayNotification(this.name, this.arguments)
       : assert(name != null && name.isNotEmpty),
         super();
+
+  @override
+  String toString() {
+    if (kDebugMode) {
+      return 'notification: $name: ${JSON(arguments).prettyString()}';
+    }
+    return super.toString();
+  }
 }
