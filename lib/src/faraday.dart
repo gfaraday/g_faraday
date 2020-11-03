@@ -9,7 +9,7 @@ typedef FaradayDecorator = Widget Function(BuildContext context, Widget child);
 
 /// 核心入口类
 class Faraday {
-  ///
+  /// 备用 后续会创建faraday注解
   const Faraday();
 
   ///

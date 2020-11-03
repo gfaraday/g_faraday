@@ -13,7 +13,7 @@
 
 ## 为什么会有这个库
 Flutter凭借着优秀的跨平台能力迅速壮大了起来，但flutter对[Add Flutter to existing app](https://flutter.dev/docs/development/add-to-app)的支持并没有纯flutter项目那么友好。
-所以有了这个库，我们尝试来解决这个问题。balabalabalab
+所以有了这个库，我们尝试来解决这个问题
 
 ## 混合开发会遇到哪些问题？
 
