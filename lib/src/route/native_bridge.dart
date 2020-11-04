@@ -40,6 +40,8 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   int _preIndex = 0;
   int _seq = 0;
 
+  Timer _reassembleTimer;
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +61,9 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   void dispose() {
     _navigatorStack.clear();
     super.dispose();
+    if (kDebugMode) {
+      _reassembleTimer?.cancel();
+    }
   }
 
   Future<T> push<T extends Object>(
@@ -92,13 +97,14 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   Widget build(BuildContext context) {
     if (_index == null || _navigatorStack.isEmpty) {
       if (kDebugMode) {
+        if (_reassembleTimer == null) {
+          _reassembleTimer = Timer(Duration(milliseconds: 1),
+              WidgetsBinding.instance.reassembleApplication);
+        }
         return Container(
           color: CupertinoDynamicColor.resolve(CupertinoColors.white, context),
           child: Center(
-            child: CupertinoButton.filled(
-              child: Text('Reassemble Application'),
-              onPressed: WidgetsBinding.instance.reassembleApplication,
-            ),
+            child: Text('Reassemble Application ...'),
           ),
         );
       }
@@ -108,6 +114,9 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       ));
     }
 
+    if (kDebugMode) {
+      _reassembleTimer?.cancel();
+    }
     return IndexedStack(
       children: _navigatorStack,
       index: _index,
