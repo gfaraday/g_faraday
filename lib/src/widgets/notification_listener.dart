@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:g_json/g_json.dart';
 
 import '../channel.dart';
-import 'notification.dart';
 
 final _notificationController =
     StreamController<FaradayNotification>.broadcast(onListen: () {
@@ -27,6 +28,35 @@ Future<bool> _handler(MethodCall call) {
     return Future.value(true);
   }
   return Future.value(false);
+}
+
+/// FaradayNotification dispatched by native channel
+class FaradayNotification {
+  ///
+  final String name;
+
+  /// must encoding to json
+  final dynamic arguments;
+
+  ///
+  FaradayNotification(this.name, this.arguments)
+      : assert(name != null && name.isNotEmpty),
+        super();
+
+  @override
+  String toString() {
+    if (kDebugMode) {
+      return 'notification: $name: ${JSON(arguments).prettyString()}';
+    }
+    return super.toString();
+  }
+
+  /// 全局广播此通知
+  void dispatchToGlobal() {
+    if (_notificationController.hasListener) {
+      _notificationController.sink.add(this);
+    }
+  }
 }
 
 /// Receive native notification
