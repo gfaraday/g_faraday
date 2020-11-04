@@ -137,7 +137,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
             final index = _findIndexBy(seq: seq);
             if (index != null) {
               _updateIndex(index);
-              return Future.value(true);
+              return Future.value(index);
             }
             _seq = seq;
           }
