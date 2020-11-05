@@ -38,6 +38,8 @@ object Faraday {
      *
      *  @param context Application Context
      *  @param navigator handle native route
+     *  @param automaticallyRegisterPlugins If plugins are automatically
+     * registered, then they are registered during the execution of this constructor
      *
      *  @return true if plugins registered otherwise return false.
      *
@@ -48,10 +50,10 @@ object Faraday {
      *
      */
     @JvmStatic
-    fun initEngine(context: Context, navigator: FaradayNavigator): Boolean {
+    fun initEngine(context: Context, navigator: FaradayNavigator, automaticallyRegisterPlugins: Boolean = true): Boolean {
         // 这个navigator 必须先初始化 不能动
         this.navigator = navigator
-        engine = FlutterEngine(context)
+        engine = FlutterEngine(context, null, automaticallyRegisterPlugins)
         if (plugin != null) {
             if (!engine.dartExecutor.isExecutingDart) {
                 engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
