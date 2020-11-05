@@ -259,7 +259,7 @@ public extension Faraday {
     
     /// 发送通知到 Flutter
     /// Flutter 可以通过 NotificationListener<NotificationListener> 来监听
-    func postNotification(name: String, _ arguments: Any? = nil) {
+    func postNotification(_ name: String, arguments: Any? = nil) {
         guard notificationChannel != nil else {
             fatalError("start flutter engine before push notification.")
         }
