@@ -52,9 +52,12 @@ class FaradayNotification {
   }
 
   /// 全局广播此通知
-  void dispatchToGlobal() {
+  void dispatchToGlobal({bool deliverToNative = true}) {
     if (_notificationController.hasListener) {
       _notificationController.sink.add(this);
+    }
+    if (deliverToNative) {
+      notification.invokeMethod(name, arguments);
     }
   }
 }

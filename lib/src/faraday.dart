@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-import 'channel.dart';
 import 'route/native_bridge.dart';
 import 'route/route.dart';
 import 'widgets/not_found_page.dart';
@@ -39,7 +38,7 @@ class Faraday {
   /// }
   /// ```
   ///
-  static Route<dynamic> wrapper(RouteFactory rawFactory,
+  Route<dynamic> wrapper(RouteFactory rawFactory,
       {FaradayDecorator decorator, RouteFactory onUnknownRoute}) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {
@@ -49,14 +48,6 @@ class Faraday {
         return decorator != null ? decorator(context, page) : page;
       },
     );
-  }
-
-  /// 发送通知到native
-  /// iOS 端直接通过 NotificationCenter 监听即可
-  /// android
-  ///
-  static Future<dynamic> postNotification(String name, {dynamic arguments}) {
-    return notification.invokeMethod(name, arguments);
   }
 }
 

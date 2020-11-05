@@ -27,7 +27,7 @@ Route<dynamic> route(List<Feature> features,
   final rcs = features.fold<Map<String, RouteFactory>>(
       {}, (builders, f) => builders..addAll(f.pageBuilders));
 
-  return Faraday.wrapper((settings) {
+  return faraday.wrapper((settings) {
     final builder = rcs[settings.name];
     if (builder == null) return null;
     return builder(settings);

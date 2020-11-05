@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final route = Faraday.wrapper((setttings) {
+    final route = faraday.wrapper((setttings) {
       final f = routes[setttings.name];
       if (f == null) return null;
       return f(setttings);
