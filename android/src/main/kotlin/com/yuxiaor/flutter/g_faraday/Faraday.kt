@@ -9,6 +9,7 @@ import com.yuxiaor.flutter.g_faraday.channels.FaradayNotice
 import com.yuxiaor.flutter.g_faraday.channels.NetChannel
 import com.yuxiaor.flutter.g_faraday.channels.NetHandler
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.plugin.common.MethodChannel
 import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicInteger
@@ -48,9 +49,16 @@ object Faraday {
      */
     @JvmStatic
     fun initEngine(context: Context, navigator: FaradayNavigator): Boolean {
-        engine = FlutterEngine(context)
+        // 这个navigator 必须先初始化 不能动
         this.navigator = navigator
-        return plugin != null
+        engine = FlutterEngine(context)
+        if (plugin != null) {
+            if (!engine.dartExecutor.isExecutingDart) {
+                engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+            }
+            return true
+        }
+        return false
     }
 
     /**

@@ -104,9 +104,6 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         this.navigator = Faraday.navigator
         Faraday.pluginRef = WeakReference(this)
-        if (!Faraday.engine.dartExecutor.isExecutingDart) {
-            Faraday.engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
-        }
     }
 
 
