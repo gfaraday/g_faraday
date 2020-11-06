@@ -183,8 +183,12 @@ context.startActivity(intent)
 
 ## FAQ
 
-## 开发交流
+## Communication
 微信群二维码
+
+## Contributing
+
+If you wish to contribute a change to any of the existing plugins in this repo, please review our [contribution](CONTRIBUTING.md) guide and open a pull request.
 
 ## License
 
