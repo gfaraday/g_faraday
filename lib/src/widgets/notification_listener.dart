@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:g_json/g_json.dart';
 
-import '../channel.dart';
+///
+const _notificationChannel = MethodChannel('g_faraday/notification');
 
 final _notificationController =
     StreamController<FaradayNotification>.broadcast(onListen: () {
@@ -57,7 +58,7 @@ class FaradayNotification {
       _notificationController.sink.add(this);
     }
     if (deliverToNative) {
-      notification.invokeMethod(name, arguments);
+      _notificationChannel.invokeMethod(name, arguments);
     }
   }
 }
@@ -100,8 +101,8 @@ class _FaradayNotificationListenerState
   @override
   void initState() {
     super.initState();
-    if (!notification.checkMethodCallHandler(_handler)) {
-      notification.setMethodCallHandler(_handler);
+    if (!_notificationChannel.checkMethodCallHandler(_handler)) {
+      _notificationChannel.setMethodCallHandler(_handler);
     }
     _streamSubscription = _observerNativeNotification(widget.names, (value) {
       widget.onNotification?.call(value);

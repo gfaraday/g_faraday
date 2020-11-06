@@ -8,9 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import '../channel.dart';
 import 'arg.dart';
 import 'navigator.dart';
+
+const _channel = MethodChannel('g_faraday');
 
 class FaradayNativeBridge extends StatefulWidget {
   final RouteFactory onGenerateRoute;
@@ -45,13 +46,13 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   @override
   void initState() {
     super.initState();
-    channel.setMethodCallHandler(_handler);
+    _channel.setMethodCallHandler(_handler);
   }
 
   @override
   void reassemble() {
     try {
-      channel.invokeMethod('reCreateLastPage');
+      _channel.invokeMethod('reCreateLastPage');
     } on MissingPluginException catch (_) {
       debugPrint('reCreateLastPage failed !!');
     }
@@ -72,7 +73,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     Map<String, dynamic> options,
   }) async {
     //
-    return channel.invokeMethod<T>('pushNativePage', {
+    return _channel.invokeMethod<T>('pushNativePage', {
       'name': name,
       if (options != null) 'options': options,
       if (arguments != null) 'arguments': arguments
@@ -82,11 +83,11 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   Future<void> pop<T extends Object>(Key key, [T result]) async {
     assert(_navigatorStack.isNotEmpty);
     assert(_navigatorStack[_index].arg.key == key);
-    await channel.invokeMethod('popContainer', result);
+    await _channel.invokeMethod('popContainer', result);
   }
 
   Future<void> disableHorizontalSwipePopGesture({bool disable}) async {
-    await channel.invokeMethod('disableHorizontalSwipePopGesture', disable);
+    await _channel.invokeMethod('disableHorizontalSwipePopGesture', disable);
   }
 
   bool isOnTop(Key key) {

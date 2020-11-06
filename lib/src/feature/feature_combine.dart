@@ -19,7 +19,7 @@ void _validate([List<Feature> features]) {
 
 /// 将一系列Feature转换为Faraday的路由
 Route<dynamic> route(List<Feature> features,
-    {FaradayDecorator decorator, RouteFactory onUnknownRoute}) {
+    {TransitionBuilder decorator, RouteFactory onUnknownRoute}) {
   if (features == null || features.isEmpty) return null;
 
   if (kDebugMode) _validate(features);
