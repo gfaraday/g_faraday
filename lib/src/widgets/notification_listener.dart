@@ -40,7 +40,7 @@ class FaradayNotification {
   final dynamic arguments;
 
   ///
-  FaradayNotification(this.name, this.arguments)
+  FaradayNotification(this.name, [this.arguments])
       : assert(name != null && name.isNotEmpty),
         super();
 
