@@ -171,7 +171,7 @@ context.startActivity(intent)
 
 ## faraday 全家桶 (推荐)
 
-在进行Flutter混合开发时会遇到很多共通的问题，我们提供了相应的解决方案大家玩的开心。
+在进行Flutter混合开发时会遇到很多相似的问题，我们提供了相应的解决方案大家玩的开心。
 
 - [路由](docs/route.md)
 - [桥接原生方法](docs/bridge.md)
