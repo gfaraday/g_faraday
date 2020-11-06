@@ -1,9 +1,28 @@
 # faraday
 
+<pre>
+    ___                   _
+   / __\_ _ _ __ __ _  __| | __ _ _   _
+  / _\/ _` | '__/ _` |/ _` |/ _` | | | |
+ / / | (_| | | | (_| | (_| | (_| | |_| |
+ \/   \__,_|_|  \__,_|\__,_|\__,_|\__, |
+                                  |___/
+</pre>
+
 ![Platform](https://img.shields.io/badge/platform-ios%7Candroid-green)
 ![Language](https://img.shields.io/badge/language-dart%7Cswift%7Ckotlin-lightgrey)
 
 一个`Flutter`混合开发解决方案
+
+## 设计原则
+
+- 对原有平台最小侵入
+- 对现有代码最小改动
+- API尽量保持和原有平台一致
+
+## 更新策略
+
+_Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_faraday`版本_
 
 ## Features
 
@@ -21,25 +40,15 @@
 - iOS 10.0+ Xcode 12.0+ Swift 5.1+
 - Android minSdkVersion 16 Kotlin 1.4.10+
 
-## 设计原则
-
-- 对原有平台最小侵入
-- 对现有代码最小改动
-- API尽量保持和原有平台一致
-
-## 更新策略
-
-**`Flutter stable channel`发布后一周内适配发布对应的`g_faraday`版本**
-
 ## 快速开始
 
-如果您已经有其他类似的框架开发经验，可以直接查看[Example](example/)浏览最佳实践。
+如果您已经有其他类似框架使用经验，可以直接查看[Example](example/)浏览最佳实践。
 
 ### 添加依赖
 
 ``` yaml
 dependencies:
-  # 请确认依赖与本地Flutter兼容的版本
+  # 请确认与本地Flutter兼容的版本
   g_faraday: ^0.4.0
 ```
 
@@ -72,7 +81,7 @@ CupertinoApp(onGenerateRoute: routeGenerator);
 
 ### iOS 集成
 
-混合应用肯定会存在从`Flutter`端打开原生页面的应用场景，所以我们需要实现一个打开原生页面的protocol
+为了实现从`Flutter`端打开原生页面的应用场景，所以我们需要实现一个打开原生页面的protocol
 
 ``` swift
 
@@ -109,39 +118,77 @@ navigationController?.pushViewController(vc, animated: true)
 ```
 ### Android 集成
 
-## 混合开发会遇到哪些问题？
+为了实现从`Flutter`端打开原生页面的应用场景，所以我们需要实现一组打开原生页面的接口
 
-### 关于开发人员
-引入flutter以后开发人员的角色会有一下三种
->
-> - ios/android 纯native开发
-> - 纯flutter开发
-> - ios/android native/flutter 开发
+``` kotlin
 
-团队成员不可能会全员进行`ios/android native/flutter`开发，所有我们需要尽可能的保证三种角色的相对独立性。而且也不能对现有的构建打包体系有太多的侵入。
+// 0x00 实现 navigator
+class SimpleFlutterNavigator : FaradayNavigator {
 
-[简单集成]()
+    companion object {
+        const val KEY_ARGS = "_args"
+    }
 
-[faraday全家桶(推荐)]()
+    /**
+     * Open native page
+     * @param name route name
+     * @param arguments data from flutter page to native page
+     * @param callback  onActivityResult callback
+     */
+    override fun push(name: String, arguments: Serializable?, options: HashMap<String, *>?, callback: (result: HashMap<String, *>?) -> Unit) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(name)
+        intent.putExtra(KEY_ARGS, arguments)
+        Faraday.startNativeForResult(intent, callback)
+    }
 
-[快速开始](docs/integration.md)
+    /**
+     * Close container Activity when flutter pops the last page
+     * @param result data from flutter to native
+     */
+    override fun pop(result: Serializable?) {
+        val activity = Faraday.getCurrentActivity() ?: return
+        if (result != null) {
+            activity.setResult(Activity.RESULT_OK, Intent().apply { putExtra(KEY_ARGS, result) })
+        }
+        activity.finish()
+    }
 
-[混合栈路由](docs/route.md)
+    /**
+     * 是否允许滑动返回
+     */
+    override fun enableSwipeBack(enable: Boolean) {
+    }
 
-[网络](docs/net.md)
+}
 
-[Method Channel](docs/generate.md)
+// 0x01 在 Application 的onCreate方法中启动FlutterEngine
+if (!Faraday.initEngine(this, SimpleFlutterNavigator())) {
+    GeneratedPluginRegistrant.registerWith(Faraday.engine)
+}
 
-[CI/CD 支持](docs/deployment.md)
+// 0x02 打开一个Flutter页面
+val intent = FaradayActivity.build(context, routeName, params)
+context.startActivity(intent)
 
+```
 
+## faraday 全家桶 (推荐)
 
+在进行Flutter混合开发时会遇到很多普遍的问题，我们提供了相应的解决方案玩的开心。
 
-<!-- <pre>
-    ___                   _
-   / __\_ _ _ __ __ _  __| | __ _ _   _
-  / _\/ _` | '__/ _` |/ _` |/ _` | | | |
- / / | (_| | | | (_| | (_| | (_| | |_| |
- \/   \__,_|_|  \__,_|\__,_|\__,_|\__, |
-                                  |___/
-</pre> -->
+- [桥接原生方法]()
+- [网络请求]()
+- [JSON]()
+- [模块化]()
+- [命令行工具 | 代码生成 | 打包发布 | CI/CD]()
+- [vscode 插件 | 自动补全 | 打包发布]()
+
+## FAQ
+
+## 开发交流
+微信群二维码
+
+## License
+
+AlamofireImage is released under the MIT license. [See LICENSE](LICENSE) for details.
