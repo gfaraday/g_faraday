@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
-class FaradayEntry {
-  const FaradayEntry();
+class _FaradayEntry {
+  const _FaradayEntry();
 }
 
-const entry = FaradayEntry();
+const entry = _FaradayEntry();
