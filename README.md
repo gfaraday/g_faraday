@@ -30,10 +30,10 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 - [x] 支持所有`Navigator`特性
 - [x] [页面间回调](docs/callback.md)
 - [x] [`iOS`导航条自动隐藏/显示](docs/ios_navigation_bar.md)
-- [x] `WillPopScope`拦截滑动返回或者返回键返回事件
+- [x] `WillPopScope`拦截滑动返回(ios)或者返回按键键(android)
 - [x] [发送/接收全局通知](docs/notification.md)
 - [ ] 监听页面生命周期
-- [ ] 文档
+- [x] 完整的文档
 
 ## Requirements
 - Flutter 1.22.3
@@ -58,23 +58,19 @@ flutter侧的集成工作，主要是注册需要从原生打开的页面。
 
 ``` dart
 
-// 0x00 定义 route factory
-final routeGenerator = (_) => faraday.wrapper(
-          (settings) {
-            //
-            if (settings.name == 'first_page')
-              return CupertinoPageRoute(
-                  builder: (context) => FirstPage(settings: settings);
-            //
-            if (settings.name == 'second_page')
-              return CupertinoPageRoute(
-                  builder: (context) => SecondPage(settings: settings);
-            return null;
-          },
-        );
+// 0x00 定义 route
+final route = faraday.wrapper((settings) {
+    switch (settings.name) {
+    case 'first_page':
+        return CupertinoPageRoute(builder: (context) => Text('First Page'));
+    case 'second_page':
+        return CupertinoPageRoute(builder: (context) => Text('Second Page'));
+    }
+    return CupertinoPageRoute(builder: (context) => Text(settings.name));
+});
 
-// 0x01 将 route generator 赋给你的app widget
-CupertinoApp(onGenerateRoute: routeGenerator);
+// 0x01 将 route 赋给你的app widget
+CupertinoApp(onGenerateRoute: (_) => route);
 
 // 0x02 flutter 侧集成完毕，接下来你可以选择 集成iOS/Android
 ```
@@ -175,14 +171,14 @@ context.startActivity(intent)
 
 ## faraday 全家桶 (推荐)
 
-在进行Flutter混合开发时会遇到很多普遍的问题，我们提供了相应的解决方案玩的开心。
+在进行Flutter混合开发时会遇到很多共通的问题，我们提供了相应的解决方案大家玩的开心。
 
-- [桥接原生方法]()
-- [网络请求]()
-- [JSON]()
-- [模块化]()
-- [命令行工具 | 代码生成 | 打包发布 | CI/CD]()
-- [vscode 插件 | 自动补全 | 打包发布]()
+- [桥接原生方法](docs/bridge.md)
+- [网络请求](docs/net.md)
+- [JSON](docs/json.md)
+- [模块化](docs/feature.md)
+- [命令行工具 | 代码生成 | 打包发布 | CI/CD](https://github.com/gfaraday/cli)
+- [vscode 插件 | 自动补全 | 打包发布](https://github.com/gfaraday/faraday_extension)
 
 ## FAQ
 
@@ -191,4 +187,4 @@ context.startActivity(intent)
 
 ## License
 
-AlamofireImage is released under the MIT license. [See LICENSE](LICENSE) for details.
+g_faraday is released under the MIT license. [See LICENSE](LICENSE) for details.
