@@ -11,14 +11,13 @@ import io.flutter.plugin.common.MethodChannel
  */
 internal object FaradayNotice : MethodChannel.MethodCallHandler {
 
-    private val channel by lazy {
-        MethodChannel(Faraday.engine.dartExecutor, "g_faraday/notification").apply {
-            setMethodCallHandler(this@FaradayNotice)
-        }
-    }
-
-
     private val notifications = hashMapOf<String, NotificationCallback>()
+    private val channel = MethodChannel(Faraday.engine.dartExecutor, "g_faraday/notification")
+
+
+    init {
+        channel.setMethodCallHandler(this)
+    }
 
 
     /**
@@ -58,6 +57,8 @@ internal object FaradayNotice : MethodChannel.MethodCallHandler {
         val key = call.method
         val args = call.arguments
         notifications[key]?.onReceiveNotification(args)
+
+        result.success(notifications.containsKey(key))
     }
 }
 
