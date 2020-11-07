@@ -50,6 +50,7 @@ open class FaradayFlutterViewController: FlutterViewController {
     weak var interactivePopGestureRecognizerDelegate: UIGestureRecognizerDelegate?
         
     public func disableHorizontalSwipePopGesture(disable: Bool) {
+        //
         // 这里不能无脑设置为 !disable 具体原因：
         //
         // ref: https://stackoverflow.com/questions/36503224/ios-app-freezes-on-pushviewcontroller

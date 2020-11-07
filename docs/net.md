@@ -49,7 +49,7 @@ extension AppDelegate: FaradayHttpProvider {
 }
 
 // 使用
-Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self, httpProvider: self, commonHandler: self.handle(_:_:_:), automaticallyRegisterPlugins: true)
+Faraday.default.startFlutterEngine(navigatorDelegate: self, httpProvider: self, commonHandler: self.handle(_:_:_:), automaticallyRegisterPlugins: true)
 
 ```
 

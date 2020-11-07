@@ -24,7 +24,7 @@ func handle(_ name: String, _ arguments: Any?, _ completion: @escaping (_ result
 }
 
 // 0x01
-Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: navigator, commonHandler: handle(_:_:_:))
+Faraday.default.startFlutterEngine(navigatorDelegate: navigator, commonHandler: handle(_:_:_:))
 
 ```
 
