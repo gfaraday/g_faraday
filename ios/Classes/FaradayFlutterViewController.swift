@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Flutter
 
 open class FaradayFlutterViewController: FlutterViewController {
     
@@ -19,16 +20,18 @@ open class FaradayFlutterViewController: FlutterViewController {
     
     var seq: Int?
     
-    public init(_ name: String, arguments: Any? = nil, callback: ((Any?) -> ())? = nil) {
+    public init(_ name: String, arguments: Any? = nil, engine: FlutterEngine? = nil, callback: ((Any?) -> ())? = nil) {
         self.name = name
         self.arguments = arguments
         self.callback = callback
-        guard let engine = Faraday.sharedInstance.engine else {
-            fatalError("Please Start Faraday Flutter Engine")
+        
+        guard let rawEngine = engine ?? Faraday.default.engine else {
+            fatalError("Faraday engine must not be nil")
         }
-        previousFlutterViewController = engine.viewController as? FaradayFlutterViewController
-        engine.viewController = nil
-        super.init(engine: engine, nibName: nil, bundle: nil)
+                
+        previousFlutterViewController = rawEngine.viewController as? FaradayFlutterViewController
+        rawEngine.viewController = nil
+        super.init(engine: rawEngine, nibName: nil, bundle: nil)
         isShowing = true
         createFlutterPage()
     }

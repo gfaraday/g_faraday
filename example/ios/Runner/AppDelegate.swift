@@ -12,9 +12,9 @@ import Alamofire
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         
-        UINavigationController.fa.automaticallyHandleNavigationBarHiden()
+        UINavigationController.fa.automaticallyHandleNavigationBarHidden()
         
-        Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self, httpProvider: self, commonHandler: self.handle(_:_:_:), automaticallyRegisterPlugins: true)
+        Faraday.default.startFlutterEngine(navigatorDelegate: self, httpProvider: self, commonHandler: self.handle(_:_:_:), automaticallyRegisterPlugins: true)
         
         return true
     }

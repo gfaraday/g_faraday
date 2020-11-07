@@ -33,7 +33,7 @@ public protocol FaradayNavigationDelegate: AnyObject {
 public extension FaradayNavigationDelegate {
     
     func disableHorizontalSwipePopGesture(_ disable: Bool) {
-        Faraday.sharedInstance.currentFlutterViewController?.disableHorizontalSwipePopGesture(disable: disable)
+        Faraday.default.currentFlutterViewController?.disableHorizontalSwipePopGesture(disable: disable)
     }
         
     func pop(_ viewController: FaradayFlutterViewController) -> Bool {
@@ -60,10 +60,10 @@ public typealias FaradayHandler = (_ name: String, _ arguments: Any?, _ completi
 */
 public class Faraday {
     
-    public static let sharedInstance = Faraday()
+    public static let `default` = Faraday()
     
     private init() {
-        debugPrint("Faraday `sharedInstance` initailed !")
+        debugPrint("🚀🚀Faraday default instance initailed !")
     }
     
     private weak var navigatorDelegate: FaradayNavigationDelegate? // not retain
@@ -179,7 +179,7 @@ public class Faraday {
     
     static func callback(_ token: CallbackToken?, result: Any?) {
         if let t = token {
-            if let cb = Faraday.sharedInstance.callbackCache.removeValue(forKey: t) {
+            if let cb = Faraday.default.callbackCache.removeValue(forKey: t) {
                 cb(result)
             }
         }
@@ -190,6 +190,7 @@ public class Faraday {
             fatalError("arguments invalid")
         }
         
+        // 这里是有可能打开一个 flutter页面的
         if let vc = navigatorDelegate?.push(name, arguments: arg["arguments"], options: arg["options"] as? [String: Any]) {
             let uuid = UUID()
             vc.fa.callbackToken = uuid
@@ -204,14 +205,18 @@ public class Faraday {
             return
         }
         viewController.callbackValueToCreator(arguments)
+        
+        // callbackToken != nil 说明这是一个通过 flutter页面打开的一个新引擎， 需要手动调用callback以传值给flutter端
         if (viewController.fa.callbackToken != nil) {
             viewController.fa.callback(result: arguments)
         }
+        
+        //
         callback(navigatorDelegate?.pop(viewController) ?? false)
     }
     
     func disableHorizontalSwipePopGesture(arguments: Any?, callback: FlutterResult) {
-        Faraday.sharedInstance.navigatorDelegate?.disableHorizontalSwipePopGesture(arguments as? Bool ?? false)
+        Faraday.default.navigatorDelegate?.disableHorizontalSwipePopGesture(arguments as? Bool ?? false)
         callback(true)
     }
     
@@ -242,7 +247,7 @@ extension Faraday {
     }
     
     static func sendPageState(_ state: Faraday.PageState, result: @escaping (Any?) -> Void) {
-        let faraday = Faraday.sharedInstance
+        let faraday = Faraday.default
         let info = state.info;
         faraday.channel?.invokeMethod(info.0, arguments: info.1, result: { r in
             if (r is FlutterError) {

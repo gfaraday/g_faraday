@@ -12,6 +12,6 @@ public extension FaradayExtension where ExtendedType: NotificationCenter {
     // post notification to flutter engine
     // Flutter 可以通过 FaradayNotificationListener 来监听
     static func post(name: String, object arguments: Any? = nil) {
-        Faraday.sharedInstance.postNotification(name, arguments: arguments)
+        Faraday.default.postNotification(name, arguments: arguments)
     }
 }

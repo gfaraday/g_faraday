@@ -103,7 +103,7 @@ extension AppDelegate: FaradayNavigationDelegate {
 }
 
 // 0x01 在 `application: didFinishLaunchingWithOptions`中启动flutter engine
-Faraday.sharedInstance.startFlutterEngine(navigatorDelegate: self)
+Faraday.default.startFlutterEngine(navigatorDelegate: self)
 
 
 // 0x02 打开一个flutter 页面
