@@ -177,7 +177,6 @@ context.startActivity(intent)
 - [桥接原生方法](docs/bridge.md)
 - [网络请求](docs/net.md)
 - [JSON](docs/json.md)
-- [模块化](docs/feature.md)
 - [命令行工具 | 代码生成 | 打包发布 | CI/CD](https://github.com/gfaraday/cli)
 - [vscode 插件 | 自动补全 | 打包发布](https://github.com/gfaraday/faraday_extension)
 

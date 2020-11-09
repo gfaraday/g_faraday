@@ -12,4 +12,12 @@ class FaradayCommon {
   }
 }
 
+// decorate class
 const common = FaradayCommon();
+
+class _FaradayCommonIgnoreMethod {
+  const _FaradayCommonIgnoreMethod();
+}
+
+// decorate method
+const ignore = _FaradayCommonIgnoreMethod();
