@@ -134,7 +134,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           if (seq == -1) {
             debugPrint('recreate page: $name seq: $seq');
           } else {
-            // seq 不为空 native可能重复调用了oncreate 方法
+            // seq 不为空 native可能重复调用了onCreate 方法
             final index = _findIndexBy(seq: seq);
             if (index != null) {
               _updateIndex(index);

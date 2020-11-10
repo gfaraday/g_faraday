@@ -36,7 +36,13 @@ class _FirstPageState extends State<FirstPage> {
           child: Container(
             child: Center(
               child: Column(children: [
-                Text('value: $c'),
+                CupertinoButton(
+                    child: Text('value: $c'),
+                    onPressed: () {
+                      setState(() {
+                        c++;
+                      });
+                    }),
                 CupertinoButton.filled(
                   child: Text('replace with native'),
                   onPressed: () => Navigator.of(context)
@@ -68,8 +74,20 @@ class _FirstPageState extends State<FirstPage> {
                     child: Text('pop to native'),
                     onPressed: () =>
                         Navigator.of(context).nativePop('pop popUntilNative')),
-                FaradayNotificationListener(['update'],
-                    child: Text(''), onNotification: (data) => true)
+                CupertinoButton(
+                  child: Text('open widget from root navigator'),
+                  onPressed: () =>
+                      Navigator.of(context, rootNavigator: true).push(
+                    CupertinoPageRoute(
+                      builder: (ctx) => CupertinoPageScaffold(
+                        child: CupertinoButton.filled(
+                          child: Text('pop'),
+                          onPressed: () => Navigator.of(ctx).pop(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ]),
             ),
           ),

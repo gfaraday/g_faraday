@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                   )),
                 ),
                 button(
-                  "open willscope flutter page",
+                  "open willScope flutter page",
                   () => Navigator.of(context)
                       .push(CupertinoPageRoute(
                           builder: (context) => SecondPage()))
@@ -68,6 +68,8 @@ class _HomePageState extends State<HomePage> {
                     });
                   }),
                 ),
+                button('open first page',
+                    () => Navigator.of(context).pushNamed('first_page')),
                 SizedBox(height: 16),
                 Text(info),
               ],

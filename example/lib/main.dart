@@ -29,10 +29,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final route = faraday.wrapper((setttings) {
-      final f = routes[setttings.name];
+    final route = faraday.wrapper((settings) {
+      final f = routes[settings.name];
       if (f == null) return null;
-      return f(setttings);
+      return f(settings);
     });
     return CupertinoApp(
       onGenerateRoute: (_) => route,
