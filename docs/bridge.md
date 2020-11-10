@@ -48,12 +48,11 @@ Faraday.setCommonHandler(CommonHandler())
 
 你也可以完全自定义一个channel，用来处相应的逻辑
 
-### flutter
-
 ``` dart
 const _channel = MethodChannel('g_faraday_custom/common');
 
 //
 _channel.invokeMethod('method', 'arguments');
 ```
-然后在ios/android端注册对应的channel 然后处理即可。
+
+然后在ios/android端注册对应的channel 然后处理即可

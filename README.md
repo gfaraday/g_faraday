@@ -1,13 +1,13 @@
 # faraday
 
-<pre>
+``` html
     ___                   _
    / __\_ _ _ __ __ _  __| | __ _ _   _
   / _\/ _` | '__/ _` |/ _` |/ _` | | | |
  / / | (_| | | | (_| | (_| | (_| | |_| |
  \/   \__,_|_|  \__,_|\__,_|\__,_|\__, |
                                   |___/
-</pre>
+```
 
 ![Platform](https://img.shields.io/badge/platform-ios%7Candroid-green)
 ![Language](https://img.shields.io/badge/language-dart%7Cswift%7Ckotlin-lightgrey)
@@ -33,9 +33,10 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 - [x] `WillPopScope`拦截滑动返回(ios)或者返回按键键(android)
 - [x] [发送/接收全局通知](docs/notification.md)
 - [ ] 监听页面生命周期
-- [x] 完整的文档
+- [x] 完整的文档(6/10)
 
 ## Requirements
+
 - Flutter 1.22.3
 - iOS 10.0+ Xcode 12.0+ Swift 5.1+
 - Android minSdkVersion 16 Kotlin 1.4.10+
@@ -83,21 +84,21 @@ CupertinoApp(onGenerateRoute: (_) => route);
 
 // 0x00 实现 `FaradayNavigationDelegate`
 extension AppDelegate: FaradayNavigationDelegate {
-    
+
     func push(_ name: String, arguments: Any?, options: [String : Any]?) -> UIViewController? {
-        
+
         let isFlutter = options?["flutter"] as? Bool ?? false
         let isPresent = options?["present"] as? Bool ?? false
-        
+
         let vc = isFlutter ? FaradayFlutterViewController(name, arguments: arguments) : FirstViewController(name， arguments: arguments)
-        
+
         let topMost = UIViewController.fa.topMost
         if (isPresent) {
             topMost?.present(vc, animated: true, completion: nil)
         } else {
             topMost?.navigationController?.pushViewController(vc, animated: true)
         }
-        
+
         return vc
     }
 }
@@ -112,6 +113,7 @@ navigationController?.pushViewController(vc, animated: true)
 
 // 0x03 集成完毕
 ```
+
 ### Android 集成
 
 为了实现从`Flutter`端打开原生页面的应用场景，所以我们需要实现一组打开原生页面的接口
@@ -183,6 +185,7 @@ context.startActivity(intent)
 ## FAQ
 
 ## Communication
+
 微信群二维码
 
 ## Contributing
