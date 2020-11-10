@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:g_json/g_json.dart';
 
 import 'native_bridge.dart';
 import 'navigator.dart';
@@ -17,4 +18,16 @@ extension NavigatorStateX on NavigatorState {
     return FaradayNativeBridge.of(context)
         .push<T>(routeName, arguments: arguments, options: options);
   }
+}
+
+/// extension route settings
+extension FaradayRouteSettings on RouteSettings {
+  ///
+  /// eg:
+  /// final arg = settings.toJson;
+  /// final id = arg.id;
+  /// final name = arg.name;
+  /// final types = arg.types;
+  ///
+  dynamic get toJson => JSON(arguments);
 }

@@ -19,7 +19,7 @@ FaradayCommon.invokeMethod('method', 'arguments');
 ``` swift
 
 // 0x00 定义一个用来处理 flutter端调用的处理函数，然后在Faraday初始化时传递给engine
-func handle(_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Void { 
+func handle(_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Void {
     // doSomething
 }
 
