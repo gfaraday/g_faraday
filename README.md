@@ -10,7 +10,6 @@
 ```
 
 ![Platform](https://img.shields.io/badge/platform-ios%7Candroid-green)
-![Language](https://img.shields.io/badge/language-dart%7Cswift%7Ckotlin-lightgrey)
 
 一个`Flutter`混合开发解决方案
 
