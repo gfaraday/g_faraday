@@ -67,8 +67,8 @@ class FaradayFragment private constructor() : FlutterFragment(), ResultProvider 
         seqId?.let { Faraday.plugin?.onPageShow(it) }
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         seqId?.let { Faraday.plugin?.onPageHidden(it) }
     }
 
