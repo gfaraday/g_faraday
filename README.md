@@ -32,7 +32,7 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 - [x] `WillPopScope`拦截滑动返回(ios)或者返回按键键(android)
 - [x] [发送/接收全局通知](docs/notification.md)
 - [ ] 监听页面生命周期
-- [x] 完整的文档(6/10)
+- [x] 完整的文档(7/9)
 
 ## Requirements
 
