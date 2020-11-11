@@ -23,16 +23,15 @@ Navigator.of(context).pop({'id': 1});
 ``` swift
 
 // 初始化一个 FaradayFlutterViewController 的对象
-let vc = FaradayFlutterViewController(page.name, arguments: page.arguments) { result in 
-    /** 
+let vc = FaradayFlutterViewController(page.name, arguments: page.arguments) { result in
+    /**
         这里的 result 即flutter侧关闭页面时的回调
 
         ``` dart
         // 关闭并且传值
         Navigator.of(context).pop({'id': 1});
-        
         ```
-    */
+    **/
     debugPrint(result.toString() ?? '') // print {'id': 1}
 }
 ```
@@ -45,6 +44,7 @@ let vc = FaradayFlutterViewController(page.name, arguments: page.arguments) { re
 final result = await Navigator.of(context).nativePushNamed('native_page_name');
 
 ```
+
 flutter侧调用`nativePushNamed(:)`以后，native侧的`FaradayNavigationDelegate` `push`方法会被调用，只需要在此方法中 `push`一个对应页面的控制器即可，那么这个控制器如何回调给flutter层呢
 
 ``` swift
@@ -68,6 +68,7 @@ vc.fa.callback(result: result)
 ## Android
 
 - 从`native`打开一个`flutter`页面，然后等待`flutter`返回值,与打开原生页面无异
+
 ``` kotlin
 
    //以 startActivityForResult方式打开flutter页面,FaradayActivity为flutter页面容器
@@ -80,19 +81,22 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
     super.onActivityResult(requestCode, resultCode, data)
     val value = data?.getStringExtra("key")
     //TODO ...
-        
 }
 
 ```
+
 - 从`flutter`打开一个`native`页面， 然后等待`native`页面返回值
 
 打开`native`页面,并等待返回值
+
 ```dart
 Navigator.of(context).nativePushNamed('native route').then((result) {
       print('返回值：$result')
 });
 ```
+
 `native`页面返回值给`flutter`，只能传递flutter支持的数据类型
+
 ```kotlin
 //传递基础数据类型
 setResult(RESULT_OK, Intent().apply {
@@ -127,19 +131,5 @@ Navigator.of(context).nativePushNamed('native_page_name', options: {'flutter': t
 ``` dart
 
 Navigator.of(context).nativePop(result);
-
-```
-
-### 需要获取`rootNavigator`
-
-``` dart
-
-// 由于faraday对页面路由进行了封装，如果你有以下逻辑的代码
-
-Navigator.of(context, rootNavigator: true)
-
-// 需要迁移为
-
-FaradayNavigator.of(context) // FaradayNavigator 是 Navigator的子类
 
 ```
