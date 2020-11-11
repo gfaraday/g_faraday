@@ -19,4 +19,5 @@ extension RouteSettingsFaraday on RouteSettings {
   dynamic get toJson => JSON(arguments);
 }
 ```
+
 在使用`RouteSettings`来创建页面的时候可以很方便的读取参数

@@ -4,7 +4,6 @@
 
 > 如果没有没有你可以跳过此部分内容
 
-
 ## Flutter
 
 `flutter`侧我们提供了`FaradayNet`用来进行网络请求
@@ -25,7 +24,7 @@ native侧需要实现`flutter`侧的方法，在ios和android中定义如下
 
 // 接口定义
 public protocol FaradayHttpProvider: AnyObject {
-    
+
     func request(method: String, url: String, parameters: [String: Any]?, headers: [String: String]?, completion: @escaping (_ result: Any?) -> Void) -> Void
 }
 
