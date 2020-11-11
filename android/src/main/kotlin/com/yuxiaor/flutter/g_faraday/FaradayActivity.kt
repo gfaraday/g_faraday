@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import java.io.Serializable
 
 /**
  * Author: Edward
@@ -21,7 +22,7 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
         private const val ARGS_KEY = "_flutter_args"
         private const val ROUTE_KEY = "_flutter_route"
 
-        fun build(context: Context, routeName: String, params: HashMap<String, Any>? = null): Intent {
+        fun build(context: Context, routeName: String, params: Serializable? = null): Intent {
             return Intent(context, FaradayActivity::class.java).apply {
                 putExtra(ROUTE_KEY, routeName)
                 putExtra(ARGS_KEY, params)

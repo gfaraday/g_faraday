@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
+import 'package:g_faraday_example/src/pages/fragment_page.dart';
 
 import 'src/pages/embedding_page.dart';
 import 'src/pages/first_page.dart';
@@ -25,6 +26,8 @@ class _MyAppState extends State<MyApp> {
         builder: (context) => HomePage(settings.arguments), settings: settings),
     'flutter_tab_1': (RouteSettings settings) => CupertinoPageRoute(
         builder: (context) => EmbeddingPage(0), settings: settings),
+    'flutter_frag': (RouteSettings settings) =>
+        CupertinoPageRoute(builder: (context) => FragmentPage()),
   };
 
   @override
