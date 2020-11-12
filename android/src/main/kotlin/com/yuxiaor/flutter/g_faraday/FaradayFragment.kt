@@ -12,7 +12,7 @@ import io.flutter.embedding.engine.FlutterEngine
  * Date: 2020-09-07
  * Description:
  */
-class FaradayFragment private constructor() : FlutterFragment(), ResultProvider {
+class FaradayFragment : FlutterFragment(), ResultProvider {
 
     private var seqId: Int? = null
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
