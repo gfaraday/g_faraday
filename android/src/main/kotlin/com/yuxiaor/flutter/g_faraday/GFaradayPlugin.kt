@@ -16,18 +16,13 @@ import java.lang.ref.WeakReference
 /** GFaradayPlugin */
 class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
-    private val channel by lazy {
-        MethodChannel(Faraday.engine.dartExecutor, "g_faraday").apply {
-            setMethodCallHandler(this@GFaradayPlugin)
-        }
-    }
+    private lateinit var channel: MethodChannel
 
     private var navigator: FaradayNavigator? = null
     internal var binding: ActivityPluginBinding? = null
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
-            "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
             "pushNativePage" -> {
                 val name = call.argument<String>("name")
                 require(name != null) { "page route name should not be null" }
@@ -91,17 +86,17 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         channel.invokeMethod("pageDealloc", seqId)
     }
 
-
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
     }
-
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         this.binding = binding
     }
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        channel = MethodChannel(binding.binaryMessenger, "g_faraday")
+        channel.setMethodCallHandler(this);
         this.navigator = Faraday.navigator
         Faraday.pluginRef = WeakReference(this)
     }
