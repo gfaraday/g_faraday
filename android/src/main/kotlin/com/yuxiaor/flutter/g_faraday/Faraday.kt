@@ -8,6 +8,7 @@ import com.yuxiaor.flutter.g_faraday.channels.CommonChannel
 import com.yuxiaor.flutter.g_faraday.channels.FaradayNotice
 import com.yuxiaor.flutter.g_faraday.channels.NetChannel
 import com.yuxiaor.flutter.g_faraday.channels.NetHandler
+import io.flutter.Log
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.plugin.common.MethodChannel
@@ -54,13 +55,9 @@ object Faraday {
         // 这个navigator 必须先初始化 不能动
         this.navigator = navigator
         engine = FlutterEngine(context, null, automaticallyRegisterPlugins)
-        if (plugin != null) {
-            if (!engine.dartExecutor.isExecutingDart) {
-                engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
-            }
-            return true
-        }
-        return false
+        Log.setLogLevel(android.util.Log.VERBOSE)
+        engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+        return pluginRef != null;
     }
 
     /**

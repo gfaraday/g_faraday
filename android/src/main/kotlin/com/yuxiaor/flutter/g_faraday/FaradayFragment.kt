@@ -33,14 +33,13 @@ class FaradayFragment private constructor() : FlutterFragment(), ResultProvider 
         }
     }
 
+    override fun onAttach(context: Context) {
+        createFlutterPage()
+        super.onAttach(context)
+    }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
         return Faraday.engine
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        createFlutterPage()
     }
 
     internal fun createFlutterPage() {
@@ -56,8 +55,6 @@ class FaradayFragment private constructor() : FlutterFragment(), ResultProvider 
     override fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) {
             seqId?.let { Faraday.plugin?.onPageShow(it) }
-        } else {
-            seqId?.let { Faraday.plugin?.onPageHidden(it) }
         }
         super.onHiddenChanged(hidden)
     }
@@ -67,24 +64,14 @@ class FaradayFragment private constructor() : FlutterFragment(), ResultProvider 
         seqId?.let { Faraday.plugin?.onPageShow(it) }
     }
 
-    override fun onStop() {
-        super.onStop()
-        seqId?.let { Faraday.plugin?.onPageHidden(it) }
-    }
-
     override fun onDetach() {
         super.onDetach()
         seqId?.let { Faraday.plugin?.onPageDealloc(it) }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        seqId?.let { Faraday.plugin?.onPageDealloc(it) }
-    }
-
-    override fun shouldAttachEngineToActivity(): Boolean {
-        return true
-    }
+//    override fun shouldAttachEngineToActivity(): Boolean {
+//        return true
+//    }
 
     override fun addResultListener(resultListener: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
         this.resultListener = resultListener

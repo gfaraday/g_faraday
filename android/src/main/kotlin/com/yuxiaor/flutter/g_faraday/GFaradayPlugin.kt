@@ -21,6 +21,8 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private var navigator: FaradayNavigator? = null
     internal var binding: ActivityPluginBinding? = null
 
+    private  var pageCount = 0;
+
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
             "pushNativePage" -> {
@@ -69,6 +71,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             data["args"] = args
         }
         data["seq"] = seq ?: -1
+        pageCount++
         channel.invoke("pageCreate", data) {
             callback.invoke(it as Int)
         }
@@ -78,11 +81,8 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         channel.invokeMethod("pageShow", seqId)
     }
 
-    internal fun onPageHidden(seqId: Int) {
-        channel.invokeMethod("pageHidden", seqId)
-    }
-
     internal fun onPageDealloc(seqId: Int) {
+        pageCount--
         channel.invokeMethod("pageDealloc", seqId)
     }
 
@@ -126,4 +126,5 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
         })
     }
+
 }
