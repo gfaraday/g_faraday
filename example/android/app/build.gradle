@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         applicationId "com.yuxiaor.flutter.g_faraday_example"
-        minSdkVersion 24
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"

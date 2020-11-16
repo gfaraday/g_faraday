@@ -13,7 +13,6 @@ import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.EXTRA_CA
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.EXTRA_DESTROY_ENGINE_WITH_ACTIVITY;
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.EXTRA_ENABLE_STATE_RESTORATION;
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.EXTRA_INITIAL_ROUTE;
-import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.HANDLE_DEEPLINKING_META_DATA_KEY;
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.INITIAL_ROUTE_META_DATA_KEY;
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.NORMAL_THEME_META_DATA_KEY;
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.SPLASH_SCREEN_META_DATA_KEY;
@@ -42,6 +41,7 @@ import io.flutter.Log;
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.FlutterShellArgs;
+import io.flutter.embedding.engine.loader.FlutterLoader;
 import io.flutter.embedding.engine.plugins.activity.ActivityControlSurface;
 import io.flutter.embedding.engine.plugins.util.GeneratedPluginRegister;
 import io.flutter.plugin.platform.PlatformPlugin;
@@ -49,12 +49,12 @@ import io.flutter.plugin.platform.PlatformPlugin;
 /**
  * {@code Activity} which displays a fullscreen Flutter UI.
  *
- * <p>{@code XFlutterActivity} is the simplest and most direct way to integrate Flutter within an
+ * <p>{@code FlutterActivity} is the simplest and most direct way to integrate Flutter within an
  * Android app.
  *
- * <p><strong>XFlutterActivity responsibilities</strong>
+ * <p><strong>FlutterActivity responsibilities</strong>
  *
- * <p>{@code XFlutterActivity} maintains the following responsibilities:
+ * <p>{@code FlutterActivity} maintains the following responsibilities:
  *
  * <ul>
  *   <li>Displays an Android launch screen.
@@ -70,20 +70,20 @@ import io.flutter.plugin.platform.PlatformPlugin;
  * <p><strong>Dart entrypoint, initial route, and app bundle path</strong>
  *
  * <p>The Dart entrypoint executed within this {@code Activity} is "main()" by default. To change
- * the entrypoint that a {@code XFlutterActivity} executes, subclass {@code XFlutterActivity} and
+ * the entrypoint that a {@code FlutterActivity} executes, subclass {@code FlutterActivity} and
  * override {@link #getDartEntrypointFunctionName()}. For non-main Dart entrypoints to not be
  * tree-shaken away, you need to annotate those functions with {@code @pragma('vm:entry-point')} in
  * Dart.
  *
  * <p>The Flutter route that is initially loaded within this {@code Activity} is "/". The initial
  * route may be specified explicitly by passing the name of the route as a {@code String} in {@link
- * XFlutterActivityLaunchConfigs#EXTRA_INITIAL_ROUTE}, e.g., "my/deep/link".
+ * FlutterActivityLaunchConfigs#EXTRA_INITIAL_ROUTE}, e.g., "my/deep/link".
  *
  * <p>The initial route can each be controlled using a {@link NewEngineIntentBuilder} via {@link
  * NewEngineIntentBuilder#initialRoute}.
  *
  * <p>The app bundle path, Dart entrypoint, and initial route can also be controlled in a subclass
- * of {@code XFlutterActivity} by overriding their respective methods:
+ * of {@code FlutterActivity} by overriding their respective methods:
  *
  * <ul>
  *   <li>{@link #getAppBundlePath()}
@@ -96,8 +96,8 @@ import io.flutter.plugin.platform.PlatformPlugin;
  *
  * <p><strong>Using a cached FlutterEngine</strong>
  *
- * <p>{@code XFlutterActivity} can be used with a cached {@link FlutterEngine} instead of creating a
- * new one. Use {@link #withCachedEngine(String)} to build a {@code XFlutterActivity} {@code Intent}
+ * <p>{@code FlutterActivity} can be used with a cached {@link FlutterEngine} instead of creating a
+ * new one. Use {@link #withCachedEngine(String)} to build a {@code FlutterActivity} {@code Intent}
  * that is configured to use an existing, cached {@link FlutterEngine}. {@link
  * io.flutter.embedding.engine.FlutterEngineCache} is the cache that is used to obtain a given
  * cached {@link FlutterEngine}. You must create and put a {@link FlutterEngine} into the {@link
@@ -117,7 +117,7 @@ import io.flutter.plugin.platform.PlatformPlugin;
  * <p>
  *
  * <ul>
- *   <li>When {@code XFlutterActivity} is the first {@code Activity} displayed by the app, because
+ *   <li>When {@code FlutterActivity} is the first {@code Activity} displayed by the app, because
  *       pre-warming a {@link FlutterEngine} would have no impact in this situation.
  *   <li>When you are unsure when/if you will need to display a Flutter experience.
  * </ul>
@@ -136,7 +136,7 @@ import io.flutter.plugin.platform.PlatformPlugin;
  * FlutterEngineCache.getInstance().put("my_engine", flutterEngine);
  * }</pre>
  *
- * <p><strong>Alternatives to XFlutterActivity</strong>
+ * <p><strong>Alternatives to FlutterActivity</strong>
  *
  * <p>If Flutter is needed in a location that cannot use an {@code Activity}, consider using a
  * {@link FlutterFragment}. Using a {@link FlutterFragment} requires forwarding some calls from an
@@ -148,9 +148,9 @@ import io.flutter.plugin.platform.PlatformPlugin;
  *
  * <p><strong>Launch Screen and Splash Screen</strong>
  *
- * <p>{@code XFlutterActivity} supports the display of an Android "launch screen" as well as a
+ * <p>{@code FlutterActivity} supports the display of an Android "launch screen" as well as a
  * Flutter-specific "splash screen". The launch screen is displayed while the Android application
- * loads. It is only applicable if {@code XFlutterActivity} is the first {@code Activity} displayed
+ * loads. It is only applicable if {@code FlutterActivity} is the first {@code Activity} displayed
  * upon loading the app. After the launch screen passes, a splash screen is optionally displayed.
  * The splash screen is displayed for as long as it takes Flutter to initialize and render its first
  * frame.
@@ -168,8 +168,8 @@ import io.flutter.plugin.platform.PlatformPlugin;
  * channels to instruct Android to do so at the appropriate time. This will avoid any jarring visual
  * changes during app startup.
  *
- * <p>In the AndroidManifest.xml, set the theme of {@code XFlutterActivity} to the defined launch
- * theme. In the metadata section for {@code XFlutterActivity}, defined the following reference to
+ * <p>In the AndroidManifest.xml, set the theme of {@code FlutterActivity} to the defined launch
+ * theme. In the metadata section for {@code FlutterActivity}, defined the following reference to
  * your normal theme:
  *
  * <p>{@code <meta-data android:name="io.flutter.embedding.android.NormalTheme"
@@ -179,19 +179,19 @@ import io.flutter.plugin.platform.PlatformPlugin;
  * screen until the Android application is initialized.
  *
  * <p>Flutter also requires initialization time. To specify a splash screen for Flutter
- * initialization, subclass {@code XFlutterActivity} and override {@link #provideSplashScreen()}. See
+ * initialization, subclass {@code FlutterActivity} and override {@link #provideSplashScreen()}. See
  * {@link SplashScreen} for details on implementing a splash screen.
  *
  * <p>Flutter ships with a splash screen that automatically displays the exact same {@code
  * windowBackground} as the launch theme discussed previously. To use that splash screen, include
- * the following metadata in AndroidManifest.xml for this {@code XFlutterActivity}:
+ * the following metadata in AndroidManifest.xml for this {@code FlutterActivity}:
  *
  * <p>{@code <meta-data android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
  * android:value="true" /> }
  *
  * <p><strong>Alternative Activity</strong> {@link FlutterFragmentActivity} is also available, which
- * is similar to {@code XFlutterActivity} but it extends {@code FragmentActivity}. You should use
- * {@code XFlutterActivity}, if possible, but if you need a {@code FragmentActivity} then you should
+ * is similar to {@code FlutterActivity} but it extends {@code FragmentActivity}. You should use
+ * {@code FlutterActivity}, if possible, but if you need a {@code FragmentActivity} then you should
  * use {@link FlutterFragmentActivity}.
  */
 // A number of methods in this class have the same implementation as FlutterFragmentActivity. These
@@ -199,10 +199,10 @@ import io.flutter.plugin.platform.PlatformPlugin;
 // FlutterFragmentActivity, too.
 public class XFlutterActivity extends Activity
         implements XFlutterActivityAndFragmentDelegate.Host, LifecycleOwner {
-    private static final String TAG = "XFlutterActivity";
+    private static final String TAG = "FlutterActivity";
 
     /**
-     * Creates an {@link Intent} that launches a {@code XFlutterActivity}, which creates a {@link
+     * Creates an {@link Intent} that launches a {@code FlutterActivity}, which creates a {@link
      * FlutterEngine} that executes a {@code main()} Dart entrypoint, and displays the "/" route as
      * Flutter's initial route.
      *
@@ -216,34 +216,34 @@ public class XFlutterActivity extends Activity
 
     /**
      * Creates an {@link NewEngineIntentBuilder}, which can be used to configure an {@link Intent} to
-     * launch a {@code XFlutterActivity} that internally creates a new {@link FlutterEngine} using the
+     * launch a {@code FlutterActivity} that internally creates a new {@link FlutterEngine} using the
      * desired Dart entrypoint, initial route, etc.
      */
     @NonNull
     public static NewEngineIntentBuilder withNewEngine() {
-        return new NewEngineIntentBuilder(XFlutterActivity.class);
+        return new NewEngineIntentBuilder(FlutterActivity.class);
     }
 
     /**
-     * Builder to create an {@code Intent} that launches a {@code XFlutterActivity} with a new {@link
+     * Builder to create an {@code Intent} that launches a {@code FlutterActivity} with a new {@link
      * FlutterEngine} and the desired configuration.
      */
     public static class NewEngineIntentBuilder {
-        private final Class<? extends XFlutterActivity> activityClass;
+        private final Class<? extends FlutterActivity> activityClass;
         private String initialRoute = DEFAULT_INITIAL_ROUTE;
         private String backgroundMode = DEFAULT_BACKGROUND_MODE;
 
         /**
          * Constructor that allows this {@code NewEngineIntentBuilder} to be used by subclasses of
-         * {@code XFlutterActivity}.
+         * {@code FlutterActivity}.
          *
-         * <p>Subclasses of {@code XFlutterActivity} should provide their own static version of {@link
+         * <p>Subclasses of {@code FlutterActivity} should provide their own static version of {@link
          * #withNewEngine()}, which returns an instance of {@code NewEngineIntentBuilder} constructed
-         * with a {@code Class} reference to the {@code XFlutterActivity} subclass, e.g.:
+         * with a {@code Class} reference to the {@code FlutterActivity} subclass, e.g.:
          *
-         * <p>{@code return new NewEngineIntentBuilder(MyXFlutterActivity.class); }
+         * <p>{@code return new NewEngineIntentBuilder(MyFlutterActivity.class); }
          */
-        public NewEngineIntentBuilder(@NonNull Class<? extends XFlutterActivity> activityClass) {
+        public NewEngineIntentBuilder(@NonNull Class<? extends FlutterActivity> activityClass) {
             this.activityClass = activityClass;
         }
 
@@ -258,18 +258,18 @@ public class XFlutterActivity extends Activity
         }
 
         /**
-         * The mode of {@code XFlutterActivity}'s background, either {@link BackgroundMode#opaque} or
+         * The mode of {@code FlutterActivity}'s background, either {@link BackgroundMode#opaque} or
          * {@link BackgroundMode#transparent}.
          *
          * <p>The default background mode is {@link BackgroundMode#opaque}.
          *
          * <p>Choosing a background mode of {@link BackgroundMode#transparent} will configure the inner
-         * {@link FlutterView} of this {@code XFlutterActivity} to be configured with a {@link
+         * {@link FlutterView} of this {@code FlutterActivity} to be configured with a {@link
          * FlutterTextureView} to support transparency. This choice has a non-trivial performance
          * impact. A transparent background should only be used if it is necessary for the app design
          * being implemented.
          *
-         * <p>A {@code XFlutterActivity} that is configured with a background mode of {@link
+         * <p>A {@code FlutterActivity} that is configured with a background mode of {@link
          * BackgroundMode#transparent} must have a theme applied to it that includes the following
          * property: {@code <item name="android:windowIsTranslucent">true</item>}.
          */
@@ -280,7 +280,7 @@ public class XFlutterActivity extends Activity
         }
 
         /**
-         * Creates and returns an {@link Intent} that will launch a {@code XFlutterActivity} with the
+         * Creates and returns an {@link Intent} that will launch a {@code FlutterActivity} with the
          * desired configuration.
          */
         @NonNull
@@ -294,42 +294,41 @@ public class XFlutterActivity extends Activity
 
     /**
      * Creates a {@link CachedEngineIntentBuilder}, which can be used to configure an {@link Intent}
-     * to launch a {@code XFlutterActivity} that internally uses an existing {@link FlutterEngine} that
+     * to launch a {@code FlutterActivity} that internally uses an existing {@link FlutterEngine} that
      * is cached in {@link io.flutter.embedding.engine.FlutterEngineCache}.
      */
     public static CachedEngineIntentBuilder withCachedEngine(@NonNull String cachedEngineId) {
-        return new CachedEngineIntentBuilder(XFlutterActivity.class, cachedEngineId);
+        return new CachedEngineIntentBuilder(FlutterActivity.class, cachedEngineId);
     }
 
     /**
-     * Builder to create an {@code Intent} that launches a {@code XFlutterActivity} with an existing
+     * Builder to create an {@code Intent} that launches a {@code FlutterActivity} with an existing
      * {@link FlutterEngine} that is cached in {@link io.flutter.embedding.engine.FlutterEngineCache}.
      */
     public static class CachedEngineIntentBuilder {
-        private final Class<? extends XFlutterActivity> activityClass;
+        private final Class<? extends FlutterActivity> activityClass;
         private final String cachedEngineId;
         private boolean destroyEngineWithActivity = false;
         private String backgroundMode = DEFAULT_BACKGROUND_MODE;
 
         /**
          * Constructor that allows this {@code CachedEngineIntentBuilder} to be used by subclasses of
-         * {@code XFlutterActivity}.
+         * {@code FlutterActivity}.
          *
-         * <p>Subclasses of {@code XFlutterActivity} should provide their own static version of {@link
-         * # withCachedEngine()}, which returns an instance of {@code CachedEngineIntentBuilder}
-         * constructed with a {@code Class} reference to the {@code XFlutterActivity} subclass, e.g.:
+         * <p>Subclasses of {@code FlutterActivity} should provide their own static version of , which returns an instance of {@code CachedEngineIntentBuilder}
+         * constructed with a {@code Class} reference to the {@code FlutterActivity} subclass, e.g.:
          *
-         * <p>{@code return new CachedEngineIntentBuilder(MyXFlutterActivity.class, engineId); }
+         * <p>{@code return new CachedEngineIntentBuilder(MyFlutterActivity.class, engineId); }
          */
         public CachedEngineIntentBuilder(
-                @NonNull Class<? extends XFlutterActivity> activityClass, @NonNull String engineId) {
+                @NonNull Class<? extends FlutterActivity> activityClass, @NonNull String engineId) {
             this.activityClass = activityClass;
             this.cachedEngineId = engineId;
         }
 
         /**
          * Returns true if the cached {@link FlutterEngine} should be destroyed and removed from the
-         * cache when this {@code XFlutterActivity} is destroyed.
+         * cache when this {@code FlutterActivity} is destroyed.
          *
          * <p>The default value is {@code false}.
          */
@@ -339,18 +338,18 @@ public class XFlutterActivity extends Activity
         }
 
         /**
-         * The mode of {@code XFlutterActivity}'s background, either {@link BackgroundMode#opaque} or
+         * The mode of {@code FlutterActivity}'s background, either {@link BackgroundMode#opaque} or
          * {@link BackgroundMode#transparent}.
          *
          * <p>The default background mode is {@link BackgroundMode#opaque}.
          *
          * <p>Choosing a background mode of {@link BackgroundMode#transparent} will configure the inner
-         * {@link FlutterView} of this {@code XFlutterActivity} to be configured with a {@link
+         * {@link FlutterView} of this {@code FlutterActivity} to be configured with a {@link
          * FlutterTextureView} to support transparency. This choice has a non-trivial performance
          * impact. A transparent background should only be used if it is necessary for the app design
          * being implemented.
          *
-         * <p>A {@code XFlutterActivity} that is configured with a background mode of {@link
+         * <p>A {@code FlutterActivity} that is configured with a background mode of {@link
          * BackgroundMode#transparent} must have a theme applied to it that includes the following
          * property: {@code <item name="android:windowIsTranslucent">true</item>}.
          */
@@ -361,7 +360,7 @@ public class XFlutterActivity extends Activity
         }
 
         /**
-         * Creates and returns an {@link Intent} that will launch a {@code XFlutterActivity} with the
+         * Creates and returns an {@link Intent} that will launch a {@code FlutterActivity} with the
          * desired configuration.
          */
         @NonNull
@@ -374,7 +373,7 @@ public class XFlutterActivity extends Activity
     }
 
     // Delegate that runs all lifecycle and OS hook logic that is common between
-    // XFlutterActivity and FlutterFragment. See the XFlutterActivityAndFragmentDelegate
+    // FlutterActivity and FlutterFragment. See the FlutterActivityAndFragmentDelegate
     // implementation for details about why it exists.
     @VisibleForTesting protected XFlutterActivityAndFragmentDelegate delegate;
 
@@ -389,7 +388,7 @@ public class XFlutterActivity extends Activity
      * Activity through any lifecycle events, because JVM tests cannot handle executing any lifecycle
      * methods, at the time of writing this.
      *
-     * <p>The testing infrastructure should be upgraded to make XFlutterActivity tests easy to write
+     * <p>The testing infrastructure should be upgraded to make FlutterActivity tests easy to write
      * while exercising real lifecycle methods. At such a time, this method should be removed.
      */
     // TODO(mattcarroll): remove this when tests allow for it
@@ -429,9 +428,9 @@ public class XFlutterActivity extends Activity
      *   <li>In the launch screen theme, set the "windowBackground" property to a {@code Drawable} of
      *       your choice.
      *   <li>In the normal theme, customize however you'd like.
-     *   <li>In the AndroidManifest.xml, set the theme of your {@code XFlutterActivity} to your launch
+     *   <li>In the AndroidManifest.xml, set the theme of your {@code FlutterActivity} to your launch
      *       theme.
-     *   <li>Add a {@code <meta-data>} property to your {@code XFlutterActivity} with a name of
+     *   <li>Add a {@code <meta-data>} property to your {@code FlutterActivity} with a name of
      *       "io.flutter.embedding.android.NormalTheme" and set the resource to your normal theme,
      *       e.g., {@code android:resource="@style/MyNormalTheme}.
      * </ol>
@@ -447,9 +446,10 @@ public class XFlutterActivity extends Activity
      */
     private void switchLaunchThemeForNormalTheme() {
         try {
-            Bundle metaData = getMetaData();
-            if (metaData != null) {
-                int normalThemeRID = metaData.getInt(NORMAL_THEME_META_DATA_KEY, -1);
+            ActivityInfo activityInfo =
+                    getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
+            if (activityInfo.metaData != null) {
+                int normalThemeRID = activityInfo.metaData.getInt(NORMAL_THEME_META_DATA_KEY, -1);
                 if (normalThemeRID != -1) {
                     setTheme(normalThemeRID);
                 }
@@ -459,7 +459,7 @@ public class XFlutterActivity extends Activity
         } catch (PackageManager.NameNotFoundException exception) {
             Log.e(
                     TAG,
-                    "Could not read meta-data for XFlutterActivity. Using the launch theme as normal theme.");
+                    "Could not read meta-data for FlutterActivity. Using the launch theme as normal theme.");
         }
     }
 
@@ -478,15 +478,17 @@ public class XFlutterActivity extends Activity
      * Returns a {@link Drawable} to be used as a splash screen as requested by meta-data in the
      * {@code AndroidManifest.xml} file, or null if no such splash screen is requested.
      *
-     * <p>See {@link XFlutterActivityLaunchConfigs#SPLASH_SCREEN_META_DATA_KEY} for the meta-data key
+     * <p>See {@link FlutterActivityLaunchConfigs#SPLASH_SCREEN_META_DATA_KEY} for the meta-data key
      * to be used in a manifest file.
      */
     @Nullable
     @SuppressWarnings("deprecation")
     private Drawable getSplashScreenFromManifest() {
         try {
-            Bundle metaData = getMetaData();
-            int splashScreenId = metaData != null ? metaData.getInt(SPLASH_SCREEN_META_DATA_KEY) : 0;
+            ActivityInfo activityInfo =
+                    getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
+            Bundle metadata = activityInfo.metaData;
+            int splashScreenId = metadata != null ? metadata.getInt(SPLASH_SCREEN_META_DATA_KEY) : 0;
             return splashScreenId != 0
                     ? Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP
                     ? getResources().getDrawable(splashScreenId, getTheme())
@@ -532,11 +534,6 @@ public class XFlutterActivity extends Activity
     protected void onStart() {
         super.onStart();
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START);
-        if (delegate.getFlutterEngine() == null) {
-            delegate.onAttach(this);
-            delegate.flutterView.attachToFlutterEngine(getFlutterEngine());
-            delegate.onActivityCreated(null);
-        }
         delegate.onStart();
     }
 
@@ -563,107 +560,61 @@ public class XFlutterActivity extends Activity
     @Override
     protected void onStop() {
         super.onStop();
-        if (stillAttachedForEvent("onStop")) {
-            delegate.onStop();
-        }
+        delegate.onStop();
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (stillAttachedForEvent("onSaveInstanceState")) {
-            delegate.onSaveInstanceState(outState);
-        }
-    }
-
-    /**
-     * Irreversibly release this activity's control of the {@link FlutterEngine} and its
-     * subcomponents.
-     *
-     * <p>Calling will disconnect this activity's view from the Flutter renderer, disconnect this
-     * activity from plugins' {@link ActivityControlSurface}, and stop system channel messages from
-     * this activity.
-     *
-     * <p>After calling, this activity should be disposed immediately and not be re-used.
-     */
-    private void release() {
-        delegate.onDestroyView();
-        delegate.onDetach();
-        delegate.release();
-//        delegate = null;
-    }
-
-    @Override
-    public void detachFromFlutterEngine() {
-        Log.v(
-                TAG,
-                "XFlutterActivity "
-                        + this
-                        + " connection to the engine "
-                        + getFlutterEngine()
-                        + " evicted by another attaching activity");
-        release();
+        delegate.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (stillAttachedForEvent("onDestroy")) {
-            release();
-        }
+        delegate.onDestroyView();
+        delegate.onDetach();
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (stillAttachedForEvent("onActivityResult")) {
-            delegate.onActivityResult(requestCode, resultCode, data);
-        }
+        delegate.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onNewIntent(@NonNull Intent intent) {
         // TODO(mattcarroll): change G3 lint rule that forces us to call super
         super.onNewIntent(intent);
-        if (stillAttachedForEvent("onNewIntent")) {
-            delegate.onNewIntent(intent);
-        }
+        delegate.onNewIntent(intent);
     }
 
     @Override
     public void onBackPressed() {
-        if (stillAttachedForEvent("onBackPressed")) {
-            delegate.onBackPressed();
-        }
+        delegate.onBackPressed();
     }
 
     @Override
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (stillAttachedForEvent("onRequestPermissionsResult")) {
-            delegate.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
+        delegate.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     public void onUserLeaveHint() {
-        if (stillAttachedForEvent("onUserLeaveHint")) {
-            delegate.onUserLeaveHint();
-        }
+        delegate.onUserLeaveHint();
     }
 
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        if (stillAttachedForEvent("onTrimMemory")) {
-            delegate.onTrimMemory(level);
-        }
+        delegate.onTrimMemory(level);
     }
 
     /**
-     * {@link XFlutterActivityAndFragmentDelegate.Host} method that is used by {@link
-     * XFlutterActivityAndFragmentDelegate} to obtain a {@code Context} reference as needed.
+     * {@link FlutterActivityAndFragmentDelegate.Host} method that is used by {@link
+     * FlutterActivityAndFragmentDelegate} to obtain a {@code Context} reference as needed.
      */
     @Override
     @NonNull
@@ -672,8 +623,8 @@ public class XFlutterActivity extends Activity
     }
 
     /**
-     * {@link XFlutterActivityAndFragmentDelegate.Host} method that is used by {@link
-     * XFlutterActivityAndFragmentDelegate} to obtain an {@code Activity} reference as needed. This
+     * {@link FlutterActivityAndFragmentDelegate.Host} method that is used by {@link
+     * FlutterActivityAndFragmentDelegate} to obtain an {@code Activity} reference as needed. This
      * reference is used by the delegate to instantiate a {@link FlutterView}, a {@link
      * PlatformPlugin}, and to determine if the {@code Activity} is changing configurations.
      */
@@ -684,8 +635,8 @@ public class XFlutterActivity extends Activity
     }
 
     /**
-     * {@link XFlutterActivityAndFragmentDelegate.Host} method that is used by {@link
-     * XFlutterActivityAndFragmentDelegate} to obtain a {@code Lifecycle} reference as needed. This
+     * {@link FlutterActivityAndFragmentDelegate.Host} method that is used by {@link
+     * FlutterActivityAndFragmentDelegate} to obtain a {@code Lifecycle} reference as needed. This
      * reference is used by the delegate to provide Flutter plugins with access to lifecycle events.
      */
     @Override
@@ -695,8 +646,8 @@ public class XFlutterActivity extends Activity
     }
 
     /**
-     * {@link XFlutterActivityAndFragmentDelegate.Host} method that is used by {@link
-     * XFlutterActivityAndFragmentDelegate} to obtain Flutter shell arguments when initializing
+     * {@link FlutterActivityAndFragmentDelegate.Host} method that is used by {@link
+     * FlutterActivityAndFragmentDelegate} to obtain Flutter shell arguments when initializing
      * Flutter.
      */
     @NonNull
@@ -707,7 +658,7 @@ public class XFlutterActivity extends Activity
 
     /**
      * Returns the ID of a statically cached {@link FlutterEngine} to use within this {@code
-     * XFlutterActivity}, or {@code null} if this {@code XFlutterActivity} does not want to use a cached
+     * FlutterActivity}, or {@code null} if this {@code FlutterActivity} does not want to use a cached
      * {@link FlutterEngine}.
      */
     @Override
@@ -717,11 +668,11 @@ public class XFlutterActivity extends Activity
     }
 
     /**
-     * Returns false if the {@link FlutterEngine} backing this {@code XFlutterActivity} should outlive
-     * this {@code XFlutterActivity}, or true to be destroyed when the {@code XFlutterActivity} is
+     * Returns false if the {@link FlutterEngine} backing this {@code FlutterActivity} should outlive
+     * this {@code FlutterActivity}, or true to be destroyed when the {@code FlutterActivity} is
      * destroyed.
      *
-     * <p>The default value is {@code true} in cases where {@code XFlutterActivity} created its own
+     * <p>The default value is {@code true} in cases where {@code FlutterActivity} created its own
      * {@link FlutterEngine}, and {@code false} in cases where a cached {@link FlutterEngine} was
      * provided.
      */
@@ -743,17 +694,19 @@ public class XFlutterActivity extends Activity
      * The Dart entrypoint that will be executed as soon as the Dart snapshot is loaded.
      *
      * <p>This preference can be controlled by setting a {@code <meta-data>} called {@link
-     * XFlutterActivityLaunchConfigs#DART_ENTRYPOINT_META_DATA_KEY} within the Android manifest
-     * definition for this {@code XFlutterActivity}.
+     * FlutterActivityLaunchConfigs#DART_ENTRYPOINT_META_DATA_KEY} within the Android manifest
+     * definition for this {@code FlutterActivity}.
      *
      * <p>Subclasses may override this method to directly control the Dart entrypoint.
      */
     @NonNull
     public String getDartEntrypointFunctionName() {
         try {
-            Bundle metaData = getMetaData();
+            ActivityInfo activityInfo =
+                    getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
+            Bundle metadata = activityInfo.metaData;
             String desiredDartEntrypoint =
-                    metaData != null ? metaData.getString(DART_ENTRYPOINT_META_DATA_KEY) : null;
+                    metadata != null ? metadata.getString(DART_ENTRYPOINT_META_DATA_KEY) : null;
             return desiredDartEntrypoint != null ? desiredDartEntrypoint : DEFAULT_DART_ENTRYPOINT;
         } catch (PackageManager.NameNotFoundException e) {
             return DEFAULT_DART_ENTRYPOINT;
@@ -766,10 +719,10 @@ public class XFlutterActivity extends Activity
      * <p>This preference can be controlled with 2 methods:
      *
      * <ol>
-     *   <li>Pass a boolean as {@link XFlutterActivityLaunchConfigs#EXTRA_INITIAL_ROUTE} with the
+     *   <li>Pass a boolean as {@link FlutterActivityLaunchConfigs#EXTRA_INITIAL_ROUTE} with the
      *       launching {@code Intent}, or
      *   <li>Set a {@code <meta-data>} called {@link
-     *       XFlutterActivityLaunchConfigs#INITIAL_ROUTE_META_DATA_KEY} for this {@code Activity} in
+     *       FlutterActivityLaunchConfigs#INITIAL_ROUTE_META_DATA_KEY} for this {@code Activity} in
      *       the Android manifest.
      * </ol>
      *
@@ -780,22 +733,22 @@ public class XFlutterActivity extends Activity
      * have control over the incoming {@code Intent}.
      *
      * <p>Subclasses may override this method to directly control the initial route.
-     *
-     * <p>If this method returns null and the {@code shouldHandleDeeplinking} returns true, the
-     * initial route is derived from the {@code Intent} through the Intent.getData() instead.
      */
+    @NonNull
     public String getInitialRoute() {
         if (getIntent().hasExtra(EXTRA_INITIAL_ROUTE)) {
             return getIntent().getStringExtra(EXTRA_INITIAL_ROUTE);
         }
 
         try {
-            Bundle metaData = getMetaData();
+            ActivityInfo activityInfo =
+                    getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
+            Bundle metadata = activityInfo.metaData;
             String desiredInitialRoute =
-                    metaData != null ? metaData.getString(INITIAL_ROUTE_META_DATA_KEY) : null;
-            return desiredInitialRoute;
+                    metadata != null ? metadata.getString(INITIAL_ROUTE_META_DATA_KEY) : null;
+            return desiredInitialRoute != null ? desiredInitialRoute : DEFAULT_INITIAL_ROUTE;
         } catch (PackageManager.NameNotFoundException e) {
-            return null;
+            return DEFAULT_INITIAL_ROUTE;
         }
     }
 
@@ -803,11 +756,11 @@ public class XFlutterActivity extends Activity
      * A custom path to the bundle that contains this Flutter app's resources, e.g., Dart code
      * snapshots.
      *
-     * <p>When this {@code XFlutterActivity} is run by Flutter tooling and a data String is included in
+     * <p>When this {@code FlutterActivity} is run by Flutter tooling and a data String is included in
      * the launching {@code Intent}, that data String is interpreted as an app bundle path.
      *
      * <p>When otherwise unspecified, the value is null, which defaults to the app bundle path defined
-     * in {@link FlutterLoader # findAppBundlePath()}.
+     * in {@link FlutterLoader#findAppBundlePath()}.
      *
      * <p>Subclasses may override this method to return a custom app bundle path.
      */
@@ -837,8 +790,8 @@ public class XFlutterActivity extends Activity
     }
 
     /**
-     * {@link XFlutterActivityAndFragmentDelegate.Host} method that is used by {@link
-     * XFlutterActivityAndFragmentDelegate} to obtain the desired {@link RenderMode} that should be
+     * {@link FlutterActivityAndFragmentDelegate.Host} method that is used by {@link
+     * FlutterActivityAndFragmentDelegate} to obtain the desired {@link RenderMode} that should be
      * used when instantiating a {@link FlutterView}.
      */
     @NonNull
@@ -848,8 +801,8 @@ public class XFlutterActivity extends Activity
     }
 
     /**
-     * {@link XFlutterActivityAndFragmentDelegate.Host} method that is used by {@link
-     * XFlutterActivityAndFragmentDelegate} to obtain the desired {@link TransparencyMode} that should
+     * {@link FlutterActivityAndFragmentDelegate.Host} method that is used by {@link
+     * FlutterActivityAndFragmentDelegate} to obtain the desired {@link TransparencyMode} that should
      * be used when instantiating a {@link FlutterView}.
      */
     @NonNull
@@ -888,19 +841,11 @@ public class XFlutterActivity extends Activity
 
     /**
      * Hook for subclasses to obtain a reference to the {@link FlutterEngine} that is owned by this
-     * {@code XFlutterActivity}.
+     * {@code FlutterActivity}.
      */
     @Nullable
     protected FlutterEngine getFlutterEngine() {
         return delegate.getFlutterEngine();
-    }
-
-    /** Retrieves the meta data specified in the AndroidManifest.xml. */
-    @Nullable
-    protected Bundle getMetaData() throws PackageManager.NameNotFoundException {
-        ActivityInfo activityInfo =
-                getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
-        return activityInfo.metaData;
     }
 
     @Nullable
@@ -946,57 +891,37 @@ public class XFlutterActivity extends Activity
      *
      * <p>This property is controlled with a protected method instead of an {@code Intent} argument
      * because the only situation where changing this value would help, is a situation in which {@code
-     * XFlutterActivity} is being subclassed to utilize a custom and/or cached {@link FlutterEngine}.
+     * FlutterActivity} is being subclassed to utilize a custom and/or cached {@link FlutterEngine}.
      *
      * <p>Defaults to {@code true}.
      *
      * <p>Control surfaces are used to provide Android resources and lifecycle events to plugins that
      * are attached to the {@link FlutterEngine}. If {@code shouldAttachEngineToActivity} is true then
-     * this {@code XFlutterActivity} will connect its {@link FlutterEngine} to itself, along with any
+     * this {@code FlutterActivity} will connect its {@link FlutterEngine} to itself, along with any
      * plugins that are registered with that {@link FlutterEngine}. This allows plugins to access the
      * {@code Activity}, as well as receive {@code Activity}-specific calls, e.g., {@link
      * Activity#onNewIntent(Intent)}. If {@code shouldAttachEngineToActivity} is false, then this
-     * {@code XFlutterActivity} will not automatically manage the connection between its {@link
+     * {@code FlutterActivity} will not automatically manage the connection between its {@link
      * FlutterEngine} and itself. In this case, plugins will not be offered a reference to an {@code
      * Activity} or its OS hooks.
      *
      * <p>Returning false from this method does not preclude a {@link FlutterEngine} from being
-     * attaching to a {@code XFlutterActivity} - it just prevents the attachment from happening
-     * automatically. A developer can choose to subclass {@code XFlutterActivity} and then invoke
-     * {@link ActivityControlSurface#attachToActivity(ExclusiveAppComponent, Lifecycle)} and {@link
+     * attaching to a {@code FlutterActivity} - it just prevents the attachment from happening
+     * automatically. A developer can choose to subclass {@code FlutterActivity} and then invoke
+     * {@link ActivityControlSurface#attachToActivity(Activity, Lifecycle)} and {@link
      * ActivityControlSurface#detachFromActivity()} at the desired times.
      *
      * <p>One reason that a developer might choose to manually manage the relationship between the
      * {@code Activity} and {@link FlutterEngine} is if the developer wants to move the {@link
      * FlutterEngine} somewhere else. For example, a developer might want the {@link FlutterEngine} to
-     * outlive this {@code XFlutterActivity} so that it can be used later in a different {@code
+     * outlive this {@code FlutterActivity} so that it can be used later in a different {@code
      * Activity}. To accomplish this, the {@link FlutterEngine} may need to be disconnected from this
-     * {@code FluttterActivity} at an unusual time, preventing this {@code XFlutterActivity} from
+     * {@code FluttterActivity} at an unusual time, preventing this {@code FlutterActivity} from
      * correctly managing the relationship between the {@link FlutterEngine} and itself.
      */
     @Override
     public boolean shouldAttachEngineToActivity() {
         return true;
-    }
-
-    /**
-     * Whether to handle the deeplinking from the {@code Intent} automatically if the {@code
-     * getInitialRoute} returns null.
-     *
-     * <p>The default implementation looks {@code <meta-data>} called {@link
-     * XFlutterActivityLaunchConfigs#HANDLE_DEEPLINKING_META_DATA_KEY} within the Android manifest
-     * definition for this {@code XFlutterActivity}.
-     */
-    @Override
-    public boolean shouldHandleDeeplinking() {
-        try {
-            Bundle metaData = getMetaData();
-            boolean shouldHandleDeeplinking =
-                    metaData != null ? metaData.getBoolean(HANDLE_DEEPLINKING_META_DATA_KEY) : false;
-            return shouldHandleDeeplinking;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
     }
 
     @Override
@@ -1032,14 +957,6 @@ public class XFlutterActivity extends Activity
         }
         if (getCachedEngineId() != null) {
             // Prevent overwriting the existing state in a cached engine with restoration state.
-            return false;
-        }
-        return true;
-    }
-
-    private boolean stillAttachedForEvent(String event) {
-        if (delegate.getFlutterEngine() == null) {
-            Log.v(TAG, "XFlutterActivity " + hashCode() + " " + event + " called after release.");
             return false;
         }
         return true;

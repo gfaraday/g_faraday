@@ -4,10 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import io.flutter.embedding.android.ExclusiveAppComponent
+import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.XFlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.platform.PlatformPlugin
 import java.io.Serializable
 
 /**
@@ -15,7 +14,7 @@ import java.io.Serializable
  * Date: 2020-09-01
  * Description:
  */
-class FaradayActivity : XFlutterActivity(), ResultProvider, ExclusiveAppComponent<XFlutterActivity> {
+class FaradayActivity : FlutterActivity(), ResultProvider {
 
     private var seqId: Int? = null
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
@@ -101,7 +100,4 @@ class FaradayActivity : XFlutterActivity(), ResultProvider, ExclusiveAppComponen
         resultListener = null
     }
 
-    override fun getAppComponent(): XFlutterActivity {
-        return this
-    }
 }
