@@ -1,10 +1,13 @@
 package com.yuxiaor.flutter.g_faraday
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import io.flutter.embedding.android.FlutterActivity
+import android.util.Log
+import io.flutter.embedding.android.ExclusiveAppComponent
+import io.flutter.embedding.android.XFlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.platform.PlatformPlugin
 import java.io.Serializable
 
 /**
@@ -12,7 +15,7 @@ import java.io.Serializable
  * Date: 2020-09-01
  * Description:
  */
-class FaradayActivity : FlutterActivity(), ResultProvider {
+class FaradayActivity : XFlutterActivity(), ResultProvider, ExclusiveAppComponent<XFlutterActivity> {
 
     private var seqId: Int? = null
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
@@ -30,8 +33,8 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
         createFlutterPage()
     }
 
@@ -49,24 +52,43 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
         return Faraday.engine
     }
 
+//    override fun detachFromFlutterEngine() {
+//        // 阻止 engine release 相关资源
+//    }
 
-    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-        //ignore
-    }
-
+//    override fun shouldAttachEngineToActivity(): Boolean {
+//        return false
+//    }
+//
+//    override fun shouldDestroyEngineWithHost(): Boolean {
+//        return false
+//    }
+//
     override fun onResume() {
+//        flutterEngine?.activityControlSurface?.attachToActivity(this, lifecycle)
         super.onResume()
         seqId?.let { Faraday.plugin?.onPageShow(it) }
     }
 
-    override fun onPause() {
-        super.onPause()
-        seqId?.let { Faraday.plugin?.onPageHidden(it) }
+    override fun onStart() {
+
+        super.onStart()
     }
 
+//
+//    override fun onStop() {
+//        super.onStop()
+//        if (isChangingConfigurations) {
+//            flutterEngine?.activityControlSurface?.detachFromActivityForConfigChanges()
+//        } else {
+//            flutterEngine?.activityControlSurface?.detachFromActivity()
+//        }
+//
+//    }
+
     override fun onDestroy() {
-        super.onDestroy()
         seqId?.let { Faraday.plugin?.onPageDealloc(it) }
+        super.onDestroy()
     }
 
     override fun addResultListener(resultListener: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
@@ -77,5 +99,9 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
         super.onActivityResult(requestCode, resultCode, data)
         resultListener?.invoke(requestCode, resultCode, data)
         resultListener = null
+    }
+
+    override fun getAppComponent(): XFlutterActivity {
+        return this
     }
 }

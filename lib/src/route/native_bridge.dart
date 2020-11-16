@@ -151,13 +151,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         final index = _findIndexBy(seq: call.arguments);
         _updateIndex(index);
         return Future.value(index != null);
-      case 'pageHidden':
-        final index = _findIndexBy(seq: call.arguments);
-        if (index == _index) {
-          _updateIndex(_preIndex);
-          return Future.value(true);
-        }
-        return Future.value(false);
       case 'pageDealloc':
         assert(_index != null, _index < _navigatorStack.length);
         final current = _navigatorStack[_index];
@@ -192,7 +185,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     final initialSettings =
         RouteSettings(name: arg.name, arguments: arg.arguments);
     return FaradayNavigator(
-      key: GlobalKey(debugLabel: 'seq: ${arg.seq}'),
+      key: arg.key,
       arg: arg,
       initialRoute: arg.name,
       onGenerateRoute: widget.onGenerateRoute,

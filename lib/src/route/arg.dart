@@ -12,5 +12,5 @@ class FaradayArguments {
   final observer = FaradayNavigatorObserver();
 
   FaradayArguments(this.arguments, this.name, this.seq)
-      : key = GlobalKey(debugLabel: 'entry: $name');
+      : key = GlobalKey(debugLabel: 'seq: $seq');
 }

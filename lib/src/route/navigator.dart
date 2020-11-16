@@ -112,11 +112,11 @@ class _FaradayWidgetsBindingObserver extends WidgetsBindingObserver {
   _FaradayWidgetsBindingObserver(this.navigator);
 
   @override
-  Future<bool> didPopRoute() {
+  Future<bool> didPopRoute() async {
     if (!FaradayNativeBridge.of(navigator.context)
         .isOnTop(navigator.widget.arg.key)) {
-      return Future.value(false);
+      return false;
     }
-    return navigator.maybePop();
+    return await navigator.maybePop();
   }
 }

@@ -14,10 +14,10 @@ class _SecondPageState extends State<SecondPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
+      onWillPop: () async {
         //拦截返回键
-        showDialog(context);
-        return Future.value(false);
+        final result = await showDialog(context);
+        return Future.value(result != null);
       },
       child: CupertinoPageScaffold(
           child: Center(
@@ -30,16 +30,26 @@ class _SecondPageState extends State<SecondPage> {
 }
 
 showDialog(BuildContext context) {
-  showCupertinoDialog(
+  return showCupertinoDialog(
     context: context,
-    builder: (c) => Center(
-      child: CupertinoButton.filled(
-        child: Text("确认返回？"),
-        onPressed: () {
-          Navigator.of(c).pop();
-          Navigator.of(context).pop('value from dialog');
-        },
-      ),
-    ),
+    useRootNavigator: false,
+    builder: (ctx) => Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CupertinoButton.filled(
+          child: Text("返回"),
+          onPressed: () {
+            Navigator.of(ctx).pop('value from dialog');
+          },
+        ),
+        CupertinoButton.filled(
+          child: Text("不返回"),
+          onPressed: () {
+            Navigator.of(ctx).pop();
+          },
+        ),
+      ],
+    )),
   );
 }
