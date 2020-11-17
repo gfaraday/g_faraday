@@ -52,7 +52,6 @@ object Faraday {
     /**
      * The current flutter container Activity
      */
-    @JvmStatic
     fun getCurrentActivity(): Activity? {
         return plugin?.binding?.activity
     }
@@ -73,7 +72,6 @@ object Faraday {
         }
     }
 
-    @JvmStatic
     fun startNativeForResult(intent: Intent, requestCode: Int, callback: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
         val activity = getCurrentActivity()
 
@@ -95,7 +93,6 @@ object Faraday {
     /**
      *  open flutter page
      */
-    @JvmStatic
     fun openFlutter(context: Context, routeName: String, params: HashMap<String, Any>? = null) {
         context.startActivity(FaradayActivity.build(context, routeName, params))
     }
@@ -103,7 +100,6 @@ object Faraday {
     /**
      *  open flutter page,and request for result
      */
-    @JvmStatic
     fun openFlutterForResult(activity: Activity, routeName: String, requestCode: Int, params: HashMap<String, Any>? = null) {
         activity.startActivityForResult(FaradayActivity.build(activity, routeName, params), requestCode)
     }

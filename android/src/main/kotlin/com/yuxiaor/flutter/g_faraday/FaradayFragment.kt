@@ -22,7 +22,6 @@ class FaradayFragment : FlutterFragment(), ResultProvider {
         private const val ARGS_KEY = "_flutter_args"
         private const val ROUTE_KEY = "_flutter_route"
 
-        @JvmStatic
         fun newInstance(routeName: String, params: HashMap<String, Any>? = null): FaradayFragment {
             val bundle = Bundle().apply {
                 putString(ROUTE_KEY, routeName)
