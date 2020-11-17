@@ -46,9 +46,7 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
-        val engine = FlutterEngine(context,null,false)
-        Faraday.registerPlugins(engine)
-        return engine
+        return Faraday.provideEngine(context)
     }
 
 

@@ -32,12 +32,18 @@ object Faraday {
         this.commonHandler = commonHandler
     }
 
-    internal fun registerPlugins(engine: FlutterEngine) {
+    internal fun provideEngine(context: Context): FlutterEngine {
+        val engine = FlutterEngine(context, null, false)
+        registerPlugins(engine)
+        engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+        return engine
+    }
+
+    private fun registerPlugins(engine: FlutterEngine) {
         try {
             val generatedPluginRegistrant = Class.forName("io.flutter.plugins.GeneratedPluginRegistrant")
             val registrationMethod = generatedPluginRegistrant.getDeclaredMethod("registerWith", FlutterEngine::class.java)
             registrationMethod.invoke(null, engine)
-            engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
         } catch (e: Exception) {
             e.printStackTrace()
         }
