@@ -2,7 +2,6 @@ package com.yuxiaor.flutter.g_faraday
 
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
-import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -16,14 +15,10 @@ import java.lang.ref.WeakReference
 /** GFaradayPlugin */
 class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
-    private val channel by lazy {
-        MethodChannel(Faraday.engine.dartExecutor, "g_faraday").apply {
-            setMethodCallHandler(this@GFaradayPlugin)
-        }
-    }
-
+    private var channel: MethodChannel? = null
     private var navigator: FaradayNavigator? = null
     internal var binding: ActivityPluginBinding? = null
+
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
@@ -74,26 +69,41 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             data["args"] = args
         }
         data["seq"] = seq ?: -1
-        channel.invoke("pageCreate", data) {
+        channel?.invoke("pageCreate", data) {
             callback.invoke(it as Int)
         }
     }
 
     internal fun onPageShow(seqId: Int) {
-        channel.invokeMethod("pageShow", seqId)
+        channel?.invokeMethod("pageShow", seqId)
     }
 
     internal fun onPageHidden(seqId: Int) {
-        channel.invokeMethod("pageHidden", seqId)
+        channel?.invokeMethod("pageHidden", seqId)
     }
 
     internal fun onPageDealloc(seqId: Int) {
-        channel.invokeMethod("pageDealloc", seqId)
+        channel?.invokeMethod("pageDealloc", seqId)
     }
 
 
+    override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        this.navigator = Faraday.navigator
+        channel = MethodChannel(binding.binaryMessenger, "g_faraday")
+        channel?.setMethodCallHandler(this)
+        Faraday.pluginRef = WeakReference(this)
+
+        Faraday.netHandler?.let {
+            MethodChannel(binding.binaryMessenger, "g_faraday/net").setMethodCallHandler(it)
+        }
+        Faraday.commonHandler?.let {
+            MethodChannel(binding.binaryMessenger, "g_faraday/common").setMethodCallHandler(it)
+        }
+        FaradayNotification.init(MethodChannel(binding.binaryMessenger, "g_faraday/notification"))
+    }
+
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-        channel.setMethodCallHandler(null)
+        channel?.setMethodCallHandler(null)
     }
 
 
@@ -101,17 +111,11 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         this.binding = binding
     }
 
-    override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        this.navigator = Faraday.navigator
-        Faraday.pluginRef = WeakReference(this)
-    }
-
-
-    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    }
-
     override fun onDetachedFromActivity() {
         this.binding = null
+    }
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
     }
 
     override fun onDetachedFromActivityForConfigChanges() {

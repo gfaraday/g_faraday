@@ -4,10 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
-import com.yuxiaor.flutter.g_faraday.channels.CommonChannel
-import com.yuxiaor.flutter.g_faraday.channels.FaradayNotice
-import com.yuxiaor.flutter.g_faraday.channels.NetChannel
-import com.yuxiaor.flutter.g_faraday.channels.NetHandler
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.plugin.common.MethodChannel
@@ -22,61 +18,29 @@ import java.util.concurrent.atomic.AtomicInteger
 object Faraday {
 
     private val nextCode = AtomicInteger()
-
-    @JvmStatic
-    lateinit var engine: FlutterEngine
-        private set
-
     internal var pluginRef: WeakReference<GFaradayPlugin>? = null
     internal val plugin: GFaradayPlugin?
         get() = pluginRef?.get()
 
     internal lateinit var navigator: FaradayNavigator
+    internal var netHandler: MethodChannel.MethodCallHandler? = null
+    internal var commonHandler: MethodChannel.MethodCallHandler? = null
 
-    /**
-     *  init engine
-     *
-     *  @param context Application Context
-     *  @param navigator handle native route
-     *  @param automaticallyRegisterPlugins If plugins are automatically
-     * registered, then they are registered during the execution of this constructor
-     *
-     *  @return true if plugins registered otherwise return false.
-     *
-     *  @sample
-     *  if (!Faraday.initEngine(this, MyFlutterNavigator())) {
-     *       GeneratedPluginRegister.registerGeneratedPlugins(Faraday.engine)
-     *   }
-     *
-     */
-    @JvmStatic
-    fun initEngine(context: Context, navigator: FaradayNavigator, automaticallyRegisterPlugins: Boolean = true): Boolean {
-        // 这个navigator 必须先初始化 不能动
+    fun init(navigator: FaradayNavigator, netHandler: MethodChannel.MethodCallHandler? = null, commonHandler: MethodChannel.MethodCallHandler? = null) {
         this.navigator = navigator
-        engine = FlutterEngine(context, null, automaticallyRegisterPlugins)
-        if (plugin != null) {
-            if (!engine.dartExecutor.isExecutingDart) {
-                engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
-            }
-            return true
+        this.netHandler = netHandler
+        this.commonHandler = commonHandler
+    }
+
+    internal fun registerPlugins(engine: FlutterEngine) {
+        try {
+            val generatedPluginRegistrant = Class.forName("io.flutter.plugins.GeneratedPluginRegistrant")
+            val registrationMethod = generatedPluginRegistrant.getDeclaredMethod("registerWith", FlutterEngine::class.java)
+            registrationMethod.invoke(null, engine)
+            engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        return false
-    }
-
-    /**
-     * To handle network form flutter on native side
-     */
-    @JvmStatic
-    fun setNetHandler(handler: NetHandler) {
-        NetChannel(engine.dartExecutor, handler)
-    }
-
-    /**
-     * To handle common events form flutter
-     */
-    @JvmStatic
-    fun setCommonHandler(handler: MethodChannel.MethodCallHandler) {
-        CommonChannel(engine.dartExecutor, handler)
     }
 
     /**
@@ -137,24 +101,4 @@ object Faraday {
     fun openFlutterForResult(activity: Activity, routeName: String, requestCode: Int, params: HashMap<String, Any>? = null) {
         activity.startActivityForResult(FaradayActivity.build(activity, routeName, params), requestCode)
     }
-
-
-    /**
-     * post notification  form native to flutter
-     */
-    fun postNotification(key: String, arguments: Any?) {
-        FaradayNotice.post(key, arguments)
-    }
-
-    /**
-     * receive notification from flutter
-     */
-    fun registerNotification(key: String, callback: (arguments: Any?) -> Unit) {
-        FaradayNotice.register(key, callback)
-    }
-
-    fun unregisterNotification(key: String) {
-        FaradayNotice.unregister(key)
-    }
-
 }

@@ -58,6 +58,13 @@ class _HomePageState extends State<HomePage> {
                   )),
                 ),
                 button(
+                  "open Flutter in New Container",
+                  () => Navigator.of(context).nativePushNamed(
+                    'first_page',
+                    options: {'flutter': true},
+                  ),
+                ),
+                button(
                   "open willScope flutter page",
                   () => Navigator.of(context)
                       .push(CupertinoPageRoute(

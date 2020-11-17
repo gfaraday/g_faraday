@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import com.yuxiaor.flutter.g_faraday.Faraday
+import com.yuxiaor.flutter.g_faraday.FaradayActivity
 import com.yuxiaor.flutter.g_faraday.FaradayNavigator
 import java.io.Serializable
 
@@ -25,6 +26,13 @@ class MyFlutterNavigator : FaradayNavigator {
      * @param callback  onActivityResult callback
      */
     override fun push(name: String, arguments: Serializable?, options: HashMap<String, *>?, callback: (result: HashMap<String, *>?) -> Unit) {
+        val isFlutter = options?.get("flutter") == true
+        if (isFlutter) {
+            Faraday.getCurrentActivity()?.apply {
+                startActivity(FaradayActivity.build(this, name, arguments))
+            }
+            return
+        }
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(name)
         intent.putExtra(KEY_ARGS, arguments)

@@ -12,8 +12,9 @@ import io.flutter.embedding.engine.FlutterEngine
  * Date: 2020-09-07
  * Description:
  */
-class FaradayFragment private constructor() : FlutterFragment(), ResultProvider {
+class FaradayFragment : FlutterFragment(), ResultProvider {
 
+    private val engine by lazy { FlutterEngine(requireContext(), null, false) }
     private var seqId: Int? = null
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
@@ -33,9 +34,13 @@ class FaradayFragment private constructor() : FlutterFragment(), ResultProvider 
         }
     }
 
+    override fun onAttach(context: Context) {
+        Faraday.registerPlugins(engine)
+        super.onAttach(context)
+    }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
-        return Faraday.engine
+        return engine
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

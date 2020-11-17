@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import java.io.Serializable
 
 /**
  * Author: Edward
@@ -13,6 +14,7 @@ import io.flutter.embedding.engine.FlutterEngine
  */
 class FaradayActivity : FlutterActivity(), ResultProvider {
 
+    private val engine by lazy { FlutterEngine(this, null, false) }
     private var seqId: Int? = null
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
@@ -21,12 +23,17 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
         private const val ARGS_KEY = "_flutter_args"
         private const val ROUTE_KEY = "_flutter_route"
 
-        fun build(context: Context, routeName: String, params: HashMap<String, Any>? = null): Intent {
+        fun build(context: Context, routeName: String, params: Serializable? = null): Intent {
             return Intent(context, FaradayActivity::class.java).apply {
                 putExtra(ROUTE_KEY, routeName)
                 putExtra(ARGS_KEY, params)
             }
         }
+    }
+
+    override fun onAttachedToWindow() {
+        Faraday.registerPlugins(engine)
+        super.onAttachedToWindow()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +52,7 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
-        return Faraday.engine
+        return engine
     }
 
 

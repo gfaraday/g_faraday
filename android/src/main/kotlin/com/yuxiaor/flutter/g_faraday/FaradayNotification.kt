@@ -1,6 +1,5 @@
-package com.yuxiaor.flutter.g_faraday.channels
+package com.yuxiaor.flutter.g_faraday
 
-import com.yuxiaor.flutter.g_faraday.Faraday
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
@@ -9,13 +8,14 @@ import io.flutter.plugin.common.MethodChannel
  * Date: 2020-09-28
  * Description:通知
  */
-internal object FaradayNotice : MethodChannel.MethodCallHandler {
+object FaradayNotification : MethodChannel.MethodCallHandler {
 
     private val notifications = hashMapOf<String, NotificationCallback>()
-    private val channel = MethodChannel(Faraday.engine.dartExecutor, "g_faraday/notification")
 
+    private var channel: MethodChannel? = null
 
-    init {
+    internal fun init(channel: MethodChannel) {
+        FaradayNotification.channel = channel
         channel.setMethodCallHandler(this)
     }
 
@@ -24,7 +24,7 @@ internal object FaradayNotice : MethodChannel.MethodCallHandler {
      * 发送通知  native -> flutter
      */
     fun post(key: String, arguments: Any?) {
-        channel.invokeMethod(key, arguments)
+        channel?.invokeMethod(key, arguments)
     }
 
     /**
