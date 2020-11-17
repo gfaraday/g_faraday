@@ -32,6 +32,7 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        flutterEngine?.let { Faraday.registerPlugins(it) }
         createFlutterPage()
     }
 
@@ -44,11 +45,6 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
             Faraday.plugin?.onPageShow(it)
         }
     }
-
-    override fun provideFlutterEngine(context: Context): FlutterEngine? {
-        return Faraday.provideEngine(context)
-    }
-
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         //ignore

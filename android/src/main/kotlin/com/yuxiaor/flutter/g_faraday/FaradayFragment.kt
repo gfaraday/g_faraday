@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterFragment
 import io.flutter.embedding.android.TransparencyMode
-import io.flutter.embedding.engine.FlutterEngine
 
 /**
  * Author: Edward
@@ -32,8 +31,9 @@ class FaradayFragment : FlutterFragment(), ResultProvider {
         }
     }
 
-    override fun provideFlutterEngine(context: Context): FlutterEngine? {
-        return Faraday.provideEngine(context)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        flutterEngine?.let { Faraday.registerPlugins(it) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
