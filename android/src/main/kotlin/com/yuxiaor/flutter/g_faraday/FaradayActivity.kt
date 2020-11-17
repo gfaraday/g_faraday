@@ -14,7 +14,6 @@ import java.io.Serializable
  */
 class FaradayActivity : FlutterActivity(), ResultProvider {
 
-    private val engine by lazy { FlutterEngine(this, null, false) }
     private var seqId: Int? = null
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
@@ -29,11 +28,6 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
                 putExtra(ARGS_KEY, params)
             }
         }
-    }
-
-    override fun onAttachedToWindow() {
-        Faraday.registerPlugins(engine)
-        super.onAttachedToWindow()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +46,8 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
+        val engine = FlutterEngine(context,null,false)
+        Faraday.registerPlugins(engine)
         return engine
     }
 

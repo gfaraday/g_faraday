@@ -14,7 +14,6 @@ import io.flutter.embedding.engine.FlutterEngine
  */
 class FaradayFragment : FlutterFragment(), ResultProvider {
 
-    private val engine by lazy { FlutterEngine(requireContext(), null, false) }
     private var seqId: Int? = null
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
@@ -34,12 +33,9 @@ class FaradayFragment : FlutterFragment(), ResultProvider {
         }
     }
 
-    override fun onAttach(context: Context) {
-        Faraday.registerPlugins(engine)
-        super.onAttach(context)
-    }
-
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
+        val engine = FlutterEngine(context, null, false)
+        Faraday.registerPlugins(engine)
         return engine
     }
 
