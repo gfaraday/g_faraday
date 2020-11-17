@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicInteger
@@ -18,22 +18,25 @@ import java.util.concurrent.atomic.AtomicInteger
 object Faraday {
 
     private val nextCode = AtomicInteger()
-    internal var pluginRef: WeakReference<GFaradayPlugin>? = null
-    internal val plugin: GFaradayPlugin?
-        get() = pluginRef?.get()
+    internal var navigator: FaradayNavigator? = null
+    private var pluginRef: WeakReference<GFaradayPlugin>? = null
+    private var netHandler: MethodChannel.MethodCallHandler? = null
+    private var commonHandler: MethodChannel.MethodCallHandler? = null
 
-    internal lateinit var navigator: FaradayNavigator
-    internal var netHandler: MethodChannel.MethodCallHandler? = null
-    internal var commonHandler: MethodChannel.MethodCallHandler? = null
-
-    fun init(navigator: FaradayNavigator, netHandler: MethodChannel.MethodCallHandler? = null, commonHandler: MethodChannel.MethodCallHandler? = null) {
+    fun init(navigator: FaradayNavigator) {
         this.navigator = navigator
+    }
+
+    fun setNetHandler(netHandler: MethodChannel.MethodCallHandler) {
         this.netHandler = netHandler
+    }
+
+    fun setCommonHandler(commonHandler: MethodChannel.MethodCallHandler) {
         this.commonHandler = commonHandler
     }
 
 //    internal fun provideEngine(context: Context): FlutterEngine {
-//        val engine = FlutterEngine(context, null, true)
+//        val engine = FlutterEngine(context, null, false)
 //        registerPlugins(engine)
 //        engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
 //        return engine
@@ -49,11 +52,26 @@ object Faraday {
         }
     }
 
+    internal fun onAttachPlugin(plugin: GFaradayPlugin, binaryMessenger: BinaryMessenger) {
+        pluginRef = WeakReference(plugin)
+        netHandler?.let {
+            MethodChannel(binaryMessenger, "g_faraday/net").setMethodCallHandler(it)
+        }
+        commonHandler?.let {
+            MethodChannel(binaryMessenger, "g_faraday/common").setMethodCallHandler(it)
+        }
+        FaradayNotification.init(MethodChannel(binaryMessenger, "g_faraday/notification"))
+    }
+
+    internal fun getPlugin(): GFaradayPlugin? {
+        return pluginRef?.get()
+    }
+
     /**
      * The current flutter container Activity
      */
     fun getCurrentActivity(): Activity? {
-        return plugin?.binding?.activity
+        return getPlugin()?.getBindingActivity()
     }
 
     /**

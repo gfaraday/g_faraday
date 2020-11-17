@@ -14,6 +14,7 @@ import java.io.Serializable
  */
 class FaradayActivity : FlutterActivity(), ResultProvider {
 
+    private val plugin by lazy { Faraday.getPlugin() }
     private var seqId: Int? = null
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
@@ -40,9 +41,9 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
         val route = intent.getStringExtra(ROUTE_KEY)
         require(route != null) { "route must not be null!" }
         val args = intent.getSerializableExtra(ARGS_KEY)
-        Faraday.plugin?.onPageCreate(route, args, seqId) {
+        plugin?.onPageCreate(route, args, seqId) {
             seqId = it
-            Faraday.plugin?.onPageShow(it)
+            plugin?.onPageShow(it)
         }
     }
 
@@ -52,17 +53,17 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
 
     override fun onResume() {
         super.onResume()
-        seqId?.let { Faraday.plugin?.onPageShow(it) }
+        seqId?.let { plugin?.onPageShow(it) }
     }
 
     override fun onPause() {
         super.onPause()
-        seqId?.let { Faraday.plugin?.onPageHidden(it) }
+        seqId?.let { plugin?.onPageHidden(it) }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        seqId?.let { Faraday.plugin?.onPageDealloc(it) }
+        seqId?.let { plugin?.onPageDealloc(it) }
     }
 
     override fun addResultListener(resultListener: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {

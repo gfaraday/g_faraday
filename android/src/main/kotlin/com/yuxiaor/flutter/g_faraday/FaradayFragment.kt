@@ -13,6 +13,7 @@ import io.flutter.embedding.android.TransparencyMode
  */
 class FaradayFragment : FlutterFragment(), ResultProvider {
 
+    private val plugin by lazy { Faraday.getPlugin() }
     private var seqId: Int? = null
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
@@ -45,39 +46,39 @@ class FaradayFragment : FlutterFragment(), ResultProvider {
         val route = arguments?.getString(ROUTE_KEY)
         require(route != null) { "route must not be null!" }
         val args = arguments?.getSerializable(ARGS_KEY)
-        Faraday.plugin?.onPageCreate(route, args, seqId) {
+        plugin?.onPageCreate(route, args, seqId) {
             seqId = it
-            Faraday.plugin?.onPageShow(it)
+            plugin?.onPageShow(it)
         }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) {
-            seqId?.let { Faraday.plugin?.onPageShow(it) }
+            seqId?.let { plugin?.onPageShow(it) }
         } else {
-            seqId?.let { Faraday.plugin?.onPageHidden(it) }
+            seqId?.let { plugin?.onPageHidden(it) }
         }
         super.onHiddenChanged(hidden)
     }
 
     override fun onResume() {
         super.onResume()
-        seqId?.let { Faraday.plugin?.onPageShow(it) }
+        seqId?.let { plugin?.onPageShow(it) }
     }
 
     override fun onPause() {
         super.onPause()
-        seqId?.let { Faraday.plugin?.onPageHidden(it) }
+        seqId?.let { plugin?.onPageHidden(it) }
     }
 
     override fun onDetach() {
         super.onDetach()
-        seqId?.let { Faraday.plugin?.onPageDealloc(it) }
+        seqId?.let { plugin?.onPageDealloc(it) }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        seqId?.let { Faraday.plugin?.onPageDealloc(it) }
+        seqId?.let { plugin?.onPageDealloc(it) }
     }
 
     override fun shouldAttachEngineToActivity(): Boolean {

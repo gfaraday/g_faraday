@@ -1,5 +1,6 @@
 package com.yuxiaor.flutter.g_faraday
 
+import android.app.Activity
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -10,15 +11,13 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import java.io.Serializable
-import java.lang.ref.WeakReference
 
 /** GFaradayPlugin */
 class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private var channel: MethodChannel? = null
     private var navigator: FaradayNavigator? = null
-    internal var binding: ActivityPluginBinding? = null
-
+    private var binding: ActivityPluginBinding? = null
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
@@ -62,6 +61,10 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
     }
 
+    fun getBindingActivity(): Activity? {
+        return binding?.activity
+    }
+
     internal fun onPageCreate(route: String, args: Any?, seq: Int?, callback: (seqId: Int) -> Unit) {
         val data = hashMapOf<String, Any>()
         data["name"] = route
@@ -91,15 +94,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         this.navigator = Faraday.navigator
         channel = MethodChannel(binding.binaryMessenger, "g_faraday")
         channel?.setMethodCallHandler(this)
-        Faraday.pluginRef = WeakReference(this)
-
-        Faraday.netHandler?.let {
-            MethodChannel(binding.binaryMessenger, "g_faraday/net").setMethodCallHandler(it)
-        }
-        Faraday.commonHandler?.let {
-            MethodChannel(binding.binaryMessenger, "g_faraday/common").setMethodCallHandler(it)
-        }
-        FaradayNotification.init(MethodChannel(binding.binaryMessenger, "g_faraday/notification"))
+        Faraday.onAttachPlugin(this, binding.binaryMessenger)
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
