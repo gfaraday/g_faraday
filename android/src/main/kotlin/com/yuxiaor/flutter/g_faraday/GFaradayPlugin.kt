@@ -92,6 +92,9 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         this.navigator = Faraday.navigator
+        require(navigator != null) {
+            "FaradayNavigator must not be null.Please init the navigator by invoke 'Faraday.init()'"
+        }
         channel = MethodChannel(binding.binaryMessenger, "g_faraday")
         channel?.setMethodCallHandler(this)
         Faraday.onAttachPlugin(this, binding.binaryMessenger)
