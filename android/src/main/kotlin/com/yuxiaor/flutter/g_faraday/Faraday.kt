@@ -22,6 +22,7 @@ object Faraday {
     private var pluginRef: WeakReference<GFaradayPlugin>? = null
     private var netHandler: MethodChannel.MethodCallHandler? = null
     private var commonHandler: MethodChannel.MethodCallHandler? = null
+    var currentActivity: Activity? = null
 
     fun init(navigator: FaradayNavigator) {
         this.navigator = navigator
@@ -68,13 +69,6 @@ object Faraday {
     }
 
     /**
-     * The current flutter container Activity
-     */
-    fun getCurrentActivity(): Activity? {
-        return getPlugin()?.getBindingActivity()
-    }
-
-    /**
      * start native Activity,and request for Activity result
      */
     fun startNativeForResult(intent: Intent, callback: (result: HashMap<String, Any?>?) -> Unit) {
@@ -91,7 +85,7 @@ object Faraday {
     }
 
     fun startNativeForResult(intent: Intent, requestCode: Int, callback: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
-        val activity = getCurrentActivity()
+        val activity = currentActivity
 
         if (activity is ResultProvider) {
             activity.addResultListener(callback)

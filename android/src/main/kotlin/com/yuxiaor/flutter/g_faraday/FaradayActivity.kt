@@ -53,11 +53,13 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
 
     override fun onResume() {
         super.onResume()
+        Faraday.currentActivity = this
         seqId?.let { plugin?.onPageShow(it) }
     }
 
     override fun onPause() {
         super.onPause()
+        Faraday.currentActivity = null
         seqId?.let { plugin?.onPageHidden(it) }
     }
 

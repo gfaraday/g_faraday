@@ -1,11 +1,8 @@
 package com.yuxiaor.flutter.g_faraday
 
-import android.app.Activity
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.embedding.engine.plugins.activity.ActivityAware
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -13,11 +10,10 @@ import io.flutter.plugin.common.MethodChannel.Result
 import java.io.Serializable
 
 /** GFaradayPlugin */
-class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+class GFaradayPlugin : FlutterPlugin, MethodCallHandler {
 
     private var channel: MethodChannel? = null
     private var navigator: FaradayNavigator? = null
-    private var binding: ActivityPluginBinding? = null
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
@@ -44,7 +40,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success(null)
             }
             "reCreateLastPage" -> {
-                when (val activity = Faraday.getCurrentActivity()) {
+                when (val activity = Faraday.currentActivity) {
                     is FaradayActivity -> {
                         activity.createFlutterPage()
                     }
@@ -59,10 +55,6 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
             else -> result.notImplemented()
         }
-    }
-
-    fun getBindingActivity(): Activity? {
-        return binding?.activity
     }
 
     internal fun onPageCreate(route: String, args: Any?, seq: Int?, callback: (seqId: Int) -> Unit) {
@@ -102,21 +94,6 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel?.setMethodCallHandler(null)
-    }
-
-
-    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        this.binding = binding
-    }
-
-    override fun onDetachedFromActivity() {
-        this.binding = null
-    }
-
-    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    }
-
-    override fun onDetachedFromActivityForConfigChanges() {
     }
 
     private fun MethodChannel.invoke(method: String, arguments: Any?, callback: ((result: Any?) -> Unit)? = null) {

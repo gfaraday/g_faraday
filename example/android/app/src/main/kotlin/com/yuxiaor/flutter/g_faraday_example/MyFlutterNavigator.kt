@@ -28,7 +28,7 @@ class MyFlutterNavigator : FaradayNavigator {
     override fun push(name: String, arguments: Serializable?, options: HashMap<String, *>?, callback: (result: HashMap<String, *>?) -> Unit) {
         val isFlutter = options?.get("flutter") == true
         if (isFlutter) {
-            Faraday.getCurrentActivity()?.apply {
+            Faraday.currentActivity?.apply {
                 startActivity(FaradayActivity.build(this, name, arguments))
             }
             return
@@ -44,7 +44,7 @@ class MyFlutterNavigator : FaradayNavigator {
      * @param result data from flutter to native
      */
     override fun pop(result: Serializable?) {
-        val activity = Faraday.getCurrentActivity() ?: return
+        val activity = Faraday.currentActivity ?: return
         if (result != null) {
             activity.setResult(Activity.RESULT_OK, Intent().apply { putExtra(KEY_ARGS, result) })
         }
