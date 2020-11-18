@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:g_faraday/g_faraday.dart';
 
-import 'second_page.dart';
-
 class FirstPage extends StatefulWidget {
   final int value;
 
@@ -27,69 +25,62 @@ class _FirstPageState extends State<FirstPage> {
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Plugin example app'),
       ),
-      child: WillPopScope(
-        onWillPop: () {
-          showDialog(context);
-          return Future.value(false);
-        },
-        child: SafeArea(
-          child: Container(
-            child: Center(
-              child: Column(children: [
-                CupertinoButton(
-                    child: Text('value: $c'),
-                    onPressed: () {
-                      setState(() {
-                        c++;
-                      });
-                    }),
-                CupertinoButton.filled(
-                  child: Text('replace with native'),
+      child: SafeArea(
+        child: Container(
+          child: Center(
+            child: Column(children: [
+              CupertinoButton(
+                  child: Text('value: $c'),
+                  onPressed: () {
+                    setState(() {
+                      c++;
+                    });
+                  }),
+              CupertinoButton.filled(
+                child: Text('replace with native'),
+                onPressed: () => Navigator.of(context)
+                    .pushReplacementNamed('native://native_page_first')
+                    .then((r) => showResult(r)),
+              ),
+              CupertinoButton(
+                child: Text('push native'),
+                onPressed: () => Navigator.of(context)
+                    .pushNamed('native://native_page_first')
+                    .then((r) => showResult(r)),
+              ),
+              CupertinoButton.filled(
+                child: Text('push'),
+                onPressed: () => Navigator.of(context)
+                    .push(CupertinoPageRoute(
+                        builder: (context) => FirstPage(c + 1)))
+                    .then((r) => showResult(r)),
+              ),
+              CupertinoButton(
+                  child: Text('pop'),
+                  onPressed: () => Navigator.of(context).pop('pop flutter')),
+              CupertinoButton.filled(
+                  child: Text('popAndPush'),
                   onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed('native://native_page_first')
-                      .then((r) => showResult(r)),
-                ),
-                CupertinoButton(
-                  child: Text('push native'),
-                  onPressed: () => Navigator.of(context)
-                      .pushNamed('native://native_page_first')
-                      .then((r) => showResult(r)),
-                ),
-                CupertinoButton.filled(
-                  child: Text('push'),
-                  onPressed: () => Navigator.of(context)
-                      .push(CupertinoPageRoute(
-                          builder: (context) => FirstPage(c + 1)))
-                      .then((r) => showResult(r)),
-                ),
-                CupertinoButton(
-                    child: Text('pop'),
-                    onPressed: () => Navigator.of(context).pop('pop flutter')),
-                CupertinoButton.filled(
-                    child: Text('popAndPush'),
-                    onPressed: () => Navigator.of(context).popAndPushNamed(
-                        'home',
-                        result: 'pop popAndPushNamed')),
-                CupertinoButton(
-                    child: Text('pop to native'),
-                    onPressed: () =>
-                        Navigator.of(context).nativePop('pop popUntilNative')),
-                CupertinoButton(
-                  child: Text('open widget from root navigator'),
+                      .popAndPushNamed('home', result: 'pop popAndPushNamed')),
+              CupertinoButton(
+                  child: Text('pop to native'),
                   onPressed: () =>
-                      Navigator.of(context, rootNavigator: true).push(
-                    CupertinoPageRoute(
-                      builder: (ctx) => CupertinoPageScaffold(
-                        child: CupertinoButton.filled(
-                          child: Text('pop'),
-                          onPressed: () => Navigator.of(ctx).pop(),
-                        ),
+                      Navigator.of(context).nativePop('pop popUntilNative')),
+              CupertinoButton(
+                child: Text('open widget from root navigator'),
+                onPressed: () =>
+                    Navigator.of(context, rootNavigator: true).push(
+                  CupertinoPageRoute(
+                    builder: (ctx) => CupertinoPageScaffold(
+                      child: CupertinoButton.filled(
+                        child: Text('pop'),
+                        onPressed: () => Navigator.of(ctx).pop(),
                       ),
                     ),
                   ),
                 ),
-              ]),
-            ),
+              ),
+            ]),
           ),
         ),
       ),

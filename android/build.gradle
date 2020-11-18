@@ -9,7 +9,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        //noinspection GradleDependency
+        classpath 'com.android.tools.build:gradle:3.5.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -25,13 +26,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion 29
+//    buildToolsVersion "29.0.3"
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 23
     }
     lintOptions {
         disable 'InvalidPackage'

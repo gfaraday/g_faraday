@@ -27,10 +27,10 @@ class _HomePageState extends State<HomePage> {
     return CupertinoPageScaffold(
       child: SafeArea(
         child: WillPopScope(
-          onWillPop: () {
+          onWillPop: () async {
             //拦截返回键
-            showDialog(context);
-            return Future.value(false);
+            final result = await showDialog(context);
+            return Future.value(result != null);
           },
           child: Container(
             color: CupertinoColors.white,
@@ -68,8 +68,10 @@ class _HomePageState extends State<HomePage> {
                     });
                   }),
                 ),
-                button('open first page',
-                    () => Navigator.of(context).pushNamed('first_page')),
+                button(
+                    'open first page',
+                    () => Navigator.of(context).nativePushNamed('first_page',
+                        options: {'is_flutter_route': true})),
                 SizedBox(height: 16),
                 Text(info),
               ],

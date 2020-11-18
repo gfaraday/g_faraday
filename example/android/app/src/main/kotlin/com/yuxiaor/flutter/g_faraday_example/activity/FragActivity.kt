@@ -17,7 +17,7 @@ class FragActivity : AppCompatActivity() {
 
     private var tempFragment: Fragment? = null
     private val flutterFrag1 = FaradayFragment.newInstance("home")
-    private val flutterFrag2 = FaradayFragment.newInstance("flutter_tab_1")
+    private val flutterFrag2 = FaradayFragment.newInstance("flutter_frag")
     private val nativeFrag1 = TestFragment.newInstance("native frag 1")
     private val nativeFrag2 = TestFragment.newInstance("native frag 2")
 
