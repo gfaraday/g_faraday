@@ -1,10 +1,10 @@
 package com.yuxiaor.flutter.g_faraday
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import io.flutter.embedding.android.FlutterActivity
+import android.os.Bundle
+import android.os.PersistableBundle
+//import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.XFlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import java.io.Serializable
@@ -14,7 +14,7 @@ import java.io.Serializable
  * Date: 2020-09-01
  * Description:
  */
-class FaradayActivity : FlutterActivity(), ResultProvider {
+class FaradayActivity : XFlutterActivity(), ResultProvider {
 
     private var seqId: Int? = null
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
@@ -51,39 +51,17 @@ class FaradayActivity : FlutterActivity(), ResultProvider {
         return Faraday.engine
     }
 
-//    override fun detachFromFlutterEngine() {
-//        // 阻止 engine release 相关资源
-//    }
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+    }
 
-//    override fun shouldAttachEngineToActivity(): Boolean {
-//        return false
-//    }
-//
-//    override fun shouldDestroyEngineWithHost(): Boolean {
-//        return false
-//    }
-//
+    override fun shouldDestroyEngineWithHost(): Boolean {
+        return false
+    }
+
     override fun onResume() {
-//        flutterEngine?.activityControlSurface?.attachToActivity(this, lifecycle)
         super.onResume()
         seqId?.let { Faraday.plugin?.onPageShow(it) }
     }
-
-    override fun onStart() {
-
-        super.onStart()
-    }
-
-//
-//    override fun onStop() {
-//        super.onStop()
-//        if (isChangingConfigurations) {
-//            flutterEngine?.activityControlSurface?.detachFromActivityForConfigChanges()
-//        } else {
-//            flutterEngine?.activityControlSurface?.detachFromActivity()
-//        }
-//
-//    }
 
     override fun onDestroy() {
         seqId?.let { Faraday.plugin?.onPageDealloc(it) }
