@@ -36,7 +36,7 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 
 ## Requirements
 
-- Flutter 1.22.3
+- Flutter 1.23.0-18.1.pre *flutter channel beta*
 - iOS 10.0+ Xcode 12.0+ Swift 5.1+
 - Android minSdkVersion 16 Kotlin 1.4.10+
 

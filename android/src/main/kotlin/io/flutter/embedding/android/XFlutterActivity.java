@@ -13,7 +13,7 @@ import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.EXTRA_CA
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.EXTRA_DESTROY_ENGINE_WITH_ACTIVITY;
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.EXTRA_ENABLE_STATE_RESTORATION;
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.EXTRA_INITIAL_ROUTE;
-import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.HANDLE_DEEPLINKING_META_DATA_KEY;
+//import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.HANDLE_DEEPLINKING_META_DATA_KEY;
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.INITIAL_ROUTE_META_DATA_KEY;
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.NORMAL_THEME_META_DATA_KEY;
 import static io.flutter.embedding.android.FlutterActivityLaunchConfigs.SPLASH_SCREEN_META_DATA_KEY;
@@ -982,19 +982,19 @@ public class XFlutterActivity extends Activity
      * getInitialRoute} returns null.
      *
      * <p>The default implementation looks {@code <meta-data>} called {@link
-     * FlutterActivityLaunchConfigs#HANDLE_DEEPLINKING_META_DATA_KEY} within the Android manifest
+     * FlutterActivityLaunchConfigs# HANDLE_DEEPLINKING_META_DATA_KEY} within the Android manifest
      * definition for this {@code XFlutterActivity}.
      */
     @Override
     public boolean shouldHandleDeeplinking() {
-        try {
-            Bundle metaData = getMetaData();
-            boolean shouldHandleDeeplinking =
-                    metaData != null ? metaData.getBoolean(HANDLE_DEEPLINKING_META_DATA_KEY) : false;
-            return shouldHandleDeeplinking;
-        } catch (PackageManager.NameNotFoundException e) {
+//        try {
+//            Bundle metaData = getMetaData();
+//            boolean shouldHandleDeeplinking =
+//                    metaData != null ? metaData.getBoolean(HANDLE_DEEPLINKING_META_DATA_KEY) : false;
+//            return shouldHandleDeeplinking;
+//        } catch (PackageManager.NameNotFoundException e) {
             return false;
-        }
+//        }
     }
 
     @Override
