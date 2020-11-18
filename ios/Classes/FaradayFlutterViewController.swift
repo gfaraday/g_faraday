@@ -109,7 +109,7 @@ open class FaradayFlutterViewController: FlutterViewController {
             navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         }
         
-        if let s = seq {
+        if seq != nil {
             isShowing = false
 //            Faraday.sendPageState(.hiden(s)) { r in
 //                let succeed = r as? Bool ?? false
