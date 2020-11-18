@@ -1,4 +1,9 @@
-# 0.4.0
+# 0.4.1-pre.0
+
+* Remove Page.Hidden event
+* Custom FlutterActivity
+
+## 0.4.0
 
 * Support hybrid route stack.
 * Automatically handle ios navigation bar hidden/show.
