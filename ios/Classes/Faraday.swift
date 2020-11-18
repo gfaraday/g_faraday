@@ -229,7 +229,7 @@ extension Faraday {
         
         case create(String, Any?, Int?) // name, arguments, seq
         case show(Int) // seq
-        case hiden(Int) // seq
+//        case hiden(Int) // seq
         case dealloc(Int) //seq
         
         var info: (String, Any?) {
@@ -238,8 +238,8 @@ extension Faraday {
                 return ("pageCreate", ["name": name, "args": arguments, "seq": seq ?? -1])
             case .show(let seq):
                 return ("pageShow", seq)
-            case .hiden(let seq):
-                return ("pageHidden", seq)
+//            case .hiden(let seq):
+//                return ("pageHidden", seq)
             case .dealloc(let seq):
                 return ("pageDealloc", seq)
             }
