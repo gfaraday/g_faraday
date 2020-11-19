@@ -100,7 +100,7 @@ public class Faraday {
                 self.disableHorizontalSwipePopGesture(arguments: call.arguments, callback: result)
             } else if (call.method == "reCreateLastPage") {
                 let vc = self.currentFlutterViewController
-                result(vc?.seq)
+                result(vc?.id)
                 vc?.createFlutterPage()
             }
         })
@@ -227,33 +227,33 @@ extension Faraday {
 
     enum PageState {
         
-        case create(String, Any?, Int?) // name, arguments, seq
-        case show(Int) // seq
-//        case hiden(Int) // seq
-        case dealloc(Int) //seq
+        case create(String, Any?, Int) // name, arguments, seq
+        case show(Int) // id
+//        case hiden(Int) // id
+        case dealloc(Int) //id
         
         var info: (String, Any?) {
             switch self {
-            case .create(let name, let arguments, let seq):
-                return ("pageCreate", ["name": name, "args": arguments, "seq": seq ?? -1])
-            case .show(let seq):
-                return ("pageShow", seq)
+            case .create(let name, let arguments, let id):
+                return ("pageCreate", ["name": name, "args": arguments, "id": id])
+            case .show(let id):
+                return ("pageShow", id)
 //            case .hiden(let seq):
 //                return ("pageHidden", seq)
-            case .dealloc(let seq):
-                return ("pageDealloc", seq)
+            case .dealloc(let id):
+                return ("pageDealloc", id)
             }
         }
     }
     
-    static func sendPageState(_ state: Faraday.PageState, result: @escaping (Any?) -> Void) {
+    static func sendPageState(_ state: Faraday.PageState, result: @escaping (Bool) -> Void) {
         let faraday = Faraday.default
         let info = state.info;
         faraday.channel?.invokeMethod(info.0, arguments: info.1, result: { r in
             if (r is FlutterError) {
                 fatalError((r as! FlutterError).message ?? "unkonwn error")
             } else {
-                result(r)
+                result(r as? Bool ?? false)
             }
         })
     }

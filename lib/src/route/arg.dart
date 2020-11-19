@@ -8,9 +8,9 @@ class FaradayArguments {
   final GlobalKey key;
   final Object arguments;
   final String name;
-  final int seq;
+  final int id;
   final observer = FaradayNavigatorObserver();
 
-  FaradayArguments(this.arguments, this.name, this.seq)
-      : key = GlobalKey(debugLabel: 'seq: $seq');
+  FaradayArguments(this.arguments, this.name, this.id)
+      : key = GlobalKey(debugLabel: 'id: $id');
 }

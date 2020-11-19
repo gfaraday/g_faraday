@@ -13,13 +13,13 @@ open class FaradayFlutterViewController: FlutterViewController {
     public let name: String
     public let arguments: Any?
     
+    let id: Int
+    
     private var callback: ((Any?) -> ())?
     
     private var isShowing = false
     private weak var previousFlutterViewController: FaradayFlutterViewController?
-    
-    var seq: Int?
-    
+        
     public init(_ name: String, arguments: Any? = nil, engine: FlutterEngine? = nil, callback: ((Any?) -> ())? = nil) {
         self.name = name
         self.arguments = arguments
@@ -31,6 +31,8 @@ open class FaradayFlutterViewController: FlutterViewController {
                 
         previousFlutterViewController = rawEngine.viewController as? FaradayFlutterViewController
         rawEngine.viewController = nil
+        
+        self.id = rawEngine.fa.generateNewId()
         super.init(engine: rawEngine, nibName: nil, bundle: nil)
         isShowing = true
         createFlutterPage()
@@ -41,10 +43,7 @@ open class FaradayFlutterViewController: FlutterViewController {
     }
     
     func createFlutterPage() {
-        Faraday.sendPageState(.create(name, arguments, seq)) { [weak self] r in
-            self?.seq = r as? Int
-            debugPrint("seq: \(r!) create page succeed")
-        }
+        Faraday.sendPageState(.create(name, arguments, id)) { _ in }
     }
     
     weak var interactivePopGestureRecognizerDelegate: UIGestureRecognizerDelegate?
@@ -73,14 +72,9 @@ open class FaradayFlutterViewController: FlutterViewController {
     }
     
     open override func viewWillAppear(_ animated: Bool) {
-        if let s = seq {
-            engine?.viewController = self
-            isShowing = true
-            Faraday.sendPageState(.show(s)) { r in
-                let succeed = r as? Bool ?? false
-                debugPrint("seq: \(s) send pageState `show` \(succeed ? "succeed" : "failed")")
-            }
-        }
+        engine?.viewController = self
+        isShowing = true
+        Faraday.sendPageState(.show(id)) { _ in }
         super.viewWillAppear(animated)
     }
     
@@ -106,27 +100,19 @@ open class FaradayFlutterViewController: FlutterViewController {
         //
         if (interactivePopGestureRecognizerDelegate != nil) {
             navigationController?.interactivePopGestureRecognizer?.delegate = interactivePopGestureRecognizerDelegate
-            navigationController?.interactivePopGestureRecognizer?.isEnabled = (navigationController?.viewControllers.count ?? 0) > 1
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         }
         
-        if seq != nil {
-            isShowing = false
-//            Faraday.sendPageState(.hiden(s)) { r in
-//                let succeed = r as? Bool ?? false
-//                debugPrint("seq: \(s) send pageState `hiden` \(succeed ? "succeed" : "failed")")
-//            }
-        }
+        isShowing = false
+//        Faraday.sendPageState(.hiden(id)) { r in
+//            let succeed = r as? Bool ?? false
+//            debugPrint("id: \(id) send pageState `hiden` \(succeed ? "succeed" : "failed")")
+//        }
         super.viewDidAppear(animated)
     }
             
     deinit {
-        if let s = seq {
-            Faraday.sendPageState(.dealloc(s)) { r in
-                let succeed = r as? Bool ?? false
-                debugPrint("seq: \(s) send pageState `dealloc` \(succeed ? "succeed" : "failed")")
-            }
-        }
-        debugPrint("faraday flutter deinit")
+        Faraday.sendPageState(.dealloc(id)) { _ in }
+        debugPrint("faraday flutter deinit \(name) \(id)")
     }
 }
-
