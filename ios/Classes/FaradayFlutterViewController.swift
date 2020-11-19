@@ -34,6 +34,7 @@ open class FaradayFlutterViewController: FlutterViewController {
         
         self.id = rawEngine.fa.generateNewId()
         super.init(engine: rawEngine, nibName: nil, bundle: nil)
+        modalPresentationStyle = .overFullScreen
         isShowing = true
         createFlutterPage()
     }
@@ -68,7 +69,7 @@ open class FaradayFlutterViewController: FlutterViewController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .clear
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -76,6 +77,11 @@ open class FaradayFlutterViewController: FlutterViewController {
         isShowing = true
         Faraday.sendPageState(.show(id)) { _ in }
         super.viewWillAppear(animated)
+        if (isBeingPresented) {
+            view.backgroundColor = .clear
+        } else {
+            view.backgroundColor = .white
+        }
     }
     
     open override func viewDidAppear(_ animated: Bool) {
