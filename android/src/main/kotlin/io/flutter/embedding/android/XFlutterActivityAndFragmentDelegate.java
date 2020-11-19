@@ -108,8 +108,9 @@ import java.util.Arrays;
      * behavior that destroys a {@link FlutterEngine} can be found in {@link #onDetach()}.
      */
     void release() {
+        assert flutterEngine != null;
         Log.w(TAG, "flutter Engine" + flutterEngine.toString());
-        this.host = null;
+//        this.host = null;
         this.flutterEngine = null;
         this.flutterView = null;
         this.platformPlugin = null;
@@ -127,9 +128,13 @@ import java.util.Arrays;
 
     void reAttach() {
 
+        assert flutterView != null;
+        assert flutterSplashView != null;
+        assert flutterEngine != null;
+
         onAttach(host.getContext());
 
-        flutterView.attachToFlutterEngine(this.flutterEngine);
+        flutterView.attachToFlutterEngine(flutterEngine);
 
         flutterSplashView.displayFlutterViewWithSplash(flutterView, host.provideSplashScreen());
     }
