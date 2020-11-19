@@ -36,12 +36,12 @@ class Faraday {
   /// ```
   ///
   Route<dynamic> wrapper(RouteFactory rawFactory,
-      {TransitionBuilder decorator, RouteFactory onUnknownRoute}) {
+      {TransitionBuilder decorator,
+      RouteFactory onUnknownRoute = _default404Page}) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {
         final page = FaradayNativeBridge(
-            onGenerateRoute: rawFactory,
-            onUnknownRoute: onUnknownRoute ?? _default404Page);
+            onGenerateRoute: rawFactory, onUnknownRoute: onUnknownRoute);
         return decorator != null ? decorator(context, page) : page;
       },
     );
