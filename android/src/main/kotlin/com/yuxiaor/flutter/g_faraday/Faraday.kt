@@ -76,6 +76,10 @@ object Faraday {
         CommonChannel(engine.dartExecutor, handler)
     }
 
+    internal fun genPageId(): Int {
+        return nextCode.getAndIncrement()
+    }
+
     /**
      * The current flutter container Activity
      */

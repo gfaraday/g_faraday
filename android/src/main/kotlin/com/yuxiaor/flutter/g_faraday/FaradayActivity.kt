@@ -2,9 +2,6 @@ package com.yuxiaor.flutter.g_faraday
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.os.PersistableBundle
-//import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.XFlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import java.io.Serializable
@@ -16,35 +13,32 @@ import java.io.Serializable
  */
 class FaradayActivity : XFlutterActivity(), ResultProvider {
 
-    private var seqId: Int? = null
+    private val pageId by lazy { intent.getIntExtra(ID, 0) }
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
     companion object {
 
-        private const val ARGS_KEY = "_flutter_args"
-        private const val ROUTE_KEY = "_flutter_route"
+        private const val ID = "_flutter_id"
+        private const val ARGS = "_flutter_args"
+        private const val ROUTE = "_flutter_route"
 
         fun build(context: Context, routeName: String, params: Serializable? = null): Intent {
-            return Intent(context, FaradayActivity::class.java).apply {
-                putExtra(ROUTE_KEY, routeName)
-                putExtra(ARGS_KEY, params)
-            }
+            val pageId = Faraday.genPageId()
+            Faraday.plugin?.onPageCreate(routeName, params, pageId)
+            val intent = Intent(context, FaradayActivity::class.java)
+            intent.putExtra(ID, pageId)
+            intent.putExtra(ARGS, params)
+            intent.putExtra(ROUTE, routeName)
+            return intent
         }
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        createFlutterPage()
-    }
 
-    internal fun createFlutterPage() {
-        val route = intent.getStringExtra(ROUTE_KEY)
+    internal fun rebuild() {
+        val route = intent.getStringExtra(ROUTE)
         require(route != null) { "route must not be null!" }
-        val args = intent.getSerializableExtra(ARGS_KEY)
-        Faraday.plugin?.onPageCreate(route, args, seqId) {
-            seqId = it
-            Faraday.plugin?.onPageShow(it)
-        }
+        val args = intent.getSerializableExtra(ARGS)
+        Faraday.plugin?.onPageCreate(route, args, pageId)
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
@@ -60,11 +54,11 @@ class FaradayActivity : XFlutterActivity(), ResultProvider {
 
     override fun onResume() {
         super.onResume()
-        seqId?.let { Faraday.plugin?.onPageShow(it) }
+        Faraday.plugin?.onPageShow(pageId)
     }
 
     override fun onDestroy() {
-        seqId?.let { Faraday.plugin?.onPageDealloc(it) }
+        Faraday.plugin?.onPageDealloc(pageId)
         super.onDestroy()
     }
 
