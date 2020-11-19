@@ -17,8 +17,12 @@ class FaradayNativeBridge extends StatefulWidget {
   final RouteFactory onGenerateRoute;
   final RouteFactory onUnknownRoute;
 
-  FaradayNativeBridge(
-      {Key key, @required this.onGenerateRoute, this.onUnknownRoute})
+  // 页面有切换动画时，可能会出现大概10ms
+
+  final Color backgroundColor;
+
+  FaradayNativeBridge(this.onGenerateRoute,
+      {Key key, this.onUnknownRoute, this.backgroundColor})
       : super(key: key);
 
   static FaradayNativeBridgeState of(BuildContext context) {
@@ -116,9 +120,23 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     if (kDebugMode) {
       _reassembleTimer?.cancel();
     }
-    return IndexedStack(
-      children: _navigatorStack,
-      index: _index,
+    return Container(
+      color: widget.backgroundColor,
+      child: IndexedStack(
+        children: _navigatorStack
+            .map((navigator) => TweenAnimationBuilder<double>(
+                  builder: (context, value, child) => AnimatedOpacity(
+                    duration: Duration(milliseconds: 50),
+                    opacity: value,
+                    child: child,
+                  ),
+                  child: navigator,
+                  duration: Duration(milliseconds: 250),
+                  tween: Tween(begin: 0, end: 1),
+                ))
+            .toList(growable: false),
+        index: _index,
+      ),
     );
   }
 
@@ -141,7 +159,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
         final arg = FaradayArguments(call.arguments['args'], name, id);
         _navigatorStack.add(_appRoot(arg));
-        _updateIndex(_navigatorStack.length - 1);
+        // _updateIndex(_navigatorStack.length - 1);
         return true;
       case 'pageShow':
         final index = _findIndexBy(id: call.arguments);

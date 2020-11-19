@@ -11,12 +11,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -31,6 +37,7 @@ import io.flutter.embedding.engine.dart.DartExecutor;
 import io.flutter.embedding.engine.renderer.FlutterUiDisplayListener;
 import io.flutter.plugin.platform.PlatformPlugin;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Delegate that implements all Flutter logic that is the same between a {@link FlutterActivity} and
@@ -116,9 +123,29 @@ import java.util.Arrays;
         this.platformPlugin = null;
     }
 
+    /**
+     * 如果是 flutter -> flutter 但是本地需要Activity跳转，那么需要处理白屏问题
+     *
+     * 1. 生成当前 `flutterView` 的快照
+     * 2. `停止` 渲染
+     * 3. 显示快照
+     * 4. 页面开始跳转
+     *
+     */
     void detach() {
+
+        assert flutterView != null;
+        assert flutterSplashView != null;
+        assert flutterEngine != null;
+
+        ImageView splash = new ImageView(host.getContext());
+        splash.setImageBitmap(flutterEngine.getRenderer().getBitmap());
+        flutterSplashView.removeAllViews();
+        flutterSplashView.addView(splash);
+
         this.onDestroyView();
         this.onDetach();
+
         this.platformPlugin = null;
     }
 
@@ -513,6 +540,8 @@ import java.util.Arrays;
         Log.v(TAG, "onDestroyView()");
         ensureAlive();
 
+        assert flutterView != null;
+
         flutterView.detachFromFlutterEngine();
         flutterView.removeOnFirstFrameRenderedListener(flutterUiDisplayListener);
     }
@@ -573,12 +602,13 @@ import java.util.Arrays;
 
         // Give the host an opportunity to cleanup any references that were created in
         // configureFlutterEngine().
+        assert flutterEngine != null;
         host.cleanUpFlutterEngine(flutterEngine);
 
         if (host.shouldAttachEngineToActivity()) {
             // Notify plugins that they are no longer attached to an Activity.
             Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
-            if (host.getActivity().isChangingConfigurations()) {
+            if (Objects.requireNonNull(host.getActivity()).isChangingConfigurations()) {
                 flutterEngine.getActivityControlSurface().detachFromActivityForConfigChanges();
             } else {
                 flutterEngine.getActivityControlSurface().detachFromActivity();

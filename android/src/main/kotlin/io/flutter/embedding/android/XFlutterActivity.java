@@ -612,7 +612,7 @@ public class XFlutterActivity extends Activity
             release();
             delegate = null;
         }
-        lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
+//        lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
     }
 
     @Override

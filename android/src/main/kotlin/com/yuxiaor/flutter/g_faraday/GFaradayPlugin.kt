@@ -48,7 +48,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "reCreateLastPage" -> {
                 when (val activity = Faraday.getCurrentActivity()) {
                     is FaradayActivity -> {
-                        activity.rebuild()
+                        activity.buildFlutterPage()
                     }
                     is FragmentActivity -> {
                         val fragment = activity.supportFragmentManager.fragments.first { it.isVisible }

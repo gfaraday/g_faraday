@@ -2,6 +2,9 @@ package com.yuxiaor.flutter.g_faraday
 
 import android.content.Context
 import android.content.Intent
+import android.view.Display
+import io.flutter.embedding.android.FlutterViewSnapshotSplashScreen
+import io.flutter.embedding.android.SplashScreen
 import io.flutter.embedding.android.XFlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import java.io.Serializable
@@ -33,8 +36,12 @@ class FaradayActivity : XFlutterActivity(), ResultProvider {
         }
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        Faraday.plugin?.onPageShow(pageId)
+    }
 
-    internal fun rebuild() {
+    internal fun buildFlutterPage() {
         val route = intent.getStringExtra(ROUTE)
         require(route != null) { "route must not be null!" }
         val args = intent.getSerializableExtra(ARGS)
@@ -71,5 +78,4 @@ class FaradayActivity : XFlutterActivity(), ResultProvider {
         resultListener?.invoke(requestCode, resultCode, data)
         resultListener = null
     }
-
 }
