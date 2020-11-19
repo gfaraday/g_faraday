@@ -106,7 +106,7 @@ open class FaradayFlutterViewController: FlutterViewController {
         //
         if (interactivePopGestureRecognizerDelegate != nil) {
             navigationController?.interactivePopGestureRecognizer?.delegate = interactivePopGestureRecognizerDelegate
-            navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = (navigationController?.viewControllers.count ?? 0) > 1
         }
         
         if seq != nil {
