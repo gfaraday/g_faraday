@@ -104,6 +104,16 @@ class FaradayNavigatorState extends NavigatorState {
       super.pop(result);
     }
   }
+
+  @override
+  Future<bool> maybePop<T extends Object>([T result]) async {
+    final r = await super.maybePop(result);
+    if (!r && observer.onlyOnePage) {
+      pop(result);
+      return true;
+    }
+    return r;
+  }
 }
 
 class _FaradayWidgetsBindingObserver extends WidgetsBindingObserver {
