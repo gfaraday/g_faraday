@@ -1,4 +1,9 @@
-# 0.4.1-pre.0
+# 0.4.1-pre.1
+
+* Support Activity animation
+* Support Fragment
+
+## 0.4.1-pre.0
 
 * Remove Page.Hidden event
 * Custom FlutterActivity
