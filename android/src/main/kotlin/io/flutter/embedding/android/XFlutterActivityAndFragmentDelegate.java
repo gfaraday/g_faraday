@@ -11,17 +11,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +35,18 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
+ *
+ * Copied from FlutterActivityAndFragmentDelegate
+ *
+ * 添加了 detach 和 reattach 两个方法
+ *
+ * 这两个方法的内部实现的方法调用顺序非常重要，不能随便更改
+ *
+ *
+ * 调用顺序 会影响 Activity 和 fragment 动画
+ *
+ * 修改不当会出现黑屏 白屏 闪屏等等
+ *
  * Delegate that implements all Flutter logic that is the same between a {@link FlutterActivity} and
  * a {@link FlutterFragment}.
  *
@@ -86,6 +93,9 @@ import java.util.Objects;
     @Nullable private PlatformPlugin platformPlugin;
     private boolean isFlutterEngineFromHost;
 
+    @Nullable private FlutterViewSnapshotSplashScreen reAttachSplashScreen;
+    @Nullable private View reattachView;
+
     @NonNull
     private final FlutterUiDisplayListener flutterUiDisplayListener =
             new FlutterUiDisplayListener() {
@@ -124,12 +134,7 @@ import java.util.Objects;
     }
 
     /**
-     * 如果是 flutter -> flutter 但是本地需要Activity跳转，那么需要处理白屏问题
      *
-     * 1. 生成当前 `flutterView` 的快照
-     * 2. `停止` 渲染
-     * 3. 显示快照
-     * 4. 页面开始跳转
      *
      */
     void detach() {
@@ -138,32 +143,58 @@ import java.util.Objects;
         assert flutterSplashView != null;
         assert flutterEngine != null;
 
-        ImageView splash = new ImageView(host.getContext());
-        splash.setImageBitmap(flutterEngine.getRenderer().getBitmap());
-        flutterSplashView.removeAllViews();
-        flutterSplashView.addView(splash);
+        reAttachSplashScreen = new FlutterViewSnapshotSplashScreen(flutterEngine);
+        reattachView = reAttachSplashScreen.createSplashView(getAppComponent(), null);
 
-        this.onDestroyView();
-        this.onDetach();
+        Log.w(TAG, "detach " + flutterView.toString());
 
-        this.platformPlugin = null;
+        if (host.shouldAttachEngineToActivity()) {
+            // Notify plugins that they are no longer attached to an Activity.
+            Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
+            if (Objects.requireNonNull(host.getActivity()).isChangingConfigurations()) {
+                flutterEngine.getActivityControlSurface().detachFromActivityForConfigChanges();
+            } else {
+                flutterEngine.getActivityControlSurface().detachFromActivity();
+            }
+        }
+
+        // Null out the platformPlugin to avoid a possible retain cycle between the plugin, this
+        // Fragment,
+        // and this Fragment's Activity.
+        if (platformPlugin != null) {
+            platformPlugin.destroy();
+            platformPlugin = null;
+        }
+
+        flutterView.detachFromFlutterEngine();
+        flutterView.removeOnFirstFrameRenderedListener(flutterUiDisplayListener);
+
+        flutterEngine.getLifecycleChannel().appIsInactive();
+
+        flutterSplashView.addView(reattachView);
     }
 
     boolean isDetached() {
         return this.platformPlugin == null;
     }
 
-    void reAttach() {
+    void reattach() {
 
         assert flutterView != null;
         assert flutterSplashView != null;
         assert flutterEngine != null;
 
-        onAttach(host.getContext());
+        Log.i(TAG, "reattach " + flutterView.toString());
 
+        flutterSplashView.displayFlutterViewWithSplash(flutterView, reAttachSplashScreen);
+        flutterSplashView.removeView(reattachView);
+
+        onAttach(host.getContext());
+        flutterView.addOnFirstFrameRenderedListener(flutterUiDisplayListener);
         flutterView.attachToFlutterEngine(flutterEngine);
 
-        flutterSplashView.displayFlutterViewWithSplash(flutterView, host.provideSplashScreen());
+        flutterEngine.getLifecycleChannel().appIsResumed();
+        flutterSplashView.displayFlutterViewWithSplash(flutterView, null);
     }
 
     /**

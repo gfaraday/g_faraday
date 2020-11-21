@@ -2,9 +2,6 @@ package com.yuxiaor.flutter.g_faraday
 
 import android.content.Context
 import android.content.Intent
-import android.view.Display
-import io.flutter.embedding.android.FlutterViewSnapshotSplashScreen
-import io.flutter.embedding.android.SplashScreen
 import io.flutter.embedding.android.XFlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import java.io.Serializable

@@ -534,7 +534,7 @@ public class XFlutterActivity extends Activity
         super.onStart();
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START);
         if (delegate.isDetached()) {
-            delegate.reAttach();
+            delegate.reattach();
         }
         delegate.onStart();
     }
@@ -610,9 +610,8 @@ public class XFlutterActivity extends Activity
         super.onDestroy();
         if (stillAttachedForEvent("onDestroy")) {
             release();
-            delegate = null;
         }
-//        lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
+        lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
     }
 
     @Override

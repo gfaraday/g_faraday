@@ -1,10 +1,12 @@
 package com.yuxiaor.flutter.g_faraday
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterFragment
 import io.flutter.embedding.android.TransparencyMode
+import io.flutter.embedding.android.XFlutterFragment
 import io.flutter.embedding.engine.FlutterEngine
 
 /**
@@ -12,7 +14,7 @@ import io.flutter.embedding.engine.FlutterEngine
  * Date: 2020-09-07
  * Description:
  */
-class FaradayFragment : FlutterFragment(), ResultProvider {
+class FaradayFragment : XFlutterFragment(), ResultProvider {
 
     private val pageId by lazy { arguments?.getInt(ID) ?: 0 }
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
@@ -48,16 +50,25 @@ class FaradayFragment : FlutterFragment(), ResultProvider {
         return Faraday.engine
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!isHidden) {
+            Faraday.plugin?.onPageShow(pageId)
+        }
+    }
+
     override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
         if (!hidden) {
             Faraday.plugin?.onPageShow(pageId)
         }
-        super.onHiddenChanged(hidden)
     }
 
     override fun onResume() {
         super.onResume()
-        Faraday.plugin?.onPageShow(pageId)
+        if (!isHidden) {
+            Faraday.plugin?.onPageShow(pageId)
+        }
     }
 
     override fun onDetach() {
