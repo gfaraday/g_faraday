@@ -17,8 +17,12 @@ class FaradayNativeBridge extends StatefulWidget {
   final RouteFactory onGenerateRoute;
   final RouteFactory onUnknownRoute;
 
-  FaradayNativeBridge(
-      {Key key, @required this.onGenerateRoute, this.onUnknownRoute})
+  // 页面有切换动画时，可能会出现大概10ms
+
+  final Color backgroundColor;
+
+  FaradayNativeBridge(this.onGenerateRoute,
+      {Key key, this.onUnknownRoute, this.backgroundColor})
       : super(key: key);
 
   static FaradayNativeBridgeState of(BuildContext context) {
@@ -38,8 +42,6 @@ class FaradayNativeBridge extends StatefulWidget {
 class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   final List<FaradayNavigator> _navigatorStack = [];
   int _index;
-  int _preIndex = 0;
-  int _seq = 0;
 
   Timer _reassembleTimer;
 
@@ -118,43 +120,55 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     if (kDebugMode) {
       _reassembleTimer?.cancel();
     }
-    return IndexedStack(
-      children: _navigatorStack,
-      index: _index,
+    return Container(
+      color: widget.backgroundColor,
+      child: IndexedStack(
+        children: _navigatorStack
+            .map((navigator) => TweenAnimationBuilder<double>(
+                  builder: (context, value, child) => AnimatedOpacity(
+                    duration: Duration(milliseconds: 50),
+                    opacity: value,
+                    child: child,
+                  ),
+                  child: navigator,
+                  duration: Duration(milliseconds: 250),
+                  tween: Tween(begin: 0, end: 1),
+                ))
+            .toList(growable: false),
+        index: _index,
+      ),
     );
   }
 
-  Future<dynamic> _handler(MethodCall call) {
+  Future<bool> _handler(MethodCall call) async {
     switch (call.method) {
       case 'pageCreate':
         String name = call.arguments['name'];
-        final seq = call.arguments['seq'] as int;
-        // seq 不等于null 证明整个app 部分状态丢失，此时需要重建页面
-        if (seq != null) {
-          if (seq == -1) {
-            debugPrint('recreate page: $name seq: $seq');
-          } else {
-            // seq 不为空 native可能重复调用了onCreate 方法
-            final index = _findIndexBy(seq: seq);
-            if (index != null) {
-              _updateIndex(index);
-              return Future.value(index);
-            }
-            _seq = seq;
-          }
+        int id = call.arguments['id'];
+
+        assert(name != null);
+        assert(id != null);
+
+        // 通过id查找，当前堆栈中是否存在对应的页面，如果存在 直接显示出来
+        final index = _findIndexBy(id: id);
+        if (index != null) {
+          _updateIndex(index);
+          return true;
         }
-        final arg = FaradayArguments(call.arguments['args'], name, _seq++);
+        // seq 不为空 native可能重复调用了onCreate 方法
+
+        final arg = FaradayArguments(call.arguments['args'], name, id);
         _navigatorStack.add(_appRoot(arg));
-        _updateIndex(_navigatorStack.length - 1);
-        return Future.value(arg.seq);
+        // _updateIndex(_navigatorStack.length - 1);
+        return true;
       case 'pageShow':
-        final index = _findIndexBy(seq: call.arguments);
+        final index = _findIndexBy(id: call.arguments);
         _updateIndex(index);
         return Future.value(index != null);
       case 'pageDealloc':
         assert(_index != null, _index < _navigatorStack.length);
         final current = _navigatorStack[_index];
-        final index = _findIndexBy(seq: call.arguments);
+        final index = _findIndexBy(id: call.arguments);
         assert(index != null, 'page not found seq: ${call.arguments}');
         _navigatorStack.removeAt(index);
         _updateIndex(_navigatorStack.indexOf(current));
@@ -165,9 +179,8 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   // 如果找不到返回null，不会返回-1
-  int _findIndexBy({@required int seq}) {
-    assert(seq != null);
-    final index = _navigatorStack.indexWhere((n) => n.arg.seq == seq);
+  int _findIndexBy({@required int id}) {
+    final index = _navigatorStack.indexWhere((n) => n.arg.id == id);
     return index != -1 ? index : null;
   }
 
@@ -175,9 +188,8 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     if (index == null) return;
     if (index == _index) return;
     setState(() {
-      _preIndex = _index;
       _index = index;
-      debugPrint('index: $_index, preIndex: $_preIndex, max_seq: $_seq');
+      debugPrint('index: $_index');
     });
   }
 

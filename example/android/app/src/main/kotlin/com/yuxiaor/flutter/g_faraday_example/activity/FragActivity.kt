@@ -1,9 +1,11 @@
 package com.yuxiaor.flutter.g_faraday_example.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentPagerAdapter
 import com.yuxiaor.flutter.g_faraday.FaradayFragment
 import com.yuxiaor.flutter.g_faraday_example.R
 import com.yuxiaor.flutter.g_faraday_example.fragment.TestFragment
@@ -13,6 +15,18 @@ import com.yuxiaor.flutter.g_faraday_example.fragment.TestFragment
  * Date: 2020-09-07
  * Description:
  */
+
+
+//* <ol>
+//*   <li>{@link #onPostResume()}
+//*   <li>{@link #onBackPressed()}
+//*   <li>{@link #onRequestPermissionsResult(int, String[], int[])} ()}
+//*   <li>{@link #onNewIntent(Intent)} ()}
+//*   <li>{@link #onUserLeaveHint()}
+//*   <li>{@link #onTrimMemory(int)}
+//* </ol>
+
+
 class FragActivity : AppCompatActivity() {
 
     private var tempFragment: Fragment? = null
@@ -41,15 +55,57 @@ class FragActivity : AppCompatActivity() {
 
     private fun switchFragment(fragment: Fragment, tag: String) {
         if (tempFragment == fragment) return
-
         val transaction = supportFragmentManager.beginTransaction()
         if (!fragment.isAdded) {
             transaction.add(R.id.frag, fragment, tag)
         }
-
         transaction.show(fragment)
         tempFragment?.let { transaction.hide(it) }
         tempFragment = fragment
         transaction.commitNow()
     }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        if (tempFragment is FaradayFragment) {
+            (tempFragment as FaradayFragment).onTrimMemory(level)
+        }
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        if (tempFragment is FaradayFragment) {
+            (tempFragment as FaradayFragment).onUserLeaveHint()
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (tempFragment is FaradayFragment && intent != null) {
+            (tempFragment as FaradayFragment).onNewIntent(intent)
+        }
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
+        if (tempFragment is FaradayFragment) {
+            (tempFragment as FaradayFragment).onPostResume()
+        }
+    }
+
+    override fun onBackPressed() {
+        if (tempFragment is FaradayFragment) {
+            (tempFragment as FaradayFragment).onBackPressed()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (tempFragment is FaradayFragment) {
+            (tempFragment as FaradayFragment).onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
 }

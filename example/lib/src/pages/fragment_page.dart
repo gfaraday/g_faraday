@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
 
 ///
@@ -18,17 +19,22 @@ class _State extends State<FragmentPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      child: Container(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(child: Text("Flutter Fragment")),
-            button(
-              "Push New Flutter Page",
-              pushNewFlutterPage,
-            ),
-          ],
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('Flutter Fragment'),
+      ),
+      backgroundColor: Colors.green,
+      child: SafeArea(
+        child: Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              button(
+                "Push New Flutter Page",
+                pushNewFlutterPage,
+              ),
+            ],
+          ),
         ),
       ),
     );

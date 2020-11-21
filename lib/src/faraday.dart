@@ -36,12 +36,19 @@ class Faraday {
   /// ```
   ///
   Route<dynamic> wrapper(RouteFactory rawFactory,
-      {TransitionBuilder decorator, RouteFactory onUnknownRoute}) {
+      {TransitionBuilder decorator,
+      RouteFactory onUnknownRoute = _default404Page,
+      Color nativeContainerBackgroundColor}) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {
         final page = FaradayNativeBridge(
-            onGenerateRoute: rawFactory,
-            onUnknownRoute: onUnknownRoute ?? _default404Page);
+          rawFactory,
+          onUnknownRoute: onUnknownRoute,
+          backgroundColor: nativeContainerBackgroundColor ??
+              (MediaQuery.of(context).platformBrightness == Brightness.light
+                  ? CupertinoColors.white
+                  : CupertinoColors.black),
+        );
         return decorator != null ? decorator(context, page) : page;
       },
     );

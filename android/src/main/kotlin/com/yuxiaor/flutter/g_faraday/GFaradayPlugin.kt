@@ -2,7 +2,6 @@ package com.yuxiaor.flutter.g_faraday
 
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
-import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -21,7 +20,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private var navigator: FaradayNavigator? = null
     internal var binding: ActivityPluginBinding? = null
 
-    private  var pageCount = 0;
+    private var pageCount = 0;
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
@@ -49,12 +48,12 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "reCreateLastPage" -> {
                 when (val activity = Faraday.getCurrentActivity()) {
                     is FaradayActivity -> {
-                        activity.createFlutterPage()
+                        activity.buildFlutterPage()
                     }
                     is FragmentActivity -> {
                         val fragment = activity.supportFragmentManager.fragments.first { it.isVisible }
                         if (fragment is FaradayFragment) {
-                            fragment.createFlutterPage()
+                            fragment.rebuild()
                         }
                     }
                 }
@@ -64,17 +63,15 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
     }
 
-    internal fun onPageCreate(route: String, args: Any?, seq: Int?, callback: (seqId: Int) -> Unit) {
+    internal fun onPageCreate(route: String, args: Any?, id: Int) {
         val data = hashMapOf<String, Any>()
         data["name"] = route
         if (args != null) {
             data["args"] = args
         }
-        data["seq"] = seq ?: -1
+        data["id"] = id
         pageCount++
-        channel.invoke("pageCreate", data) {
-            callback.invoke(it as Int)
-        }
+        channel.invoke("pageCreate", data)
     }
 
     internal fun onPageShow(seqId: Int) {

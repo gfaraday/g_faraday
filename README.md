@@ -9,7 +9,8 @@
                                   |___/
 ```
 
-![Platform](https://img.shields.io/badge/platform-ios%7Candroid-green)
+![Pub_Version](https://img.shields.io/pub/v/g_faraday?style=for-the-badge)
+![Platform](https://img.shields.io/badge/platform-ios%7Candroid-green?style=for-the-badge)
 
 一个`Flutter`混合开发解决方案
 
@@ -25,18 +26,21 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 
 ## Features
 
-- [x] `iOS/Android` 原生页面堆栈与`Flutter Navigator`无缝桥接
+- [x] iOS/Android原生页面堆栈与`Flutter Navigator`无缝桥接
 - [x] 支持所有`Navigator`特性
-- [x] [页面间回调](doc/callback.md)
-- [x] [`iOS`导航条自动隐藏/显示](doc/ios_navigation_bar.md)
+- [x] [页面间回调](docs/callback.md)
+- [x] [iOS导航条自动隐藏/显示](docs/ios_navigation_bar.md)
+- [x] iOS完美支持`push`与`present`
+- [x] Android完美支持`Activity`与`Fragment`
+- [ ] Android支持`FlutterView`  
 - [x] `WillPopScope`拦截滑动返回(ios)或者返回按键键(android)
 - [x] [发送/接收全局通知](doc/notification.md)
 - [ ] 监听页面生命周期
-- [x] 完整的文档(7/9)
+- [x] 完整的文档(7/10)
 
 ## Requirements
 
-- Flutter 1.23.0-18.1.pre *flutter channel beta*
+- Flutter 1.23.0-18.1.pre `beta channel`
 - iOS 10.0+ Xcode 12.0+ Swift 5.1+
 - Android minSdkVersion 16 Kotlin 1.4.10+
 
@@ -49,7 +53,7 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 ``` yaml
 dependencies:
   # 请确认与本地Flutter兼容的版本
-  g_faraday: ^0.4.0
+  g_faraday: ^0.4.1.pre.1
 ```
 
 ### Flutter 端集成
