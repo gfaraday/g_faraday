@@ -1,7 +1,7 @@
 name: g_faraday
-description: A new hybrid stack plugin
+description: A plugin for building hybrid stack apps with flutter
 version: 0.4.1-pre.1
-homepage: http://git.yuxiaor.com/yuxiaor-mobile/g_faraday
+homepage: https://github.com/gfaraday/g_faraday
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
