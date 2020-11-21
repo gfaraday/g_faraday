@@ -34,7 +34,7 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 - [x] Android完美支持`Activity`与`Fragment`
 - [ ] Android支持`FlutterView`  
 - [x] `WillPopScope`拦截滑动返回(ios)或者返回按键键(android)
-- [x] [发送/接收全局通知](docs/notification.md)
+- [x] [发送/接收全局通知](doc/notification.md)
 - [ ] 监听页面生命周期
 - [x] 完整的文档(7/10)
 
@@ -53,7 +53,7 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 ``` yaml
 dependencies:
   # 请确认与本地Flutter兼容的版本
-  g_faraday: ^0.4.1.pre.1
+  g_faraday: ^0.4.1-pre.1
 ```
 
 ### Flutter 端集成
@@ -178,10 +178,10 @@ context.startActivity(intent)
 
 在进行Flutter混合开发时会遇到很多相似的问题，我们提供了相应的解决方案大家玩的开心。
 
-- [路由](docs/route.md)
-- [桥接原生方法](docs/bridge.md)
-- [网络请求](docs/net.md)
-- [JSON](docs/json.md)
+- [路由](doc/route.md)
+- [桥接原生方法](doc/bridge.md)
+- [网络请求](doc/net.md)
+- [JSON](doc/json.md)
 - [命令行工具 | 代码生成 | 打包发布 | CI/CD](https://github.com/gfaraday/cli)
 - [vscode 插件 | 自动补全 | 打包发布](https://github.com/gfaraday/faraday_extension)
 

@@ -1,0 +1,12 @@
+repo:
+  - ./*
+  
+ios:
+  - ios/**/*.swift
+
+android:
+  - android/**/*.java
+  - android/**/*.kt
+
+flutter:
+  - src/**/*.dart
