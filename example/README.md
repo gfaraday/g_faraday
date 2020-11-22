@@ -1,16 +1,18 @@
 # g_faraday_example
 
-Demonstrates how to use the g_faraday plugin.
+## 主要包含一下功能点 (TODO)
 
-## Getting Started
+### Basic
 
-This project is a starting point for a Flutter application.
+* native -> flutter (ios: push/present android: activity/fragment)
+* flutter -> native (ios: handle navigation bar android: back button)
+* native -> flutter -> native ()
+* ios addChildViewController
+* android ViewPager Fragment
 
-A few resources to get you started if this is your first Flutter project:
+### others
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+* notification
+* getPlatformVersions
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
