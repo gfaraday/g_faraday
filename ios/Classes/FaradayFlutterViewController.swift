@@ -13,6 +13,8 @@ open class FaradayFlutterViewController: FlutterViewController {
     public let name: String
     public let arguments: Any?
     
+    let backgroundClear: Bool
+    
     let id: Int
     
     private var callback: ((Any?) -> ())?
@@ -20,9 +22,10 @@ open class FaradayFlutterViewController: FlutterViewController {
     private var isShowing = false
     private weak var previousFlutterViewController: FaradayFlutterViewController?
         
-    public init(_ name: String, arguments: Any? = nil, engine: FlutterEngine? = nil, callback: ((Any?) -> ())? = nil) {
+    public init(_ name: String, arguments: Any? = nil, backgroundClear: Bool = false, engine: FlutterEngine? = nil, callback: ((Any?) -> ())? = nil) {
         self.name = name
         self.arguments = arguments
+        self.backgroundClear = backgroundClear
         self.callback = callback
         
         guard let rawEngine = engine ?? Faraday.default.engine else {
@@ -44,7 +47,7 @@ open class FaradayFlutterViewController: FlutterViewController {
     }
     
     func createFlutterPage() {
-        Faraday.sendPageState(.create(name, arguments, id)) { _ in }
+        Faraday.sendPageState(.create(name, arguments, id, backgroundClear)) { _ in }
     }
     
     weak var interactivePopGestureRecognizerDelegate: UIGestureRecognizerDelegate?
@@ -77,11 +80,7 @@ open class FaradayFlutterViewController: FlutterViewController {
         isShowing = true
         Faraday.sendPageState(.show(id)) { _ in }
         super.viewWillAppear(animated)
-        if (isBeingPresented) {
-            view.backgroundColor = .clear
-        } else {
-            view.backgroundColor = .white
-        }
+        view.backgroundColor = backgroundClear ? .clear : .white
     }
     
     open override func viewDidAppear(_ animated: Bool) {

@@ -32,11 +32,27 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final route = faraday.wrapper((settings) {
-      final f = routes[settings.name];
-      if (f == null) return null;
-      return f(settings);
-    });
+    final route = faraday.wrapper(
+      (settings) {
+        final f = routes[settings.name];
+        if (f == null) return null;
+        return f(settings);
+      },
+      switchPageAnimation: (currentRoute, {previousRoute}) {
+        if (previousRoute != null &&
+            currentRoute['route'] == previousRoute['route']) {
+          return (context, child) => AnimatedSwitcher(
+                duration: Duration(seconds: 1),
+                child: child,
+                transitionBuilder: (child, animation) => SizeTransition(
+                  sizeFactor: animation,
+                  child: child,
+                ),
+              );
+        }
+        return null;
+      },
+    );
     return CupertinoApp(
       onGenerateRoute: (_) => route,
     );

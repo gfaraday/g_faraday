@@ -7,7 +7,12 @@
         android:name=".App"
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme"
-        android:label="g_faraday_example">
+        android:label="g_faraday_example"
+        android:allowBackup="false">
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
 
         <activity android:name=".activity.MainActivity">
             <intent-filter>
@@ -29,10 +34,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.FragActivity" android:theme="@style/FragTheme" />
-
-        <meta-data
-            android:name="flutterEmbedding"
-            android:value="2" />
-
+        <activity android:name=".activity.SingleTopFlutterActivity" android:launchMode="singleTop"/>
     </application>
 </manifest>

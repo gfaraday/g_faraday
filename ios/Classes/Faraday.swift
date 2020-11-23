@@ -227,15 +227,15 @@ extension Faraday {
 
     enum PageState {
         
-        case create(String, Any?, Int) // name, arguments, seq
+        case create(String, Any?, Int, Bool) // name, arguments, seq, backgroundmode
         case show(Int) // id
 //        case hiden(Int) // id
         case dealloc(Int) //id
         
         var info: (String, Any?) {
             switch self {
-            case .create(let name, let arguments, let id):
-                return ("pageCreate", ["name": name, "args": arguments, "id": id])
+            case .create(let name, let arguments, let id, let backgroundClear):
+                return ("pageCreate", ["name": name, "args": arguments, "id": id, "background_mode": backgroundClear ? "transparent" : "opaque"])
             case .show(let id):
                 return ("pageShow", id)
 //            case .hiden(let seq):
