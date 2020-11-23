@@ -25,6 +25,23 @@ Color _defaultBackgroundColor(BuildContext context) {
       : CupertinoColors.black;
 }
 
+///
+/// backgroundColorProvider
+///
+/// 如果当前页面不为透明背景，默认为根据系统是否黑暗模式默认为 黑/白
+///
+/// transitionBuilderProvider
+///
+/// 页面切换动画，默认返回null 使用native系统默认动画即可，在一下几种场景中需要手动自定义
+///
+///
+/// android
+///
+/// fragment 切换
+/// activity的launch mode 不为 standard 的情况
+///
+/// ios
+/// addChild 或者是 禁用了系统默认动画的情况
 class FaradayNativeBridge extends StatefulWidget {
   final RouteFactory onGenerateRoute;
   final RouteFactory onUnknownRoute;
