@@ -29,12 +29,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
+
 import io.flutter.Log;
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode;
 import io.flutter.embedding.engine.FlutterEngine;
@@ -48,7 +50,7 @@ import io.flutter.plugin.platform.PlatformPlugin;
 // A number of methods in this class have the same implementation as FlutterFragmentActivity. These
 // methods are duplicated for readability purposes. Be sure to replicate any change in this class in
 // FlutterFragmentActivity, too.
-public class XFlutterActivity extends Activity
+public abstract class XFlutterActivity extends Activity
         implements XFlutterActivityAndFragmentDelegate.Host, LifecycleOwner {
 
     private static final String TAG = "XFlutterActivity";
@@ -56,9 +58,11 @@ public class XFlutterActivity extends Activity
     // Delegate that runs all lifecycle and OS hook logic that is common between
     // XFlutterActivity and FlutterFragment. See the XFlutterActivityAndFragmentDelegate
     // implementation for details about why it exists.
-    @VisibleForTesting protected XFlutterActivityAndFragmentDelegate delegate;
+    @VisibleForTesting
+    protected XFlutterActivityAndFragmentDelegate delegate;
 
-    @NonNull private final LifecycleRegistry lifecycle;
+    @NonNull
+    private final LifecycleRegistry lifecycle;
 
     public XFlutterActivity() {
         lifecycle = new LifecycleRegistry(this);
@@ -100,7 +104,7 @@ public class XFlutterActivity extends Activity
      *       "io.flutter.embedding.android.NormalTheme" and set the resource to your normal theme,
      *       e.g., {@code android:resource="@style/MyNormalTheme}.
      * </ol>
-     *
+     * <p>
      * With the above settings, your launch theme will be used when loading the app, and then the
      * theme will be switched to your normal theme once the app has initialized.
      *
@@ -435,7 +439,7 @@ public class XFlutterActivity extends Activity
      *       FlutterActivityLaunchConfigs#INITIAL_ROUTE_META_DATA_KEY} for this {@code Activity} in
      *       the Android manifest.
      * </ol>
-     *
+     * <p>
      * If both preferences are set, the {@code Intent} preference takes priority.
      *
      * <p>The reason that a {@code <meta-data>} preference is supported is because this {@code
@@ -556,7 +560,9 @@ public class XFlutterActivity extends Activity
         return delegate.getFlutterEngine();
     }
 
-    /** Retrieves the meta data specified in the AndroidManifest.xml. */
+    /**
+     * Retrieves the meta data specified in the AndroidManifest.xml.
+     */
     @Nullable
     protected Bundle getMetaData() throws PackageManager.NameNotFoundException {
         ActivityInfo activityInfo =
@@ -656,7 +662,7 @@ public class XFlutterActivity extends Activity
 //                    metaData != null ? metaData.getBoolean(HANDLE_DEEPLINKING_META_DATA_KEY) : false;
 //            return shouldHandleDeeplinking;
 //        } catch (PackageManager.NameNotFoundException e) {
-            return false;
+        return false;
 //        }
     }
 

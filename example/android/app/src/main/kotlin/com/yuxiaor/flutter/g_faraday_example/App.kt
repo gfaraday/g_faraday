@@ -7,6 +7,7 @@ import android.net.Uri
 import com.yuxiaor.flutter.g_faraday.Faraday
 import com.yuxiaor.flutter.g_faraday.FaradayActivity
 import com.yuxiaor.flutter.g_faraday.FaradayNavigator
+import com.yuxiaor.flutter.g_faraday_example.activity.SingleTaskFlutterActivity
 import com.yuxiaor.flutter.g_faraday_example.activity.SingleTopFlutterActivity
 import io.flutter.plugins.GeneratedPluginRegistrant
 import java.io.Serializable
@@ -40,12 +41,14 @@ class App : Application(), FaradayNavigator {
 //            Faraday.getCurrentActivity()?.startActivity(FaradayActivity.build(this, name, arguments))
 
             // singleTop 模式
-            val intent = FaradayActivity.build(this, name, args, activityClass = SingleTopFlutterActivity::class.java)
-            Faraday.getCurrentActivity()?.startActivity(intent)
+//            val intent = FaradayActivity.build(this, name, args, activityClass = SingleTopFlutterActivity::class.java, willTransactionWithAnother = true)
+//            Faraday.getCurrentActivity()?.startActivity(intent)
 
             // singleTask 模式
-//            Faraday.getCurrentActivity()?.startActivity(FaradayActivity.build(this, name, arguments))
+            val intent = FaradayActivity.build(this, name, args, activityClass = SingleTaskFlutterActivity::class.java, willTransactionWithAnother = true)
+            Faraday.getCurrentActivity()?.startActivity(intent)
 
+            // singleInstance 同理也是支持的
             return
         }
 

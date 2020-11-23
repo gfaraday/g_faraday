@@ -6,6 +6,7 @@ import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentTransaction
 import com.yuxiaor.flutter.g_faraday.FaradayFragment
 import com.yuxiaor.flutter.g_faraday_example.R
 import com.yuxiaor.flutter.g_faraday_example.fragment.TestFragment
@@ -61,6 +62,9 @@ class FragActivity : AppCompatActivity() {
         }
         transaction.show(fragment)
         tempFragment?.let { transaction.hide(it) }
+//        transaction.replace(R.id.frag, fragment)
+//        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//        transaction.addToBackStack(null)
         tempFragment = fragment
         transaction.commitNow()
     }

@@ -23,7 +23,9 @@ class MainActivity : AppCompatActivity() {
 
         //push to flutter
         btn1.setOnClickListener {
-            Faraday.openFlutterForResult(this, "home", 1, hashMapOf("data" to "data form native MainActivity"))
+            val intent = FaradayActivity.build(this, "home", hashMapOf("data" to "MainActivity"), willTransactionWithAnother = true)
+            this.startActivityForResult(intent, 1)
+//            Faraday.openFlutterForResult(this, "home", 1, hashMapOf("data" to "data form native MainActivity"))
         }
 
         //flutter fragment demo

@@ -35,5 +35,6 @@
         </activity>
         <activity android:name=".activity.FragActivity" android:theme="@style/FragTheme" />
         <activity android:name=".activity.SingleTopFlutterActivity" android:launchMode="singleTop"/>
+        <activity android:name=".activity.SingleTaskFlutterActivity" android:launchMode="singleTask"/>
     </application>
 </manifest>

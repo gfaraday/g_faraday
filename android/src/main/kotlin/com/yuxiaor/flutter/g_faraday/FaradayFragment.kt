@@ -22,10 +22,24 @@ class FaradayFragment : XFlutterFragment(), ResultProvider {
         private const val ID = "_flutter_id"
         private const val ARGS = "_flutter_args"
         private const val ROUTE = "_flutter_route"
+        private const val TRANSACTION_WITH_ANOTHER = "willTransactionWithAnother"
 
-        // 需要重构
+        ///
+        /// 1. 注意 fragment 有一个小限制，如果打算使用
+        /// FragmentTransaction.add 然后 show/hide 的方式来切换 fragment 那么opaque必须为false
+        /// ❌否则在动画过程中会出现 白屏/黑屏❌
+        ///
+        ///  2. willTransactionWithAnother 非常重要 如果这个fragment会直接切换到另外一个FaradayFragment， 那
+        /// 这两个 fragment的 willTransactionWithAnother 都应该设置为true
+        ///
+        /// ❌否则在动画过程中会出现 白屏/黑屏❌
+        ///
         @JvmStatic
-        fun newInstance(routeName: String, params: HashMap<String, Any>? = null, opaque: Boolean = true): FaradayFragment {
+        fun newInstance(routeName: String,
+                        params: HashMap<String, Any>? = null,
+                        opaque: Boolean = true,
+                        willTransactionWithAnother: Boolean = false
+        ): FaradayFragment {
             val pageId = Faraday.genPageId()
             val bm = (if (opaque) TransparencyMode.opaque else TransparencyMode.transparent).name
             Faraday.plugin?.onPageCreate(routeName, params, pageId, bm)
@@ -34,9 +48,15 @@ class FaradayFragment : XFlutterFragment(), ResultProvider {
                 putString(ROUTE, routeName)
                 putSerializable(ARGS, params)
                 putString(ARG_FLUTTERVIEW_TRANSPARENCY_MODE, bm)
+                putBoolean(TRANSACTION_WITH_ANOTHER, willTransactionWithAnother)
             }
             return FaradayFragment().apply { arguments = bundle }
         }
+    }
+
+    override fun onAttach(context: Context) {
+        rebuild()
+        super.onAttach(context)
     }
 
     internal fun rebuild() {
@@ -47,6 +67,12 @@ class FaradayFragment : XFlutterFragment(), ResultProvider {
         require(bm != null)
         Faraday.plugin?.onPageCreate(route, args, pageId, bm)
         Faraday.plugin?.onPageShow(pageId)
+    }
+
+    override fun getTransparencyMode(): TransparencyMode {
+        val bm = arguments?.getString(ARG_FLUTTERVIEW_TRANSPARENCY_MODE)
+        return if (bm == TransparencyMode.transparent.name)
+            TransparencyMode.transparent else TransparencyMode.opaque
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
@@ -81,6 +107,10 @@ class FaradayFragment : XFlutterFragment(), ResultProvider {
 
     override fun shouldAttachEngineToActivity(): Boolean {
         return true
+    }
+
+    override fun shouldAddFlutterViewSnapshot(): Boolean {
+        return arguments?.getBoolean(TRANSACTION_WITH_ANOTHER) ?: false
     }
 
     override fun addResultListener(resultListener: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
