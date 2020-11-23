@@ -11,17 +11,21 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.Lifecycle;
+
 import io.flutter.FlutterInjector;
 import io.flutter.Log;
 import io.flutter.app.FlutterActivity;
@@ -31,22 +35,22 @@ import io.flutter.embedding.engine.FlutterShellArgs;
 import io.flutter.embedding.engine.dart.DartExecutor;
 import io.flutter.embedding.engine.renderer.FlutterUiDisplayListener;
 import io.flutter.plugin.platform.PlatformPlugin;
+
 import java.util.Arrays;
 import java.util.Objects;
 
 /**
- *
  * Copied from FlutterActivityAndFragmentDelegate
- *
+ * <p>
  * 添加了 detach 和 reattach 两个方法
- *
+ * <p>
  * 这两个方法的内部实现的方法调用顺序非常重要，不能随便更改
- *
- *
+ * <p>
+ * <p>
  * 调用顺序 会影响 Activity 和 fragment 动画
- *
+ * <p>
  * 修改不当会出现黑屏 白屏 闪屏等等
- *
+ * <p>
  * Delegate that implements all Flutter logic that is the same between a {@link FlutterActivity} and
  * a {@link FlutterFragment}.
  *
@@ -86,15 +90,22 @@ import java.util.Objects;
 
     // The FlutterActivity or FlutterFragment that is delegating most of its calls
     // to this XFlutterActivityAndFragmentDelegate.
-    @NonNull private Host host;
-    @Nullable private FlutterEngine flutterEngine;
-    @Nullable private FlutterSplashView flutterSplashView;
-    @Nullable private FlutterView flutterView;
-    @Nullable private PlatformPlugin platformPlugin;
+    @NonNull
+    private Host host;
+    @Nullable
+    private FlutterEngine flutterEngine;
+    @Nullable
+    private FlutterSplashView flutterSplashView;
+    @Nullable
+    private FlutterView flutterView;
+    @Nullable
+    private PlatformPlugin platformPlugin;
     private boolean isFlutterEngineFromHost;
 
-    @Nullable private FlutterViewSnapshotSplashScreen reAttachSplashScreen;
-    @Nullable private View reattachView;
+    @Nullable
+    private FlutterViewSnapshotSplashScreen reAttachSplashScreen;
+    @Nullable
+    private View reattachView;
 
     @NonNull
     private final FlutterUiDisplayListener flutterUiDisplayListener =
@@ -135,7 +146,6 @@ import java.util.Objects;
 
     /**
      *
-     *
      */
     void detach() {
 
@@ -144,7 +154,6 @@ import java.util.Objects;
         assert flutterEngine != null;
 
         reAttachSplashScreen = new FlutterViewSnapshotSplashScreen(flutterEngine);
-        reattachView = reAttachSplashScreen.createSplashView(getAppComponent(), null);
 
         Log.w(TAG, "detach " + flutterView.toString());
 
@@ -171,7 +180,11 @@ import java.util.Objects;
 
         flutterEngine.getLifecycleChannel().appIsInactive();
 
-        flutterSplashView.addView(reattachView);
+        if (host.shouldAddFlutterViewSnapshot()) {
+            reattachView = reAttachSplashScreen.createSplashView(getAppComponent(), null);
+            flutterSplashView.addView(reattachView);
+        }
+        flutterSplashView.removeView(flutterView);
     }
 
     boolean isDetached() {
@@ -186,15 +199,15 @@ import java.util.Objects;
 
         Log.i(TAG, "reattach " + flutterView.toString());
 
-        flutterSplashView.displayFlutterViewWithSplash(flutterView, reAttachSplashScreen);
         flutterSplashView.removeView(reattachView);
 
         onAttach(host.getContext());
         flutterView.addOnFirstFrameRenderedListener(flutterUiDisplayListener);
         flutterView.attachToFlutterEngine(flutterEngine);
 
+        flutterSplashView.displayFlutterViewWithSplash(flutterView, reAttachSplashScreen);
+
         flutterEngine.getLifecycleChannel().appIsResumed();
-        flutterSplashView.displayFlutterViewWithSplash(flutterView, null);
     }
 
     /**
@@ -266,7 +279,8 @@ import java.util.Objects;
     }
 
     @Override
-    public @NonNull Activity getAppComponent() {
+    public @NonNull
+    Activity getAppComponent() {
         final Activity activity = host.getActivity();
         if (activity == null) {
             throw new AssertionError(
@@ -353,10 +367,11 @@ import java.util.Objects;
         ensureAlive();
 
         if (host.getRenderMode() == RenderMode.surface) {
+
             FlutterSurfaceView flutterSurfaceView =
                     new FlutterSurfaceView(
                             host.getActivity(), host.getTransparencyMode() == TransparencyMode.transparent);
-
+//            host.getActivity().getWindow().setFormat(PixelFormat.TRANSPARENT);
             // Allow our host to customize FlutterSurfaceView, if desired.
             host.onFlutterSurfaceViewCreated(flutterSurfaceView);
 
@@ -841,11 +856,15 @@ import java.util.Objects;
      */
     /* package */ interface Host
             extends SplashScreenProvider, FlutterEngineProvider, FlutterEngineConfigurator {
-        /** Returns the {@link Context} that backs the host {@link Activity} or {@code Fragment}. */
+        /**
+         * Returns the {@link Context} that backs the host {@link Activity} or {@code Fragment}.
+         */
         @NonNull
         Context getContext();
 
-        /** Returns true if the delegate should retrieve the initial route from the {@link Intent}. */
+        /**
+         * Returns true if the delegate should retrieve the initial route from the {@link Intent}.
+         */
         @Nullable
         boolean shouldHandleDeeplinking();
 
@@ -856,11 +875,15 @@ import java.util.Objects;
         @Nullable
         Activity getActivity();
 
-        /** Returns the {@link Lifecycle} that backs the host {@link Activity} or {@code Fragment}. */
+        /**
+         * Returns the {@link Lifecycle} that backs the host {@link Activity} or {@code Fragment}.
+         */
         @NonNull
         Lifecycle getLifecycle();
 
-        /** Returns the {@link FlutterShellArgs} that should be used when initializing Flutter. */
+        /**
+         * Returns the {@link FlutterShellArgs} that should be used when initializing Flutter.
+         */
         @NonNull
         FlutterShellArgs getFlutterShellArgs();
 
@@ -891,15 +914,21 @@ import java.util.Objects;
          */
         void detachFromFlutterEngine();
 
-        /** Returns the Dart entrypoint that should run when a new {@link FlutterEngine} is created. */
+        /**
+         * Returns the Dart entrypoint that should run when a new {@link FlutterEngine} is created.
+         */
         @NonNull
         String getDartEntrypointFunctionName();
 
-        /** Returns the path to the app bundle where the Dart code exists. */
+        /**
+         * Returns the path to the app bundle where the Dart code exists.
+         */
         @NonNull
         String getAppBundlePath();
 
-        /** Returns the initial route that Flutter renders. */
+        /**
+         * Returns the initial route that Flutter renders.
+         */
         @Nullable
         String getInitialRoute();
 
@@ -936,7 +965,9 @@ import java.util.Objects;
         PlatformPlugin providePlatformPlugin(
                 @Nullable Activity activity, @NonNull FlutterEngine flutterEngine);
 
-        /** Hook for the host to configure the {@link FlutterEngine} as desired. */
+        /**
+         * Hook for the host to configure the {@link FlutterEngine} as desired.
+         */
         void configureFlutterEngine(@NonNull FlutterEngine flutterEngine);
 
         /**
@@ -981,10 +1012,14 @@ import java.util.Objects;
          */
         void onFlutterTextureViewCreated(@NonNull FlutterTextureView flutterTextureView);
 
-        /** Invoked by this delegate when its {@link FlutterView} starts painting pixels. */
+        /**
+         * Invoked by this delegate when its {@link FlutterView} starts painting pixels.
+         */
         void onFlutterUiDisplayed();
 
-        /** Invoked by this delegate when its {@link FlutterView} stops painting pixels. */
+        /**
+         * Invoked by this delegate when its {@link FlutterView} stops painting pixels.
+         */
         void onFlutterUiNoLongerDisplayed();
 
         /**
@@ -999,5 +1034,7 @@ import java.util.Objects;
          * <p>This defaults to true, unless a cached engine is used.
          */
         boolean shouldRestoreAndSaveState();
+
+        boolean shouldAddFlutterViewSnapshot();
     }
 }

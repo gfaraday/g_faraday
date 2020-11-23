@@ -2,6 +2,7 @@ package com.yuxiaor.flutter.g_faraday
 
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
+import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -48,7 +49,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "reCreateLastPage" -> {
                 when (val activity = Faraday.getCurrentActivity()) {
                     is FaradayActivity -> {
-                        activity.buildFlutterPage()
+                        activity.rebuild()
                     }
                     is FragmentActivity -> {
                         val fragment = activity.supportFragmentManager.fragments.first { it.isVisible }
@@ -63,13 +64,14 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
     }
 
-    internal fun onPageCreate(route: String, args: Any?, id: Int) {
+    internal fun onPageCreate(route: String, args: Any?, id: Int, backgroundMode: String) {
         val data = hashMapOf<String, Any>()
         data["name"] = route
         if (args != null) {
             data["args"] = args
         }
         data["id"] = id
+        data["background_mode"] = backgroundMode
         pageCount++
         channel.invoke("pageCreate", data)
     }

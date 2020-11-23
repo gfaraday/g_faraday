@@ -7,23 +7,58 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:g_json/g_json.dart';
 
 import 'arg.dart';
 import 'navigator.dart';
 
 const _channel = MethodChannel('g_faraday');
 
+typedef TransitionBuilderProvider = TransitionBuilder
+    Function(JSON currentRoute, {JSON previousRoute});
+
+typedef ColorProvider = Color Function(BuildContext context);
+
+Color _defaultBackgroundColor(BuildContext context) {
+  return MediaQuery.of(context).platformBrightness == Brightness.light
+      ? CupertinoColors.white
+      : CupertinoColors.black;
+}
+
+///
+/// backgroundColorProvider
+///
+/// 如果当前页面不为透明背景，默认为根据系统是否黑暗模式默认为 黑/白
+///
+/// transitionBuilderProvider
+///
+/// 页面切换动画，默认返回null 使用native系统默认动画即可，在一下几种场景中需要手动自定义
+///
+///
+/// android
+///
+/// fragment 切换
+/// activity的launch mode 不为 standard 的情况
+///
+/// ios
+/// addChild 或者是 禁用了系统默认动画的情况
 class FaradayNativeBridge extends StatefulWidget {
   final RouteFactory onGenerateRoute;
   final RouteFactory onUnknownRoute;
 
-  // 页面有切换动画时，可能会出现大概10ms
+  // 页面默认背景
+  final ColorProvider backgroundColorProvider;
 
-  final Color backgroundColor;
+  // 页面切换动画
+  final TransitionBuilderProvider transitionBuilderProvider;
 
-  FaradayNativeBridge(this.onGenerateRoute,
-      {Key key, this.onUnknownRoute, this.backgroundColor})
-      : super(key: key);
+  FaradayNativeBridge(
+    this.onGenerateRoute, {
+    Key key,
+    this.onUnknownRoute,
+    this.backgroundColorProvider,
+    this.transitionBuilderProvider,
+  }) : super(key: key);
 
   static FaradayNativeBridgeState of(BuildContext context) {
     FaradayNativeBridgeState faraday;
@@ -40,8 +75,9 @@ class FaradayNativeBridge extends StatefulWidget {
 }
 
 class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
-  final List<FaradayNavigator> _navigatorStack = [];
+  final List<FaradayArguments> _navigators = [];
   int _index;
+  int _preIndex;
 
   Timer _reassembleTimer;
 
@@ -62,7 +98,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   void dispose() {
-    _navigatorStack.clear();
+    _navigators.clear();
     super.dispose();
     if (kDebugMode) {
       _reassembleTimer?.cancel();
@@ -83,8 +119,8 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   Future<void> pop<T extends Object>(Key key, [T result]) async {
-    assert(_navigatorStack.isNotEmpty);
-    assert(_navigatorStack[_index].arg.key == key);
+    assert(_navigators.isNotEmpty);
+    assert(_navigators[_index].key == key);
     await _channel.invokeMethod('popContainer', result);
   }
 
@@ -93,12 +129,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   bool isOnTop(Key key) {
-    return _navigatorStack.isNotEmpty && _navigatorStack[_index].arg.key == key;
+    return _navigators.isNotEmpty && _navigators[_index].key == key;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_index == null || _navigatorStack.isEmpty) {
+    if (_index == null || _navigators.isEmpty) {
       if (kDebugMode) {
         if (_reassembleTimer == null) {
           _reassembleTimer = Timer(Duration(milliseconds: 1),
@@ -120,24 +156,32 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     if (kDebugMode) {
       _reassembleTimer?.cancel();
     }
-    return Container(
-      color: widget.backgroundColor,
+
+    if (_index == -1) return Container();
+
+    final current = _navigators[_index];
+    final content = Container(
+      key: ValueKey(_index),
+      color: current.opaque
+          ? (widget.backgroundColorProvider ?? _defaultBackgroundColor)
+              .call(context)
+          : Colors.transparent,
       child: IndexedStack(
-        children: _navigatorStack
-            .map((navigator) => TweenAnimationBuilder<double>(
-                  builder: (context, value, child) => AnimatedOpacity(
-                    duration: Duration(milliseconds: 50),
-                    opacity: value,
-                    child: child,
-                  ),
-                  child: navigator,
-                  duration: Duration(milliseconds: 250),
-                  tween: Tween(begin: 0, end: 1),
-                ))
+        children: _navigators
+            .map((arg) => _buildPage(context, arg))
             .toList(growable: false),
         index: _index,
       ),
     );
+    if (widget.transitionBuilderProvider == null || _preIndex == _index) {
+      return content;
+    }
+    final previous =
+        (_preIndex != null && _preIndex >= 0) ? _navigators[_preIndex] : null;
+    final builder = widget.transitionBuilderProvider(current.info,
+        previousRoute: previous?.info);
+    if (builder == null) return content;
+    return builder(context, content);
   }
 
   Future<bool> _handler(MethodCall call) async {
@@ -157,8 +201,9 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         }
         // seq 不为空 native可能重复调用了onCreate 方法
 
-        final arg = FaradayArguments(call.arguments['args'], name, id);
-        _navigatorStack.add(_appRoot(arg));
+        final arg = FaradayArguments(call.arguments['args'], name, id,
+            opaque: call.arguments['background_mode'] != 'transparent');
+        _navigators.add(arg);
         // _updateIndex(_navigatorStack.length - 1);
         return true;
       case 'pageShow':
@@ -166,12 +211,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         _updateIndex(index);
         return Future.value(index != null);
       case 'pageDealloc':
-        assert(_index != null, _index < _navigatorStack.length);
-        final current = _navigatorStack[_index];
+        assert(_index != null, _index < _navigators.length);
+        final current = _navigators[_index];
         final index = _findIndexBy(id: call.arguments);
         assert(index != null, 'page not found seq: ${call.arguments}');
-        _navigatorStack.removeAt(index);
-        _updateIndex(_navigatorStack.indexOf(current));
+        _navigators.removeAt(index);
+        _updateIndex(_navigators.indexOf(current));
         return Future.value(true);
       default:
         return Future.value(false);
@@ -180,7 +225,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   // 如果找不到返回null，不会返回-1
   int _findIndexBy({@required int id}) {
-    final index = _navigatorStack.indexWhere((n) => n.arg.id == id);
+    final index = _navigators.indexWhere((arg) => arg.id == id);
     return index != -1 ? index : null;
   }
 
@@ -188,14 +233,34 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     if (index == null) return;
     if (index == _index) return;
     setState(() {
+      _preIndex = _index;
       _index = index;
       debugPrint('index: $_index');
     });
   }
 
-  FaradayNavigator _appRoot(FaradayArguments arg) {
+  Widget _buildPage(BuildContext context, FaradayArguments arg) {
     final initialSettings =
         RouteSettings(name: arg.name, arguments: arg.arguments);
+    // return TweenAnimationBuilder<double>(
+    //   builder: (context, value, child) => Opacity(
+    //     opacity: value,
+    //     child: child,
+    //   ),
+    //   child: FaradayNavigator(
+    //     key: arg.key,
+    //     arg: arg,
+    //     initialRoute: arg.name,
+    //     onGenerateRoute: widget.onGenerateRoute,
+    //     onUnknownRoute: widget.onUnknownRoute,
+    //     onGenerateInitialRoutes: (navigator, initialRoute) => [
+    //       widget.onGenerateRoute(initialSettings) ??
+    //           widget.onUnknownRoute(initialSettings),
+    //     ],
+    //   ),
+    //   duration: Duration(milliseconds: 180),
+    //   tween: Tween(begin: 0, end: 1),
+    // );
     return FaradayNavigator(
       key: arg.key,
       arg: arg,

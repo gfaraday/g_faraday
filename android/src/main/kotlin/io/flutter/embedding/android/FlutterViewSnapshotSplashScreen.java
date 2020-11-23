@@ -14,8 +14,10 @@ import io.flutter.embedding.engine.FlutterEngine;
 
 public class FlutterViewSnapshotSplashScreen implements SplashScreen {
 
-    @NonNull private final Bitmap flutterViewSnapshot;
-    @Nullable private View splashView;
+    @NonNull
+    private final Bitmap flutterViewSnapshot;
+    @Nullable
+    private View splashView;
 
     public FlutterViewSnapshotSplashScreen(@NonNull FlutterEngine flutterEngine) {
         flutterViewSnapshot = flutterEngine.getRenderer().getBitmap();
@@ -44,7 +46,8 @@ public class FlutterViewSnapshotSplashScreen implements SplashScreen {
                 .setListener(
                         new Animator.AnimatorListener() {
                             @Override
-                            public void onAnimationStart(Animator animation) {}
+                            public void onAnimationStart(Animator animation) {
+                            }
 
                             @Override
                             public void onAnimationEnd(Animator animation) {
@@ -57,7 +60,8 @@ public class FlutterViewSnapshotSplashScreen implements SplashScreen {
                             }
 
                             @Override
-                            public void onAnimationRepeat(Animator animation) {}
+                            public void onAnimationRepeat(Animator animation) {
+                            }
                         });
     }
 }

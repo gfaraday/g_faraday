@@ -1,4 +1,10 @@
-# 0.4.1-pre.1
+# 0.4.2-pre.0
+
+* Support activity all launch modes
+* Support custom transition animation
+* Support transparent background
+
+## 0.4.1-pre.1
 
 * Support Activity animation
 * Support Fragment

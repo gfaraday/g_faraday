@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.yuxiaor.flutter.g_faraday.Faraday
+import com.yuxiaor.flutter.g_faraday.FaradayActivity
 import com.yuxiaor.flutter.g_faraday_example.R
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +23,9 @@ class MainActivity : AppCompatActivity() {
 
         //push to flutter
         btn1.setOnClickListener {
-            Faraday.openFlutterForResult(this, "home", 1, hashMapOf("data" to "data form native MainActivity"))
+            val intent = FaradayActivity.build(this, "home", hashMapOf("data" to "MainActivity"), willTransactionWithAnother = true)
+            this.startActivityForResult(intent, 1)
+//            Faraday.openFlutterForResult(this, "home", 1, hashMapOf("data" to "data form native MainActivity"))
         }
 
         //flutter fragment demo

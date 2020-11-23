@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Center(child: Text("Flutter Home Page")),
+                Center(child: Text("Flutter Home Page $info")),
                 button(
                   "pop with result",
                   () => Navigator.of(context).pop('[flutter pop with result]'),
@@ -69,8 +69,8 @@ class _HomePageState extends State<HomePage> {
                   }),
                 ),
                 button(
-                    'open first page',
-                    () => Navigator.of(context).nativePushNamed('first_page',
+                    'open home page from new native container',
+                    () => Navigator.of(context).nativePushNamed('home',
                         options: {'is_flutter_route': true})),
                 SizedBox(height: 16),
                 Text(info),
