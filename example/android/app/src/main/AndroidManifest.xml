@@ -7,7 +7,7 @@
         android:name=".App"
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme"
-        android:label="g_faraday_example"
+        android:label="Faraday"
         android:allowBackup="false">
 
         <meta-data

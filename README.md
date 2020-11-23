@@ -10,6 +10,7 @@
 ```
 
 ![Pub_Version](https://img.shields.io/pub/v/g_faraday?style=for-the-badge)
+![License](https://img.shields.io/github/license/gfaraday/g_faraday?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/platform-ios%7Candroid-green?style=for-the-badge)
 
 一个`Flutter`混合开发解决方案

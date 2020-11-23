@@ -8,7 +8,7 @@
     <application
         android:name=".App"
         android:icon="@mipmap/ic_launcher"
-        android:label="g_faraday_example"
+        android:label="Faraday"
         android:theme="@style/AppTheme">
 
         <activity android:name=".activity.MainActivity">
