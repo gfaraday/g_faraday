@@ -4,31 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp">
-
-    <Button
-        android:id="@+id/btn1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="push to flutter"
-        android:textAllCaps="false"
-        tools:ignore="HardcodedText" />
-
-
-    <Button
-        android:id="@+id/btn2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="pop to flutter"
-        android:textAllCaps="false"
-        tools:ignore="HardcodedText" />
-
-
-    <TextView
-        android:id="@+id/infoTxt"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:text="args" />
-
-
-</LinearLayout>
+    android:padding="24dp"/>
