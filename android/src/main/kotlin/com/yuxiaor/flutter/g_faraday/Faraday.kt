@@ -123,23 +123,6 @@ object Faraday {
     }
 
     /**
-     *  open flutter page
-     */
-    @JvmStatic
-    fun openFlutter(context: Context, routeName: String, params: HashMap<String, Any>? = null) {
-        context.startActivity(FaradayActivity.build(context, routeName, params))
-    }
-
-    /**
-     *  open flutter page,and request for result
-     */
-    @JvmStatic
-    fun openFlutterForResult(activity: Activity, routeName: String, requestCode: Int, params: HashMap<String, Any>? = null) {
-        activity.startActivityForResult(FaradayActivity.build(activity, routeName, params), requestCode)
-    }
-
-
-    /**
      * post notification  form native to flutter
      */
     fun postNotification(key: String, arguments: Any?) {

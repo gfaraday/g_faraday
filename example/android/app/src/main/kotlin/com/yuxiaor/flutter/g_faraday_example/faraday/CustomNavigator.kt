@@ -2,6 +2,7 @@ package com.yuxiaor.flutter.g_faraday_example.faraday
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import com.yuxiaor.flutter.g_faraday.Faraday
 import com.yuxiaor.flutter.g_faraday.FaradayActivity
@@ -33,8 +34,13 @@ object CustomNavigator: FaradayNavigator {
 //            Faraday.getCurrentActivity()?.startActivity(intent)
 
             // singleTask 模式
-            val intent = FaradayActivity.build(currentActivity, name, args, SingleTaskFlutterActivity::class.java)
-            currentActivity.startActivity(intent)
+            val builder = FaradayActivity.builder(name, args)
+
+            // 你看到的绿色的闪屏就是这个
+            builder.backgroundColor = Color.GREEN
+            builder.activityClass = SingleTaskFlutterActivity::class.java
+
+            currentActivity.startActivity(builder.build(currentActivity))
 
             // singleInstance 同理也是支持的
             return

@@ -18,13 +18,3 @@ import com.yuxiaor.flutter.g_faraday.FaradayActivity
 sealed class FlutterRoute(val routeName: String, val routeArguments: HashMap<String, Any>?) {
 // ---> sealed
 }
-
-/**
- * Navigate to flutter
- * @param route flutter router
- *
- * override [Activity.onActivityResult] in your Activity to got the result
- */
-fun Activity.openFlutter(route: FlutterRoute, requestCode: Int) {
-    startActivityForResult(FaradayActivity.build(this, route.routeName, route.routeArguments), requestCode)
-}

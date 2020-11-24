@@ -2,7 +2,9 @@ package com.yuxiaor.flutter.g_faraday
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import io.flutter.embedding.android.SplashScreen
 import io.flutter.embedding.android.TransparencyMode
 import io.flutter.embedding.android.XFlutterFragment
 import io.flutter.embedding.engine.FlutterEngine
@@ -14,15 +16,10 @@ import io.flutter.embedding.engine.FlutterEngine
  */
 class FaradayFragment : XFlutterFragment(), ResultProvider {
 
-    private val pageId by lazy { arguments?.getInt(ID) ?: 0 }
+    private val pageId by lazy { arguments?.getInt(FaradayConstants.ID) ?: 0 }
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
     companion object {
-
-        private const val ID = "_flutter_id"
-        private const val ARGS = "_flutter_args"
-        private const val ROUTE = "_flutter_route"
-
         ///
         /// 1. 注意 fragment 有一个小限制，如果打算使用
         /// FragmentTransaction.add 然后 show/hide 的方式来切换 fragment 那么opaque必须为false
@@ -30,18 +27,23 @@ class FaradayFragment : XFlutterFragment(), ResultProvider {
         /// ❌否则在动画过程中会出现 白屏/黑屏❌
         ///
         @JvmStatic
-        fun newInstance(routeName: String,
-                        params: HashMap<String, Any>? = null,
-                        opaque: Boolean = true,
+        fun newInstance(
+                routeName: String,
+                params: HashMap<String, Any>? = null,
+                opaque: Boolean = true,
+                backgroundColor: Int? = null,
         ): FaradayFragment {
             val pageId = Faraday.genPageId()
             val bm = (if (opaque) TransparencyMode.opaque else TransparencyMode.transparent).name
             Faraday.plugin?.onPageCreate(routeName, params, pageId, bm)
             val bundle = Bundle().apply {
-                putInt(ID, pageId)
-                putString(ROUTE, routeName)
-                putSerializable(ARGS, params)
+                putInt(FaradayConstants.ID, pageId)
+                putString(FaradayConstants.ROUTE, routeName)
+                putSerializable(FaradayConstants.ARGS, params)
                 putString(ARG_FLUTTERVIEW_TRANSPARENCY_MODE, bm)
+                if (backgroundColor != null) {
+                    putInt(FaradayConstants.SPLASH_SCREEN_BACKGROUND_COLOR, backgroundColor)
+                }
             }
             return FaradayFragment().apply { arguments = bundle }
         }
@@ -53,9 +55,9 @@ class FaradayFragment : XFlutterFragment(), ResultProvider {
     }
 
     internal fun rebuild() {
-        val route = arguments?.getString(ROUTE)
+        val route = arguments?.getString(FaradayConstants.ROUTE)
         require(route != null) { "route must not be null!" }
-        val args = arguments?.getSerializable(ARGS)
+        val args = arguments?.getSerializable(FaradayConstants.ARGS)
         val bm = arguments?.getString(ARG_FLUTTERVIEW_TRANSPARENCY_MODE)
         require(bm != null)
         Faraday.plugin?.onPageCreate(route, args, pageId, bm)
@@ -70,6 +72,12 @@ class FaradayFragment : XFlutterFragment(), ResultProvider {
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
         return Faraday.engine
+    }
+
+    override fun provideSplashScreen(): SplashScreen? {
+        val splashScreen = super.provideSplashScreen()
+        if (splashScreen != null) return splashScreen
+        return FaradayColorBaseSplashScreen(arguments?.getInt(FaradayConstants.SPLASH_SCREEN_BACKGROUND_COLOR, Color.WHITE))
     }
 
     override fun onStart() {

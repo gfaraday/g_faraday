@@ -2,21 +2,13 @@ package com.yuxiaor.flutter.g_faraday
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
+import io.flutter.embedding.android.SplashScreen
 import io.flutter.embedding.android.XFlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import java.io.Serializable
-
-//TODO: 这些key的定义，需要重构
-private const val ID = "_flutter_id"
-private const val ARGS = "_flutter_args"
-private const val ROUTE = "_flutter_route"
-
-// 注意这个key 不能修改， flutter 内部有使用
-private const val BACKGROUND_MODE = "background_mode"
-
-private const val TAG = "FaradayActivity"
 
 /**
  * Author: Edward
@@ -27,20 +19,23 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
 
     companion object {
 
-        fun build(context: Context,
-                  routeName: String,
-                  params: Serializable? = null,
-                  activityClass: Class<out FaradayActivity> = FaradayActivity::class.java,
-                  opaque: Boolean = false
-        ) = SingleEngineIntentBuilder(routeName, params,
-                activityClass, opaque).build(context)
+        private const val TAG = "FaradayActivity"
+
+        fun builder(
+                routeName: String,
+                params: Serializable? = null,
+                activityClass: Class<out FaradayActivity> = FaradayActivity::class.java,
+                opaque: Boolean = false,
+                backgroundColor: Int? = null,
+        ) = SingleEngineIntentBuilder(routeName, params, activityClass, opaque, backgroundColor)
     }
 
     // 后续考虑支持更多参数, 然后再放开访问权限
-    private data class SingleEngineIntentBuilder(val routeName: String,
-                                                 val params: Serializable? = null,
-                                                 val activityClass: Class<out FaradayActivity>,
-                                                 val opaque: Boolean) {
+    data class SingleEngineIntentBuilder(val routeName: String,
+                                         val params: Serializable? = null,
+                                         var activityClass: Class<out FaradayActivity>,
+                                         var opaque: Boolean,
+                                         var backgroundColor: Int?) {
 
         // 真正开始Build的时候再生成id
         fun build(context: Context): Intent {
@@ -48,13 +43,16 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
             val bm = (if (opaque) BackgroundMode.opaque else BackgroundMode.transparent).name
 
             val pageId = Faraday.genPageId()
+
             // 在flutter端生成对应页面
+            Log.v(TAG, "will create page: $routeName")
             Faraday.plugin?.onPageCreate(routeName, params, pageId, bm)
 
             return Intent(context, activityClass).apply {
-                putExtra(ID, pageId)
-                putExtra(ARGS, params)
-                putExtra(ROUTE, routeName)
+                putExtra(FaradayConstants.ID, pageId)
+                putExtra(FaradayConstants.ARGS, params)
+                putExtra(FaradayConstants.ROUTE, routeName)
+                putExtra(FaradayConstants.SPLASH_SCREEN_BACKGROUND_COLOR, backgroundColor)
                 putExtra("background_mode", bm)
             }
         }
@@ -62,7 +60,7 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
     }
 
     private val pageId: Int
-        get() = intent.getIntExtra(ID, 0)
+        get() = intent.getIntExtra(FaradayConstants.ID, 0)
 
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
@@ -77,10 +75,10 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
     }
 
     internal fun rebuild() {
-        val route = intent.getStringExtra(ROUTE)
+        val route = intent.getStringExtra(FaradayConstants.ROUTE)
         require(route != null) { "route must not be null!" }
-        val args = intent.getSerializableExtra(ARGS)
-        val bm = intent.getStringExtra(BACKGROUND_MODE)
+        val args = intent.getSerializableExtra(FaradayConstants.ARGS)
+        val bm = intent.getStringExtra(FaradayConstants.BACKGROUND_MODE)
         require(bm != null)
         Faraday.plugin?.onPageCreate(route, args, pageId, bm)
         Faraday.plugin?.onPageShow(pageId)
@@ -105,6 +103,12 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
     override fun onDestroy() {
         Faraday.plugin?.onPageDealloc(pageId)
         super.onDestroy()
+    }
+
+    override fun provideSplashScreen(): SplashScreen? {
+        val splashScreen = super.provideSplashScreen()
+        if (splashScreen != null) return splashScreen
+        return FaradayColorBaseSplashScreen(intent?.getIntExtra(FaradayConstants.SPLASH_SCREEN_BACKGROUND_COLOR, Color.WHITE))
     }
 
     override fun addResultListener(resultListener: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {

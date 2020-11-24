@@ -38,7 +38,6 @@
         <activity android:name=".activity.SingleTaskFlutterActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.splash.FirstFlutterActivity">
             <meta-data android:name="io.flutter.embedding.android.SplashScreenDrawable" android:resource="@mipmap/ic_launcher">
-
             </meta-data>
         </activity>
     </application>
