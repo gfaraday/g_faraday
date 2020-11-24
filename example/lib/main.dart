@@ -44,8 +44,8 @@ class _MyAppState extends State<MyApp> {
           return (context, child) => AnimatedSwitcher(
                 duration: Duration(seconds: 1),
                 child: child,
-                transitionBuilder: (child, animation) => SizeTransition(
-                  sizeFactor: animation,
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
                   child: child,
                 ),
               );

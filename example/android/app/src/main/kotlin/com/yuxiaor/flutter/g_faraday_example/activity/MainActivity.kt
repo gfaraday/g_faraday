@@ -20,5 +20,11 @@ class MainActivity : AppCompatActivity() {
 
         // 直接打开flutter 页面
         startActivityForResult(intent, 1)
+
+        //
+        finish()
+
+        // 阻止动画
+        overridePendingTransition(0, 0)
     }
 }

@@ -2,6 +2,7 @@ package com.yuxiaor.flutter.g_faraday
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
 import io.flutter.embedding.android.XFlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -15,6 +16,8 @@ private const val ROUTE = "_flutter_route"
 // 注意这个key 不能修改， flutter 内部有使用
 private const val BACKGROUND_MODE = "background_mode"
 private const val TRANSACTION_WITH_ANOTHER = "willTransactionWithAnother"
+
+private const val TAG = "FaradayActivity"
 
 /**
  * Author: Edward
@@ -37,7 +40,7 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
                   params: Serializable? = null,
                   activityClass: Class<out FaradayActivity> = FaradayActivity::class.java,
                   willTransactionWithAnother: Boolean = false,
-                  opaque: Boolean = true
+                  opaque: Boolean = false
         ) = SingleEngineIntentBuilder(routeName, params,
                 activityClass, willTransactionWithAnother, opaque).build(context)
     }
@@ -52,7 +55,14 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
         // 真正开始Build的时候再生成id
         fun build(context: Context): Intent {
 
-            val bm = (if (opaque) BackgroundMode.opaque else BackgroundMode.transparent).name
+            var bm = (if (opaque) BackgroundMode.opaque else BackgroundMode.transparent).name
+            if (willTransactionWithAnother) {
+                bm = BackgroundMode.transparent.name
+                if (opaque) {
+                    Log.w(TAG, "如果当前Activity会直接打开另外一个Flutter Activity那么底层不能使用SurfaceView" +
+                            "来渲染，所以这里 BackgroundMode 必须强制为 BackgroundMode.transparent")
+                }
+            }
             val pageId = Faraday.genPageId()
             // 在flutter端生成对应页面
             Faraday.plugin?.onPageCreate(routeName, params, pageId, bm)
