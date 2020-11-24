@@ -44,14 +44,16 @@ class _MyAppState extends State<MyApp> {
           return (context, child) => AnimatedSwitcher(
                 duration: Duration(seconds: 1),
                 child: child,
-                transitionBuilder: (child, animation) => FadeTransition(
-                  opacity: animation,
+                transitionBuilder: (child, animation) => RotationTransition(
+                  turns: animation,
                   child: child,
                 ),
               );
         }
         return null;
       },
+      // 你看到的红色的闪屏就是这个，如果你的应用背景不是 纯白/纯黑 那么你需要自定义这个颜色
+      nativeContainerBackgroundColorProvider: (context) => Colors.red,
     );
     return CupertinoApp(
       onGenerateRoute: (_) => route,

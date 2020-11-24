@@ -55,7 +55,6 @@ object Faraday {
         // 这个navigator 必须先初始化 不能动
         this.navigator = navigator
         engine = FlutterEngine(context, null, automaticallyRegisterPlugins)
-        Log.setLogLevel(android.util.Log.VERBOSE)
         engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
         return pluginRef != null;
     }

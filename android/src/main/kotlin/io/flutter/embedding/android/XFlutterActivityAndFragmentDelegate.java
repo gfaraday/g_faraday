@@ -180,10 +180,8 @@ import java.util.Objects;
 
         flutterEngine.getLifecycleChannel().appIsInactive();
 
-        if (host.shouldAddFlutterViewSnapshot()) {
-            reattachView = reAttachSplashScreen.createSplashView(getAppComponent(), null);
-            flutterSplashView.addView(reattachView);
-        }
+        reattachView = reAttachSplashScreen.createSplashView(getAppComponent(), null);
+        flutterSplashView.addView(reattachView);
         flutterSplashView.removeView(flutterView);
     }
 
@@ -1034,7 +1032,5 @@ import java.util.Objects;
          * <p>This defaults to true, unless a cached engine is used.
          */
         boolean shouldRestoreAndSaveState();
-
-        boolean shouldAddFlutterViewSnapshot();
     }
 }

@@ -1,5 +1,6 @@
 package com.yuxiaor.flutter.g_faraday
 
+import android.util.Log
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
@@ -15,6 +16,8 @@ import java.lang.ref.WeakReference
 
 /** GFaradayPlugin */
 class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+
+    private val TAG = "GFaradayPlugin"
 
     private lateinit var channel: MethodChannel
 
@@ -115,9 +118,11 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         invokeMethod(method, arguments, object : Result {
 
             override fun notImplemented() {
+                Log.w(TAG, "MethodChannel notImplemented $method $arguments")
             }
 
             override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
+                Log.e(TAG, "MethodChannel errorCode: $errorCode \nerrorMessage: $errorMessage \nerrorDetails: $errorDetails")
             }
 
             override fun success(result: Any?) {

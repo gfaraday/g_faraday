@@ -78,6 +78,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   final List<FaradayArguments> _navigators = [];
   int _index;
   int _preIndex;
+  int _previousNotFoundId;
 
   Timer _reassembleTimer;
 
@@ -87,10 +88,14 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     _channel.setMethodCallHandler(_handler);
   }
 
+  void _recreateLastPage() {
+    _channel.invokeMethod('reCreateLastPage');
+  }
+
   @override
   void reassemble() {
     try {
-      _channel.invokeMethod('reCreateLastPage');
+      _recreateLastPage();
     } on MissingPluginException catch (_) {
       debugPrint('reCreateLastPage failed !!');
     }
@@ -134,30 +139,27 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   @override
   Widget build(BuildContext context) {
-    if (_index == null || _navigators.isEmpty) {
+    if (_index == null || _navigators.isEmpty || _index == -1) {
       if (kDebugMode) {
         if (_reassembleTimer == null) {
-          _reassembleTimer = Timer(Duration(milliseconds: 1),
-              WidgetsBinding.instance.reassembleApplication);
+          // 只有在开发过程中 Relaunch 才会执行的逻辑
+          _reassembleTimer = Timer(Duration(seconds: 5), () {
+            if (_index == null || _index < 0) {
+              WidgetsBinding.instance.reassembleApplication();
+            }
+          });
         }
-        return Container(
-          color: CupertinoDynamicColor.resolve(CupertinoColors.white, context),
-          child: Center(
-            child: Text('Reassemble Application ...'),
-          ),
-        );
       }
-      return Center(
-          child: CupertinoActivityIndicator(
-        animating: true,
-      ));
+      return Container(
+        color: (widget.backgroundColorProvider ?? _defaultBackgroundColor)
+            .call(context),
+        alignment: Alignment.center,
+      );
     }
 
     if (kDebugMode) {
       _reassembleTimer?.cancel();
     }
-
-    if (_index == -1) return Container();
 
     final current = _navigators[_index];
     final content = Container(
@@ -185,6 +187,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   Future<bool> _handler(MethodCall call) async {
+    debugPrint('page lifecycle: ${call.method} ${call.arguments}');
     switch (call.method) {
       case 'pageCreate':
         String name = call.arguments['name'];
@@ -204,10 +207,17 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         final arg = FaradayArguments(call.arguments['args'], name, id,
             opaque: call.arguments['background_mode'] != 'transparent');
         _navigators.add(arg);
-        // _updateIndex(_navigatorStack.length - 1);
+        if (_previousNotFoundId != null) {
+          // show 比create 先调用
+          _updateIndex(_findIndexBy(id: _previousNotFoundId));
+        }
         return true;
       case 'pageShow':
         final index = _findIndexBy(id: call.arguments);
+        _previousNotFoundId = index == null ? call.arguments : null;
+        if (_previousNotFoundId != null) {
+          _recreateLastPage();
+        }
         _updateIndex(index);
         return Future.value(index != null);
       case 'pageDealloc':
@@ -230,8 +240,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   void _updateIndex(int index) {
-    if (index == null) return;
-    if (index == _index) return;
     setState(() {
       _preIndex = _index;
       _index = index;

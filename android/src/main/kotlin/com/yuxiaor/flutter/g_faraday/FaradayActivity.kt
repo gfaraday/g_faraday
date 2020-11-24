@@ -15,7 +15,6 @@ private const val ROUTE = "_flutter_route"
 
 // 注意这个key 不能修改， flutter 内部有使用
 private const val BACKGROUND_MODE = "background_mode"
-private const val TRANSACTION_WITH_ANOTHER = "willTransactionWithAnother"
 
 private const val TAG = "FaradayActivity"
 
@@ -27,42 +26,27 @@ private const val TAG = "FaradayActivity"
 open class FaradayActivity : XFlutterActivity(), ResultProvider {
 
     companion object {
-        //
-        // willTransactionWithAnother 非常重要 如果当前FaradayActivity会直接打开另外一个FaradayFragment或者
-        // FaradayActivity 那么
-        // 这两个对象 willTransactionWithAnother 都应该设置为true
-        //
-        //
-        // ❌否则在动画过程中会出现 白屏/黑屏❌
-        //
+
         fun build(context: Context,
                   routeName: String,
                   params: Serializable? = null,
                   activityClass: Class<out FaradayActivity> = FaradayActivity::class.java,
-                  willTransactionWithAnother: Boolean = false,
                   opaque: Boolean = false
         ) = SingleEngineIntentBuilder(routeName, params,
-                activityClass, willTransactionWithAnother, opaque).build(context)
+                activityClass, opaque).build(context)
     }
 
     // 后续考虑支持更多参数, 然后再放开访问权限
     private data class SingleEngineIntentBuilder(val routeName: String,
                                                  val params: Serializable? = null,
                                                  val activityClass: Class<out FaradayActivity>,
-                                                 val willTransactionWithAnother: Boolean,
                                                  val opaque: Boolean) {
 
         // 真正开始Build的时候再生成id
         fun build(context: Context): Intent {
 
-            var bm = (if (opaque) BackgroundMode.opaque else BackgroundMode.transparent).name
-            if (willTransactionWithAnother) {
-                bm = BackgroundMode.transparent.name
-                if (opaque) {
-                    Log.w(TAG, "如果当前Activity会直接打开另外一个Flutter Activity那么底层不能使用SurfaceView" +
-                            "来渲染，所以这里 BackgroundMode 必须强制为 BackgroundMode.transparent")
-                }
-            }
+            val bm = (if (opaque) BackgroundMode.opaque else BackgroundMode.transparent).name
+
             val pageId = Faraday.genPageId()
             // 在flutter端生成对应页面
             Faraday.plugin?.onPageCreate(routeName, params, pageId, bm)
@@ -72,7 +56,6 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
                 putExtra(ARGS, params)
                 putExtra(ROUTE, routeName)
                 putExtra("background_mode", bm)
-                putExtra(TRANSACTION_WITH_ANOTHER, willTransactionWithAnother)
             }
         }
 
@@ -112,10 +95,6 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
 
     override fun shouldDestroyEngineWithHost(): Boolean {
         return false
-    }
-
-    override fun shouldAddFlutterViewSnapshot(): Boolean {
-        return intent.getBooleanExtra(TRANSACTION_WITH_ANOTHER, false)
     }
 
     override fun onResume() {
