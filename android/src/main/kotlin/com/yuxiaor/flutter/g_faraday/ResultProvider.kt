@@ -8,9 +8,5 @@ import android.content.Intent
  * Description:
  */
 interface ResultProvider {
-
-
     fun addResultListener(resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit))
-
-
 }

@@ -146,6 +146,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           _reassembleTimer = Timer(Duration(seconds: 5), () {
             if (_index == null || _index < 0) {
               WidgetsBinding.instance.reassembleApplication();
+              _reassembleTimer = null;
             }
           });
         }

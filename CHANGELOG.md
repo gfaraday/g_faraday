@@ -1,4 +1,8 @@
-# 0.4.2-pre.0
+# 0.4.2-pre.1
+
+* Support custom splash screen with pure color
+
+## 0.4.2-pre.0
 
 * Support activity all launch modes
 * Support custom transition animation
