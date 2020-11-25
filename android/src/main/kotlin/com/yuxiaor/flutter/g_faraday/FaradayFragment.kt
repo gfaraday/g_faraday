@@ -50,11 +50,11 @@ class FaradayFragment : XFlutterFragment(), ResultProvider {
     }
 
     override fun onAttach(context: Context) {
-        rebuild()
+        rebuildFlutterPage()
         super.onAttach(context)
     }
 
-    internal fun rebuild() {
+    internal fun rebuildFlutterPage() {
         val route = arguments?.getString(FaradayConstants.ROUTE)
         require(route != null) { "route must not be null!" }
         val args = arguments?.getSerializable(FaradayConstants.ARGS)

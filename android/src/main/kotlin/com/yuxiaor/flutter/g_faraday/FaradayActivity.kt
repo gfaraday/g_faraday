@@ -32,7 +32,7 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
 
     // 后续考虑支持更多参数, 然后再放开访问权限
     data class SingleEngineIntentBuilder(val routeName: String,
-                                         val params: Serializable? = null,
+                                         val params: Serializable?,
                                          var activityClass: Class<out FaradayActivity>,
                                          var opaque: Boolean,
                                          var backgroundColor: Int?) {
@@ -74,7 +74,7 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
         Faraday.plugin?.onPageShow(pageId)
     }
 
-    internal fun rebuild() {
+    internal fun rebuildFlutterPage() {
         val route = intent.getStringExtra(FaradayConstants.ROUTE)
         require(route != null) { "route must not be null!" }
         val args = intent.getSerializableExtra(FaradayConstants.ARGS)
