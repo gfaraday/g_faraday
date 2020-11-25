@@ -143,7 +143,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       if (kDebugMode) {
         if (_reassembleTimer == null) {
           // 只有在开发过程中 Relaunch 才会执行的逻辑
-          _reassembleTimer = Timer(Duration(seconds: 5), () {
+          _reassembleTimer = Timer(Duration(microseconds: 1), () {
             if (_index == null || _index < 0) {
               WidgetsBinding.instance.reassembleApplication();
               _reassembleTimer = null;
