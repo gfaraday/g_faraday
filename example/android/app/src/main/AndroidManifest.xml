@@ -37,6 +37,7 @@
         <activity android:name=".activity.SingleTopFlutterActivity" android:launchMode="singleTop"/>
         <activity android:name=".activity.SingleTaskFlutterActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.splash.FirstFlutterActivity">
+<!--            在这里你可以自定义 启动画面动画-->
             <meta-data android:name="io.flutter.embedding.android.SplashScreenDrawable" android:resource="@mipmap/ic_launcher">
             </meta-data>
         </activity>

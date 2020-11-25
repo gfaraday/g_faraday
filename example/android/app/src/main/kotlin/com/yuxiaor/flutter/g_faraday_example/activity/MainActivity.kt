@@ -1,14 +1,9 @@
 package com.yuxiaor.flutter.g_faraday_example.activity
 
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import com.yuxiaor.flutter.g_faraday.Faraday
-import com.yuxiaor.flutter.g_faraday.FaradayActivity
 import com.yuxiaor.flutter.g_faraday_example.R
 import com.yuxiaor.flutter.g_faraday_example.activity.splash.FirstFlutterActivity
-import com.yuxiaor.flutter.g_faraday_example.faraday.CustomNavigator
-import io.flutter.embedding.engine.plugins.util.GeneratedPluginRegister
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,10 +14,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
-        if (!Faraday.initEngine(this, CustomNavigator)) {
-            GeneratedPluginRegister.registerGeneratedPlugins(Faraday.engine)
-        }
 
         // 跳转到 flutter `home` 路由
         val intent = FirstFlutterActivity.build(this)
