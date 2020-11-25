@@ -13,7 +13,7 @@
 		5B3F2C6B251992270091B7E5 /* FaradayCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F2C6A251992270091B7E5 /* FaradayCommon.swift */; };
 		5B3F2C6D251992310091B7E5 /* FaradayRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F2C6C251992310091B7E5 /* FaradayRoute.swift */; };
 		5B3F2C6F251992E80091B7E5 /* FaradayNet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F2C6E251992E80091B7E5 /* FaradayNet.swift */; };
-		5B5982F524FF41DE0036EF15 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5982F424FF41DE0036EF15 /* MainTabBarController.swift */; };
+		5B5982F524FF41DE0036EF15 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5982F424FF41DE0036EF15 /* MainViewController.swift */; };
 		5B5982F724FF45DC0036EF15 /* Native1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5982F624FF45DC0036EF15 /* Native1ViewController.swift */; };
 		5B59830124FF894C0036EF15 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5982FF24FF894C0036EF15 /* FirstViewController.swift */; };
 		5B59830224FF894C0036EF15 /* FirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B59830024FF894C0036EF15 /* FirstViewController.xib */; };
@@ -47,7 +47,7 @@
 		5B3F2C6A251992270091B7E5 /* FaradayCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaradayCommon.swift; sourceTree = "<group>"; };
 		5B3F2C6C251992310091B7E5 /* FaradayRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaradayRoute.swift; sourceTree = "<group>"; };
 		5B3F2C6E251992E80091B7E5 /* FaradayNet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaradayNet.swift; sourceTree = "<group>"; };
-		5B5982F424FF41DE0036EF15 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		5B5982F424FF41DE0036EF15 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		5B5982F624FF45DC0036EF15 /* Native1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Native1ViewController.swift; sourceTree = "<group>"; };
 		5B5982FF24FF894C0036EF15 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		5B59830024FF894C0036EF15 /* FirstViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FirstViewController.xib; sourceTree = "<group>"; };
@@ -97,10 +97,18 @@
 			path = Faraday;
 			sourceTree = "<group>";
 		};
+		5B42C2B3256E59110069684B /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
 		5B5982F124FF41890036EF15 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				5B5982F424FF41DE0036EF15 /* MainTabBarController.swift */,
+				5B42C2B3256E59110069684B /* Splash */,
+				5B5982F424FF41DE0036EF15 /* MainViewController.swift */,
 				5B5983562502248B0036EF15 /* Flutter1ViewController.swift */,
 				5B8FA3F9250B5B6C00FA825E /* Flutter2ViewController.swift */,
 				5B5982F624FF45DC0036EF15 /* Native1ViewController.swift */,
@@ -323,7 +331,7 @@
 				5B5982F724FF45DC0036EF15 /* Native1ViewController.swift in Sources */,
 				5B3F2C6F251992E80091B7E5 /* FaradayNet.swift in Sources */,
 				5B3F2C6D251992310091B7E5 /* FaradayRoute.swift in Sources */,
-				5B5982F524FF41DE0036EF15 /* MainTabBarController.swift in Sources */,
+				5B5982F524FF41DE0036EF15 /* MainViewController.swift in Sources */,
 				5B3F2C6B251992270091B7E5 /* FaradayCommon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

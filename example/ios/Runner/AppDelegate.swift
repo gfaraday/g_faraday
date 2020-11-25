@@ -51,9 +51,12 @@ enum FPage: FlutterPage {
     case flutterTab1
     case flutterTab2
     case flutter
+    case home
     
     var name: String {
         switch self {
+            case .home:
+                return "home"
             case .flutterTab1:
                 return "flutter_tab_1"
             case .flutterTab2:

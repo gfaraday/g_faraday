@@ -1,120 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="InR-2g-XB1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ABh-kg-K8H">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--flutter2-->
-        <scene sceneID="isn-E8-6mB">
-            <objects>
-                <viewController id="nU1-di-L5x" customClass="Flutter2ViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="32I-VN-q8Q"/>
-                        <viewControllerLayoutGuide type="bottom" id="tGD-Aj-m2x"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="4kr-A9-Rfh">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="flutter2" id="0gc-3w-9ZB"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6TV-qr-hb1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-254" y="704"/>
-        </scene>
-        <!--native1-->
-        <scene sceneID="k4U-NI-Nn4">
-            <objects>
-                <viewController id="AwQ-Gq-Nwq" customClass="Native1ViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="MlJ-PF-ULa"/>
-                        <viewControllerLayoutGuide type="bottom" id="kMw-6G-4Kb"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="1cP-wr-bfP">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W4e-BC-iYF">
-                                <rect key="frame" x="141.5" y="433" width="131" height="30"/>
-                                <state key="normal" title="Open Flutter Demo"/>
-                                <connections>
-                                    <action selector="openFlutterDemoWithSender:" destination="AwQ-Gq-Nwq" eventType="touchUpInside" id="Cfz-XT-c5R"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="W4e-BC-iYF" firstAttribute="centerX" secondItem="1cP-wr-bfP" secondAttribute="centerX" id="9EI-jI-5d6"/>
-                            <constraint firstItem="W4e-BC-iYF" firstAttribute="centerY" secondItem="1cP-wr-bfP" secondAttribute="centerY" id="uuc-L7-MtN"/>
-                        </constraints>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="native1" id="WAK-tL-pOp"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VzD-6v-WGW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-255" y="53"/>
-        </scene>
         <!--Navigation Controller-->
-        <scene sceneID="YsA-1m-wmm">
+        <scene sceneID="4B2-ma-vOf">
             <objects>
-                <navigationController navigationBarHidden="YES" id="InR-2g-XB1" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="gYx-pd-exc">
+                <navigationController id="ABh-kg-K8H" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cPZ-PW-CcB">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="LPm-3b-CMf">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
                     <connections>
-                        <segue destination="um7-gn-RUq" kind="relationship" relationship="rootViewController" id="IhA-NZ-pnz"/>
+                        <segue destination="f9b-wl-pWT" kind="relationship" relationship="rootViewController" id="tLK-kv-BwJ"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yAf-Ab-6Wo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uWf-v2-u4P" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3735" y="275"/>
+            <point key="canvasLocation" x="-1823" y="114"/>
         </scene>
-        <!--Main Tab Bar Controller-->
-        <scene sceneID="KlE-D5-vnC">
+        <!--Main View Controller-->
+        <scene sceneID="6xU-OV-ox1">
             <objects>
-                <tabBarController id="um7-gn-RUq" customClass="MainTabBarController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="ZIq-z4-R2N"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="e18-Ie-bRC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="ea8-wb-6vo" kind="relationship" relationship="viewControllers" id="lpy-uL-TAa"/>
-                        <segue destination="AwQ-Gq-Nwq" kind="relationship" relationship="viewControllers" id="vAJ-85-Ke3"/>
-                        <segue destination="nU1-di-L5x" kind="relationship" relationship="viewControllers" id="fNa-o3-s2g"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0Gw-TX-Ai1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2442" y="275"/>
-        </scene>
-        <!--flutter1-->
-        <scene sceneID="pJq-fU-5ye">
-            <objects>
-                <viewController id="ea8-wb-6vo" customClass="Flutter1ViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="f9b-wl-pWT" customClass="MainViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Ku2-Ue-Ish"/>
-                        <viewControllerLayoutGuide type="bottom" id="IEs-ML-MQg"/>
+                        <viewControllerLayoutGuide type="top" id="0va-65-rDw"/>
+                        <viewControllerLayoutGuide type="bottom" id="47c-25-Tef"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="wpK-6r-gwc">
+                    <view key="view" contentMode="scaleToFill" id="OCJ-I1-M4s">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="flutter1" id="0tJ-xh-Chy"/>
+                    <navigationItem key="navigationItem" id="5Sk-ix-pUt"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6la-yb-CKl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g6M-Yx-Oqj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-255" y="-593"/>
+            <point key="canvasLocation" x="-1014" y="114"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
