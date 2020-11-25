@@ -8,7 +8,6 @@ import com.yuxiaor.flutter.g_faraday.channels.CommonChannel
 import com.yuxiaor.flutter.g_faraday.channels.FaradayNotice
 import com.yuxiaor.flutter.g_faraday.channels.NetChannel
 import com.yuxiaor.flutter.g_faraday.channels.NetHandler
-import io.flutter.Log
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.plugin.common.MethodChannel
@@ -39,6 +38,8 @@ object Faraday {
      *
      *  @param context Application Context
      *  @param navigator handle native route
+     *  @param netHandler handle net request
+     *  @param commonHandler common method invoke
      *  @param automaticallyRegisterPlugins If plugins are automatically
      * registered, then they are registered during the execution of this constructor
      *
@@ -51,28 +52,25 @@ object Faraday {
      *
      */
     @JvmStatic
-    fun initEngine(context: Context, navigator: FaradayNavigator, automaticallyRegisterPlugins: Boolean = true): Boolean {
+    fun initEngine(context: Context,
+                   navigator: FaradayNavigator,
+                   netHandler: NetHandler? = null,
+                   commonHandler: MethodChannel.MethodCallHandler? = null,
+                   automaticallyRegisterPlugins: Boolean = true): Boolean {
         // 这个navigator 必须先初始化 不能动
         this.navigator = navigator
         engine = FlutterEngine(context, null, automaticallyRegisterPlugins)
         engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
-        return pluginRef != null;
-    }
 
-    /**
-     * To handle network form flutter on native side
-     */
-    @JvmStatic
-    fun setNetHandler(handler: NetHandler) {
-        NetChannel(engine.dartExecutor, handler)
-    }
+        if (netHandler != null) {
+            NetChannel(engine.dartExecutor, netHandler)
+        }
 
-    /**
-     * To handle common events form flutter
-     */
-    @JvmStatic
-    fun setCommonHandler(handler: MethodChannel.MethodCallHandler) {
-        CommonChannel(engine.dartExecutor, handler)
+        if (commonHandler != null) {
+            CommonChannel(engine.dartExecutor, commonHandler)
+        }
+
+        return pluginRef != null
     }
 
     internal fun genPageId(): Int {

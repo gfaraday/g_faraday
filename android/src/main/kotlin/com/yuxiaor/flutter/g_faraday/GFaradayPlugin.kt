@@ -3,7 +3,6 @@ package com.yuxiaor.flutter.g_faraday
 import android.util.Log
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
-import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -17,14 +16,14 @@ import java.lang.ref.WeakReference
 /** GFaradayPlugin */
 class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
-    private val TAG = "GFaradayPlugin"
+    companion object {
+        private const val TAG = "GFaradayPlugin"
+    }
 
     private lateinit var channel: MethodChannel
 
     private var navigator: FaradayNavigator? = null
     internal var binding: ActivityPluginBinding? = null
-
-    private var pageCount = 0;
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
@@ -75,7 +74,6 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
         data["id"] = id
         data["background_mode"] = backgroundMode
-        pageCount++
         channel.invoke("pageCreate", data)
     }
 
@@ -84,7 +82,6 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     internal fun onPageDealloc(seqId: Int) {
-        pageCount--
         channel.invokeMethod("pageDealloc", seqId)
     }
 
@@ -98,7 +95,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(binding.binaryMessenger, "g_faraday")
-        channel.setMethodCallHandler(this);
+        channel.setMethodCallHandler(this)
         this.navigator = Faraday.navigator
         Faraday.pluginRef = WeakReference(this)
     }
