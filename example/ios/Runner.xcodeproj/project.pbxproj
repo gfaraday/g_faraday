@@ -16,6 +16,8 @@
 		5B42C2B5256F3C300069684B /* MainavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B42C2B4256F3C300069684B /* MainavigationViewController.swift */; };
 		5B42C2BB256F56470069684B /* Flutter2NativeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B42C2B9256F56470069684B /* Flutter2NativeViewController.swift */; };
 		5B42C2BC256F56470069684B /* Flutter2NativeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B42C2BA256F56470069684B /* Flutter2NativeViewController.xib */; };
+		5B42C2CB256F99370069684B /* Native2FlutterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B42C2C9256F99370069684B /* Native2FlutterViewController.swift */; };
+		5B42C2CC256F99370069684B /* Native2FlutterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B42C2CA256F99370069684B /* Native2FlutterViewController.xib */; };
 		5B5982F724FF45DC0036EF15 /* Native1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5982F624FF45DC0036EF15 /* Native1ViewController.swift */; };
 		5B59830124FF894C0036EF15 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5982FF24FF894C0036EF15 /* FirstViewController.swift */; };
 		5B59830224FF894C0036EF15 /* FirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B59830024FF894C0036EF15 /* FirstViewController.xib */; };
@@ -52,6 +54,8 @@
 		5B42C2B4256F3C300069684B /* MainavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainavigationViewController.swift; sourceTree = "<group>"; };
 		5B42C2B9256F56470069684B /* Flutter2NativeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flutter2NativeViewController.swift; sourceTree = "<group>"; };
 		5B42C2BA256F56470069684B /* Flutter2NativeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Flutter2NativeViewController.xib; sourceTree = "<group>"; };
+		5B42C2C9256F99370069684B /* Native2FlutterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Native2FlutterViewController.swift; sourceTree = "<group>"; };
+		5B42C2CA256F99370069684B /* Native2FlutterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Native2FlutterViewController.xib; sourceTree = "<group>"; };
 		5B5982F624FF45DC0036EF15 /* Native1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Native1ViewController.swift; sourceTree = "<group>"; };
 		5B5982FF24FF894C0036EF15 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		5B59830024FF894C0036EF15 /* FirstViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FirstViewController.xib; sourceTree = "<group>"; };
@@ -113,6 +117,8 @@
 			children = (
 				5B42C2B9256F56470069684B /* Flutter2NativeViewController.swift */,
 				5B42C2BA256F56470069684B /* Flutter2NativeViewController.xib */,
+				5B42C2C9256F99370069684B /* Native2FlutterViewController.swift */,
+				5B42C2CA256F99370069684B /* Native2FlutterViewController.xib */,
 			);
 			path = Basic;
 			sourceTree = "<group>";
@@ -255,6 +261,7 @@
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				5B59830224FF894C0036EF15 /* FirstViewController.xib in Resources */,
 				5B42C2BC256F56470069684B /* Flutter2NativeViewController.xib in Resources */,
+				5B42C2CC256F99370069684B /* Native2FlutterViewController.xib in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
@@ -345,6 +352,7 @@
 				5B8FA3FA250B5B6C00FA825E /* Flutter2ViewController.swift in Sources */,
 				5B5982F724FF45DC0036EF15 /* Native1ViewController.swift in Sources */,
 				5B3F2C6F251992E80091B7E5 /* FaradayNet.swift in Sources */,
+				5B42C2CB256F99370069684B /* Native2FlutterViewController.swift in Sources */,
 				5B42C2BB256F56470069684B /* Flutter2NativeViewController.swift in Sources */,
 				5B3F2C6D251992310091B7E5 /* FaradayRoute.swift in Sources */,
 				5B42C2B5256F3C300069684B /* MainavigationViewController.swift in Sources */,

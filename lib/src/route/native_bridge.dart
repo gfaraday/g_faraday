@@ -14,8 +14,8 @@ import 'navigator.dart';
 
 const _channel = MethodChannel('g_faraday');
 
-typedef TransitionBuilderProvider = TransitionBuilder
-    Function(JSON currentRoute, {JSON previousRoute});
+typedef TransitionBuilderProvider = TransitionBuilder Function(
+    JSON currentRoute);
 
 typedef ColorProvider = Color Function(BuildContext context);
 
@@ -77,7 +77,6 @@ class FaradayNativeBridge extends StatefulWidget {
 class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   final List<FaradayArguments> _navigators = [];
   int _index;
-  int _preIndex;
   int _previousNotFoundId;
 
   Timer _reassembleTimer;
@@ -175,13 +174,10 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         index: _index,
       ),
     );
-    if (widget.transitionBuilderProvider == null || _preIndex == _index) {
+    if (widget.transitionBuilderProvider == null) {
       return content;
     }
-    final previous =
-        (_preIndex != null && _preIndex >= 0) ? _navigators[_preIndex] : null;
-    final builder = widget.transitionBuilderProvider(current.info,
-        previousRoute: previous?.info);
+    final builder = widget.transitionBuilderProvider(current.info);
     if (builder == null) return content;
     return builder(context, content);
   }
@@ -241,8 +237,8 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   void _updateIndex(int index) {
     setState(() {
-      _preIndex = _index;
       _index = index;
+      _previousNotFoundId = null;
       debugPrint('index: $_index');
     });
   }

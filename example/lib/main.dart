@@ -40,9 +40,8 @@ class _MyAppState extends State<MyApp> {
         return f(settings);
       },
       onUnknownRoute: null,
-      switchPageAnimation: (currentRoute, {previousRoute}) {
-        if (previousRoute != null &&
-            currentRoute['route'] == previousRoute['route']) {
+      switchPageAnimation: (currentRoute) {
+        if (currentRoute['route'] == '') {
           return (context, child) => AnimatedSwitcher(
                 duration: Duration(seconds: 1),
                 child: child,

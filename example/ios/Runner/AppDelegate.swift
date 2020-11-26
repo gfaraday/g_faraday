@@ -32,6 +32,8 @@ extension AppDelegate: FaradayNavigationDelegate {
         switch name {
             case "flutter2native":
                 vc = Flutter2NativeViewController()
+            case "native2flutter":
+                vc = Native2FlutterViewController()
             default:
                 vc = isFultter ? FaradayFlutterViewController(name, arguments: arguments) : FirstViewController()
         }
@@ -59,11 +61,14 @@ enum FPage: FlutterPage {
     case flutterTab2
     case flutter
     case home
+    case native2flutter
     
     var name: String {
         switch self {
             case .home:
                 return "home"
+            case .native2flutter:
+                return "native2flutter"
             case .flutterTab1:
                 return "flutter_tab_1"
             case .flutterTab2:
@@ -73,7 +78,7 @@ enum FPage: FlutterPage {
         }
     }
     
-    var arguments: Any? { return [:] }
+    var arguments: Any? { return Date().description }
 }
 
 extension FlutterPage {

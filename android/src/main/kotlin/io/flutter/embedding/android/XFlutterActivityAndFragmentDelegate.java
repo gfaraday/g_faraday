@@ -173,12 +173,16 @@ import java.util.Objects;
             platformPlugin = null;
         }
 
+        reAttachSplashScreen = new FlutterViewSnapshotSplashScreen(flutterEngine);
+
         flutterView.detachFromFlutterEngine();
         flutterView.removeOnFirstFrameRenderedListener(flutterUiDisplayListener);
 
         flutterEngine.getLifecycleChannel().appIsInactive();
 
+
         reattachView = reAttachSplashScreen.createSplashView(getAppComponent(), null);
+
         flutterSplashView.addView(reattachView);
         flutterSplashView.removeView(flutterView);
     }
@@ -195,13 +199,13 @@ import java.util.Objects;
 
         Log.i(TAG, "reattach " + flutterView.toString());
 
+        flutterSplashView.displayFlutterViewWithSplash(flutterView, reAttachSplashScreen);
         flutterSplashView.removeView(reattachView);
 
         onAttach(host.getContext());
         flutterView.addOnFirstFrameRenderedListener(flutterUiDisplayListener);
         flutterView.attachToFlutterEngine(flutterEngine);
 
-        flutterSplashView.displayFlutterViewWithSplash(flutterView, reAttachSplashScreen);
 
         flutterEngine.getLifecycleChannel().appIsResumed();
     }
@@ -552,7 +556,7 @@ import java.util.Objects;
         Log.v(TAG, "onPause()");
         ensureAlive();
         assert flutterEngine != null;
-        reAttachSplashScreen = new FlutterViewSnapshotSplashScreen(flutterEngine);
+//        reAttachSplashScreen = new FlutterViewSnapshotSplashScreen(flutterEngine);
         flutterEngine.getLifecycleChannel().appIsInactive();
     }
 
@@ -572,7 +576,7 @@ import java.util.Objects;
     void onStop() {
         Log.v(TAG, "onStop()");
         ensureAlive();
-        detach();
+//        detach();
         flutterEngine.getLifecycleChannel().appIsPaused();
     }
 
