@@ -153,8 +153,6 @@ import java.util.Objects;
         assert flutterSplashView != null;
         assert flutterEngine != null;
 
-        reAttachSplashScreen = new FlutterViewSnapshotSplashScreen(flutterEngine);
-
         Log.w(TAG, "detach " + flutterView.toString());
 
         if (host.shouldAttachEngineToActivity()) {
@@ -553,6 +551,8 @@ import java.util.Objects;
     void onPause() {
         Log.v(TAG, "onPause()");
         ensureAlive();
+        assert flutterEngine != null;
+        reAttachSplashScreen = new FlutterViewSnapshotSplashScreen(flutterEngine);
         flutterEngine.getLifecycleChannel().appIsInactive();
     }
 
@@ -572,8 +572,8 @@ import java.util.Objects;
     void onStop() {
         Log.v(TAG, "onStop()");
         ensureAlive();
-        flutterEngine.getLifecycleChannel().appIsPaused();
         detach();
+        flutterEngine.getLifecycleChannel().appIsPaused();
     }
 
     /**
