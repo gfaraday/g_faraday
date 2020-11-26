@@ -17,47 +17,97 @@ class _BasicState extends State<Basic> {
     return Section(
       title: '基础',
       subTitle: '集成faraday的基础功能',
-      onTapViewAll: () {},
+      onTapViewAll: () => Navigator.of(context).push(
+        CupertinoPageRoute(builder: (_) => BasicAllPage()),
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: CupertinoColors.white,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
-          children: [
-            _Action(
-              title: '从Flutter跳转到Native页面',
-              subTitle: 'ios: viewController android: activity',
-              begin: _Action.flutter,
-              end: _Action.native,
-              onTap: () => Navigator.of(context).push(
-                CupertinoPageRoute(builder: (_) => Flutter2NativePage()),
-              ),
-            ),
-            Divider(height: 1),
-            _Action(
-              title: '从Native跳转到Flutter页面',
-              subTitle: 'viewController activity fragment',
-              begin: _Action.native,
-              end: _Action.flutter,
-              onTap: () =>
-                  Navigator.of(context).nativePushNamed('native2flutter'),
-            ),
-            Divider(height: 1),
-            _Action(
-              title: '从Flutter跳转到Flutter页面',
-              subTitle: '支持在新的native容器打开',
-              begin: _Action.flutter,
-              end: _Action.flutter,
-              onTap: () => Navigator.of(context).push(
-                CupertinoPageRoute(builder: (_) => Flutter2Flutter()),
-              ),
-            ),
-          ],
+          children: _buildActions(context),
         ),
       ),
     );
   }
+}
+
+class BasicAllPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      backgroundColor: CupertinoColors.secondarySystemBackground,
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('All Basics'),
+      ),
+      child: SafeArea(
+        child: Center(
+          child: ListView(
+            physics: AlwaysScrollableScrollPhysics(),
+            children: [
+              Container(
+                margin: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: CupertinoColors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  children: _buildActions(context),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
+  final base = [
+    _Action(
+      title: '从Flutter跳转到Native页面',
+      subTitle: 'ios: viewController android: activity',
+      begin: _Action.flutter,
+      end: _Action.native,
+      onTap: () => Navigator.of(context).push(
+        CupertinoPageRoute(builder: (_) => Flutter2NativePage()),
+      ),
+    ),
+    Divider(height: 1),
+    _Action(
+      title: '从Native跳转到Flutter页面',
+      subTitle: 'viewController activity fragment',
+      begin: _Action.native,
+      end: _Action.flutter,
+      onTap: () => Navigator.of(context).nativePushNamed('native2flutter'),
+    ),
+    Divider(height: 1),
+    _Action(
+      title: '从Flutter跳转到Flutter页面',
+      subTitle: '支持在新的native容器打开',
+      begin: _Action.flutter,
+      end: _Action.flutter,
+      onTap: () => Navigator.of(context).push(
+        CupertinoPageRoute(builder: (_) => Flutter2Flutter()),
+      ),
+    ),
+  ];
+  if (onlyBase) return base;
+  return [
+    ...base,
+    Divider(height: 1),
+    _Action(
+      title: '从Flutter跳转到Flutter页面',
+      subTitle: '支持在新的native容器打开',
+      begin: _Action.flutter,
+      end: _Action.flutter,
+      onTap: () => Navigator.of(context).push(
+        CupertinoPageRoute(builder: (_) => Flutter2Flutter()),
+      ),
+    ),
+  ];
 }
 
 class _Action extends StatelessWidget {
