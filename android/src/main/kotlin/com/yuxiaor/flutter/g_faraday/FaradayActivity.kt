@@ -25,7 +25,7 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
                 routeName: String,
                 params: Serializable? = null,
                 activityClass: Class<out FaradayActivity> = FaradayActivity::class.java,
-                opaque: Boolean = false,
+                opaque: Boolean = true,
                 backgroundColor: Int? = null,
         ) = SingleEngineIntentBuilder(routeName, params, activityClass, opaque, backgroundColor)
     }

@@ -1,5 +1,6 @@
 package com.yuxiaor.flutter.g_faraday
 
+import android.content.Intent
 import java.io.Serializable
 
 /**
@@ -11,9 +12,9 @@ import java.io.Serializable
 interface FaradayNavigator {
 
     /**
-     * open native Activity
+     * create native Intent
      */
-    fun push(name: String, arguments: Serializable?, options: HashMap<String, *>?, callback: (result: HashMap<String, *>?) -> Unit)
+    fun create(name: String, arguments: Serializable?, options: HashMap<String, *>?): Intent?
 
     /**
      * finish flutter container Activity

@@ -88,7 +88,7 @@ object Faraday {
     /**
      * start native Activity,and request for Activity result
      */
-    fun startNativeForResult(intent: Intent, callback: (result: HashMap<String, Any?>?) -> Unit) {
+    internal fun startNativeForResult(intent: Intent, callback: (result: HashMap<String, Any?>?) -> Unit) {
         val code = nextCode.getAndIncrement()
         startNativeForResult(intent, code) { requestCode, resultCode, data ->
             if (requestCode == code) {
@@ -105,8 +105,7 @@ object Faraday {
         }
     }
 
-    @JvmStatic
-    fun startNativeForResult(intent: Intent, requestCode: Int, callback: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
+    private fun startNativeForResult(intent: Intent, requestCode: Int, callback: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
         val activity = getCurrentActivity()
 
         if (activity is ResultProvider) {

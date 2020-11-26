@@ -573,6 +573,7 @@ import java.util.Objects;
         Log.v(TAG, "onStop()");
         ensureAlive();
         flutterEngine.getLifecycleChannel().appIsPaused();
+        detach();
     }
 
     /**

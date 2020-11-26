@@ -17,8 +17,8 @@ object CustomNavigator : FaradayNavigator {
 
     private var count = 0
 
-    override fun push(name: String, arguments: Serializable?, options: HashMap<String, *>?, callback: (result: HashMap<String, *>?) -> Unit) {
-        val currentActivity = Faraday.getCurrentActivity() ?: return
+    override fun create(name: String, arguments: Serializable?, options: HashMap<String, *>?): Intent? {
+        val context = Faraday.getCurrentActivity() ?: return null
         val isFlutterRoute = options?.get("is_flutter_route") == true
         if (isFlutterRoute) {
             //打开另一个flutter容器Activity
@@ -39,22 +39,18 @@ object CustomNavigator : FaradayNavigator {
             builder.backgroundColor = Color.GREEN
             builder.activityClass = SingleTaskFlutterActivity::class.java
 
-            currentActivity.startActivity(builder.build(currentActivity))
-
-            // singleInstance 同理也是支持的
-            return
+            return builder.build(context);
         }
 
 
         if (name == "flutter2native") {
-            Faraday.startNativeForResult(Intent(currentActivity, FlutterToNativeActivity::class.java), callback)
-            return
+            return Intent(context, FlutterToNativeActivity::class.java)
         }
 
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(name)
         intent.putExtra(KEY_ARGS, arguments)
-        Faraday.startNativeForResult(intent, callback)
+        return intent
     }
 
     override fun pop(result: Serializable?) {
