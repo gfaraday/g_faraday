@@ -8,7 +8,7 @@
 import UIKit
 import Flutter
 
-open class FaradayFlutterViewController: FlutterViewController {
+open class FaradayFlutterViewController: FlutterViewController, UINavigationControllerDelegate {
     
     public let name: String
     public let arguments: Any?
@@ -21,6 +21,7 @@ open class FaradayFlutterViewController: FlutterViewController {
     
     private var isShowing = false
     private weak var previousFlutterViewController: FaradayFlutterViewController?
+    private var swipeBackIsEnable = true
         
     public init(_ name: String, arguments: Any? = nil, backgroundClear: Bool = false, engine: FlutterEngine? = nil, callback: ((Any?) -> ())? = nil) {
         self.name = name
@@ -72,7 +73,8 @@ open class FaradayFlutterViewController: FlutterViewController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .clear
+        view.backgroundColor = backgroundClear ? .clear : .white
+        navigationController?.delegate = self
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -84,12 +86,22 @@ open class FaradayFlutterViewController: FlutterViewController {
     }
     
     open override func viewDidAppear(_ animated: Bool) {
+        interactivePopGestureRecognizerDelegate = navigationController?.interactivePopGestureRecognizer?.delegate
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         if ((navigationController?.viewControllers.count ?? 0) > 1) {
-            interactivePopGestureRecognizerDelegate = navigationController?.interactivePopGestureRecognizer?.delegate
-            navigationController?.interactivePopGestureRecognizer?.delegate = nil
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         }
         
         super.viewDidAppear(animated)
+    }
+    
+    public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        if (navigationController.viewControllers.count > 1) {
+            navigationController.interactivePopGestureRecognizer?.isEnabled = navigationController.interactivePopGestureRecognizer?.isEnabled ?? false
+        } else {
+            navigationController.interactivePopGestureRecognizer?.isEnabled = false
+        }
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
@@ -103,17 +115,15 @@ open class FaradayFlutterViewController: FlutterViewController {
         //
         // ref: https://stackoverflow.com/questions/36503224/ios-app-freezes-on-pushviewcontroller
         //
-        if (interactivePopGestureRecognizerDelegate != nil) {
-            navigationController?.interactivePopGestureRecognizer?.delegate = interactivePopGestureRecognizerDelegate
-            navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        }
+        navigationController?.interactivePopGestureRecognizer?.delegate = interactivePopGestureRecognizerDelegate
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = (navigationController?.viewControllers.count ?? 0) > 1
         
         isShowing = false
 //        Faraday.sendPageState(.hiden(id)) { r in
 //            let succeed = r as? Bool ?? false
 //            debugPrint("id: \(id) send pageState `hiden` \(succeed ? "succeed" : "failed")")
 //        }
-        super.viewDidAppear(animated)
+        super.viewDidDisappear(animated)
     }
             
     deinit {
