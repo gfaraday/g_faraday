@@ -8,23 +8,22 @@ import com.yuxiaor.flutter.g_faraday.Faraday
 import com.yuxiaor.flutter.g_faraday.FaradayActivity
 import com.yuxiaor.flutter.g_faraday.FaradayNavigator
 import com.yuxiaor.flutter.g_faraday_example.activity.SingleTaskFlutterActivity
+import com.yuxiaor.flutter.g_faraday_example.basic.FlutterToNativeActivity
 import java.io.Serializable
 
 private const val KEY_ARGS = "_args"
 
-object CustomNavigator: FaradayNavigator {
+object CustomNavigator : FaradayNavigator {
 
     private var count = 0
 
     override fun push(name: String, arguments: Serializable?, options: HashMap<String, *>?, callback: (result: HashMap<String, *>?) -> Unit) {
+        val currentActivity = Faraday.getCurrentActivity() ?: return
         val isFlutterRoute = options?.get("is_flutter_route") == true
         if (isFlutterRoute) {
             //打开另一个flutter容器Activity
             count++
             val args = hashMapOf<String, Any>("count" to count)
-
-            val currentActivity = Faraday.getCurrentActivity() ?: return
-
 
             // standard
 //            Faraday.getCurrentActivity()?.startActivity(FaradayActivity.build(this, name, arguments))
@@ -43,6 +42,12 @@ object CustomNavigator: FaradayNavigator {
             currentActivity.startActivity(builder.build(currentActivity))
 
             // singleInstance 同理也是支持的
+            return
+        }
+
+
+        if (name == "flutter2native") {
+            Faraday.startNativeForResult(Intent(currentActivity, FlutterToNativeActivity::class.java), callback)
             return
         }
 

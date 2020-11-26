@@ -91,12 +91,16 @@ object Faraday {
     fun startNativeForResult(intent: Intent, callback: (result: HashMap<String, Any?>?) -> Unit) {
         val code = nextCode.getAndIncrement()
         startNativeForResult(intent, code) { requestCode, resultCode, data ->
-            if (requestCode == code && resultCode == Activity.RESULT_OK) {
-                val map = hashMapOf<String, Any?>()
-                data?.extras?.keySet()?.forEach {
-                    map[it] = data.extras?.get(it)
+            if (requestCode == code) {
+                if (resultCode == Activity.RESULT_OK) {
+                    val map = hashMapOf<String, Any?>()
+                    data?.extras?.keySet()?.forEach {
+                        map[it] = data.extras?.get(it)
+                    }
+                    callback.invoke(map)
+                } else {
+                    callback.invoke(null)
                 }
-                callback.invoke(map)
             }
         }
     }

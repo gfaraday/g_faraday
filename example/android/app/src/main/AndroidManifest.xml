@@ -50,6 +50,7 @@
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"
                 android:resource="@mipmap/ic_launcher" />
         </activity>
+        <activity android:name=".basic.FlutterToNativeActivity" />
     </application>
 
 </manifest>
