@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:g_faraday/g_faraday.dart';
-import 'package:g_faraday_example/src/widgets/section.dart';
 
+import '../widgets/section.dart';
 import 'features/basic/basic.dart';
 import 'features/notification/notification.dart';
 import 'features/splash/splash.dart';
@@ -26,134 +26,97 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.secondarySystemBackground,
-      child: CustomScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        slivers: [
-          CupertinoSliverNavigationBar(
-            backgroundColor: CupertinoColors.white,
-            border: null,
-            largeTitle: Text('Faraday功能演示'),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 100,
-              color: CupertinoColors.white,
+    return WillPopScope(
+      onWillPop: () async {
+        final r = await showCupertinoDialog(
+            builder: (ctx) => CupertinoAlertDialog(
+                  content: Text('确定退出吗?'),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: Text('按错了'),
+                      isDefaultAction: true,
+                      onPressed: () => Navigator.of(ctx).pop(false),
+                    ),
+                    CupertinoDialogAction(
+                      child: Text('退出'),
+                      isDestructiveAction: true,
+                      onPressed: () => Navigator.of(ctx).pop(true),
+                    )
+                  ],
+                ),
+            context: context);
+        return r;
+      },
+      child: CupertinoPageScaffold(
+        backgroundColor: CupertinoColors.secondarySystemBackground,
+        child: CustomScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          slivers: [
+            CupertinoSliverNavigationBar(
+              backgroundColor: CupertinoColors.white,
+              border: null,
+              largeTitle: Text('Faraday功能演示'),
             ),
-          ),
-          SliverToBoxAdapter(child: Basic()),
-          SliverToBoxAdapter(child: Splash()),
-          SliverToBoxAdapter(child: GlobalNotification()),
-          SliverToBoxAdapter(
-              child: Section(
-            title: '自定义SplashScreen',
-            subTitle: '启动页 过渡页面配置',
-            child: Container(
-              height: 100,
-              color: CupertinoColors.activeOrange,
+            SliverToBoxAdapter(
+              child: Container(
+                height: 100,
+                color: CupertinoColors.white,
+              ),
             ),
-            onTapViewAll: () {},
-          )),
-          SliverToBoxAdapter(
-              child: Section(
-            title: '自定义SplashScreen',
-            subTitle: '启动页 过渡页面配置',
-            child: Container(
-              height: 100,
-              color: CupertinoColors.activeOrange,
-            ),
-            onTapViewAll: () {},
-          )),
-          SliverToBoxAdapter(
-              child: Section(
-            title: '自定义SplashScreen',
-            subTitle: '启动页 过渡页面配置',
-            child: Container(
-              height: 100,
-              color: CupertinoColors.activeOrange,
-            ),
-            onTapViewAll: () {},
-          )),
-          SliverToBoxAdapter(
-              child: Section(
-            title: '自定义SplashScreen',
-            subTitle: '启动页 过渡页面配置',
-            child: Container(
-              height: 100,
-              color: CupertinoColors.activeOrange,
-            ),
-            onTapViewAll: () {},
-          )),
-          SliverToBoxAdapter(
-            child: SafeArea(
-              top: false,
-              child: Container(),
-              minimum: EdgeInsets.only(bottom: 16),
-            ),
-          )
-        ],
+            SliverToBoxAdapter(child: Basic()),
+            SliverToBoxAdapter(child: Splash()),
+            SliverToBoxAdapter(child: GlobalNotification()),
+            SliverToBoxAdapter(
+                child: Section(
+              title: '自定义SplashScreen',
+              subTitle: '启动页 过渡页面配置',
+              child: Container(
+                height: 100,
+                color: CupertinoColors.activeOrange,
+              ),
+              onTapViewAll: () {},
+            )),
+            SliverToBoxAdapter(
+                child: Section(
+              title: '自定义SplashScreen',
+              subTitle: '启动页 过渡页面配置',
+              child: Container(
+                height: 100,
+                color: CupertinoColors.activeOrange,
+              ),
+              onTapViewAll: () {},
+            )),
+            SliverToBoxAdapter(
+                child: Section(
+              title: '自定义SplashScreen',
+              subTitle: '启动页 过渡页面配置',
+              child: Container(
+                height: 100,
+                color: CupertinoColors.activeOrange,
+              ),
+              onTapViewAll: () {},
+            )),
+            SliverToBoxAdapter(
+                child: Section(
+              title: '自定义SplashScreen',
+              subTitle: '启动页 过渡页面配置',
+              child: Container(
+                height: 100,
+                color: CupertinoColors.activeOrange,
+              ),
+              onTapViewAll: () {},
+            )),
+            SliverToBoxAdapter(
+              child: SafeArea(
+                top: false,
+                child: Container(),
+                minimum: EdgeInsets.only(bottom: 16),
+              ),
+            )
+          ],
+        ),
       ),
     );
-    // return CupertinoPageScaffold(
-    //   navigationBar: CupertinoNavigationBar(
-    //     middle: Text('Faraday Integrated Guide'),
-    //   ),
-    //   child: SafeArea(
-    //     child: WillPopScope(
-    //       onWillPop: () async {
-    //         //拦截返回键
-    //         final result = await showDialog(context);
-    //         return Future.value(result != null);
-    //       },
-    //       child: Container(
-    //         color: CupertinoColors.white,
-    //         padding: EdgeInsets.all(16),
-    //         child: Column(
-    //           crossAxisAlignment: CrossAxisAlignment.stretch,
-    //           children: <Widget>[
-    //             Center(child: Text("Flutter Home Page $info")),
-    //             button(
-    //               "pop with result",
-    //               () => Navigator.of(context).pop('[flutter pop with result]'),
-    //             ),
-    //             button(
-    //               "maybe pop",
-    //               () => Navigator.of(context).maybePop('result form maybe pop'),
-    //             ),
-    //             button(
-    //               "open Native,并等待返回数据",
-    //               () => openNativeForResult(),
-    //             ),
-    //             button(
-    //               "open Flutter",
-    //               () => Navigator.of(context).push(CupertinoPageRoute(
-    //                 builder: (context) => FirstPage(-2),
-    //               )),
-    //             ),
-    //             button(
-    //               "open willScope flutter page",
-    //               () => Navigator.of(context)
-    //                   .push(CupertinoPageRoute(
-    //                       builder: (context) => SecondPage()))
-    //                   .then((v) {
-    //                 setState(() {
-    //                   info += "$v \n";
-    //                 });
-    //               }),
-    //             ),
-    //             button(
-    //                 'open home page from new native container',
-    //                 () => Navigator.of(context).nativePushNamed('home',
-    //                     options: {'is_flutter_route': true})),
-    //             SizedBox(height: 16),
-    //             Text(info),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   ///
