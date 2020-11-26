@@ -9,9 +9,10 @@ import com.yuxiaor.flutter.g_faraday.FaradayActivity
 import com.yuxiaor.flutter.g_faraday.FaradayNavigator
 import com.yuxiaor.flutter.g_faraday_example.activity.SingleTaskFlutterActivity
 import com.yuxiaor.flutter.g_faraday_example.basic.FlutterToNativeActivity
+import com.yuxiaor.flutter.g_faraday_example.basic.Native2FlutterActivity
 import java.io.Serializable
 
-private const val KEY_ARGS = "_args"
+const val KEY_ARGS = "_args"
 
 object CustomNavigator : FaradayNavigator {
 
@@ -45,6 +46,8 @@ object CustomNavigator : FaradayNavigator {
 
         if (name == "flutter2native") {
             return Intent(context, FlutterToNativeActivity::class.java)
+        } else if (name == "native2flutter") {
+            return Intent(context, Native2FlutterActivity::class.java)
         }
 
         val intent = Intent(Intent.ACTION_VIEW)

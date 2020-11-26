@@ -1,3 +1,5 @@
 <resources>
     <string name="back_button_title">带参数返回</string>
+    <string name="native2flutter_tip">从原生打开flutter只需要使用 FaradayActivity.builder 构造相应的Intent，然后startActivityForResult\n\n 注意\n打开的路由必须在flutter入口处注册</string>
+    <string name="open_flutter">Open Flutter</string>
 </resources>

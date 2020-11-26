@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
+import 'package:g_faraday_example/src/pages/features/basic/pages/native_to_flutter.dart';
 
 import 'src/pages/embedding_page.dart';
-import 'src/pages/first_page.dart';
 import 'src/pages/fragment_page.dart';
 import 'src/pages/home_page.dart';
 
@@ -18,10 +18,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Map<String, RouteFactory> routes = {
-    'first_page': (RouteSettings settings) => CupertinoPageRoute(
-        builder: (context) => FirstPage(0), settings: settings),
-    'home': (RouteSettings settings) => CupertinoPageRoute(
+    'home': (settings) => CupertinoPageRoute(
         builder: (context) => HomePage(settings.arguments), settings: settings),
+    'native2flutter': (settings) => CupertinoPageRoute(
+        builder: (context) => Native2FlutterPage(settings.arguments),
+        settings: settings),
     'flutter_tab_2': (RouteSettings settings) => CupertinoPageRoute(
         builder: (context) => HomePage(settings.arguments), settings: settings),
     'flutter_tab_1': (RouteSettings settings) => CupertinoPageRoute(

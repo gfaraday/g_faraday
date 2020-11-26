@@ -51,6 +51,7 @@
                 android:resource="@mipmap/ic_launcher" />
         </activity>
         <activity android:name=".basic.FlutterToNativeActivity" />
+        <activity android:name=".basic.Native2FlutterActivity" />
     </application>
 
 </manifest>

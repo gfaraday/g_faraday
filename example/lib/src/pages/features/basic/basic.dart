@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:g_faraday/g_faraday.dart';
 
 import '../../../widgets/section.dart';
 import 'pages/flutter_to_native.dart';
@@ -38,7 +39,8 @@ class _BasicState extends State<Basic> {
               subTitle: 'viewController activity fragment',
               begin: _Action.native,
               end: _Action.flutter,
-              onTap: () {},
+              onTap: () =>
+                  Navigator.of(context).nativePushNamed('native2flutter'),
             ),
             Divider(height: 1),
             _Action(
