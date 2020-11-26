@@ -19,7 +19,7 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
       child: SafeArea(
         child: Center(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),

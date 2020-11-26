@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
 
 import '../../../widgets/section.dart';
+import 'pages/flutter_to_flutter.dart';
 import 'pages/flutter_to_native.dart';
 
 class Basic extends StatefulWidget {
@@ -48,7 +49,9 @@ class _BasicState extends State<Basic> {
               subTitle: '支持在新的native容器打开',
               begin: _Action.flutter,
               end: _Action.flutter,
-              onTap: () {},
+              onTap: () => Navigator.of(context).push(
+                CupertinoPageRoute(builder: (_) => Flutter2Flutter()),
+              ),
             ),
           ],
         ),
