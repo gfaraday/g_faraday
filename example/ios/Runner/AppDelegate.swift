@@ -13,6 +13,7 @@ import Alamofire
     ) -> Bool {
         
         UINavigationController.fa.automaticallyHandleNavigationBarHidden()
+        UIViewController.fa.automaticallyCallbackNullToFlutter()
         
         Faraday.default.startFlutterEngine(navigatorDelegate: self, httpProvider: self, commonHandler: self.handle(_:_:_:), automaticallyRegisterPlugins: true)
         
@@ -24,10 +25,16 @@ extension AppDelegate: FaradayNavigationDelegate {
     
     func push(_ name: String, arguments: Any?, options: [String : Any]?) -> UIViewController? {
         
+        var vc: UIViewController!
         let isFultter = options?["flutterRoute"] as? Bool ?? false
         let isPresent = options?["present"] as? Bool ?? false
         
-        let vc = isFultter ? FaradayFlutterViewController(name, arguments: arguments) : FirstViewController()
+        switch name {
+            case "flutter2native":
+                vc = Flutter2NativeViewController()
+            default:
+                vc = isFultter ? FaradayFlutterViewController(name, arguments: arguments) : FirstViewController()
+        }
         
         let topMost = UIViewController.fa.topMost
         if (isPresent) {

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
-import 'package:g_faraday_example/src/pages/fragment_page.dart';
 
 import 'src/pages/embedding_page.dart';
 import 'src/pages/first_page.dart';
+import 'src/pages/fragment_page.dart';
 import 'src/pages/home_page.dart';
 
 void main() {
@@ -38,6 +38,7 @@ class _MyAppState extends State<MyApp> {
         if (f == null) return null;
         return f(settings);
       },
+      onUnknownRoute: null,
       switchPageAnimation: (currentRoute, {previousRoute}) {
         if (previousRoute != null &&
             currentRoute['route'] == previousRoute['route']) {
@@ -52,11 +53,28 @@ class _MyAppState extends State<MyApp> {
         }
         return null;
       },
-      // 你看到的红色的闪屏就是这个，如果你的应用背景不是 纯白/纯黑 那么你需要自定义这个颜色
-      nativeContainerBackgroundColorProvider: (context) => Colors.red,
+      nativeContainerBackgroundColorProvider: (context) =>
+          CupertinoColors.secondarySystemBackground,
     );
-    return CupertinoApp(
+    final cupertinoApp = CupertinoApp(
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: (_) => route,
+    );
+
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Banner(
+        location: BannerLocation.bottomStart,
+        message: 'faraday',
+        color: CupertinoColors.activeBlue,
+        textStyle: TextStyle(
+          color: CupertinoColors.white,
+          fontSize: 12 * 0.85,
+          fontWeight: FontWeight.w900,
+          height: 1.0,
+        ),
+        child: cupertinoApp,
+      ),
     );
   }
 }

@@ -5,7 +5,7 @@
 //  Created by gix on 2020/9/21.
 //
 
-import Foundation
+import UIKit
 
 private struct AssociatedKeys {
     static var CallbackName = "faraday_CallbackName"
@@ -28,6 +28,10 @@ public extension FaradayExtension where ExtendedType: UIViewController {
         }
     }
     
+    static func automaticallyCallbackNullToFlutter() {
+        swizzle(UIViewController.self, #selector(UIViewController.viewDidDisappear(_:)), #selector(UIViewController.faraday_viewDidDisappear(_:)))
+    }
+        
     var isModal: Bool {
         if let index = type.navigationController?.viewControllers.firstIndex(of: type), index > 0 {
             return false
@@ -47,11 +51,22 @@ public extension FaradayExtension where ExtendedType: UIViewController {
     func callback(result: Any?) {
         if (callbackToken != nil) {
             Faraday.callback(callbackToken, result: result)
+            // 只回调一次
+            callbackToken = nil
         }
     }
     
     func dismiss(withResult result: Any?, animated flag: Bool, completion: (() -> Void)? = nil) {
         type.fa.callback(result: result)
         type.dismiss(animated: flag, completion: completion)
+    }
+}
+
+extension UIViewController {
+    
+    @objc fileprivate func faraday_viewDidDisappear(_ animated: Bool) {
+        faraday_viewDidDisappear(animated)
+        // 如果是滑动返回，或者点击左上角back键返回 则需要告诉flutter 没有返回值
+        fa.callback(result: nil)
     }
 }

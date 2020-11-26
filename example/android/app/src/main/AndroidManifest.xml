@@ -1,14 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yuxiaor.flutter.g_faraday_example">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/AppTheme"
         android:label="Faraday"
-        android:allowBackup="false">
+        android:theme="@style/AppTheme">
 
         <meta-data
             android:name="flutterEmbedding"
@@ -17,10 +18,10 @@
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activity.FirstActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -33,13 +34,22 @@
                     android:scheme="native" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.FragActivity" android:theme="@style/FragTheme" />
-        <activity android:name=".activity.SingleTopFlutterActivity" android:launchMode="singleTop"/>
-        <activity android:name=".activity.SingleTaskFlutterActivity" android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.FragActivity"
+            android:theme="@style/FragTheme" />
+        <activity
+            android:name=".activity.SingleTopFlutterActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".activity.SingleTaskFlutterActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".activity.splash.FirstFlutterActivity">
-<!--            在这里你可以自定义 启动画面动画-->
-            <meta-data android:name="io.flutter.embedding.android.SplashScreenDrawable" android:resource="@mipmap/ic_launcher">
-            </meta-data>
+
+            <!-- 在这里你可以自定义 启动画面动画 -->
+            <meta-data
+                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+                android:resource="@mipmap/ic_launcher" />
         </activity>
     </application>
+
 </manifest>
