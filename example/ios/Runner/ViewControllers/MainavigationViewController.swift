@@ -25,7 +25,7 @@ class MainavigationViewController: UINavigationController {
             vc.addAction(UIAlertAction(title: "取消", style: .destructive, handler: nil))
             
             vc.addAction(UIAlertAction(title: "确定", style: .default, handler: { _ in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     NotificationCenter.fa.post(name: "NotificationFromNative", object: "from ios native systemVersion: \(UIDevice.current.systemVersion)")
                 }
             }))
