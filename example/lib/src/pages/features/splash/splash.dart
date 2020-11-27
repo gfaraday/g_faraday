@@ -81,7 +81,15 @@ class _SplashTipPageState extends State<SplashTipPage> {
   }
 
   List<Widget> _buildAndroidTip(BuildContext context) {
-    return [];
+    return [
+      Text('一共有3种方式，根据需求自己选择'),
+      Text('1. 设置 Intent Builder的backgroundColor'),
+      TextButton(child: Text('查看 CustomRoute.kt'), onPressed: () {}),
+      Text('2. manifest 中配置对应Activity的 meta data'),
+      TextButton(child: Text('查看 AndroidManifest'), onPressed: () {}),
+      Text('3. 继承FaradayActivity然后实现 provideSplashScreen'),
+      TextButton(child: Text('查看 FaradayActivity.kt'), onPressed: () {}),
+    ];
   }
 
   List<Widget> _buildFlutterTip(BuildContext context) {

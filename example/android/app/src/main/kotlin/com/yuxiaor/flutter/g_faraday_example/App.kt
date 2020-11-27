@@ -5,7 +5,6 @@ import com.yuxiaor.flutter.g_faraday.Faraday
 import com.yuxiaor.flutter.g_faraday_example.faraday.CustomNavigator
 import io.flutter.embedding.engine.plugins.util.GeneratedPluginRegister
 
-
 /**
  * Author: Edward
  * Date: 2020-09-02
