@@ -16,6 +16,7 @@ import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -180,11 +181,12 @@ import java.util.Objects;
 
         flutterEngine.getLifecycleChannel().appIsInactive();
 
-
         reattachView = reAttachSplashScreen.createSplashView(getAppComponent(), null);
 
+        flutterView.convertToImageView();
+
         flutterSplashView.addView(reattachView);
-        flutterSplashView.removeView(flutterView);
+//        flutterSplashView.removeView(flutterView);
     }
 
     boolean isDetached() {
@@ -199,15 +201,21 @@ import java.util.Objects;
 
         Log.i(TAG, "reattach " + flutterView.toString());
 
-        flutterSplashView.displayFlutterViewWithSplash(flutterView, reAttachSplashScreen);
-        flutterSplashView.removeView(reattachView);
+        flutterView.revertImageView(new Runnable() {
+            @Override
+            public void run() {
+                flutterSplashView.removeView(reattachView);
+            }
+        });
+        flutterSplashView.displayFlutterViewWithSplash(flutterView, host.provideSplashScreen());
 
         onAttach(host.getContext());
+        flutterEngine.getLifecycleChannel().appIsResumed();
+
         flutterView.addOnFirstFrameRenderedListener(flutterUiDisplayListener);
         flutterView.attachToFlutterEngine(flutterEngine);
 
 
-        flutterEngine.getLifecycleChannel().appIsResumed();
     }
 
     /**
@@ -371,7 +379,6 @@ import java.util.Objects;
             FlutterSurfaceView flutterSurfaceView =
                     new FlutterSurfaceView(
                             host.getActivity(), host.getTransparencyMode() == TransparencyMode.transparent);
-//            host.getActivity().getWindow().setFormat(PixelFormat.TRANSPARENT);
             // Allow our host to customize FlutterSurfaceView, if desired.
             host.onFlutterSurfaceViewCreated(flutterSurfaceView);
 

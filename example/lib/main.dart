@@ -34,28 +34,27 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final route = faraday.wrapper(
-      (settings) {
-        final f = routes[settings.name];
-        if (f == null) return null;
-        return f(settings);
-      },
-      onUnknownRoute: null,
-      switchPageAnimation: (currentRoute) {
-        if (currentRoute['route'] == '') {
-          return (context, child) => AnimatedSwitcher(
-                duration: Duration(seconds: 1),
-                child: child,
-                transitionBuilder: (child, animation) => RotationTransition(
-                  turns: animation,
+        (settings) {
+          final f = routes[settings.name];
+          if (f == null) return null;
+          return f(settings);
+        },
+        onUnknownRoute: null,
+        switchPageAnimation: (currentRoute) {
+          if (currentRoute['route'] == '') {
+            return (context, child) => AnimatedSwitcher(
+                  duration: Duration(seconds: 1),
                   child: child,
-                ),
-              );
-        }
-        return null;
-      },
-      nativeContainerBackgroundColorProvider: (context) =>
-          CupertinoColors.secondarySystemBackground,
-    );
+                  transitionBuilder: (child, animation) => RotationTransition(
+                    turns: animation,
+                    child: child,
+                  ),
+                );
+          }
+          return null;
+        },
+        nativeContainerBackgroundColorProvider: (context) =>
+            CupertinoColors.destructiveRed);
     final cupertinoApp = CupertinoApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (_) => route,

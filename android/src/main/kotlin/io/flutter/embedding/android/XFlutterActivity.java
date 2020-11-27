@@ -184,6 +184,28 @@ public abstract class XFlutterActivity extends Activity
 
     @NonNull
     private View createFlutterView() {
+//        FrameLayout parentLayout = new FrameLayout(getContext());
+//        parentLayout.setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
+//        parentLayout.setBackgroundColor(Color.YELLOW);
+//
+//        FrameLayout layout = (FrameLayout) delegate.onCreateView(null, null, null);
+//
+//        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1000, 1500);
+//        layout.setLayoutParams(lp);
+//
+//        parentLayout.addView(layout);
+//
+//        TextView textView = new TextView(getContext());
+//        textView.setText(layout.toString());
+//        textView.setTextColor(Color.RED);
+//
+//        FrameLayout.LayoutParams flp = new FrameLayout.LayoutParams(-2, -2);
+//        flp.gravity = Gravity.CENTER_VERTICAL;
+//        textView.setLayoutParams(flp);
+//
+//        parentLayout.addView(textView);
+//
+//        return  parentLayout;
         return delegate.onCreateView(
                 null /* inflater */, null /* container */, null /* savedInstanceState */);
     }
@@ -201,10 +223,10 @@ public abstract class XFlutterActivity extends Activity
     protected void onStart() {
         super.onStart();
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START);
+        delegate.onStart();
         if (delegate.isDetached()) {
             delegate.reattach();
         }
-        delegate.onStart();
     }
 
     @Override

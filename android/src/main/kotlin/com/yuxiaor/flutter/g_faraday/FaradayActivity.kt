@@ -20,8 +20,9 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
     companion object {
 
         private const val TAG = "FaradayActivity"
-
-        fun builder(
+        // opaque: Boolean = false 效率会差一些
+        // 除非你有 非常非常非常 明确的理由，否则不要动他
+       fun builder(
                 routeName: String,
                 params: Serializable? = null,
                 activityClass: Class<out FaradayActivity> = FaradayActivity::class.java,
