@@ -64,6 +64,7 @@ class _MyAppState extends State<MyApp> {
         nativeContainerBackgroundColorProvider: (context, {route}) =>
             CupertinoColors.secondarySystemBackground);
     final cupertinoApp = CupertinoApp(
+      theme: CupertinoThemeData(primaryColor: Color.fromARGB(255, 6, 210, 116)),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (_) => route,
     );

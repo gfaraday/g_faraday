@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'example_page_scaffold.dart';
+import '../../example_page_scaffold.dart';
 
-class StatusBarColor extends StatefulWidget {
+class StatusBarColorPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<StatusBarColor> {
+class _State extends State<StatusBarColorPage> {
   var _isDark = false;
 
   @override
@@ -18,14 +19,13 @@ class _State extends State<StatusBarColor> {
       child: ExamplePageScaffold(
         "Status Bar Color",
         children: [
-          CupertinoButton(
-            child: Text('chnage color'),
-            onPressed: () {
-              setState(() {
-                _isDark = !_isDark;
-              });
-            },
-          ),
+          TextButton(
+              child: Text('Change StatusBar Color'),
+              onPressed: () {
+                setState(() {
+                  _isDark = !_isDark;
+                });
+              })
         ],
       ),
     );

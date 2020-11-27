@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../widgets/section.dart';
@@ -72,13 +73,25 @@ class _HomePageState extends State<HomePage> {
                 title: '高级功能(Advance)',
                 subTitle: '以下是隐藏内容,请查看源码',
                 //
-                // 有什么你想要的功能没有看到，可以在 github 提issue 我们会尽快加上哦
+                // 有什么你想要的功能没有看到，可以在 github 提 issue 我们会尽快加上哦
                 //
                 child: Container(
-                  height: 100,
-                  color: CupertinoColors.activeOrange,
-                ),
-                onTapViewAll: () {},
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Transform.scale(
+                      scale: 0.6,
+                      child: Image.asset('images/faraday.png'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Faraday',
+                        style: TextStyle(color: CupertinoColors.secondaryLabel),
+                      ),
+                    )
+                  ],
+                )),
               )),
             ],
           ),
