@@ -39,7 +39,7 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 
 ## Requirements
 
-- Flutter 1.23.0-18.1.pre `beta channel`
+- Flutter 1.24.0-10.2.pre • channel beta
 - iOS 10.0+ Xcode 12.0+ Swift 5.1+
 - Android minSdkVersion 16 Kotlin 1.4.10+
 
@@ -52,7 +52,7 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 ``` yaml
 dependencies:
   # 请确认与本地Flutter兼容的版本
-  g_faraday: ^0.4.2-pre.0
+  g_faraday: ^0.4.2-pre.2
 ```
 
 ### Flutter 端集成
