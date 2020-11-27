@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.util.Log
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
 import io.flutter.embedding.android.SplashScreen
+import io.flutter.embedding.android.TransparencyMode
 import io.flutter.embedding.android.XFlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import java.io.Serializable

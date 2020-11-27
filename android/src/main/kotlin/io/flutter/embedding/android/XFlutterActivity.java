@@ -542,9 +542,10 @@ public abstract class XFlutterActivity extends Activity
     @NonNull
     @Override
     public TransparencyMode getTransparencyMode() {
-        return getBackgroundMode() == BackgroundMode.opaque
-                ? TransparencyMode.opaque
-                : TransparencyMode.transparent;
+//        return getBackgroundMode() == BackgroundMode.opaque
+//                ? TransparencyMode.opaque
+//                : TransparencyMode.transparent;
+        return TransparencyMode.transparent;
     }
 
     /**

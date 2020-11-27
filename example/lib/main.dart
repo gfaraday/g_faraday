@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
-import 'package:g_faraday_example/src/pages/features/basic/pages/native_to_flutter.dart';
 
 import 'src/pages/embedding_page.dart';
+import 'src/pages/features/basic/pages/flutter_to_flutter.dart';
+import 'src/pages/features/basic/pages/native_to_flutter.dart';
 import 'src/pages/fragment_page.dart';
 import 'src/pages/home_page.dart';
 
@@ -22,6 +23,9 @@ class _MyAppState extends State<MyApp> {
         builder: (context) => HomePage(settings.arguments), settings: settings),
     'native2flutter': (settings) => CupertinoPageRoute(
         builder: (context) => Native2FlutterPage(settings.arguments),
+        settings: settings),
+    'flutter2flutter': (settings) => CupertinoPageRoute(
+        builder: (context) => Flutter2Flutter(index: settings.toJson.index),
         settings: settings),
     'flutter_tab_2': (RouteSettings settings) => CupertinoPageRoute(
         builder: (context) => HomePage(settings.arguments), settings: settings),
@@ -54,7 +58,7 @@ class _MyAppState extends State<MyApp> {
           return null;
         },
         nativeContainerBackgroundColorProvider: (context) =>
-            CupertinoColors.destructiveRed);
+            CupertinoColors.secondarySystemBackground);
     final cupertinoApp = CupertinoApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (_) => route,

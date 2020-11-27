@@ -16,16 +16,10 @@ const val KEY_ARGS = "_args"
 
 object CustomNavigator : FaradayNavigator {
 
-    private var count = 0
-
     override fun create(name: String, arguments: Serializable?, options: HashMap<String, *>?): Intent? {
         val context = Faraday.getCurrentActivity() ?: return null
-        val isFlutterRoute = options?.get("is_flutter_route") == true
+        val isFlutterRoute = options?.get("flutter") == true
         if (isFlutterRoute) {
-            //打开另一个flutter容器Activity
-            count++
-            val args = hashMapOf<String, Any>("count" to count)
-
             // standard
 //            Faraday.getCurrentActivity()?.startActivity(FaradayActivity.build(this, name, arguments))
 
@@ -34,10 +28,10 @@ object CustomNavigator : FaradayNavigator {
 //            Faraday.getCurrentActivity()?.startActivity(intent)
 
             // singleTask 模式
-            val builder = FaradayActivity.builder(name, args)
+            val builder = FaradayActivity.builder(name, arguments)
 
             // 你看到的绿色的闪屏就是这个
-            builder.backgroundColor = Color.GREEN
+            builder.backgroundColor = Color.WHITE
             builder.activityClass = SingleTaskFlutterActivity::class.java
 
             return builder.build(context);
