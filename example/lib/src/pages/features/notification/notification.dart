@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:g_faraday/g_faraday.dart';
 
+import '../../../widgets/action.dart';
 import '../../../widgets/section.dart';
 
 class GlobalNotification extends StatefulWidget {
@@ -8,13 +11,55 @@ class GlobalNotification extends StatefulWidget {
 }
 
 class _GlobalNotificationState extends State<GlobalNotification> {
+  String _localMessage;
+
   @override
   Widget build(BuildContext context) {
-    return Section(
-      title: '通知(GlobalNotification)',
-      onTapViewAll: () {},
-      child: Placeholder(
-        fallbackHeight: 100,
+    return FaradayNotificationListener(
+      ['NotificationFromNative'],
+      onNotification: (value) {
+        setState(() {
+          _localMessage = value.arguments.toString();
+        });
+      },
+      child: Section(
+        title: '通知(GlobalNotification)',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FaradayAction(
+              icon: Icon(
+                _localMessage == null
+                    ? Icons.notifications
+                    : Icons.notifications_active,
+                color: Colors.white,
+              ),
+              color: Colors.deepPurpleAccent,
+              onTap: () {
+                setState(() {
+                  _localMessage = null;
+                  FaradayNotification('GlobalNotification').dispatchToGlobal();
+                });
+              },
+              description: 'Post Notification To Native',
+            ),
+            if (_localMessage != null)
+              TweenAnimationBuilder(
+                duration: Duration(milliseconds: 300),
+                tween: Tween(begin: 5.0, end: 1.0),
+                builder: (context, value, child) =>
+                    Transform.scale(scale: value, child: child),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    _localMessage,
+                    style: TextStyle(color: Colors.purple[900]),
+                    overflow: TextOverflow.fade,
+                  ),
+                ),
+              )
+          ],
+        ),
       ),
     );
   }

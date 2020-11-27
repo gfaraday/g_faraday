@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
 
-import 'src/pages/embedding_page.dart';
 import 'src/pages/features/basic/pages/flutter_to_flutter.dart';
 import 'src/pages/features/basic/pages/native_to_flutter.dart';
-import 'src/pages/fragment_page.dart';
+import 'src/pages/features/basic/pages/tab_page.dart';
 import 'src/pages/home_page.dart';
 
 void main() {
@@ -27,16 +26,14 @@ class _MyAppState extends State<MyApp> {
     'flutter2flutter': (settings) => CupertinoPageRoute(
         builder: (context) => Flutter2Flutter(index: settings.toJson.index),
         settings: settings),
-    'flutter_tab_2': (RouteSettings settings) => CupertinoPageRoute(
-        builder: (context) => HomePage(settings.arguments), settings: settings),
-    'flutter_tab_1': (RouteSettings settings) => CupertinoPageRoute(
-        builder: (context) => EmbeddingPage(0), settings: settings),
-    'flutter_frag': (RouteSettings settings) =>
-        CupertinoPageRoute(builder: (context) => FragmentPage()),
+    'tab1': (settings) =>
+        CupertinoPageRoute(builder: (context) => TabPage(), settings: settings),
   };
 
   @override
   Widget build(BuildContext context) {
+    final color = Color.fromARGB(255, 6, 210, 116);
+
     final route = faraday.wrapper(
         (settings) {
           final f = routes[settings.name];
@@ -57,9 +54,11 @@ class _MyAppState extends State<MyApp> {
           }
           return null;
         },
-        nativeContainerBackgroundColorProvider: (context) =>
+        // flutter 自定义过渡页背景
+        nativeContainerBackgroundColorProvider: (context, {route}) =>
             CupertinoColors.secondarySystemBackground);
     final cupertinoApp = CupertinoApp(
+      theme: CupertinoThemeData(primaryColor: color),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (_) => route,
     );
@@ -67,9 +66,9 @@ class _MyAppState extends State<MyApp> {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Banner(
-        location: BannerLocation.bottomStart,
+        location: BannerLocation.topEnd,
         message: 'faraday',
-        color: CupertinoColors.activeBlue,
+        color: color,
         textStyle: TextStyle(
           color: CupertinoColors.white,
           fontSize: 12 * 0.85,

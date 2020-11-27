@@ -1,20 +1,21 @@
 //
-//  Flutter2ViewController.swift
+//  Tab1ViewController.swift
 //  Runner
 //
-//  Created by gix on 2020/9/11.
+//  Created by gix on 2020/11/27.
 //
 
 import UIKit
+import g_faraday
 
-class Flutter2ViewController: UIViewController {
+class Tab1ViewController: UIViewController, FaradayNavigationBarHiddenProtocol {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let vc = FPage.flutterTab2.flutterViewController() { _ in
-            
-        }
+        navigationController?.setNavigationBarHidden(true, animated: true)
+
+        let vc = FaradayFlutterViewController("tab1")
         
         vc.willMove(toParent: self)
         addChild(vc)
@@ -24,5 +25,5 @@ class Flutter2ViewController: UIViewController {
         vc.view.frame = view.frame;
         vc.view.autoresizingMask = [.flexibleWidth, .flexibleWidth]
     }
-   
+    
 }

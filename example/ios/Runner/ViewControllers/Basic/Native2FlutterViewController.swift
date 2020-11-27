@@ -21,7 +21,7 @@ class Native2FlutterViewController: UIViewController {
     @IBAction func onTap(sender: UIButton) {
         
         let vc = FPage.native2flutter.flutterViewController { [weak self] r in
-            self?.label.text = r.debugDescription ?? ""
+            self?.label.text = r.debugDescription
         }
         
         navigationController?.pushViewController(vc, animated: true)

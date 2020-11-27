@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "ARGB",
     "BUPT",
     "Dealloc",
     "Podfile",
@@ -7,6 +8,7 @@
     "cocoapod",
     "cocoapods",
     "executables",
+    "fullscreen",
     "recase"
   ]
 }
