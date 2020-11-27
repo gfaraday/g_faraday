@@ -14,7 +14,6 @@ class MainavigationViewController: UINavigationController {
         super.viewDidLoad()
         
         setNavigationBarHidden(true, animated: false)
-        let vc = FaradayFlutterViewController("home", arguments: nil)
-        setViewControllers([vc], animated: false)
+        setViewControllers([HomeFlutterViewController()], animated: false)
     }
 }

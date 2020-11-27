@@ -130,7 +130,7 @@ class _Action extends StatelessWidget {
     return TextButton(
       onPressed: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

@@ -17,9 +17,9 @@ const _channel = MethodChannel('g_faraday');
 typedef TransitionBuilderProvider = TransitionBuilder Function(
     JSON currentRoute);
 
-typedef ColorProvider = Color Function(BuildContext context);
+typedef ColorProvider = Color Function(BuildContext context, {JSON route});
 
-Color _defaultBackgroundColor(BuildContext context) {
+Color _defaultBackgroundColor(BuildContext context, {JSON route}) {
   return MediaQuery.of(context).platformBrightness == Brightness.light
       ? CupertinoColors.white
       : CupertinoColors.black;
@@ -165,7 +165,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       key: ValueKey(_index),
       color: current.opaque
           ? (widget.backgroundColorProvider ?? _defaultBackgroundColor)
-              .call(context)
+              .call(context, route: current.info)
           : Colors.transparent,
       child: IndexedStack(
         children: _navigators

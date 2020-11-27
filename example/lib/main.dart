@@ -60,7 +60,8 @@ class _MyAppState extends State<MyApp> {
           }
           return null;
         },
-        nativeContainerBackgroundColorProvider: (context) =>
+        // flutter 自定义过渡页背景
+        nativeContainerBackgroundColorProvider: (context, {route}) =>
             CupertinoColors.secondarySystemBackground);
     final cupertinoApp = CupertinoApp(
       debugShowCheckedModeBanner: false,
@@ -70,7 +71,7 @@ class _MyAppState extends State<MyApp> {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Banner(
-        location: BannerLocation.bottomStart,
+        location: BannerLocation.topEnd,
         message: 'faraday',
         color: CupertinoColors.activeBlue,
         textStyle: TextStyle(

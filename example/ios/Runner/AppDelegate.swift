@@ -34,6 +34,8 @@ extension AppDelegate: FaradayNavigationDelegate {
                 vc = Flutter2NativeViewController()
             case "native2flutter":
                 vc = Native2FlutterViewController()
+            case "tabContainer":
+                vc = UIStoryboard(name: "TabContainer", bundle: nil).instantiateInitialViewController()
             default:
                 vc = isFultter ? FaradayFlutterViewController(name, arguments: arguments) : FirstViewController()
         }
