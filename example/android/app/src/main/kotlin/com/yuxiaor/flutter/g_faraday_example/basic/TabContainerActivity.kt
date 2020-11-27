@@ -12,10 +12,10 @@ import com.yuxiaor.flutter.g_faraday_example.fragment.TestFragment
 class TabContainerActivity : AppCompatActivity() {
 
     private var tempFragment: Fragment? = null
-    private val flutterFrag1 = FaradayFragment.newInstance("home")
-    private val flutterFrag2 = FaradayFragment.newInstance("flutter_frag")
-    private val nativeFrag1 = TestFragment.newInstance("native frag 1")
-    private val nativeFrag2 = TestFragment.newInstance("native frag 2")
+    private val flutterFrag1 = FaradayFragment.newInstance("tab1")
+    private val flutterFrag2 = FaradayFragment.newInstance("home")
+    private val nativeFrag1 = TestFragment.newInstance("native fragment 1")
+    private val nativeFrag2 = TestFragment.newInstance("native fragment 2")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +27,8 @@ class TabContainerActivity : AppCompatActivity() {
         val tab4 = findViewById<RadioButton>(R.id.tab4)
 
         tab1.setOnClickListener { switchFragment(flutterFrag1, "F1") }
-        tab2.setOnClickListener { switchFragment(flutterFrag2, "F2") }
-        tab3.setOnClickListener { switchFragment(nativeFrag1, "N1") }
+        tab2.setOnClickListener { switchFragment(nativeFrag1, "N1") }
+        tab3.setOnClickListener { switchFragment(flutterFrag2, "F2") }
         tab4.setOnClickListener { switchFragment(nativeFrag2, "N2") }
 
         switchFragment(flutterFrag1, "F1")
@@ -36,6 +36,11 @@ class TabContainerActivity : AppCompatActivity() {
 
     private fun switchFragment(fragment: Fragment, tag: String) {
         if (tempFragment == fragment) return
+        if (tag == "F2") {
+            supportActionBar?.hide()
+        } else {
+            supportActionBar?.show()
+        }
         val transaction = supportFragmentManager.beginTransaction()
         if (!fragment.isAdded) {
             transaction.add(R.id.fragment_container, fragment, tag)

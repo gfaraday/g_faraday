@@ -198,7 +198,7 @@ import java.util.Objects;
         assert flutterSplashView != null;
         assert flutterEngine != null;
 
-        Log.i(TAG, "reattach " + flutterView.toString());
+        Log.w(TAG, "reattach " + flutterView.toString());
 
         flutterSplashView.displayFlutterViewWithSplash(flutterView, reAttachSplashScreen);
 
@@ -663,27 +663,29 @@ import java.util.Objects;
         assert flutterEngine != null;
         host.cleanUpFlutterEngine(flutterEngine);
 
-        if (host.shouldAttachEngineToActivity()) {
-            // Notify plugins that they are no longer attached to an Activity.
-            Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
-            if (Objects.requireNonNull(host.getActivity()).isChangingConfigurations()) {
-                flutterEngine.getActivityControlSurface().detachFromActivityForConfigChanges();
-            } else {
-                flutterEngine.getActivityControlSurface().detachFromActivity();
-            }
-        }
+//        if (host.shouldAttachEngineToActivity()) {
+//            // Notify plugins that they are no longer attached to an Activity.
+//            Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
+//            if (Objects.requireNonNull(host.getActivity()).isChangingConfigurations()) {
+//                flutterEngine.getActivityControlSurface().detachFromActivityForConfigChanges();
+//            } else {
+//                flutterEngine.getActivityControlSurface().detachFromActivity();
+//            }
+//        }
 
         // Null out the platformPlugin to avoid a possible retain cycle between the plugin, this
         // Fragment,
         // and this Fragment's Activity.
         if (platformPlugin != null) {
-            platformPlugin.destroy();
+//            platformPlugin.destroy();
             platformPlugin = null;
         }
 
-        flutterEngine.getLifecycleChannel().appIsDetached();
 
-        // Destroy our FlutterEngine if we're not set to retain it.
+//        flutterEngine.getLifecycleChannel().appIsDetached();
+
+
+//         Destroy our FlutterEngine if we're not set to retain it.
         if (host.shouldDestroyEngineWithHost()) {
             flutterEngine.destroy();
 

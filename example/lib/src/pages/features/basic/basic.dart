@@ -81,7 +81,7 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
       subTitle: 'viewController activity fragment',
       begin: _Action.native,
       end: _Action.flutter,
-      onTap: () => Navigator.of(context).nativePushNamed('tabContainer'),
+      onTap: () => Navigator.of(context).nativePushNamed('native2flutter'),
     ),
     Divider(height: 1),
     _Action(

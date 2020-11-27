@@ -5,6 +5,7 @@ import 'package:g_faraday/g_faraday.dart';
 import 'src/pages/embedding_page.dart';
 import 'src/pages/features/basic/pages/flutter_to_flutter.dart';
 import 'src/pages/features/basic/pages/native_to_flutter.dart';
+import 'src/pages/features/basic/pages/tab_page.dart';
 import 'src/pages/fragment_page.dart';
 import 'src/pages/home_page.dart';
 
@@ -27,6 +28,8 @@ class _MyAppState extends State<MyApp> {
     'flutter2flutter': (settings) => CupertinoPageRoute(
         builder: (context) => Flutter2Flutter(index: settings.toJson.index),
         settings: settings),
+    'tab1': (settings) =>
+        CupertinoPageRoute(builder: (context) => TabPage(), settings: settings),
     'flutter_tab_2': (RouteSettings settings) => CupertinoPageRoute(
         builder: (context) => HomePage(settings.arguments), settings: settings),
     'flutter_tab_1': (RouteSettings settings) => CupertinoPageRoute(
