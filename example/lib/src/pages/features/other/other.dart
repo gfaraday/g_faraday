@@ -17,34 +17,35 @@ class _OthersState extends State<Others> {
   @override
   Widget build(BuildContext context) {
     return Section(
-        title: '其他(Others)',
-        subTitle: '其他一些有趣的小功能',
-        child: Row(
-          children: [
-            Expanded(
-              child: FaradayAction(
-                color: Colors.teal,
-                icon: Icon(Icons.wrap_text, color: Colors.white),
-                description: '拦截返回',
-                onTap: () => Navigator.of(context)
-                    .push(CupertinoPageRoute(builder: (_) => _WillPopPage())),
-              ),
+      title: '其他(Others)',
+      subTitle: '其他一些有趣的小功能',
+      child: Row(
+        children: [
+          Expanded(
+            child: FaradayAction(
+              color: Colors.teal,
+              icon: Icon(Icons.wrap_text, color: Colors.white),
+              description: '拦截返回',
+              onTap: () => Navigator.of(context)
+                  .push(CupertinoPageRoute(builder: (_) => _WillPopPage())),
             ),
-            SizedBox(width: 8.0),
-            Expanded(
-              child: FaradayAction(
-                color: Colors.blueAccent,
-                icon: Icon(Icons.view_stream, color: Colors.white),
-                description: 'iOS 自动处理导航条',
-                onTap: () {
-                  if (Platform.isIOS) {
-                    Navigator.of(context).nativePushNamed('navigationBar');
-                  }
-                },
-              ),
+          ),
+          SizedBox(width: 8.0),
+          Expanded(
+            child: FaradayAction(
+              color: Colors.blueAccent,
+              icon: Icon(Icons.view_stream, color: Colors.white),
+              description: 'iOS 自动处理导航条',
+              onTap: () {
+                if (Platform.isIOS) {
+                  Navigator.of(context).nativePushNamed('navigationBar');
+                }
+              },
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
 

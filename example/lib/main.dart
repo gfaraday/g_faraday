@@ -32,6 +32,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final color = Color.fromARGB(255, 6, 210, 116);
+
     final route = faraday.wrapper(
         (settings) {
           final f = routes[settings.name];
@@ -56,7 +58,7 @@ class _MyAppState extends State<MyApp> {
         nativeContainerBackgroundColorProvider: (context, {route}) =>
             CupertinoColors.secondarySystemBackground);
     final cupertinoApp = CupertinoApp(
-      theme: CupertinoThemeData(primaryColor: Color.fromARGB(255, 6, 210, 116)),
+      theme: CupertinoThemeData(primaryColor: color),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (_) => route,
     );
@@ -66,7 +68,7 @@ class _MyAppState extends State<MyApp> {
       child: Banner(
         location: BannerLocation.topEnd,
         message: 'faraday',
-        color: CupertinoColors.activeBlue,
+        color: color,
         textStyle: TextStyle(
           color: CupertinoColors.white,
           fontSize: 12 * 0.85,
