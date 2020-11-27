@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lei-SI-Q7E">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Need Navigation Bar View Controller-->
+        <scene sceneID="um8-5F-asF">
+            <objects>
+                <viewController id="lei-SI-Q7E" customClass="NeedNavigationBarViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sPk-ex-hmx">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我是Native页面，我需要navigation bar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0pO-y7-eHf">
+                                <rect key="frame" x="59.5" y="437.5" width="295" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UdK-V8-15z">
+                                <rect key="frame" x="168" y="453.5" width="78" height="30"/>
+                                <state key="normal" title="GOTO Next"/>
+                                <connections>
+                                    <segue destination="eyc-Xn-hbF" kind="show" id="AeM-wJ-zKh"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FlutterViewController 自动隐藏navigationbar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ivw-Pf-YCa">
+                                <rect key="frame" x="38" y="413" width="338" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="UY2-1c-Ny8"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="UdK-V8-15z" firstAttribute="firstBaseline" secondItem="0pO-y7-eHf" secondAttribute="baseline" constant="20" symbolType="layoutAnchor" id="3yt-gd-b4Y"/>
+                            <constraint firstItem="0pO-y7-eHf" firstAttribute="centerX" secondItem="sPk-ex-hmx" secondAttribute="centerX" id="61r-HP-Mwp"/>
+                            <constraint firstItem="Ivw-Pf-YCa" firstAttribute="centerX" secondItem="sPk-ex-hmx" secondAttribute="centerX" id="Y7p-HX-Sq9"/>
+                            <constraint firstItem="0pO-y7-eHf" firstAttribute="firstBaseline" secondItem="Ivw-Pf-YCa" secondAttribute="baseline" constant="24" symbolType="layoutAnchor" id="lB0-hR-PMs"/>
+                            <constraint firstItem="0pO-y7-eHf" firstAttribute="centerY" secondItem="sPk-ex-hmx" secondAttribute="centerY" id="pAe-mW-VJP"/>
+                            <constraint firstItem="UdK-V8-15z" firstAttribute="centerX" secondItem="sPk-ex-hmx" secondAttribute="centerX" id="uFJ-CC-7Pn"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TXK-r7-d4e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-530" y="126"/>
+        </scene>
+        <!--No Navigation Bar View Controller-->
+        <scene sceneID="9xy-xT-DRg">
+            <objects>
+                <viewController id="eyc-Xn-hbF" customClass="NoNavigationBarViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fNs-PN-y4i">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我也是原生页面， 但是我不需要navigation bar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uD5-Sz-Xe2">
+                                <rect key="frame" x="29.5" y="410.5" width="355" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mai-Tc-o0a">
+                                <rect key="frame" x="187" y="426.5" width="40" height="30"/>
+                                <state key="normal" title="BACK"/>
+                                <connections>
+                                    <action selector="onTabBackWithSender:" destination="eyc-Xn-hbF" eventType="touchUpInside" id="L4H-2h-cfS"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="YRq-8C-fg8"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="uD5-Sz-Xe2" firstAttribute="centerY" secondItem="fNs-PN-y4i" secondAttribute="centerY" id="1XU-qq-I9z"/>
+                            <constraint firstItem="mai-Tc-o0a" firstAttribute="firstBaseline" secondItem="uD5-Sz-Xe2" secondAttribute="baseline" constant="20" symbolType="layoutAnchor" id="QwX-JJ-TOQ"/>
+                            <constraint firstItem="mai-Tc-o0a" firstAttribute="centerX" secondItem="fNs-PN-y4i" secondAttribute="centerX" id="Ufx-bd-O0m"/>
+                            <constraint firstItem="uD5-Sz-Xe2" firstAttribute="centerX" secondItem="fNs-PN-y4i" secondAttribute="centerX" id="XdE-zf-bAE"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="HKp-kt-pqr"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e7A-MN-SDa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="261" y="126"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

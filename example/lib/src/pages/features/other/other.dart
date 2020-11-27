@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:g_faraday_example/src/pages/example_page_scaffold.dart';
+import 'package:g_faraday/g_faraday.dart';
 
 import '../../../widgets/action.dart';
 import '../../../widgets/section.dart';
+import '../../example_page_scaffold.dart';
 
 class Others extends StatefulWidget {
   @override
@@ -33,7 +36,11 @@ class _OthersState extends State<Others> {
                 color: Colors.blueAccent,
                 icon: Icon(Icons.view_stream, color: Colors.white),
                 description: 'iOS 自动处理导航条',
-                onTap: () => {},
+                onTap: () {
+                  if (Platform.isIOS) {
+                    Navigator.of(context).nativePushNamed('navigationBar');
+                  }
+                },
               ),
             ),
           ],
