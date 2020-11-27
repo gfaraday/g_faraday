@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:g_faraday_example/src/pages/example_page_scaffold.dart';
 
 import '../../../widgets/action.dart';
 import '../../../widgets/section.dart';
@@ -22,7 +23,8 @@ class _OthersState extends State<Others> {
                 color: Colors.teal,
                 icon: Icon(Icons.wrap_text, color: Colors.white),
                 description: '拦截返回',
-                onTap: () => {},
+                onTap: () => Navigator.of(context)
+                    .push(CupertinoPageRoute(builder: (_) => _WillPopPage())),
               ),
             ),
             SizedBox(width: 8.0),
@@ -49,30 +51,38 @@ class __WillPopPageState extends State<_WillPopPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: WillPopScope(
-        onWillPop: () async {
-          final r = await showCupertinoDialog(
-              builder: (ctx) => CupertinoAlertDialog(
-                    content: Text('确定退出吗?'),
-                    actions: [
-                      CupertinoDialogAction(
-                        child: Text('按错了'),
-                        isDefaultAction: true,
-                        onPressed: () => Navigator.of(ctx).pop(false),
-                      ),
-                      CupertinoDialogAction(
-                        child: Text('退出'),
-                        isDestructiveAction: true,
-                        onPressed: () => Navigator.of(ctx).pop(true),
-                      )
-                    ],
-                  ),
-              context: context);
-          return r;
-        },
-        child: Center(
-          child: Text(''),
-        ),
-      ),
+          onWillPop: () async {
+            final r = await showCupertinoDialog(
+                builder: (ctx) => CupertinoAlertDialog(
+                      content: Text('确定退出吗?'),
+                      actions: [
+                        CupertinoDialogAction(
+                          child: Text('按错了'),
+                          isDefaultAction: true,
+                          onPressed: () => Navigator.of(ctx).pop(false),
+                        ),
+                        CupertinoDialogAction(
+                          child: Text('退出'),
+                          isDestructiveAction: true,
+                          onPressed: () => Navigator.of(ctx).pop(true),
+                        )
+                      ],
+                    ),
+                context: context);
+            return r;
+          },
+          child: ExamplePageScaffold(
+            'WillPopScope',
+            children: [
+              Text('当前页面拦截了返回，所以iOS不能滑动返回，android点返回键需要确认'),
+              TextButton(
+                  child: Text('需要确认: Navigator.of(context).maybePop()'),
+                  onPressed: () => Navigator.of(context).maybePop()),
+              TextButton(
+                  child: Text('直接返回: Navigator.of(context).pop()'),
+                  onPressed: () => Navigator.of(context).pop()),
+            ],
+          )),
     );
   }
 }
