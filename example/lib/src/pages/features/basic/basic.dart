@@ -17,16 +17,13 @@ class _BasicState extends State<Basic> {
     return Section(
       title: '基础',
       subTitle: '集成faraday的基础功能',
-      onTapViewAll: () => Navigator.of(context).push(
-        CupertinoPageRoute(builder: (_) => BasicAllPage()),
-      ),
       child: Container(
         decoration: BoxDecoration(
           color: CupertinoColors.white,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
-          children: _buildActions(context),
+          children: _buildActions(context, onlyBase: false),
         ),
       ),
     );
