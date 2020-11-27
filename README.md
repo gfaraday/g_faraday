@@ -56,7 +56,7 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 ``` yaml
 dependencies:
   # 请确认与本地Flutter兼容的版本
-  g_faraday: ^0.4.2-pre.2
+  g_faraday: ^0.4.2
 ```
 
 ### Flutter 端集成

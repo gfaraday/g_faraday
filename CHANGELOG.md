@@ -1,4 +1,8 @@
-# 0.4.2-pre.2
+# 0.4.2
+
+* add examples
+
+## 0.4.2-pre.2
 
 * fix Activity animation issue
 * fix ViewController swipe back gesture
