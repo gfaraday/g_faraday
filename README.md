@@ -37,6 +37,10 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 - [x] 支持自定义页面切换动画
 - [x] 完整的文档(7/10)
 
+## Show Cases
+
+![Example](doc/images/faraday_demo.png)
+
 ## Requirements
 
 - Flutter 1.24.0-10.2.pre • channel beta

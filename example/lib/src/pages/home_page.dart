@@ -129,7 +129,7 @@ class HomePageBannerDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 110;
+  double get maxExtent => 130;
 
   @override
   double get minExtent => 110;
