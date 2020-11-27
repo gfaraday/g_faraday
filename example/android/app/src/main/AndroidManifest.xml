@@ -14,31 +14,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-
-        <activity
-            android:name=".activity.MainActivity"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".activity.FirstActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="native_page_first"
-                    android:scheme="native" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.FragActivity"
-            android:theme="@style/FragTheme" />
         <activity
             android:name=".activity.SingleTopFlutterActivity"
             android:launchMode="singleTop" />
