@@ -15,7 +15,9 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".activity.MainActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,7 +50,8 @@
             <!-- 在这里你可以自定义 启动画面动画 -->
             <meta-data
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"
-                android:resource="@mipmap/ic_launcher" />
+                android:resource="@drawable/launch_background" />
+
         </activity>
         <activity android:name=".basic.FlutterToNativeActivity" />
         <activity android:name=".basic.Native2FlutterActivity" />
