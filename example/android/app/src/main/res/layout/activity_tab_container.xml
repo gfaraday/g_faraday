@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@drawable/tab_selector"
+            android:drawableTop="@drawable/ic_tab"
             android:gravity="center" />
 
         <RadioButton

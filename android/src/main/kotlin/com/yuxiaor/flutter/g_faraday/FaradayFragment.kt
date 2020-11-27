@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import io.flutter.embedding.android.RenderMode
 import io.flutter.embedding.android.SplashScreen
 import io.flutter.embedding.android.TransparencyMode
 import io.flutter.embedding.android.XFlutterFragment
@@ -64,10 +65,12 @@ class FaradayFragment : XFlutterFragment(), ResultProvider {
         Faraday.plugin?.onPageShow(pageId)
     }
 
+    override fun getRenderMode(): RenderMode {
+        return RenderMode.texture
+    }
+
     override fun getTransparencyMode(): TransparencyMode {
-        val bm = arguments?.getString(ARG_FLUTTERVIEW_TRANSPARENCY_MODE)
-        return if (bm == TransparencyMode.transparent.name)
-            TransparencyMode.transparent else TransparencyMode.opaque
+        return TransparencyMode.transparent
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {

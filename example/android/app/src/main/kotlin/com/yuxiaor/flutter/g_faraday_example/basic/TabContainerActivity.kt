@@ -1,4 +1,4 @@
-package com.yuxiaor.flutter.g_faraday_example.activity
+package com.yuxiaor.flutter.g_faraday_example.basic
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,24 +9,7 @@ import com.yuxiaor.flutter.g_faraday.FaradayFragment
 import com.yuxiaor.flutter.g_faraday_example.R
 import com.yuxiaor.flutter.g_faraday_example.fragment.TestFragment
 
-/**
- * Author: Edward
- * Date: 2020-09-07
- * Description:
- */
-
-
-//* <ol>
-//*   <li>{@link #onPostResume()}
-//*   <li>{@link #onBackPressed()}
-//*   <li>{@link #onRequestPermissionsResult(int, String[], int[])} ()}
-//*   <li>{@link #onNewIntent(Intent)} ()}
-//*   <li>{@link #onUserLeaveHint()}
-//*   <li>{@link #onTrimMemory(int)}
-//* </ol>
-
-
-class FragActivity : AppCompatActivity() {
+class TabContainerActivity : AppCompatActivity() {
 
     private var tempFragment: Fragment? = null
     private val flutterFrag1 = FaradayFragment.newInstance("home")
@@ -36,7 +19,7 @@ class FragActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fragment)
+        setContentView(R.layout.activity_tab_container)
 
         val tab1 = findViewById<RadioButton>(R.id.tab1)
         val tab2 = findViewById<RadioButton>(R.id.tab2)
@@ -50,7 +33,6 @@ class FragActivity : AppCompatActivity() {
 
         switchFragment(flutterFrag1, "F1")
     }
-
 
     private fun switchFragment(fragment: Fragment, tag: String) {
         if (tempFragment == fragment) return
@@ -109,5 +91,4 @@ class FragActivity : AppCompatActivity() {
             (tempFragment as FaradayFragment).onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
-
 }

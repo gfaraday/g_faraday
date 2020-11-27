@@ -18,12 +18,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 
-import com.yuxiaor.flutter.g_faraday.Faraday;
 
 import io.flutter.Log;
 import io.flutter.embedding.engine.FlutterEngine;
@@ -56,11 +54,6 @@ import io.flutter.plugin.platform.PlatformPlugin;
  *
  * <p>If convenient, consider using a {@link FlutterActivity} instead of a {@code XFlutterFragment}
  * to avoid the work of forwarding calls.
- *
- * <p>{@code XFlutterFragment} supports the use of an existing, cached {@link FlutterEngine}. To use
- * a cached {@link FlutterEngine}, ensure that the {@link FlutterEngine} is stored in {@link
- * FlutterEngineCache} and then use {@link #withCachedEngine(String)} to build a {@code
- * XFlutterFragment} with the cached {@link FlutterEngine}'s ID.
  *
  * <p>It is generally recommended to use a cached {@link FlutterEngine} to avoid a momentary delay
  * when initializing a new {@link FlutterEngine}. The two exceptions to using a cached {@link
@@ -140,466 +133,7 @@ public abstract class XFlutterFragment extends Fragment implements XFlutterActiv
      */
     protected static final String ARG_ENABLE_STATE_RESTORATION = "enable_state_restoration";
 
-    /**
-     * Creates a {@code XFlutterFragment} with a default configuration.
-     *
-     * <p>{@code XFlutterFragment}'s default configuration creates a new {@link FlutterEngine} within
-     * the {@code XFlutterFragment} and uses the following settings:
-     *
-     * <ul>
-     *   <li>Dart entrypoint: "main"
-     *   <li>Initial route: "/"
-     *   <li>Render mode: surface
-     *   <li>Transparency mode: transparent
-     * </ul>
-     *
-     * <p>To use a new {@link FlutterEngine} with different settings, use {@link #withNewEngine()}.
-     *
-     * <p>To use a cached {@link FlutterEngine} instead of creating a new one, use {@link
-     * #withCachedEngine(String)}.
-     */
-    @NonNull
-    public static XFlutterFragment createDefault() {
-        return new NewEngineFragmentBuilder().build();
-    }
-
-    /**
-     * Returns a {@link NewEngineFragmentBuilder} to create a {@code XFlutterFragment} with a new
-     * {@link FlutterEngine} and a desired engine configuration.
-     */
-    @NonNull
-    public static NewEngineFragmentBuilder withNewEngine() {
-        return new NewEngineFragmentBuilder();
-    }
-
-    /**
-     * Builder that creates a new {@code XFlutterFragment} with {@code arguments} that correspond to
-     * the values set on this {@code NewEngineFragmentBuilder}.
-     *
-     * <p>To create a {@code XFlutterFragment} with default {@code arguments}, invoke {@link
-     * #createDefault()}.
-     *
-     * <p>Subclasses of {@code XFlutterFragment} that do not introduce any new arguments can use this
-     * {@code NewEngineFragmentBuilder} to construct instances of the subclass without subclassing
-     * this {@code NewEngineFragmentBuilder}. {@code MyXFlutterFragment f = new
-     * XFlutterFragment.NewEngineFragmentBuilder(MyXFlutterFragment.class) .someProperty(...)
-     * .someOtherProperty(...) .build<MyXFlutterFragment>(); }
-     *
-     * <p>Subclasses of {@code XFlutterFragment} that introduce new arguments should subclass this
-     * {@code NewEngineFragmentBuilder} to add the new properties:
-     *
-     * <ol>
-     *   <li>Ensure the {@code XFlutterFragment} subclass has a no-arg constructor.
-     *   <li>Subclass this {@code NewEngineFragmentBuilder}.
-     *   <li>Override the new {@code NewEngineFragmentBuilder}'s no-arg constructor and invoke the
-     *       super constructor to set the {@code XFlutterFragment} subclass: {@code public MyBuilder()
-     *       { super(MyXFlutterFragment.class); } }
-     *   <li>Add appropriate property methods for the new properties.
-     *   <li>Override {@link NewEngineFragmentBuilder#createArgs()}, call through to the super method,
-     *       then add the new properties as arguments in the {@link Bundle}.
-     * </ol>
-     * <p>
-     * Once a {@code NewEngineFragmentBuilder} subclass is defined, the {@code XFlutterFragment}
-     * subclass can be instantiated as follows. {@code MyXFlutterFragment f = new MyBuilder()
-     * .someExistingProperty(...) .someNewProperty(...) .build<MyXFlutterFragment>(); }
-     */
-    public static class NewEngineFragmentBuilder {
-        private final Class<? extends XFlutterFragment> fragmentClass;
-        private String dartEntrypoint = "main";
-        private String initialRoute = "/";
-        private String appBundlePath = null;
-        private FlutterShellArgs shellArgs = null;
-        private RenderMode renderMode = RenderMode.surface;
-        private TransparencyMode transparencyMode = TransparencyMode.transparent;
-        private boolean shouldAttachEngineToActivity = true;
-
-        /**
-         * Constructs a {@code NewEngineFragmentBuilder} that is configured to construct an instance of
-         * {@code XFlutterFragment}.
-         */
-        public NewEngineFragmentBuilder() {
-            fragmentClass = XFlutterFragment.class;
-        }
-
-        /**
-         * Constructs a {@code NewEngineFragmentBuilder} that is configured to construct an instance of
-         * {@code subclass}, which extends {@code XFlutterFragment}.
-         */
-        public NewEngineFragmentBuilder(@NonNull Class<? extends XFlutterFragment> subclass) {
-            fragmentClass = subclass;
-        }
-
-        /**
-         * The name of the initial Dart method to invoke, defaults to "main".
-         */
-        @NonNull
-        public NewEngineFragmentBuilder dartEntrypoint(@NonNull String dartEntrypoint) {
-            this.dartEntrypoint = dartEntrypoint;
-            return this;
-        }
-
-        /**
-         * The initial route that a Flutter app will render in this {@link XFlutterFragment}, defaults to
-         * "/".
-         */
-        @NonNull
-        public NewEngineFragmentBuilder initialRoute(@NonNull String initialRoute) {
-            this.initialRoute = initialRoute;
-            return this;
-        }
-
-        /**
-         * The path to the app bundle which contains the Dart app to execute. Null when unspecified,
-         * which defaults to {@link FlutterLoader#findAppBundlePath()}
-         */
-        @NonNull
-        public NewEngineFragmentBuilder appBundlePath(@NonNull String appBundlePath) {
-            this.appBundlePath = appBundlePath;
-            return this;
-        }
-
-        /**
-         * Any special configuration arguments for the Flutter engine
-         */
-        @NonNull
-        public NewEngineFragmentBuilder flutterShellArgs(@NonNull FlutterShellArgs shellArgs) {
-            this.shellArgs = shellArgs;
-            return this;
-        }
-
-        /**
-         * Render Flutter either as a {@link RenderMode#surface} or a {@link RenderMode#texture}. You
-         * should use {@code surface} unless you have a specific reason to use {@code texture}. {@code
-         * texture} comes with a significant performance impact, but {@code texture} can be displayed
-         * beneath other Android {@code View}s and animated, whereas {@code surface} cannot.
-         */
-        @NonNull
-        public NewEngineFragmentBuilder renderMode(@NonNull RenderMode renderMode) {
-            this.renderMode = renderMode;
-            return this;
-        }
-
-        /**
-         * Support a {@link TransparencyMode#transparent} background within {@link FlutterView}, or
-         * force an {@link TransparencyMode#opaque} background.
-         *
-         * <p>See {@link TransparencyMode} for implications of this selection.
-         */
-        @NonNull
-        public NewEngineFragmentBuilder transparencyMode(@NonNull TransparencyMode transparencyMode) {
-            this.transparencyMode = transparencyMode;
-            return this;
-        }
-
-        /**
-         * Whether or not this {@code XFlutterFragment} should automatically attach its {@code Activity}
-         * as a control surface for its {@link FlutterEngine}.
-         *
-         * <p>Control surfaces are used to provide Android resources and lifecycle events to plugins
-         * that are attached to the {@link FlutterEngine}. If {@code shouldAttachEngineToActivity} is
-         * true then this {@code XFlutterFragment} will connect its {@link FlutterEngine} to the
-         * surrounding {@code Activity}, along with any plugins that are registered with that {@link
-         * FlutterEngine}. This allows plugins to access the {@code Activity}, as well as receive {@code
-         * Activity}-specific calls, e.g., {@link android.app.Activity#onNewIntent(Intent)}. If {@code
-         * shouldAttachEngineToActivity} is false, then this {@code XFlutterFragment} will not
-         * automatically manage the connection between its {@link FlutterEngine} and the surrounding
-         * {@code Activity}. The {@code Activity} will need to be manually connected to this {@code
-         * XFlutterFragment}'s {@link FlutterEngine} by the app developer. See {@link
-         * FlutterEngine#getActivityControlSurface()}.
-         *
-         * <p>One reason that a developer might choose to manually manage the relationship between the
-         * {@code Activity} and {@link FlutterEngine} is if the developer wants to move the {@link
-         * FlutterEngine} somewhere else. For example, a developer might want the {@link FlutterEngine}
-         * to outlive the surrounding {@code Activity} so that it can be used later in a different
-         * {@code Activity}. To accomplish this, the {@link FlutterEngine} will need to be disconnected
-         * from the surrounding {@code Activity} at an unusual time, preventing this {@code
-         * XFlutterFragment} from correctly managing the relationship between the {@link FlutterEngine}
-         * and the surrounding {@code Activity}.
-         *
-         * <p>Another reason that a developer might choose to manually manage the relationship between
-         * the {@code Activity} and {@link FlutterEngine} is if the developer wants to prevent, or
-         * explicitly control when the {@link FlutterEngine}'s plugins have access to the surrounding
-         * {@code Activity}. For example, imagine that this {@code XFlutterFragment} only takes up part
-         * of the screen and the app developer wants to ensure that none of the Flutter plugins are able
-         * to manipulate the surrounding {@code Activity}. In this case, the developer would not want
-         * the {@link FlutterEngine} to have access to the {@code Activity}, which can be accomplished
-         * by setting {@code shouldAttachEngineToActivity} to {@code false}.
-         */
-        @NonNull
-        public NewEngineFragmentBuilder shouldAttachEngineToActivity(
-                boolean shouldAttachEngineToActivity) {
-            this.shouldAttachEngineToActivity = shouldAttachEngineToActivity;
-            return this;
-        }
-
-        /**
-         * Creates a {@link Bundle} of arguments that are assigned to the new {@code XFlutterFragment}.
-         *
-         * <p>Subclasses should override this method to add new properties to the {@link Bundle}.
-         * Subclasses must call through to the super method to collect all existing property values.
-         */
-        @NonNull
-        protected Bundle createArgs() {
-            Bundle args = new Bundle();
-            args.putString(ARG_INITIAL_ROUTE, initialRoute);
-            args.putString(ARG_APP_BUNDLE_PATH, appBundlePath);
-            args.putString(ARG_DART_ENTRYPOINT, dartEntrypoint);
-            // TODO(mattcarroll): determine if we should have an explicit FlutterTestFragment instead of
-            // conflating.
-            if (null != shellArgs) {
-                args.putStringArray(ARG_FLUTTER_INITIALIZATION_ARGS, shellArgs.toArray());
-            }
-            args.putString(
-                    ARG_FLUTTERVIEW_RENDER_MODE,
-                    renderMode != null ? renderMode.name() : RenderMode.surface.name());
-            args.putString(
-                    ARG_FLUTTERVIEW_TRANSPARENCY_MODE,
-                    transparencyMode != null ? transparencyMode.name() : TransparencyMode.transparent.name());
-            args.putBoolean(ARG_SHOULD_ATTACH_ENGINE_TO_ACTIVITY, shouldAttachEngineToActivity);
-            args.putBoolean(ARG_DESTROY_ENGINE_WITH_FRAGMENT, true);
-            return args;
-        }
-
-        /**
-         * Constructs a new {@code XFlutterFragment} (or a subclass) that is configured based on
-         * properties set on this {@code Builder}.
-         */
-        @NonNull
-        public <T extends XFlutterFragment> T build() {
-            try {
-                @SuppressWarnings("unchecked")
-                T frag = (T) fragmentClass.getDeclaredConstructor().newInstance();
-                if (frag == null) {
-                    throw new RuntimeException(
-                            "The XFlutterFragment subclass sent in the constructor ("
-                                    + fragmentClass.getCanonicalName()
-                                    + ") does not match the expected return type.");
-                }
-
-                Bundle args = createArgs();
-                frag.setArguments(args);
-
-                return frag;
-            } catch (Exception e) {
-                throw new RuntimeException(
-                        "Could not instantiate XFlutterFragment subclass (" + fragmentClass.getName() + ")", e);
-            }
-        }
-    }
-
-    /**
-     * Returns a {@link CachedEngineFragmentBuilder} to create a {@code XFlutterFragment} with a cached
-     * {@link FlutterEngine} in {@link FlutterEngineCache}.
-     *
-     * <p>An {@code IllegalStateException} will be thrown during the lifecycle of the {@code
-     * XFlutterFragment} if a cached {@link FlutterEngine} is requested but does not exist in the
-     * cache.
-     *
-     * <p>To create a {@code XFlutterFragment} that uses a new {@link FlutterEngine}, use {@link
-     * #createDefault()} or {@link #withNewEngine()}.
-     */
-    @NonNull
-    public static CachedEngineFragmentBuilder withCachedEngine(@NonNull String engineId) {
-        return new CachedEngineFragmentBuilder(engineId);
-    }
-
-    /**
-     * Builder that creates a new {@code XFlutterFragment} that uses a cached {@link FlutterEngine}
-     * with {@code arguments} that correspond to the values set on this {@code Builder}.
-     *
-     * <p>Subclasses of {@code XFlutterFragment} that do not introduce any new arguments can use this
-     * {@code Builder} to construct instances of the subclass without subclassing this {@code
-     * Builder}. {@code MyXFlutterFragment f = new
-     * XFlutterFragment.CachedEngineFragmentBuilder(MyXFlutterFragment.class) .someProperty(...)
-     * .someOtherProperty(...) .build<MyXFlutterFragment>(); }
-     *
-     * <p>Subclasses of {@code XFlutterFragment} that introduce new arguments should subclass this
-     * {@code CachedEngineFragmentBuilder} to add the new properties:
-     *
-     * <ol>
-     *   <li>Ensure the {@code XFlutterFragment} subclass has a no-arg constructor.
-     *   <li>Subclass this {@code CachedEngineFragmentBuilder}.
-     *   <li>Override the new {@code CachedEngineFragmentBuilder}'s no-arg constructor and invoke the
-     *       super constructor to set the {@code XFlutterFragment} subclass: {@code public MyBuilder()
-     *       { super(MyXFlutterFragment.class); } }
-     *   <li>Add appropriate property methods for the new properties.
-     *   <li>Override {@link CachedEngineFragmentBuilder#createArgs()}, call through to the super
-     *       method, then add the new properties as arguments in the {@link Bundle}.
-     * </ol>
-     * <p>
-     * Once a {@code CachedEngineFragmentBuilder} subclass is defined, the {@code XFlutterFragment}
-     * subclass can be instantiated as follows. {@code MyXFlutterFragment f = new MyBuilder()
-     * .someExistingProperty(...) .someNewProperty(...) .build<MyXFlutterFragment>(); }
-     */
-    public static class CachedEngineFragmentBuilder {
-        private final Class<? extends XFlutterFragment> fragmentClass;
-        private final String engineId;
-        private boolean destroyEngineWithFragment = false;
-        private RenderMode renderMode = RenderMode.surface;
-        private TransparencyMode transparencyMode = TransparencyMode.transparent;
-        private boolean shouldAttachEngineToActivity = true;
-
-        private CachedEngineFragmentBuilder(@NonNull String engineId) {
-            this(XFlutterFragment.class, engineId);
-        }
-
-        protected CachedEngineFragmentBuilder(
-                @NonNull Class<? extends XFlutterFragment> subclass, @NonNull String engineId) {
-            this.fragmentClass = subclass;
-            this.engineId = engineId;
-        }
-
-        /**
-         * Pass {@code true} to destroy the cached {@link FlutterEngine} when this {@code
-         * XFlutterFragment} is destroyed, or {@code false} for the cached {@link FlutterEngine} to
-         * outlive this {@code XFlutterFragment}.
-         */
-        @NonNull
-        public CachedEngineFragmentBuilder destroyEngineWithFragment(
-                boolean destroyEngineWithFragment) {
-            this.destroyEngineWithFragment = destroyEngineWithFragment;
-            return this;
-        }
-
-        /**
-         * Render Flutter either as a {@link RenderMode#surface} or a {@link RenderMode#texture}. You
-         * should use {@code surface} unless you have a specific reason to use {@code texture}. {@code
-         * texture} comes with a significant performance impact, but {@code texture} can be displayed
-         * beneath other Android {@code View}s and animated, whereas {@code surface} cannot.
-         */
-        @NonNull
-        public CachedEngineFragmentBuilder renderMode(@NonNull RenderMode renderMode) {
-            this.renderMode = renderMode;
-            return this;
-        }
-
-        /**
-         * Support a {@link TransparencyMode#transparent} background within {@link FlutterView}, or
-         * force an {@link TransparencyMode#opaque} background.
-         *
-         * <p>See {@link TransparencyMode} for implications of this selection.
-         */
-        @NonNull
-        public CachedEngineFragmentBuilder transparencyMode(
-                @NonNull TransparencyMode transparencyMode) {
-            this.transparencyMode = transparencyMode;
-            return this;
-        }
-
-        /**
-         * Whether or not this {@code XFlutterFragment} should automatically attach its {@code Activity}
-         * as a control surface for its {@link FlutterEngine}.
-         *
-         * <p>Control surfaces are used to provide Android resources and lifecycle events to plugins
-         * that are attached to the {@link FlutterEngine}. If {@code shouldAttachEngineToActivity} is
-         * true then this {@code XFlutterFragment} will connect its {@link FlutterEngine} to the
-         * surrounding {@code Activity}, along with any plugins that are registered with that {@link
-         * FlutterEngine}. This allows plugins to access the {@code Activity}, as well as receive {@code
-         * Activity}-specific calls, e.g., {@link android.app.Activity#onNewIntent(Intent)}. If {@code
-         * shouldAttachEngineToActivity} is false, then this {@code XFlutterFragment} will not
-         * automatically manage the connection between its {@link FlutterEngine} and the surrounding
-         * {@code Activity}. The {@code Activity} will need to be manually connected to this {@code
-         * XFlutterFragment}'s {@link FlutterEngine} by the app developer. See {@link
-         * FlutterEngine#getActivityControlSurface()}.
-         *
-         * <p>One reason that a developer might choose to manually manage the relationship between the
-         * {@code Activity} and {@link FlutterEngine} is if the developer wants to move the {@link
-         * FlutterEngine} somewhere else. For example, a developer might want the {@link FlutterEngine}
-         * to outlive the surrounding {@code Activity} so that it can be used later in a different
-         * {@code Activity}. To accomplish this, the {@link FlutterEngine} will need to be disconnected
-         * from the surrounding {@code Activity} at an unusual time, preventing this {@code
-         * XFlutterFragment} from correctly managing the relationship between the {@link FlutterEngine}
-         * and the surrounding {@code Activity}.
-         *
-         * <p>Another reason that a developer might choose to manually manage the relationship between
-         * the {@code Activity} and {@link FlutterEngine} is if the developer wants to prevent, or
-         * explicitly control when the {@link FlutterEngine}'s plugins have access to the surrounding
-         * {@code Activity}. For example, imagine that this {@code XFlutterFragment} only takes up part
-         * of the screen and the app developer wants to ensure that none of the Flutter plugins are able
-         * to manipulate the surrounding {@code Activity}. In this case, the developer would not want
-         * the {@link FlutterEngine} to have access to the {@code Activity}, which can be accomplished
-         * by setting {@code shouldAttachEngineToActivity} to {@code false}.
-         */
-        @NonNull
-        public CachedEngineFragmentBuilder shouldAttachEngineToActivity(
-                boolean shouldAttachEngineToActivity) {
-            this.shouldAttachEngineToActivity = shouldAttachEngineToActivity;
-            return this;
-        }
-
-        /**
-         * Creates a {@link Bundle} of arguments that are assigned to the new {@code XFlutterFragment}.
-         *
-         * <p>Subclasses should override this method to add new properties to the {@link Bundle}.
-         * Subclasses must call through to the super method to collect all existing property values.
-         */
-        @NonNull
-        protected Bundle createArgs() {
-            Bundle args = new Bundle();
-            args.putString(ARG_CACHED_ENGINE_ID, engineId);
-            args.putBoolean(ARG_DESTROY_ENGINE_WITH_FRAGMENT, destroyEngineWithFragment);
-            args.putString(
-                    ARG_FLUTTERVIEW_RENDER_MODE,
-                    renderMode != null ? renderMode.name() : RenderMode.surface.name());
-            args.putString(
-                    ARG_FLUTTERVIEW_TRANSPARENCY_MODE,
-                    transparencyMode != null ? transparencyMode.name() : TransparencyMode.transparent.name());
-            args.putBoolean(ARG_SHOULD_ATTACH_ENGINE_TO_ACTIVITY, shouldAttachEngineToActivity);
-            return args;
-        }
-
-        /**
-         * Constructs a new {@code XFlutterFragment} (or a subclass) that is configured based on
-         * properties set on this {@code CachedEngineFragmentBuilder}.
-         */
-        @NonNull
-        public <T extends XFlutterFragment> T build() {
-            try {
-                @SuppressWarnings("unchecked")
-                T frag = (T) fragmentClass.getDeclaredConstructor().newInstance();
-                if (frag == null) {
-                    throw new RuntimeException(
-                            "The XFlutterFragment subclass sent in the constructor ("
-                                    + fragmentClass.getCanonicalName()
-                                    + ") does not match the expected return type.");
-                }
-
-                Bundle args = createArgs();
-                frag.setArguments(args);
-
-                return frag;
-            } catch (Exception e) {
-                throw new RuntimeException(
-                        "Could not instantiate XFlutterFragment subclass (" + fragmentClass.getName() + ")", e);
-            }
-        }
-    }
-
-    // Delegate that runs all lifecycle and OS hook logic that is common between
-    // FlutterActivity and XFlutterFragment. See the FlutterActivityAndFragmentDelegate
-    // implementation for details about why it exists.
-    @VisibleForTesting /* package */ XFlutterActivityAndFragmentDelegate delegate;
-
-    public XFlutterFragment() {
-        // Ensure that we at least have an empty Bundle of arguments so that we don't
-        // need to continually check for null arguments before grabbing one.
-        setArguments(new Bundle());
-    }
-
-    /**
-     * This method exists so that JVM tests can ensure that a delegate exists without putting this
-     * Fragment through any lifecycle events, because JVM tests cannot handle executing any lifecycle
-     * methods, at the time of writing this.
-     *
-     * <p>The testing infrastructure should be upgraded to make XFlutterFragment tests easy to write
-     * while exercising real lifecycle methods. At such a time, this method should be removed.
-     */
-    // TODO(mattcarroll): remove this when tests allow for it
-    // (https://github.com/flutter/flutter/issues/43798)
-    @VisibleForTesting
-    /* package */ void setDelegate(@NonNull XFlutterActivityAndFragmentDelegate delegate) {
-        this.delegate = delegate;
-    }
+    XFlutterActivityAndFragmentDelegate delegate;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -616,9 +150,9 @@ public abstract class XFlutterFragment extends Fragment implements XFlutterActiv
 //        FrameLayout parentLayout = new FrameLayout(getContext());
 //        parentLayout.setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
 //        parentLayout.setBackgroundColor(Color.YELLOW);
-
-        return delegate.onCreateView(inflater, container, savedInstanceState);
-
+//
+//        FrameLayout layout = (FrameLayout) delegate.onCreateView(inflater, container, savedInstanceState);
+//
 //        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1000, 1500);
 //        layout.setLayoutParams(lp);
 //
@@ -634,7 +168,9 @@ public abstract class XFlutterFragment extends Fragment implements XFlutterActiv
 //
 //        parentLayout.addView(textView);
 //
-//        return  parentLayout;
+//        return parentLayout;
+
+        return delegate.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -767,8 +303,6 @@ public abstract class XFlutterFragment extends Fragment implements XFlutterActiv
      * A new Intent was received by the {@link android.app.Activity} that currently owns this {@link
      * Fragment}.
      *
-     * <p>See {@link android.app.Activity#onNewIntent(Intent)}
-     *
      * <p>
      *
      * @param intent new Intent
@@ -812,8 +346,6 @@ public abstract class XFlutterFragment extends Fragment implements XFlutterActiv
     /**
      * The {@link android.app.Activity} that owns this {@link Fragment} is about to go to the
      * background as the result of a user's choice/action, i.e., not as the result of an OS decision.
-     *
-     * <p>See {@link android.app.Activity#onUserLeaveHint()}
      */
     @ActivityCallThrough
     public void onUserLeaveHint() {
@@ -1084,9 +616,6 @@ public abstract class XFlutterFragment extends Fragment implements XFlutterActiv
     }
 
     /**
-     * See {@link NewEngineFragmentBuilder#shouldAttachEngineToActivity()} and {@link
-     * CachedEngineFragmentBuilder#shouldAttachEngineToActivity()}.
-     *
      * <p>Used by this {@code XFlutterFragment}'s {@link FlutterActivityAndFragmentDelegate}
      */
     @Override

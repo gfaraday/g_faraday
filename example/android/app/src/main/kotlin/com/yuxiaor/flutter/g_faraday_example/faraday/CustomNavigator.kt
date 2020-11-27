@@ -10,6 +10,7 @@ import com.yuxiaor.flutter.g_faraday.FaradayNavigator
 import com.yuxiaor.flutter.g_faraday_example.activity.SingleTaskFlutterActivity
 import com.yuxiaor.flutter.g_faraday_example.basic.FlutterToNativeActivity
 import com.yuxiaor.flutter.g_faraday_example.basic.Native2FlutterActivity
+import com.yuxiaor.flutter.g_faraday_example.basic.TabContainerActivity
 import java.io.Serializable
 
 const val KEY_ARGS = "_args"
@@ -38,16 +39,24 @@ object CustomNavigator : FaradayNavigator {
         }
 
 
-        if (name == "flutter2native") {
-            return Intent(context, FlutterToNativeActivity::class.java)
-        } else if (name == "native2flutter") {
-            return Intent(context, Native2FlutterActivity::class.java)
+        when (name) {
+            "flutter2native" -> {
+                return Intent(context, FlutterToNativeActivity::class.java)
+            }
+            "native2flutter" -> {
+                return Intent(context, Native2FlutterActivity::class.java)
+            }
+            "tabContainer" -> {
+                return Intent(context, TabContainerActivity::class.java)
+            }
+            else -> {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(name)
+                intent.putExtra(KEY_ARGS, arguments)
+                return intent
+            }
         }
 
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(name)
-        intent.putExtra(KEY_ARGS, arguments)
-        return intent
     }
 
     override fun pop(result: Serializable?) {

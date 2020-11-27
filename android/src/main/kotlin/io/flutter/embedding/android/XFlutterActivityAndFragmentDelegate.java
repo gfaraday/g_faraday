@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.net.IpSecManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -183,10 +184,8 @@ import java.util.Objects;
 
         reattachView = reAttachSplashScreen.createSplashView(getAppComponent(), null);
 
-        flutterView.convertToImageView();
-
         flutterSplashView.addView(reattachView);
-//        flutterSplashView.removeView(flutterView);
+        flutterSplashView.removeView(flutterView);
     }
 
     boolean isDetached() {
@@ -201,21 +200,24 @@ import java.util.Objects;
 
         Log.i(TAG, "reattach " + flutterView.toString());
 
-        flutterView.revertImageView(new Runnable() {
-            @Override
-            public void run() {
-                flutterSplashView.removeView(reattachView);
-            }
-        });
-        flutterSplashView.displayFlutterViewWithSplash(flutterView, host.provideSplashScreen());
+        flutterSplashView.displayFlutterViewWithSplash(flutterView, reAttachSplashScreen);
 
         onAttach(host.getContext());
-        flutterEngine.getLifecycleChannel().appIsResumed();
 
         flutterView.addOnFirstFrameRenderedListener(flutterUiDisplayListener);
         flutterView.attachToFlutterEngine(flutterEngine);
 
+        flutterEngine.getLifecycleChannel().appIsResumed();
 
+        if (reattachView != null) {
+            // 减少 fragment 切换时的黑屏， 如果你的页面在1s 钟还没有渲染完成，请检查页面逻辑
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    flutterSplashView.removeView(reattachView);
+                }
+            }, 1000);
+        }
     }
 
     /**

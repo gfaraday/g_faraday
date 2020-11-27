@@ -53,7 +53,7 @@ class BasicAllPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Column(
-                  children: _buildActions(context),
+                  children: _buildActions(context, onlyBase: false),
                 ),
               )
             ],
@@ -81,7 +81,7 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
       subTitle: 'viewController activity fragment',
       begin: _Action.native,
       end: _Action.flutter,
-      onTap: () => Navigator.of(context).nativePushNamed('native2flutter'),
+      onTap: () => Navigator.of(context).nativePushNamed('tabContainer'),
     ),
     Divider(height: 1),
     _Action(
@@ -99,13 +99,11 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
     ...base,
     Divider(height: 1),
     _Action(
-      title: '从Flutter跳转到Flutter页面',
-      subTitle: '支持在新的native容器打开',
+      title: '将Flutter作为子页面引入',
+      subTitle: '在native容器中作为tab添加flutter页面',
       begin: _Action.flutter,
-      end: _Action.flutter,
-      onTap: () => Navigator.of(context).push(
-        CupertinoPageRoute(builder: (_) => Flutter2Flutter()),
-      ),
+      end: Icon(Icons.widgets),
+      onTap: () => Navigator.of(context).nativePushNamed('tabContainer'),
     ),
   ];
 }
