@@ -12,7 +12,7 @@ class Section extends StatelessWidget {
     Key key,
     @required this.title,
     this.subTitle,
-    @required this.onTapViewAll,
+    this.onTapViewAll,
     @required this.child,
   }) : super(key: key);
 
@@ -45,11 +45,12 @@ class Section extends StatelessWidget {
                   ],
                 ),
                 Spacer(),
-                CupertinoButton(
-                  onPressed: onTapViewAll,
-                  child: Text('查看全部', style: TextStyle(fontSize: 14)),
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                ),
+                if (onTapViewAll != null)
+                  CupertinoButton(
+                    onPressed: onTapViewAll,
+                    child: Text('查看全部', style: TextStyle(fontSize: 14)),
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                  ),
               ],
             ),
           ),

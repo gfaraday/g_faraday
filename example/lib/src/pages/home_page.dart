@@ -78,8 +78,8 @@ class _HomePageState extends State<HomePage> {
             )),
             SliverToBoxAdapter(
                 child: Section(
-              title: '自定义SplashScreen',
-              subTitle: '启动页 过渡页面配置',
+              title: '自定义StatusBarColor',
+              subTitle: 'ios android 状态栏配置',
               child: Container(
                 height: 100,
                 color: CupertinoColors.activeOrange,
