@@ -29,22 +29,33 @@ class _GlobalNotificationState extends State<GlobalNotification> {
           children: [
             FaradayAction(
               icon: Icon(
-                  _localMessage != null
-                      ? Icons.notifications_active
-                      : Icons.notifications,
-                  color: Colors.white),
+                _localMessage == null
+                    ? Icons.notifications
+                    : Icons.notifications_active,
+                color: Colors.white,
+              ),
               color: Colors.deepPurpleAccent,
-              onTap: () =>
-                  FaradayNotification('GlobalNotification').dispatchToGlobal(),
+              onTap: () {
+                setState(() {
+                  _localMessage = null;
+                  FaradayNotification('GlobalNotification').dispatchToGlobal();
+                });
+              },
               description: 'Post Notification To Native',
             ),
             if (_localMessage != null)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  _localMessage,
-                  style: TextStyle(color: Colors.grey),
-                  overflow: TextOverflow.fade,
+              TweenAnimationBuilder(
+                duration: Duration(milliseconds: 300),
+                tween: Tween(begin: 5.0, end: 1.0),
+                builder: (context, value, child) =>
+                    Transform.scale(scale: value, child: child),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    _localMessage,
+                    style: TextStyle(color: Colors.purple[900]),
+                    overflow: TextOverflow.fade,
+                  ),
                 ),
               )
           ],
