@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.util.Log
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
 import io.flutter.embedding.android.SplashScreen
-import io.flutter.embedding.android.TransparencyMode
 import io.flutter.embedding.android.XFlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import java.io.Serializable
@@ -21,15 +20,17 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
     companion object {
 
         private const val TAG = "FaradayActivity"
+
+        fun builder(routeName: String, params: Serializable? = null) = builder<FaradayActivity>(routeName, params)
+
         // opaque: Boolean = false 效率会差一些
         // 除非你有 非常非常非常 明确的理由，否则不要动他
-       fun builder(
+        inline fun <reified T : FaradayActivity> builder(
                 routeName: String,
                 params: Serializable? = null,
-                activityClass: Class<out FaradayActivity> = FaradayActivity::class.java,
                 opaque: Boolean = true,
                 backgroundColor: Int? = null,
-        ) = SingleEngineIntentBuilder(routeName, params, activityClass, opaque, backgroundColor)
+        ) = SingleEngineIntentBuilder(routeName, params, T::class.java, opaque, backgroundColor)
     }
 
     // 后续考虑支持更多参数, 然后再放开访问权限
