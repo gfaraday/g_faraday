@@ -9,11 +9,11 @@
                                   |___/
 ```
 
+![Build](https://img.shields.io/github/workflow/status/gfaraday/g_faraday/Publisher?style=for-the-badge)
 ![Pub_Version](https://img.shields.io/pub/v/g_faraday?style=for-the-badge)
 ![Flutter_Channel](https://img.shields.io/badge/Flutter%20Channel-beta-blue?style=for-the-badge)
 ![License](https://img.shields.io/github/license/gfaraday/g_faraday?style=for-the-badge)
 ![DingTalk](https://img.shields.io/badge/DingTalk%20GroupId-35138694-blue?style=for-the-badge)
-![Platform](https://img.shields.io/badge/platform-ios%7Candroid-green?style=for-the-badge)
 
 一个`Flutter`混合开发解决方案
 
