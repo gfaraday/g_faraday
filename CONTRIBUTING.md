@@ -18,4 +18,4 @@
   fetch from the master repository, not your clone, when running `git fetch`
   et al.)
 
-## TODO...
+## TODO
