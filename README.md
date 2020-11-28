@@ -217,6 +217,8 @@ context.startActivity(intent)
 
 ## Communication
 
+[点击加入钉钉群](https://qr.dingtalk.com/action/joingroup?code=v1,k1,5FUqLooXjcj0166ehqb9qapZT5t7gbUpjQqrXc2H4a4=&_dt_no_comment=1&origin=11)
+
 ![DingTalk group](doc/images/qr_code.jpg)
 
 ## Contributing
