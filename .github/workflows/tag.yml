@@ -40,8 +40,8 @@ jobs:
     needs: check_version
     runs-on: ubuntu-latest
     steps:
-    - name: Push Tag to GitHub
-      run: |
-        curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
-        -d "{\"ref\": \"refs/tags/${{needs.check_version.outputs.git_tag_name}}\", \"sha\": \"${GITHUB_SHA}\"}" \
-        "https://api.github.com/repos/${GITHUB_REPOSITORY}/git/refs"
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.26.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUSTOM_TAG: ${{ needs.check_version.outputs.git_tag_name }}
