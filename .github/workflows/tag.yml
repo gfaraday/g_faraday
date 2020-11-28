@@ -24,7 +24,6 @@ jobs:
         id: get_package_version
         with:
           file: pubspec.yaml
-          version: version
       # debug
       - name: Output package version
         run: echo 'version:' ${{ steps.get_package_version.outputs.version }}
@@ -32,9 +31,9 @@ jobs:
       - uses: dudo/tag_check@v1.0.0
         id: tag_check
         with:
-          INPUT_VERSION: ${{ steps.get_package_version.outputs.version }}
-          INPUT_GIT_TAG_PREFIX: v
-          
+          version: ${{ steps.get_package_version.outputs.version }}
+          git_tag_prefix: v
+
   push_tag:
     name: Push Tag
     needs: check_version
