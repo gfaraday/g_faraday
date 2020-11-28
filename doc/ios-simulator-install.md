@@ -10,4 +10,3 @@ xcrun instruments -w 'iPhone 12'
 xcrun simctl install booted path/to/example.app
 
 ```
-
