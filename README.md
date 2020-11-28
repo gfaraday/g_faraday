@@ -40,7 +40,7 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 
 ## Show Cases
 
-![Example](doc/images/faraday_demo.png)
+![demo](doc/images/demo.png)
 
 ## Requirements
 
@@ -210,7 +210,7 @@ context.startActivity(intent)
 
 ## Communication
 
-微信群二维码
+![DingTalk group](doc/images/qr_code.jpg)
 
 ## Contributing
 
