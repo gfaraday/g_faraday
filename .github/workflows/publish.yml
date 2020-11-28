@@ -36,4 +36,4 @@ jobs:
             # (Optional) Skip test (default: false)
             skip_test: true
             # (Optional) Dry run, no publish (default: false)
-            dry_run: true
+            dry_run: ${{ github.event_name == 'workflow_dispatch' }}
