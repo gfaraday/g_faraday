@@ -24,11 +24,12 @@ jobs:
         id: get_package_version
         with:
           file: pubspec.yaml
+          version: version
       # debug
       - name: Output package version
         run: echo 'version:' ${{ steps.get_package_version.outputs.version }}
 
-      - uses: dudo/tag_check@v1.0.0
+      - uses: dudo/tag_check@v1.0.2
         id: tag_check
         with:
           version: ${{ steps.get_package_version.outputs.version }}
