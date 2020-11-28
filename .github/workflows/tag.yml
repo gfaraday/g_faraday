@@ -1,0 +1,40 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Tag
+
+on:
+  push:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  check_version:
+    name: Check Version
+    runs-on: ubuntu-latest
+    outputs:
+      git_tag_name: ${{ steps.tag_check.outputs.git_tag_name }}
+    steps:
+      - uses: actions/checkout@v2 # https://github.com/actions/checkout
+      - uses: CumulusDS/get-yaml-paths-action@v0.1.0
+        id: pubspec
+        with:
+          file: pubspec.yaml
+      - uses: dudo/tag_check@v1.0.0
+        id: tag_check
+        with:
+          version: ${{ steps.pubspec.version }}
+          git_tag_prefix: v
+  push_tag:
+    name: Push Tag
+    needs: check_version
+    runs-on: ubuntu-latest
+    steps:
+    - name: Push Tag to GitHub
+      run: |
+        curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
+        -d "{\"ref\": \"refs/tags/${{needs.check_version.outputs.git_tag_name}}\", \"sha\": \"${GITHUB_SHA}\"}" \
+        "https://api.github.com/repos/${GITHUB_REPOSITORY}/git/refs"
