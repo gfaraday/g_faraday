@@ -38,6 +38,13 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 - [x] 支持自定义页面切换动画
 - [x] 完整的文档(7/10)
 
+## Example App
+
+[Android](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.apk)
+
+[iOS](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.app.zip) 
+> [模拟器安装](doc/ios-simulator-install.md)
+
 ## Show Cases
 
 ![demo](doc/images/demo.png)

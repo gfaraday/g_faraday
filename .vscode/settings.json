@@ -9,6 +9,8 @@
     "cocoapods",
     "executables",
     "fullscreen",
-    "recase"
+    "recase",
+    "simctl",
+    "xcrun"
   ]
 }
