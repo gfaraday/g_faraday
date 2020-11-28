@@ -1,13 +1,4 @@
-# faraday
-
-``` html
-    ___                   _
-   / __\_ _ _ __ __ _  __| | __ _ _   _
-  / _\/ _` | '__/ _` |/ _` |/ _` | | | |
- / / | (_| | | | (_| | (_| | (_| | |_| |
- \/   \__,_|_|  \__,_|\__,_|\__,_|\__, |
-                                  |___/
-```
+# ![log](./doc/images/logo.png)  Faraday
 
 ![Build](https://img.shields.io/github/workflow/status/gfaraday/g_faraday/Publisher?style=for-the-badge)
 ![Pub_Version](https://img.shields.io/pub/v/g_faraday?style=for-the-badge)
