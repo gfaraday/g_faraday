@@ -10,6 +10,7 @@
     "executables",
     "fullscreen",
     "recase",
+    "sakebook",
     "simctl",
     "xcrun"
   ]
