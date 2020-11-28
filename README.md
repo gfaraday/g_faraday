@@ -2,20 +2,10 @@
 
 ![Build](https://img.shields.io/github/workflow/status/gfaraday/g_faraday/Publisher?style=for-the-badge)
 ![Pub_Version](https://img.shields.io/pub/v/g_faraday?style=for-the-badge)
-![Flutter_Channel](https://img.shields.io/badge/Flutter%20Channel-beta-blue?style=for-the-badge)
+![Flutter_Version](https://img.shields.io/badge/Flutter%20Version-1.24.0--10.2.pre-blue?style=for-the-badge)
 ![License](https://img.shields.io/github/license/gfaraday/g_faraday?style=for-the-badge)
 
-一个`Flutter`混合开发解决方案
-
-## 设计原则
-
-- 对原有平台最小侵入
-- 对现有代码最小改动
-- API尽量保持和原有平台一致
-
-## 更新策略
-
-_Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_faraday`版本_
+一个`Flutter`混合栈开发解决方案
 
 ## Features
 
@@ -29,16 +19,26 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 - [x] 支持自定义页面切换动画
 - [x] 完整的文档(7/10)
 
-## Example App
-
-[Android](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.apk)
-
-[iOS](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.app.zip)
-> [模拟器安装](doc/ios-simulator-install.md)
-
 ## Show Cases
 
 ![demo](doc/images/demo.png)
+
+## 设计原则
+
+- 对原有平台最小侵入
+- 对现有代码最小改动
+- API尽量保持和原有平台一致
+
+## 更新策略
+
+_Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_faraday`版本_
+
+## Example App
+
+[Android下载apk](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.apk)
+
+[iOS下载app](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.app.zip)
+> [模拟器安装app](doc/ios-simulator-install.md)
 
 ## Requirements
 
