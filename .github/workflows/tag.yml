@@ -19,16 +19,22 @@ jobs:
       git_tag_name: ${{ steps.tag_check.outputs.git_tag_name }}
     steps:
       - uses: actions/checkout@v2 # https://github.com/actions/checkout
-      - name: Get flutter version
-        id: get_flutter_version
-        uses: its404/get-flutter-version@v1.0.0
-      - name: Output flutter version
-        run: echo 'version_number:' ${{ steps.get_flutter_version.outputs.version_number }}
+      
+      - uses: CumulusDS/get-yaml-paths-action@v0.1.0
+        id: get_package_version
+        with:
+          file: pubspec.yaml
+          version: version
+      # debug
+      - name: Output package version
+        run: echo 'version:' ${{ steps.get_package_version.outputs.version }}
+
       - uses: dudo/tag_check@v1.0.0
         id: tag_check
         with:
-          INPUT_VERSION: ${{ steps.get_flutter_version.outputs.version_number }}
+          INPUT_VERSION: ${{ steps.get_package_version.outputs.version }}
           INPUT_GIT_TAG_PREFIX: v
+          
   push_tag:
     name: Push Tag
     needs: check_version
