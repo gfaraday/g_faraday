@@ -1,4 +1,8 @@
-# 0.4.2
+# 0.4.3-pre.0
+
+* refactor activity builder api
+
+## 0.4.2
 
 * add examples
 
