@@ -133,23 +133,42 @@ class SimpleFlutterNavigator : FaradayNavigator {
         const val KEY_ARGS = "_args"
     }
 
-    /**
-     * Open native page
-     * @param name route name
-     * @param arguments data from flutter page to native page
-     * @param callback  onActivityResult callback
-     */
-    override fun push(name: String, arguments: Serializable?, options: HashMap<String, *>?, callback: (result: HashMap<String, *>?) -> Unit) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(name)
-        intent.putExtra(KEY_ARGS, arguments)
-        Faraday.startNativeForResult(intent, callback)
+    override fun create(name: String, arguments: Serializable?, options: HashMap<String, *>?): Intent? {
+        val context = Faraday.getCurrentActivity() ?: return null
+
+        val isFlutterRoute = options?.get("flutter") == true
+
+        if (isFlutterRoute) {
+            // singleTask 模式
+            val builder = FaradayActivity.builder(name, arguments)
+
+            // 你看到的绿色的闪屏就是这个
+            builder.backgroundColor = Color.WHITE
+            builder.activityClass = SingleTaskFlutterActivity::class.java
+
+            return builder.build(context);
+        }
+
+        when (name) {
+            "flutter2native" -> {
+                return Intent(context, FlutterToNativeActivity::class.java)
+            }
+            "native2flutter" -> {
+                return Intent(context, Native2FlutterActivity::class.java)
+            }
+            "tabContainer" -> {
+                return Intent(context, TabContainerActivity::class.java)
+            }
+            else -> {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(name)
+                intent.putExtra(KEY_ARGS, arguments)
+                return intent
+            }
+        }
+
     }
 
-    /**
-     * Close container Activity when flutter pops the last page
-     * @param result data from flutter to native
-     */
     override fun pop(result: Serializable?) {
         val activity = Faraday.getCurrentActivity() ?: return
         if (result != null) {
@@ -158,10 +177,8 @@ class SimpleFlutterNavigator : FaradayNavigator {
         activity.finish()
     }
 
-    /**
-     * 是否允许滑动返回
-     */
     override fun enableSwipeBack(enable: Boolean) {
+
     }
 
 }
