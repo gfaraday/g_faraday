@@ -80,7 +80,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.4.3-pre.0"
+    version: "0.4.3-pre.1"
   g_json:
     dependency: transitive
     description:

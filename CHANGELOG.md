@@ -1,4 +1,8 @@
-# 0.4.3-pre.0
+# 0.4.3-pre.1
+
+* test publish by github action
+
+## 0.4.3-pre.0
 
 * refactor activity builder api
 

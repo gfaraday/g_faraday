@@ -1,6 +1,6 @@
 name: g_faraday
 description: A very simple plugin for building hybrid stack apps with flutter
-version: 0.4.3-pre.0
+version: 0.4.3-pre.1
 homepage: https://github.com/gfaraday/g_faraday
 
 environment:
