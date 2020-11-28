@@ -46,3 +46,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CUSTOM_TAG: ${{ needs.check_version.outputs.git_tag_name }}
+
+  publish_pub:
+    name: Publish new Pub version
+    needs: check_version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish Dart/Flutter package
+        uses: sakebook/actions-flutter-pub-publisher@v1.3.1
+        with:
+            credential: ${{ secrets.PUB_PUBLISHER_CREDENTIAL_JSON }}
+            flutter_package: true
+            skip_test: true
+            dry_run: false
