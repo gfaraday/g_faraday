@@ -2,7 +2,7 @@
 
 ![Build](https://img.shields.io/github/workflow/status/gfaraday/g_faraday/Publisher?style=for-the-badge)
 ![pub_Version](https://img.shields.io/pub/v/g_faraday?include_prereleases&style=for-the-badge)
-![Flutter_Version](https://img.shields.io/badge/Flutter%20Version-1.24.0--10.2.pre-blue?style=for-the-badge)
+![Flutter_Version](https://img.shields.io/badge/Flutter-1.24.0--10.2.pre-blue?style=for-the-badge)
 ![License](https://img.shields.io/github/license/gfaraday/g_faraday?style=for-the-badge)
 
 一个`Flutter`混合栈开发解决方案
