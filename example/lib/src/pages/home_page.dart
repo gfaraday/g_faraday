@@ -122,17 +122,16 @@ class HomePageBannerDelegate extends SliverPersistentHeaderDelegate {
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text('* 所有功能在 iOS/Android 均可用'),
           ),
-          Text('* 钉钉群号：35138694 🚀'),
         ],
       ),
     );
   }
 
   @override
-  double get maxExtent => 130;
+  double get maxExtent => 100;
 
   @override
-  double get minExtent => 110;
+  double get minExtent => 100;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

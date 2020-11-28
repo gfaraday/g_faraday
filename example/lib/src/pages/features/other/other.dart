@@ -37,7 +37,7 @@ class _OthersState extends State<Others> {
               child: FaradayAction(
                 color: Colors.blueAccent,
                 icon: Icon(Icons.view_stream, color: Colors.white),
-                description: 'iOS 自动处理导航条',
+                description: Platform.isIOS ? 'iOS 自动处理导航条' : 'No Action',
                 onTap: () {
                   if (Platform.isIOS) {
                     Navigator.of(context).nativePushNamed('navigationBar');
