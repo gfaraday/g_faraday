@@ -1,3 +1,4 @@
 *.swift linguist-language=dart
 *.kt linguist-language=dart
+*.java linguist-language=dart
 *.rb linguist-language=dart

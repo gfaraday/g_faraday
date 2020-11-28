@@ -10,6 +10,7 @@
 ```
 
 ![Pub_Version](https://img.shields.io/pub/v/g_faraday?style=for-the-badge)
+![Flutter_Channel](https://img.shields.io/badge/Flutter%20Channel-beta-blue?style=for-the-badge)
 ![License](https://img.shields.io/github/license/gfaraday/g_faraday?style=for-the-badge)
 ![DingTalk](https://img.shields.io/badge/DingTalk%20GroupId-35138694-blue?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/platform-ios%7Candroid-green?style=for-the-badge)
@@ -42,7 +43,7 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 
 [Android](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.apk)
 
-[iOS](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.app.zip) 
+[iOS](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.app.zip)
 > [模拟器安装](doc/ios-simulator-install.md)
 
 ## Show Cases
