@@ -26,7 +26,7 @@ jobs:
       - uses: dudo/tag_check@v1.0.0
         id: tag_check
         with:
-          INPUT_VERSION: ${{ steps.pubspec.version }}
+          INPUT_VERSION: ${{ steps.pubspec.outputs.version }}
           INPUT_GIT_TAG_PREFIX: v
   push_tag:
     name: Push Tag
