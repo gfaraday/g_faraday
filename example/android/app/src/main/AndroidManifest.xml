@@ -26,11 +26,16 @@
             <meta-data
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"
                 android:resource="@drawable/launch_background" />
-
         </activity>
         <activity android:name=".basic.FlutterToNativeActivity" />
         <activity android:name=".basic.Native2FlutterActivity" />
         <activity android:name=".basic.TabContainerActivity" />
+        <activity android:name=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
