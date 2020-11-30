@@ -10,7 +10,8 @@
 ## Features
 
 - [x] iOS/Android原生页面堆栈与`Flutter Navigator`无缝桥接
-- [x] [页面间回调](docs/callback.md)
+- [x] 支持flutter页面作为root页面，支持flutter作为子页面加入原生堆栈
+- [x] [页面间回调完整支持](docs/callback.md)
 - [x] [iOS导航条自动隐藏/显示](docs/ios_navigation_bar.md)
 - [x] iOS支持`push`与`present`
 - [x] Android支持`Activity`与`Fragment`
