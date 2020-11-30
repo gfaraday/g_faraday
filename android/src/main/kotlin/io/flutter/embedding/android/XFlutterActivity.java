@@ -279,6 +279,14 @@ public abstract class XFlutterActivity extends Activity
         delegate.onDetach();
         delegate.release();
         delegate = null;
+
+        // 如果不 detach activity 会导致内存泄漏
+        Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
+        if (isChangingConfigurations()) {
+            provideFlutterEngine(this).getActivityControlSurface().detachFromActivityForConfigChanges();
+        } else {
+            provideFlutterEngine(this).getActivityControlSurface().detachFromActivity();
+        }
     }
 
     @Override

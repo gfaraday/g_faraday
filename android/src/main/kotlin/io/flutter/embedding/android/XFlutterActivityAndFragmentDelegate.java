@@ -652,17 +652,6 @@ import java.util.Objects;
 
         host.cleanUpFlutterEngine(flutterEngine);
 
-        // 如果不 detach activity 会导致内存泄漏
-        if (host.shouldAttachEngineToActivity()) {
-            // Notify plugins that they are no longer attached to an Activity.
-            Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
-            if (Objects.requireNonNull(host.getActivity()).isChangingConfigurations()) {
-                flutterEngine.getActivityControlSurface().detachFromActivityForConfigChanges();
-            } else {
-                flutterEngine.getActivityControlSurface().detachFromActivity();
-            }
-        }
-
         // Null out the platformPlugin to avoid a possible retain cycle between the plugin, this
         // Fragment,
         // and this Fragment's Activity.
