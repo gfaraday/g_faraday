@@ -383,7 +383,6 @@ public abstract class XFlutterFragment extends Fragment implements XFlutterActiv
         }
     }
 
-    @Nullable
     @Override
     public boolean shouldHandleDeeplinking() {
         return false;
@@ -676,10 +675,7 @@ public abstract class XFlutterFragment extends Fragment implements XFlutterActiv
         if (getArguments().containsKey(ARG_ENABLE_STATE_RESTORATION)) {
             return getArguments().getBoolean(ARG_ENABLE_STATE_RESTORATION);
         }
-        if (getCachedEngineId() != null) {
-            return false;
-        }
-        return true;
+        return getCachedEngineId() == null;
     }
 
     private boolean stillAttachedForEvent(String event) {

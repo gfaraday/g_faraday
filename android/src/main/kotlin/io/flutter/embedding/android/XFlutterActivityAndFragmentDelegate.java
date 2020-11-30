@@ -11,17 +11,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PixelFormat;
-import android.net.IpSecManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,7 +37,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Copied from FlutterActivityAndFragmentDelegate
+ * Copied from XFlutterActivityAndFragmentDelegate
  * <p>
  * 添加了 detach 和 reattach 两个方法
  * <p>
@@ -53,23 +48,23 @@ import java.util.Objects;
  * <p>
  * 修改不当会出现黑屏 白屏 闪屏等等
  * <p>
- * Delegate that implements all Flutter logic that is the same between a {@link FlutterActivity} and
+ * Delegate that implements all Flutter logic that is the same between a {@link XFlutterActivity} and
  * a {@link FlutterFragment}.
  *
  * <p><strong>Why does this class exist?</strong>
  *
  * <p>One might ask why an {@code Activity} and {@code Fragment} delegate needs to exist. Given that
  * a {@code Fragment} can be placed within an {@code Activity}, it would make more sense to use a
- * {@link FlutterFragment} within a {@link FlutterActivity}.
+ * {@link FlutterFragment} within a {@link XFlutterActivity}.
  *
  * <p>The {@code Fragment} support library adds 100k of binary size to an app, and full-Flutter apps
  * do not otherwise require that binary hit. Therefore, it was concluded that Flutter must provide a
- * {@link FlutterActivity} based on the AOSP {@code Activity}, and an independent {@link
+ * {@link XFlutterActivity} based on the AOSP {@code Activity}, and an independent {@link
  * FlutterFragment} for add-to-app developers.
  *
  * <p>If a time ever comes where the inclusion of {@code Fragment}s in a full-Flutter app is no
  * longer deemed an issue, this class should be immediately decomposed between {@link
- * FlutterActivity} and {@link FlutterFragment} and then eliminated.
+ * XFlutterActivity} and {@link FlutterFragment} and then eliminated.
  *
  * <p><strong>Caution when modifying this class</strong>
  *
@@ -81,7 +76,7 @@ import java.util.Objects;
  * and optional references that are very difficult to track.
  *
  * <p>Maintainers of this class should take care to only place code in this delegate that would
- * otherwise be placed in either {@link FlutterActivity} or {@link FlutterFragment}, and in exactly
+ * otherwise be placed in either {@link XFlutterActivity} or {@link FlutterFragment}, and in exactly
  * the same form. <strong>Do not use this class as a convenient shortcut for any other
  * behavior.</strong>
  */
@@ -90,7 +85,7 @@ import java.util.Objects;
     private static final String FRAMEWORK_RESTORATION_BUNDLE_KEY = "framework";
     private static final String PLUGINS_RESTORATION_BUNDLE_KEY = "plugins";
 
-    // The FlutterActivity or FlutterFragment that is delegating most of its calls
+    // The XFlutterActivity or FlutterFragment that is delegating most of its calls
     // to this XFlutterActivityAndFragmentDelegate.
     @NonNull
     private Host host;
@@ -400,14 +395,7 @@ import java.util.Objects;
         flutterView.addOnFirstFrameRenderedListener(flutterUiDisplayListener);
 
         flutterSplashView = new FlutterSplashView(host.getContext());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            flutterSplashView.setId(View.generateViewId());
-        } else {
-            // TODO(mattcarroll): Find a better solution to this ID. This is a random, static ID.
-            // It might conflict with other Views, and it means that only a single FlutterSplashView
-            // can exist in a View hierarchy at one time.
-            flutterSplashView.setId(486947586);
-        }
+        flutterSplashView.setId(View.generateViewId());
         flutterSplashView.displayFlutterViewWithSplash(flutterView, host.provideSplashScreen());
 
         Log.v(TAG, "Attaching FlutterEngine to FlutterView.");
@@ -661,17 +649,19 @@ import java.util.Objects;
         // Give the host an opportunity to cleanup any references that were created in
         // configureFlutterEngine().
         assert flutterEngine != null;
+
         host.cleanUpFlutterEngine(flutterEngine);
 
-//        if (host.shouldAttachEngineToActivity()) {
-//            // Notify plugins that they are no longer attached to an Activity.
-//            Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
-//            if (Objects.requireNonNull(host.getActivity()).isChangingConfigurations()) {
-//                flutterEngine.getActivityControlSurface().detachFromActivityForConfigChanges();
-//            } else {
-//                flutterEngine.getActivityControlSurface().detachFromActivity();
-//            }
-//        }
+        // 如果不 detach activity 会导致内存泄漏
+        if (host.shouldAttachEngineToActivity()) {
+            // Notify plugins that they are no longer attached to an Activity.
+            Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
+            if (Objects.requireNonNull(host.getActivity()).isChangingConfigurations()) {
+                flutterEngine.getActivityControlSurface().detachFromActivityForConfigChanges();
+            } else {
+                flutterEngine.getActivityControlSurface().detachFromActivity();
+            }
+        }
 
         // Null out the platformPlugin to avoid a possible retain cycle between the plugin, this
         // Fragment,
@@ -865,7 +855,7 @@ import java.util.Objects;
     }
 
     /**
-     * The {@link FlutterActivity} or {@link FlutterFragment} that owns this {@code
+     * The {@link XFlutterActivity} or {@link FlutterFragment} that owns this {@code
      * XFlutterActivityAndFragmentDelegate}.
      */
     /* package */ interface Host
@@ -879,7 +869,6 @@ import java.util.Objects;
         /**
          * Returns true if the delegate should retrieve the initial route from the {@link Intent}.
          */
-        @Nullable
         boolean shouldHandleDeeplinking();
 
         /**

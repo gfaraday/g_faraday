@@ -283,14 +283,18 @@ public abstract class XFlutterActivity extends Activity
 
     @Override
     public void detachFromFlutterEngine() {
-        Log.v(
-                TAG,
-                "XFlutterActivity "
-                        + this
-                        + " connection to the engine "
-                        + getFlutterEngine()
-                        + " evicted by another attaching activity");
-        delegate.detach();
+        if (delegate != null) {
+            Log.v(
+                    TAG,
+                    "XFlutterActivity "
+                            + this
+                            + " connection to the engine "
+                            + getFlutterEngine()
+                            + " evicted by another attaching activity");
+            delegate.detach();
+        } else {
+            Log.w(TAG, "delegate has been released !!");
+        }
     }
 
     @Override
