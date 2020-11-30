@@ -1,4 +1,8 @@
-# 0.4.3-pre.1
+# 0.4.3-pre.2
+
+* detach activity before destroy
+
+## 0.4.3-pre.1
 
 * test publish by github action
 
