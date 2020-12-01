@@ -37,6 +37,8 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
+import org.jetbrains.annotations.NotNull;
+
 import io.flutter.Log;
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode;
 import io.flutter.embedding.engine.FlutterEngine;
@@ -151,15 +153,12 @@ public abstract class XFlutterActivity extends Activity
      * to be used in a manifest file.
      */
     @Nullable
-    @SuppressWarnings("deprecation")
     private Drawable getSplashScreenFromManifest() {
         try {
             Bundle metaData = getMetaData();
             int splashScreenId = metaData != null ? metaData.getInt(SPLASH_SCREEN_META_DATA_KEY) : 0;
             return splashScreenId != 0
-                    ? Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP
                     ? getResources().getDrawable(splashScreenId, getTheme())
-                    : getResources().getDrawable(splashScreenId)
                     : null;
         } catch (PackageManager.NameNotFoundException e) {
             // This is never expected to happen.
@@ -257,7 +256,7 @@ public abstract class XFlutterActivity extends Activity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (stillAttachedForEvent("onSaveInstanceState")) {
             delegate.onSaveInstanceState(outState);
@@ -279,14 +278,13 @@ public abstract class XFlutterActivity extends Activity
         delegate.onDetach();
         delegate.release();
         delegate = null;
-
-        // 如果不 detach activity 会导致内存泄漏
-        Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
-        if (isChangingConfigurations()) {
-            provideFlutterEngine(this).getActivityControlSurface().detachFromActivityForConfigChanges();
-        } else {
-            provideFlutterEngine(this).getActivityControlSurface().detachFromActivity();
-        }
+        
+//        Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
+//        if (isChangingConfigurations()) {
+//            provideFlutterEngine(this).getActivityControlSurface().detachFromActivityForConfigChanges();
+//        } else {
+//            provideFlutterEngine(this).getActivityControlSurface().detachFromActivity();
+//        }
     }
 
     @Override
