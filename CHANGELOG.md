@@ -1,4 +1,8 @@
-# 0.4.3-pre.2
+# 0.4.3-pre.3
+
+* refine android activity lifecycle
+
+## 0.4.3-pre.2
 
 * detach activity before destroy
 

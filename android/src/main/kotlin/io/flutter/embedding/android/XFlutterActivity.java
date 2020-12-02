@@ -278,7 +278,7 @@ public abstract class XFlutterActivity extends Activity
         delegate.onDetach();
         delegate.release();
         delegate = null;
-        
+
 //        Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
 //        if (isChangingConfigurations()) {
 //            provideFlutterEngine(this).getActivityControlSurface().detachFromActivityForConfigChanges();
