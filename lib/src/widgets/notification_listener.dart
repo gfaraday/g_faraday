@@ -41,7 +41,7 @@ class FaradayNotification {
 
   ///
   FaradayNotification(this.name, [this.arguments])
-      : assert(name != null && name.isNotEmpty),
+      : assert(name.isNotEmpty),
         super();
 
   @override
