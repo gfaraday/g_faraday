@@ -1,7 +1,6 @@
 name: g_faraday_example
 description: Demonstrates how to use the g_faraday plugin.
-build_name: "1.0.0"
-build_number: 2
+version: 1.0.0+23
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.

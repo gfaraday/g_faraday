@@ -3,7 +3,7 @@
 class _FaradayEntry {
   final bool onlyFlutter;
 
-  const _FaradayEntry({this.onlyFlutter});
+  const _FaradayEntry({required this.onlyFlutter});
 }
 
 const entry = _FaradayEntry(onlyFlutter: false);

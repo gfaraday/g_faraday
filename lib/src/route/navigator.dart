@@ -11,23 +11,20 @@ class FaradayNavigator extends Navigator {
 
   ///
   FaradayNavigator(
-      {Key key,
-      List pages = const <Page<dynamic>>[],
-      PopPageCallback onPopPage,
-      String initialRoute,
-      RouteListFactory onGenerateInitialRoutes,
-      RouteFactory onGenerateRoute,
-      RouteFactory onUnknownRoute,
+      {Key? key,
+      PopPageCallback? onPopPage,
+      required String initialRoute,
+      required RouteListFactory onGenerateInitialRoutes,
+      required RouteFactory onGenerateRoute,
+      RouteFactory? onUnknownRoute,
       DefaultTransitionDelegate transitionDelegate =
           const DefaultTransitionDelegate<dynamic>(),
-      this.arg,
-      List<NavigatorObserver> observers})
+      required this.arg,
+      List<NavigatorObserver>? observers})
       : super(
             key: key,
-            pages: pages,
             onPopPage: onPopPage,
             initialRoute: initialRoute,
-            onGenerateInitialRoutes: onGenerateInitialRoutes,
             onGenerateRoute: onGenerateRoute,
             onUnknownRoute: onUnknownRoute,
             transitionDelegate: transitionDelegate,
@@ -40,8 +37,8 @@ class FaradayNavigator extends Navigator {
   FaradayNavigatorState createState() => FaradayNavigatorState();
 
   ///
-  static FaradayNavigatorState of(BuildContext context) {
-    FaradayNavigatorState faraday;
+  static FaradayNavigatorState? of(BuildContext context) {
+    FaradayNavigatorState? faraday;
     if (context is StatefulElement && context.state is FaradayNavigatorState) {
       faraday = context.state as FaradayNavigatorState;
     }
@@ -51,10 +48,10 @@ class FaradayNavigator extends Navigator {
 
 ///
 class FaradayNavigatorState extends NavigatorState {
-  _FaradayWidgetsBindingObserver _observerForAndroid;
+  late _FaradayWidgetsBindingObserver? _observerForAndroid;
 
   @override
-  FaradayNavigator get widget => super.widget;
+  FaradayNavigator get widget => super.widget as FaradayNavigator;
 
   ///
   FaradayNavigatorObserver get observer => widget.arg.observer;
@@ -64,7 +61,7 @@ class FaradayNavigatorState extends NavigatorState {
     observer.disableHorizontalSwipePopGesture
         .addListener(notifyNativeDisableOrEnableBackGesture);
     _observerForAndroid = _FaradayWidgetsBindingObserver(this);
-    WidgetsBinding.instance.addObserver(_observerForAndroid);
+    WidgetsBinding.instance?.addObserver(_observerForAndroid!);
     super.initState();
   }
 
@@ -72,41 +69,46 @@ class FaradayNavigatorState extends NavigatorState {
   void dispose() {
     observer.disableHorizontalSwipePopGesture
         .removeListener(notifyNativeDisableOrEnableBackGesture);
-    WidgetsBinding.instance.removeObserver(_observerForAndroid);
-    _observerForAndroid = null;
+    if (_observerForAndroid != null) {
+      WidgetsBinding.instance?.removeObserver(_observerForAndroid!);
+      _observerForAndroid = null;
+    }
     super.dispose();
   }
 
   ///
   void notifyNativeDisableOrEnableBackGesture() {
-    FaradayNativeBridge.of(context).disableHorizontalSwipePopGesture(
+    FaradayNativeBridge.of(context)?.disableHorizontalSwipePopGesture(
         disable: observer.disableHorizontalSwipePopGesture.value);
   }
 
   @override
-  Future<T> pushNamed<T extends Object>(String routeName, {Object arguments}) {
+  Future<T?> pushNamed<T extends Object?>(String routeName,
+      {Object? arguments}) {
     try {
       return super.pushNamed(routeName, arguments: arguments);
       // ignore: avoid_catching_errors
     } on FlutterError catch (e) {
       debugPrint('g_faraday FaradayNavigator $e');
       debugPrint('fallback to native. name: $routeName, arguments: $arguments');
-      return FaradayNativeBridge.of(context)
-          .push(routeName, arguments: arguments);
+
+      final bridge = FaradayNativeBridge.of(context);
+      assert(bridge != null);
+      return bridge!.pushNamed<T>(routeName, arguments: arguments);
     }
   }
 
   @override
-  void pop<T extends Object>([T result]) {
+  void pop<T extends Object?>([T? result]) {
     if (observer.onlyOnePage) {
-      FaradayNativeBridge.of(context).pop(widget.arg.key, result);
+      FaradayNativeBridge.of(context)?.pop<Object>(widget.arg.key, result);
     } else {
       super.pop(result);
     }
   }
 
   @override
-  Future<bool> maybePop<T extends Object>([T result]) async {
+  Future<bool> maybePop<T extends Object?>([T? result]) async {
     final r = await super.maybePop(result);
     if (!r && observer.onlyOnePage) {
       pop(result);
@@ -123,8 +125,8 @@ class _FaradayWidgetsBindingObserver extends WidgetsBindingObserver {
 
   @override
   Future<bool> didPopRoute() async {
-    if (!FaradayNativeBridge.of(navigator.context)
-        .isOnTop(navigator.widget.arg.key)) {
+    final bridge = FaradayNativeBridge.of(navigator.context);
+    if (!bridge!.isOnTop(navigator.widget.arg.key)) {
       return false;
     }
     return await navigator.maybePop();

@@ -1,4 +1,8 @@
-# 0.4.3-pre.3
+# 0.5.0-nullsafety.0
+
+* support null safety basically
+
+## 0.4.3-pre.3
 
 * refine android activity lifecycle
 

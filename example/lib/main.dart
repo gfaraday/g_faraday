@@ -57,6 +57,7 @@ class _MyAppState extends State<MyApp> {
         // flutter 自定义过渡页背景
         nativeContainerBackgroundColorProvider: (context, {route}) =>
             CupertinoColors.secondarySystemBackground);
+
     final cupertinoApp = CupertinoApp(
       theme: CupertinoThemeData(primaryColor: color),
       debugShowCheckedModeBanner: false,
