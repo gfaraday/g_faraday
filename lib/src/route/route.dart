@@ -4,10 +4,9 @@ import 'package:flutter/cupertino.dart';
 class FaradayPageRouteBuilder<T> extends PageRouteBuilder<T> {
   // ignore: public_member_api_docs
   FaradayPageRouteBuilder({
-    RouteSettings settings,
-    @required WidgetBuilder pageBuilder,
-  })  : assert(pageBuilder != null),
-        super(
+    RouteSettings? settings,
+    required WidgetBuilder pageBuilder,
+  }) : super(
             transitionDuration: Duration(microseconds: 0),
             settings: settings,
             pageBuilder: (context, _, __) => pageBuilder(context),

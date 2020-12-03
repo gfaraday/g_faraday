@@ -7,7 +7,7 @@ import 'observer.dart';
 
 class FaradayArguments {
   final GlobalKey key;
-  final Object arguments;
+  final Object? arguments;
   final String name;
   final int id;
   final bool opaque;

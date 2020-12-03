@@ -38,8 +38,8 @@ class Faraday {
   Route<dynamic> wrapper(
     RouteFactory rawFactory, {
     RouteFactory onUnknownRoute = _default404Page,
-    ColorProvider nativeContainerBackgroundColorProvider,
-    TransitionBuilderProvider switchPageAnimation,
+    ColorProvider? nativeContainerBackgroundColorProvider,
+    TransitionBuilderProvider? switchPageAnimation,
   }) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {

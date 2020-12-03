@@ -7,7 +7,7 @@ const _channel = MethodChannel('g_faraday/common');
 class FaradayCommon {
   const FaradayCommon();
 
-  static Future<T> invokeMethod<T>(String method, [dynamic arguments]) {
+  static Future<T?> invokeMethod<T>(String method, [dynamic arguments]) {
     return _channel.invokeMethod(method, arguments);
   }
 }

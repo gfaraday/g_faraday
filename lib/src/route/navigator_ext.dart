@@ -7,16 +7,27 @@ import 'navigator.dart';
 ///
 extension NavigatorStateX on NavigatorState {
   /// pop native flutter container
-  Future<void> nativePop<T extends Object>([T result]) {
-    return FaradayNativeBridge.of(context)
-        .pop(FaradayNavigator.of(context).widget.arg.key, result);
+  Future<void> nativePop<T extends Object>([T? result]) {
+    final bridge = FaradayNativeBridge.of(context);
+    if (bridge != null) {
+      final key = FaradayNavigator.of(context)?.widget.arg.key;
+      if (key != null) {
+        return bridge.pop(key, result);
+      }
+    }
+    throw 'FaradayNativeBridge not found !! $context';
   }
 
   /// push native flutter container
-  Future<T> nativePushNamed<T extends Object>(String routeName,
-      {Object arguments, Map<String, dynamic> options}) {
-    return FaradayNativeBridge.of(context)
-        .push<T>(routeName, arguments: arguments, options: options);
+  Future<T?> nativePushNamed<T extends Object>(String routeName,
+      {Object? arguments, Map<String, dynamic>? options}) {
+    final bridge = FaradayNativeBridge.of(context);
+    if (bridge != null) {
+      return bridge.pushNamed<T>(routeName,
+          arguments: arguments, options: options);
+    }
+
+    throw 'FaradayNativeBridge not found !! $context';
   }
 }
 

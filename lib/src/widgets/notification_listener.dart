@@ -41,7 +41,7 @@ class FaradayNotification {
 
   ///
   FaradayNotification(this.name, [this.arguments])
-      : assert(name != null && name.isNotEmpty),
+      : assert(name.isNotEmpty),
         super();
 
   @override
@@ -82,12 +82,10 @@ class FaradayNotificationListener extends StatefulWidget {
   ///
   const FaradayNotificationListener(
     this.names, {
-    Key key,
-    @required this.onNotification,
-    @required this.child,
-  })  : assert(child != null),
-        assert(onNotification != null),
-        super(key: key);
+    Key? key,
+    required this.onNotification,
+    required this.child,
+  }) : super(key: key);
 
   @override
   _FaradayNotificationListenerState createState() =>
@@ -96,7 +94,7 @@ class FaradayNotificationListener extends StatefulWidget {
 
 class _FaradayNotificationListenerState
     extends State<FaradayNotificationListener> {
-  StreamSubscription _streamSubscription;
+  StreamSubscription? _streamSubscription;
 
   @override
   void initState() {
@@ -105,7 +103,7 @@ class _FaradayNotificationListenerState
       _notificationChannel.setMethodCallHandler(_handler);
     }
     _streamSubscription = _observerNativeNotification(widget.names, (value) {
-      widget.onNotification?.call(value);
+      widget.onNotification.call(value);
     });
   }
 
