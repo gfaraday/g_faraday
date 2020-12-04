@@ -1,4 +1,8 @@
-# 0.5.0-nullsafety.0
+# 0.5.0-nullsafety.1
+
+* [ios] make flutter engine public
+
+## 0.5.0-nullsafety.0
 
 * support null safety basically
 
