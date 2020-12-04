@@ -77,7 +77,7 @@ public class Faraday {
     
     fileprivate var notificationChannel: FlutterMethodChannel?
     
-    private(set) var engine: FlutterEngine!
+    public private(set) var engine: FlutterEngine!
     
     private var callbackCache = [UUID: FlutterResult]()
     
