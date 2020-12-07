@@ -77,13 +77,13 @@ public class Faraday {
     
     fileprivate var notificationChannel: FlutterMethodChannel?
     
-    public private(set) var engine: FlutterEngine!
+    public private(set) var engine: FlutterEngine?
     
     private var callbackCache = [UUID: FlutterResult]()
     
     /// 当前attach在Engine的viewController 不一定可见
     public var currentFlutterViewController: FaradayFlutterViewController? {
-        return engine.viewController as? FaradayFlutterViewController
+        return engine?.viewController as? FaradayFlutterViewController
     }
     
     //
@@ -151,7 +151,7 @@ public class Faraday {
         engine = FlutterEngine(name: "io.flutter.faraday", project: nil, allowHeadlessExecution: true)
         
         // 1.1 run
-        guard engine.run(withEntrypoint: nil) else {
+        guard engine!.run(withEntrypoint: nil) else {
             fatalError("run FlutterEngine failed")
         }
         
