@@ -87,8 +87,18 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     _channel.setMethodCallHandler(_handler);
   }
 
-  void _recreateLastPage() {
-    _channel.invokeMethod('reCreateLastPage');
+  void _recreateLastPage() async {
+    await _channel.invokeMethod('reCreateLastPage');
+    if (_navigators.isNotEmpty && (_index == null || _index == -1)) {
+      _updateIndex(0);
+    }
+
+    // 如果重建页面500ms 以后还没有显示命令，默认显示首页
+    Timer(Duration(milliseconds: 500), () {
+      if (_navigators.isNotEmpty && (_index == null || _index == -1)) {
+        _updateIndex(0);
+      }
+    });
   }
 
   @override
@@ -143,8 +153,8 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     if (_index == null || _navigators.isEmpty || _index == -1) {
       if (kDebugMode) {
         if (_reassembleTimer == null) {
-          // 只有在开发过程中 Relaunch 才会执行的逻辑
-          _reassembleTimer = Timer(Duration(microseconds: 1), () {
+          // 只有在开发过程中 Relaunch 才会执行的逻辑 仅会尝试一次
+          _reassembleTimer = Timer(Duration(milliseconds: 500), () {
             if (_index == null || _index! < 0) {
               WidgetsBinding.instance?.reassembleApplication();
             }
@@ -155,6 +165,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         color: (widget.backgroundColorProvider ?? _defaultBackgroundColor)
             .call(context),
         alignment: Alignment.center,
+        child: kDebugMode ? Text('Restarting...') : null,
       );
     }
 
