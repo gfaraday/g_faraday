@@ -1,4 +1,8 @@
-# 0.5.0-nullsafety.1
+# 0.5.0-nullsafety.2
+
+* fix navigator onGenerateInitialRouteIssue
+
+## 0.5.0-nullsafety.1
 
 * [ios] make flutter engine public
 
