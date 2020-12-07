@@ -27,6 +27,7 @@ class FaradayNavigator extends Navigator {
             initialRoute: initialRoute,
             onGenerateRoute: onGenerateRoute,
             onUnknownRoute: onUnknownRoute,
+            onGenerateInitialRoutes: onGenerateInitialRoutes,
             transitionDelegate: transitionDelegate,
             observers: [
               arg.observer,

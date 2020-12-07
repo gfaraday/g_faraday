@@ -252,35 +252,24 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   Widget _buildPage(BuildContext context, FaradayArguments arg) {
-    final initialSettings =
-        RouteSettings(name: arg.name, arguments: arg.arguments);
-    // return TweenAnimationBuilder<double>(
-    //   builder: (context, value, child) => Opacity(
-    //     opacity: value,
-    //     child: child,
-    //   ),
-    //   child: FaradayNavigator(
-    //     key: arg.key,
-    //     arg: arg,
-    //     initialRoute: arg.name,
-    //     onGenerateRoute: widget.onGenerateRoute,
-    //     onUnknownRoute: widget.onUnknownRoute,
-    //     onGenerateInitialRoutes: (navigator, initialRoute) => [
-    //       widget.onGenerateRoute(initialSettings) ??
-    //           widget.onUnknownRoute(initialSettings),
-    //     ],
-    //   ),
-    //   duration: Duration(milliseconds: 180),
-    //   tween: Tween(begin: 0, end: 1),
-    // );
     return FaradayNavigator(
       key: arg.key,
       arg: arg,
       initialRoute: arg.name,
       onGenerateRoute: widget.onGenerateRoute,
       onUnknownRoute: widget.onUnknownRoute,
-      onGenerateInitialRoutes: (navigator, initialRoute) =>
-          [widget.onGenerateRoute(initialSettings)!],
+      onGenerateInitialRoutes: (navigator, initialRoute) {
+        assert(initialRoute == arg.name);
+        final settings = RouteSettings(
+          name: initialRoute,
+          arguments: arg.arguments,
+        );
+        final r = widget.onGenerateRoute(settings);
+        if (r != null) return [r];
+        final unknownRoute = widget.onUnknownRoute?.call(settings);
+        if (unknownRoute != null) return [unknownRoute];
+        throw '$initialRoute not valid';
+      },
     );
   }
 }
