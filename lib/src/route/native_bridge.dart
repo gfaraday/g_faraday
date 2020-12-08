@@ -17,7 +17,7 @@ const _channel = MethodChannel('g_faraday');
 typedef TransitionBuilderProvider = TransitionBuilder Function(
     JSON currentRoute);
 
-typedef ColorProvider = Color Function(BuildContext context, {JSON route});
+typedef ColorProvider = Color Function(BuildContext context, {JSON? route});
 
 Color _defaultBackgroundColor(BuildContext context, {JSON? route}) {
   return MediaQuery.of(context).platformBrightness == Brightness.light
