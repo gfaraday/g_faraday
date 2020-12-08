@@ -24,6 +24,13 @@
 
 ![demo](doc/images/demo.png)
 
+## Example App
+
+[Android下载apk](https://github.com/gfaraday/g_faraday/releases/download/v0.5.0-nullsafety.3/appv2.apk)
+
+<!-- [iOS下载app](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.app.zip)
+> [模拟器安装app](doc/ios-simulator-install.md) -->
+
 ## 设计原则
 
 - 对原有平台最小侵入
@@ -33,13 +40,6 @@
 ## 更新策略
 
 _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_faraday`版本_
-
-## Example App
-
-[Android下载apk](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.apk)
-
-[iOS下载app](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.app.zip)
-> [模拟器安装app](doc/ios-simulator-install.md)
 
 ## Requirements
 
