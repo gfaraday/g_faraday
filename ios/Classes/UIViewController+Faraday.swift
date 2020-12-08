@@ -9,27 +9,27 @@ import UIKit
 
 private struct AssociatedKeys {
     static var CallbackName = "faraday_CallbackName"
+    static var DeallocatorName = "faraday_DeallocatorName"
 }
-
 
 //
 typealias CallbackToken = UUID
 
-public extension FaradayExtension where ExtendedType: UIViewController {
-    
+extension UIViewController {
     internal var callbackToken: CallbackToken? {
         get {
             return objc_getAssociatedObject(UIViewController.self, &AssociatedKeys.CallbackName) as? CallbackToken
         }
-        nonmutating set {
-            if let newValue = newValue {
-                objc_setAssociatedObject(UIViewController.self, &AssociatedKeys.CallbackName, newValue as CallbackToken?, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            }
+        set {
+            objc_setAssociatedObject(UIViewController.self, &AssociatedKeys.CallbackName, newValue as CallbackToken?, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+}
+
+public extension FaradayExtension where ExtendedType: UIViewController {
+           
     static func automaticallyCallbackNullToFlutter() {
-        swizzle(UIViewController.self, #selector(UIViewController.viewDidDisappear(_:)), #selector(UIViewController.faraday_viewDidDisappear(_:)))
+        swizzle(UIViewController.self, #selector(UIViewController.viewDidLoad), #selector(UIViewController.faraday_viewDidLoad))
     }
         
     var isModal: Bool {
@@ -49,10 +49,10 @@ public extension FaradayExtension where ExtendedType: UIViewController {
     }
        
     func callback(result: Any?) {
-        if (callbackToken != nil) {
-            Faraday.callback(callbackToken, result: result)
+        if (type.callbackToken != nil) {
+            Faraday.callback(type.callbackToken, result: result)
             // 只回调一次
-            callbackToken = nil
+            type.callbackToken = nil
         }
     }
     
@@ -62,11 +62,31 @@ public extension FaradayExtension where ExtendedType: UIViewController {
     }
 }
 
+final class Deallocator {
+
+    var closure: () -> Void
+
+    init(_ closure: @escaping () -> Void) {
+        self.closure = closure
+    }
+
+    deinit {
+        closure()
+    }
+}
+
 extension UIViewController {
     
-    @objc fileprivate func faraday_viewDidDisappear(_ animated: Bool) {
-        faraday_viewDidDisappear(animated)
-        // 如果是滑动返回，或者点击左上角back键返回 则需要告诉flutter 没有返回值
-        fa.callback(result: nil)
+    @objc fileprivate func faraday_viewDidLoad() {
+        
+        let token = callbackToken
+        let deallocator = Deallocator {
+            // 如果是滑动返回，或者点击左上角back键返回 则需要告诉flutter 没有返回值
+            Faraday.callback(token, result: nil)
+        }
+        
+        objc_setAssociatedObject(self, &AssociatedKeys.DeallocatorName, deallocator, .OBJC_ASSOCIATION_RETAIN)
+        
+        faraday_viewDidLoad()
     }
 }

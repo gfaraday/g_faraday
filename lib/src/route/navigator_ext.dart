@@ -23,7 +23,7 @@ extension NavigatorStateX on NavigatorState {
       {Object? arguments, Map<String, dynamic>? options}) {
     final bridge = FaradayNativeBridge.of(context);
     if (bridge != null) {
-      return bridge.pushNamed<T>(routeName,
+      return bridge.pushNamed<T?>(routeName,
           arguments: arguments, options: options);
     }
 

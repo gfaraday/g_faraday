@@ -14,7 +14,7 @@ import 'navigator.dart';
 
 const _channel = MethodChannel('g_faraday');
 
-typedef TransitionBuilderProvider = TransitionBuilder Function(
+typedef TransitionBuilderProvider = TransitionBuilder? Function(
     JSON currentRoute);
 
 typedef ColorProvider = Color Function(BuildContext context, {JSON? route});

@@ -193,7 +193,7 @@ public class Faraday {
         // 这里是有可能打开一个 flutter页面的
         if let vc = navigatorDelegate?.push(name, arguments: arg["arguments"], options: arg["options"] as? [String: Any]) {
             let uuid = UUID()
-            vc.fa.callbackToken = uuid
+            vc.callbackToken = uuid
             callbackCache[uuid] = callback
         }
     }
@@ -207,7 +207,7 @@ public class Faraday {
         viewController.callbackValueToCreator(arguments)
         
         // callbackToken != nil 说明这是一个通过 flutter页面打开的一个新引擎， 需要手动调用callback以传值给flutter端
-        if (viewController.fa.callbackToken != nil) {
+        if (viewController.callbackToken != nil) {
             viewController.fa.callback(result: arguments)
         }
         
