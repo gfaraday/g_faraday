@@ -36,21 +36,21 @@ class _MyAppState extends State<MyApp> {
 
     final route = faraday.wrapper(
         (settings) {
-          final f = routes[settings.name];
+          final f = routes[settings.name!];
           if (f == null) return null;
           return f(settings);
         },
         onUnknownRoute: null,
         switchPageAnimation: (currentRoute) {
           if (currentRoute['route'] == '') {
-            return (context, child) => AnimatedSwitcher(
+            return ((context, child) => AnimatedSwitcher(
                   duration: Duration(seconds: 1),
                   child: child,
                   transitionBuilder: (child, animation) => RotationTransition(
                     turns: animation,
                     child: child,
                   ),
-                );
+                ));
           }
           return null;
         },

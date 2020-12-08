@@ -10,6 +10,7 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		2B7C7E45D5FD3A950621793C /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44332D89126D63036F2EF2EC /* Pods_Runner.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		5B164C79257F2E69002BAED0 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B164C78257F2E69002BAED0 /* BaseViewController.swift */; };
 		5B3F2C6B251992270091B7E5 /* FaradayCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F2C6A251992270091B7E5 /* FaradayCommon.swift */; };
 		5B3F2C6D251992310091B7E5 /* FaradayRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F2C6C251992310091B7E5 /* FaradayRoute.swift */; };
 		5B3F2C6F251992E80091B7E5 /* FaradayNet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F2C6E251992E80091B7E5 /* FaradayNet.swift */; };
@@ -50,6 +51,7 @@
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		44332D89126D63036F2EF2EC /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5501EE160CBE2CB443C7C5D9 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		5B164C78257F2E69002BAED0 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		5B3F2C6A251992270091B7E5 /* FaradayCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaradayCommon.swift; sourceTree = "<group>"; };
 		5B3F2C6C251992310091B7E5 /* FaradayRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaradayRoute.swift; sourceTree = "<group>"; };
 		5B3F2C6E251992E80091B7E5 /* FaradayNet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaradayNet.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				5B42C2B6256F56110069684B /* Basic */,
 				5B42C2B3256E59110069684B /* Splash */,
 				5B42C2B4256F3C300069684B /* MainavigationViewController.swift */,
+				5B164C78257F2E69002BAED0 /* BaseViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				5B42C2ED2570FC5C0069684B /* NoNavigationBarViewController.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
+				5B164C79257F2E69002BAED0 /* BaseViewController.swift in Sources */,
 				5B3F2C6F251992E80091B7E5 /* FaradayNet.swift in Sources */,
 				5B42C2DD2570E2480069684B /* Tab2ViewController.swift in Sources */,
 				5B42C2CB256F99370069684B /* Native2FlutterViewController.swift in Sources */,

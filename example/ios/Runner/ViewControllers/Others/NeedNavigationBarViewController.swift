@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NeedNavigationBarViewController: UIViewController {
+class NeedNavigationBarViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

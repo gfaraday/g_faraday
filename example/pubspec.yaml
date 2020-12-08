@@ -11,7 +11,7 @@ faraday:
   pod_repo_name: "faraday"
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0-29.10.beta <3.0.0'
 
 dependencies:
   flutter:

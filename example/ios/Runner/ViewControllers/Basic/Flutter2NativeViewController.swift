@@ -8,7 +8,7 @@
 import UIKit
 import g_faraday
 
-class Flutter2NativeViewController: UIViewController {
+class Flutter2NativeViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

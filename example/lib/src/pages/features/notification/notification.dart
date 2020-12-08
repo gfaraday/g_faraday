@@ -11,7 +11,7 @@ class GlobalNotification extends StatefulWidget {
 }
 
 class _GlobalNotificationState extends State<GlobalNotification> {
-  String _localMessage;
+  String? _localMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +50,12 @@ class _GlobalNotificationState extends State<GlobalNotification> {
                 TweenAnimationBuilder(
                   duration: Duration(milliseconds: 300),
                   tween: Tween(begin: 5.0, end: 1.0),
-                  builder: (context, value, child) =>
+                  builder: (context, dynamic value, child) =>
                       Transform.scale(scale: value, child: child),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      _localMessage,
+                      _localMessage!,
                       style: TextStyle(color: Colors.purple[900]),
                       overflow: TextOverflow.fade,
                     ),

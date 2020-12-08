@@ -8,7 +8,7 @@
 import UIKit
 import g_faraday
 
-class Tab1ViewController: UIViewController, FaradayNavigationBarHiddenProtocol {
+class Tab1ViewController: BaseViewController, FaradayNavigationBarHiddenProtocol {
 
     override func viewDidLoad() {
         super.viewDidLoad()

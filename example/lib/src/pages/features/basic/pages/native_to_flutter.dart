@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Native2FlutterPage extends StatefulWidget {
   final dynamic date;
 
-  const Native2FlutterPage(this.date, {Key key}) : super(key: key);
+  const Native2FlutterPage(this.date, {Key? key}) : super(key: key);
 
   @override
   _Native2FlutterPageState createState() => _Native2FlutterPageState();
@@ -26,7 +26,7 @@ class _Native2FlutterPageState extends State<Native2FlutterPage> {
               TextButton(
                   child: Text('带参数返回'),
                   onPressed: () =>
-                      Navigator.of(context).pop('Result From Flutter'))
+                      Navigator.of(context)!.pop('Result From Flutter'))
             ],
           ),
         ),

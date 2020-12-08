@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
 class ExamplePageScaffold extends StatefulWidget {
-  final String title;
-  final List<Widget> children;
+  final String? title;
+  final List<Widget>? children;
 
-  const ExamplePageScaffold(this.title, {Key key, this.children})
+  const ExamplePageScaffold(this.title, {Key? key, this.children})
       : super(key: key);
 
   @override
@@ -23,7 +23,7 @@ class _ExamplePageScaffoldState extends State<ExamplePageScaffold> {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: widget.children,
+            children: widget.children!,
           ),
         ),
       ),

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Native2FlutterViewController: UIViewController {
+class Native2FlutterViewController: BaseViewController {
 
     
     @IBOutlet var label: UILabel!

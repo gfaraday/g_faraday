@@ -2,13 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FaradayAction extends StatelessWidget {
-  final Color color;
+  final Color? color;
   final Widget icon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String description;
 
   const FaradayAction(
-      {Key key, this.color, this.icon, this.onTap, this.description})
+      {Key? key,
+      this.color,
+      required this.icon,
+      this.onTap,
+      required this.description})
       : super(key: key);
 
   @override

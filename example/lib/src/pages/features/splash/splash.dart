@@ -34,7 +34,7 @@ class _SplashState extends State<Splash> {
                   : _Platform.android == p
                       ? Colors.green[800]
                       : Colors.blue,
-              onPressed: () => Navigator.of(context).push(CupertinoPageRoute(
+              onPressed: () => Navigator.of(context)?.push(CupertinoPageRoute(
                   builder: (_) => SplashTipPage(p, title: text),
                   fullscreenDialog: true)),
             );
@@ -46,10 +46,10 @@ class _SplashState extends State<Splash> {
 }
 
 class SplashTipPage extends StatefulWidget {
-  final String title;
+  final String? title;
   final _Platform platform;
 
-  const SplashTipPage(this.platform, {Key key, this.title}) : super(key: key);
+  const SplashTipPage(this.platform, {Key? key, this.title}) : super(key: key);
 
   @override
   _SplashTipPageState createState() => _SplashTipPageState();

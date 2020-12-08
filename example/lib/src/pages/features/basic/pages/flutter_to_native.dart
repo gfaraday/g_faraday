@@ -8,7 +8,7 @@ class Flutter2NativePage extends StatefulWidget {
 }
 
 class _Flutter2NativePageState extends State<Flutter2NativePage> {
-  Object _result;
+  Object? _result;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
                   onPressed: () async {
                     _showResult(
                         context,
-                        await Navigator.of(context)
+                        await Navigator.of(context)!
                             .nativePushNamed('flutter2native', arguments: {}));
                   }),
               TextButton(
@@ -38,8 +38,9 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
                   onPressed: () async {
                     _showResult(
                         context,
-                        await Navigator.of(context)
-                            .pushNamed('flutter2native', arguments: {}));
+                        await Navigator.of(context)!.pushNamed<Object?>(
+                            'flutter2native',
+                            arguments: {}));
                   }),
               if (_result != null)
                 Text(
@@ -62,9 +63,9 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
     );
   }
 
-  void _showResult(BuildContext context, Object result) {
+  void _showResult(BuildContext context, Object? result) {
     setState(() {
-      _result = result;
+      _result = result ?? 'NO RESULT';
     });
   }
 }
