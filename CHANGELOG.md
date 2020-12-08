@@ -1,4 +1,9 @@
-# 0.5.0-nullsafety.2
+# 0.5.0-nullsafety.3
+
+* [ios] fix callback issue
+* add invokeMapMethod&invokeListMethod for common channel
+
+## 0.5.0-nullsafety.2
 
 * fix navigator onGenerateInitialRouteIssue
 
