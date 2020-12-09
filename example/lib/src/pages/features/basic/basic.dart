@@ -64,6 +64,7 @@ class BasicAllPage extends StatelessWidget {
 List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
   final base = [
     _Action(
+      key: ValueKey('flutter2native'),
       title: '从Flutter跳转到Native页面',
       subTitle: 'ios: viewController android: activity',
       begin: _Action.flutter,

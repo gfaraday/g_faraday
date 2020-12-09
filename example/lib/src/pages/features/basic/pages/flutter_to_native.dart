@@ -13,6 +13,7 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      key: ValueKey('flutter2native_page'),
       navigationBar: CupertinoNavigationBar(
         middle: Text('Flutter to Native'),
       ),
