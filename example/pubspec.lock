@@ -160,7 +160,7 @@ packages:
       name: g_json
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.0-nullsafety.0"
+    version: "4.0.0-nullsafety.2"
   glob:
     dependency: transitive
     description:
@@ -321,7 +321,7 @@ packages:
       name: shelf_static
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.2.8"
+    version: "0.2.9+1"
   shelf_web_socket:
     dependency: transitive
     description:
@@ -431,7 +431,7 @@ packages:
       name: vm_service
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "5.2.0"
+    version: "5.5.0"
   watcher:
     dependency: transitive
     description:
