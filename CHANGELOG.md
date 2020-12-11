@@ -1,4 +1,8 @@
-# 0.5.0-nullsafety.3
+# 0.5.0-nullsafety.4
+
+* upgrade json package to 4.0.0.nullsafety.1
+
+## 0.5.0-nullsafety.3
 
 * [ios] fix callback issue
 * add invokeMapMethod&invokeListMethod for common channel
