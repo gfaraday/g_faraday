@@ -87,7 +87,7 @@ packages:
       name: g_json
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.0-nullsafety.1"
+    version: "4.0.0-nullsafety.2"
   matcher:
     dependency: transitive
     description:
