@@ -1,4 +1,8 @@
-# 0.5.0-nullsafety.4
+# 0.5.0-nullsafety.5
+
+* upgrade json package to 4.0.0.nullsafety.2
+
+## 0.5.0-nullsafety.4
 
 * upgrade json package to 4.0.0.nullsafety.1
 
