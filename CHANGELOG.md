@@ -1,4 +1,8 @@
-# 0.5.0-nullsafety.5
+# 0.5.0-nullsafety.6
+
+* [ios] fix pop gesture logic
+
+## 0.5.0-nullsafety.5
 
 * upgrade json package to 4.0.0.nullsafety.2
 

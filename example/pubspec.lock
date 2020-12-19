@@ -153,7 +153,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.5.0-nullsafety.5"
+    version: "0.5.0-nullsafety.6"
   g_json:
     dependency: transitive
     description:
