@@ -1,4 +1,9 @@
-# 0.5.0-nullsafety.6
+# 0.5.0-nullsafety.7
+
+* [ios] refine push api
+* refine nullsafety
+
+## 0.5.0-nullsafety.6
 
 * [ios] fix pop gesture logic
 
