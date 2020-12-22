@@ -36,12 +36,12 @@ class _HomePageState extends State<HomePage> {
                       CupertinoDialogAction(
                         child: Text('按错了'),
                         isDefaultAction: true,
-                        onPressed: () => Navigator.of(ctx)!.pop(false),
+                        onPressed: () => Navigator.of(ctx)?.pop(false),
                       ),
                       CupertinoDialogAction(
                         child: Text('退出'),
                         isDestructiveAction: true,
-                        onPressed: () => Navigator.of(ctx)!.pop(true),
+                        onPressed: () => Navigator.of(ctx)?.pop(true),
                       )
                     ],
                   ),

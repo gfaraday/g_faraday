@@ -1,17 +1,11 @@
 PODS:
-  - Alamofire (5.2.2)
   - Flutter (1.0.0)
   - g_faraday (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - Alamofire
   - Flutter (from `Flutter`)
   - g_faraday (from `.symlinks/plugins/g_faraday/ios`)
-
-SPEC REPOS:
-  trunk:
-    - Alamofire
 
 EXTERNAL SOURCES:
   Flutter:
@@ -20,10 +14,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/g_faraday/ios"
 
 SPEC CHECKSUMS:
-  Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   g_faraday: 46dbbcb8a244f807c0ff1f5f1a4c9849449765e9
 
-PODFILE CHECKSUM: 6aa33108b2b7376098e10856d131f1ce07024e28
+PODFILE CHECKSUM: 324709033fdbc1fa744dac75dde748e9cf475d50
 
 COCOAPODS: 1.9.3

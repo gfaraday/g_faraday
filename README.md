@@ -46,6 +46,13 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 - iOS 10.0+ Xcode 12.0+ Swift 5.1+
 - Android minSdkVersion 16 Kotlin 1.4.10+
 
+## 版本对应关系
+
+| g_faraday | flutter |
+|-----------|---------|
+| ^0.5.0-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta |
+| ^0.5.1-nullsafety.0 | Flutter 1.25.0-8.1.pre • channel beta |
+
 ## 快速开始
 
 如果您已经有其他类似框架使用经验，可以直接查看[Example](example/)浏览最佳实践。

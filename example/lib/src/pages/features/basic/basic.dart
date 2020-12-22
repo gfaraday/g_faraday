@@ -68,7 +68,7 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
       subTitle: 'ios: viewController android: activity',
       begin: _Action.flutter,
       end: _Action.native,
-      onTap: () => Navigator.of(context)!.push(
+      onTap: () => Navigator.of(context)?.push(
         CupertinoPageRoute(builder: (_) => Flutter2NativePage()),
       ),
     ),
@@ -78,7 +78,7 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
       subTitle: 'viewController activity fragment',
       begin: _Action.native,
       end: _Action.flutter,
-      onTap: () => Navigator.of(context)!.nativePushNamed('native2flutter'),
+      onTap: () => Navigator.of(context)?.nativePushNamed('native2flutter'),
     ),
     Divider(height: 1),
     _Action(
@@ -86,7 +86,7 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
       subTitle: '支持在新的native容器打开',
       begin: _Action.flutter,
       end: _Action.flutter,
-      onTap: () => Navigator.of(context)!.push(
+      onTap: () => Navigator.of(context)?.push(
         CupertinoPageRoute(builder: (_) => Flutter2Flutter()),
       ),
     ),
@@ -100,7 +100,7 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
       subTitle: '在native容器中作为tab添加flutter页面',
       begin: _Action.flutter,
       end: Icon(Icons.widgets),
-      onTap: () => Navigator.of(context)!.nativePushNamed('tabContainer'),
+      onTap: () => Navigator.of(context)?.nativePushNamed('tabContainer'),
     ),
   ];
 }
