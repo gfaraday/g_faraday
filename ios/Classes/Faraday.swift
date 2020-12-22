@@ -17,7 +17,7 @@ public protocol FaradayNavigationDelegate: AnyObject {
     ///   - name: native or flutter route name
     ///   - arguments: route arguments
     /// - Returns: pushed viewController
-    func push(_ name: String, arguments: Any?, options: [String: Any]?) -> UIViewController?
+    func push(_ name: String, arguments: Any?, options: [String: Any]?, callback token: CallbackToken)
     
     /// flutter widget require disbale native swipeback func
     /// - Parameter disable: disable or not
@@ -190,12 +190,10 @@ public class Faraday {
             fatalError("arguments invalid")
         }
         
+        let token = UUID()
         // 这里是有可能打开一个 flutter页面的
-        if let vc = navigatorDelegate?.push(name, arguments: arg["arguments"], options: arg["options"] as? [String: Any]) {
-            let uuid = UUID()
-            vc.callbackToken = uuid
-            callbackCache[uuid] = callback
-        }
+        navigatorDelegate?.push(name, arguments: arg["arguments"], options: arg["options"] as? [String: Any] ?? [:], callback: token)
+        callbackCache[token] = callback
     }
     
     func pop(flutterContainer arguments: Any?, callback: FlutterResult) {

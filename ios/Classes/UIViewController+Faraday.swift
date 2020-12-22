@@ -12,8 +12,7 @@ private struct AssociatedKeys {
     static var DeallocatorName = "faraday_DeallocatorName"
 }
 
-//
-typealias CallbackToken = UUID
+public typealias CallbackToken = UUID
 
 extension UIViewController {
     internal var callbackToken: CallbackToken? {
@@ -46,6 +45,21 @@ public extension FaradayExtension where ExtendedType: UIViewController {
             return true
         }
         return false
+    }
+    
+    var callbackToken: CallbackToken? {
+        set {
+            if (newValue == nil) {
+                debugPrint("⚠️ [g_faraday] set callback token to nil is not needed.")
+            }
+            if (type.callbackToken != nil && type.callbackToken == newValue) {
+                debugPrint("⚠️ [g_faraday] update callback token will be lost callback.")
+            }
+            type.callbackToken = newValue
+        }
+        get {
+            return type.callbackToken
+        }
     }
        
     func callback(result: Any?) {
