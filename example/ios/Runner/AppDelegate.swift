@@ -1,6 +1,5 @@
 import UIKit
 import g_faraday
-import Alamofire
 
 @UIApplicationMain
 @objc class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +14,7 @@ import Alamofire
         UINavigationController.fa.automaticallyHandleNavigationBarHidden()
         UIViewController.fa.automaticallyCallbackNullToFlutter()
         
-        Faraday.default.startFlutterEngine(navigatorDelegate: self, httpProvider: self, commonHandler: self.handle(_:_:_:), automaticallyRegisterPlugins: true)
+        Faraday.default.startFlutterEngine(navigatorDelegate: self, httpProvider: nil, commonHandler: self.handle(_:_:_:), automaticallyRegisterPlugins: true)
         
         return true
     }
@@ -23,8 +22,7 @@ import Alamofire
 
 extension AppDelegate: FaradayNavigationDelegate {
     
-    func push(_ name: String, arguments: Any?, options: [String : Any]?) -> UIViewController? {
-        
+    func push(_ name: String, arguments: Any?, options: [String : Any]?, callback token: CallbackToken) {
         var vc: UIViewController!
         let isFultter = options?["flutterRoute"] as? Bool ?? false
         let isPresent = options?["present"] as? Bool ?? false
@@ -49,8 +47,11 @@ extension AppDelegate: FaradayNavigationDelegate {
             topMost?.navigationController?.pushViewController(vc, animated: true)
         }
         
-        return vc
+        // 非常重要
+        // 如果此处不设置 `calbackToken` 那么flutter侧`await Navigator`则永远不会返回
+        vc.fa.callbackToken = token
     }
+
 }
 
 public protocol FlutterPage {
@@ -109,19 +110,19 @@ extension AppDelegate: FaradayCommonHandler {
     
 }
 
-extension AppDelegate: FaradayHttpProvider {
+// extension AppDelegate: FaradayHttpProvider {
 
-    func request(method: String, url: String, parameters: [String : Any]?, headers: [String : String]?, completion: @escaping (Any?) -> Void) {
-        let afHeaders = headers.map { HTTPHeaders($0) }
-        let dataRequest = AF.request(url, method: HTTPMethod(rawValue: method.uppercased()), parameters: parameters, headers: afHeaders)
-        dataRequest.responseJSON { response in
-            switch response.result {
-                case .success(let data):
-                    completion(["data": data, "errorCode": 0])
-                case .failure(let error):
-                    completion(["message": error.localizedDescription, "errorCode": error.responseCode ?? 1])
-            }
-        }
-    }
+//     func request(method: String, url: String, parameters: [String : Any]?, headers: [String : String]?, completion: @escaping (Any?) -> Void) {
+//         let afHeaders = headers.map { HTTPHeaders($0) }
+//         let dataRequest = AF.request(url, method: HTTPMethod(rawValue: method.uppercased()), parameters: parameters, headers: afHeaders)
+//         dataRequest.responseJSON { response in
+//             switch response.result {
+//                 case .success(let data):
+//                     completion(["data": data, "errorCode": 0])
+//                 case .failure(let error):
+//                     completion(["message": error.localizedDescription, "errorCode": error.responseCode ?? 1])
+//             }
+//         }
+//     }
 
-}
+// }
