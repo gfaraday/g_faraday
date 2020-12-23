@@ -122,16 +122,22 @@ class HomePageBannerDelegate extends SliverPersistentHeaderDelegate {
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text('* 所有功能在 iOS/Android 均可用'),
           ),
+          Text(
+            '* Debug模式第一次打开Flutter页面时出现一闪而过的红屏是正常的',
+            style: DefaultTextStyle.of(context)
+                .style
+                .apply(color: Color(0xF0900000)),
+          ),
         ],
       ),
     );
   }
 
   @override
-  double get maxExtent => 100;
+  double get maxExtent => 150;
 
   @override
-  double get minExtent => 100;
+  double get minExtent => 150;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
