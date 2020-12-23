@@ -44,7 +44,6 @@ Color _defaultBackgroundColor(BuildContext context, {JSON? route}) {
 /// addChild 或者是 禁用了系统默认动画的情况
 class FaradayNativeBridge extends StatefulWidget {
   final RouteFactory onGenerateRoute;
-  final RouteFactory? onUnknownRoute;
 
   // 页面默认背景
   final ColorProvider? backgroundColorProvider;
@@ -55,7 +54,6 @@ class FaradayNativeBridge extends StatefulWidget {
   FaradayNativeBridge(
     this.onGenerateRoute, {
     Key? key,
-    this.onUnknownRoute,
     this.backgroundColorProvider,
     this.transitionBuilderProvider,
   }) : super(key: key);
@@ -257,7 +255,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       arg: arg,
       initialRoute: arg.name,
       onGenerateRoute: widget.onGenerateRoute,
-      onUnknownRoute: widget.onUnknownRoute,
       onGenerateInitialRoutes: (navigator, initialRoute) {
         assert(initialRoute == arg.name);
         final settings = RouteSettings(
@@ -265,10 +262,8 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           arguments: arg.arguments,
         );
         final r = widget.onGenerateRoute(settings);
-        if (r != null) return [r];
-        final unknownRoute = widget.onUnknownRoute?.call(settings);
-        if (unknownRoute != null) return [unknownRoute];
-        throw '$initialRoute not valid';
+        assert(r != null, 'generate route failed. name: $initialRoute');
+        return [if (r != null) r];
       },
     );
   }
