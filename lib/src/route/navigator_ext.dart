@@ -10,10 +10,8 @@ extension NavigatorStateX on NavigatorState {
   Future<void> nativePop<T extends Object>([T? result]) {
     final bridge = FaradayNativeBridge.of(context);
     if (bridge != null) {
-      final key = FaradayNavigator.of(context)?.widget.arg.key;
-      if (key != null) {
-        return bridge.pop(key, result);
-      }
+      final key = FaradayNavigator.of(context).widget.arg.key;
+      return bridge.pop(key, result);
     }
     throw 'FaradayNativeBridge not found !! $context';
   }
