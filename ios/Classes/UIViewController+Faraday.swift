@@ -58,6 +58,8 @@ public extension FaradayExtension where ExtendedType: UIViewController {
         type.callbackToken = token
     }
        
+    /// It's guaranteed to only be called once.
+    ///
     func callback(result: Any?) {
         if (type.callbackToken != nil) {
             Faraday.callback(type.callbackToken, result: result)
