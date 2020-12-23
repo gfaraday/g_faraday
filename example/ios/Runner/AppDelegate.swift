@@ -48,8 +48,8 @@ extension AppDelegate: FaradayNavigationDelegate {
         }
         
         // 非常重要
-        // 如果此处不设置 `calbackToken` 那么flutter侧`await Navigator`则永远不会返回
-        vc.fa.callbackToken = token
+        // 如果此处不调用 `enableCallback` 那么flutter侧`await Navigator`则永远不会返回
+        vc.fa.enableCallback(with: token)
     }
 
 }
