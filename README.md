@@ -48,10 +48,10 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 
 ## 版本对应关系
 
-| g_faraday | flutter |
-|-----------|---------|
-| ^0.5.0-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta |
-| ^0.5.1-nullsafety.0 | Flutter 1.25.0-8.1.pre • channel beta |
+| g_faraday | flutter | cocoapods |
+|-----------|---------|-----------|
+| ^0.5.0-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta | any |
+| ^0.5.1-nullsafety.0 | Flutter 1.25.0-8.1.pre • channel beta | >= 1.10.0 |
 
 ## 快速开始
 
@@ -97,7 +97,7 @@ CupertinoApp(onGenerateRoute: (_) => route);
 // 0x00 实现 `FaradayNavigationDelegate`
 extension AppDelegate: FaradayNavigationDelegate {
 
-    func push(_ name: String, arguments: Any?, options: [String : Any]?) -> UIViewController? {
+    func push(_ name: String, arguments: Any?, options: [String : Any]?, callback token: CallbackToken) {
 
         let isFlutter = options?["flutter"] as? Bool ?? false
         let isPresent = options?["present"] as? Bool ?? false
@@ -111,7 +111,9 @@ extension AppDelegate: FaradayNavigationDelegate {
             topMost?.navigationController?.pushViewController(vc, animated: true)
         }
 
-        return vc
+        // 非常重要
+        // 如果此处不调用 `enableCallback` 那么flutter侧`await Navigator`则永远不会返回
+        vc.fa.enableCallback(with: token)
     }
 }
 
