@@ -35,28 +35,28 @@ class _MyAppState extends State<MyApp> {
     final color = Color.fromARGB(255, 6, 210, 116);
 
     final route = faraday.wrapper(
-        (settings) {
-          final f = routes[settings.name!];
-          if (f == null) return null;
-          return f(settings);
-        },
-        onUnknownRoute: null,
-        switchPageAnimation: (currentRoute) {
-          if (currentRoute['route'] == '') {
-            return ((context, child) => AnimatedSwitcher(
-                  duration: Duration(seconds: 1),
+      (settings) {
+        final f = routes[settings.name!];
+        if (f == null) return null;
+        return f(settings);
+      },
+      switchPageAnimation: (currentRoute) {
+        if (currentRoute['route'] == '') {
+          return ((context, child) => AnimatedSwitcher(
+                duration: Duration(seconds: 1),
+                child: child,
+                transitionBuilder: (child, animation) => RotationTransition(
+                  turns: animation,
                   child: child,
-                  transitionBuilder: (child, animation) => RotationTransition(
-                    turns: animation,
-                    child: child,
-                  ),
-                ));
-          }
-          return null;
-        },
-        // flutter 自定义过渡页背景
-        nativeContainerBackgroundColorProvider: (context, {route}) =>
-            CupertinoColors.secondarySystemBackground);
+                ),
+              ));
+        }
+        return null;
+      },
+      // flutter 自定义过渡页背景
+      nativeContainerBackgroundColorProvider: (context, {route}) =>
+          CupertinoColors.secondarySystemBackground,
+    );
 
     final cupertinoApp = CupertinoApp(
       theme: CupertinoThemeData(primaryColor: color),

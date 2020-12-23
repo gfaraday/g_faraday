@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 
 import 'route/native_bridge.dart';
 import 'route/route.dart';
-import 'widgets/not_found_page.dart';
 
 /// 核心入口类
 class Faraday {
@@ -37,7 +36,6 @@ class Faraday {
   ///
   Route<dynamic> wrapper(
     RouteFactory rawFactory, {
-    RouteFactory? onUnknownRoute = _default404Page,
     ColorProvider? nativeContainerBackgroundColorProvider,
     TransitionBuilderProvider? switchPageAnimation,
   }) {
@@ -45,7 +43,6 @@ class Faraday {
       pageBuilder: (context) {
         final page = FaradayNativeBridge(
           rawFactory,
-          onUnknownRoute: onUnknownRoute,
           backgroundColorProvider: nativeContainerBackgroundColorProvider,
           transitionBuilderProvider: switchPageAnimation,
         );
@@ -54,9 +51,6 @@ class Faraday {
     );
   }
 }
-
-Route<dynamic> _default404Page(RouteSettings settings) =>
-    CupertinoPageRoute(builder: (context) => NotFoundPage(settings));
 
 ///
 const faraday = Faraday();
