@@ -161,20 +161,18 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
               spacing: 5.0,
               children: [
                 Text(
-                  'debug mode 一闪而过的红屏是正常的',
+                  'g_faraday 路由栈错误，请确认非 hot-restart 引起',
                   style: style,
                 ),
                 Text(
-                  'g_faraday 路由栈错误，请确认非 hot-reload 引起',
-                  style: style,
+                  'tips: 可以保存当前dart文件，触发 hot-reload 从而快速恢复',
+                  style: style.apply(fontSizeDelta: -2, color: Colors.grey),
                 ),
                 OutlineButton(
-                  child: Text(
-                    '点此恢复',
-                    style: style.apply(color: Colors.white),
-                  ),
+                  child: Text('点此恢复', style: style.apply(color: Colors.white)),
+                  autofocus: true,
                   onPressed: reassemble,
-                )
+                ),
               ],
             ),
           ),
