@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:g_json/g_json.dart';
@@ -77,8 +78,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   int? _index;
   int? _previousNotFoundId;
 
-  Timer? _reassembleTimer;
-
   @override
   void initState() {
     super.initState();
@@ -112,9 +111,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   void dispose() {
     _navigators.clear();
     super.dispose();
-    if (kDebugMode) {
-      _reassembleTimer?.cancel();
-    }
   }
 
   Future<T?> pushNamed<T extends Object?>(
@@ -148,28 +144,52 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   @override
   Widget build(BuildContext context) {
-    if (_index == null || _navigators.isEmpty || _index == -1) {
+    if (_navigators.isEmpty || _index == null || _index == -1) {
       if (kDebugMode) {
-        if (_reassembleTimer == null) {
-          // 只有在开发过程中 Relaunch 才会执行的逻辑 仅会尝试一次
-          _reassembleTimer = Timer(Duration(milliseconds: 500), () {
-            if (_index == null || _index! < 0) {
-              WidgetsBinding.instance?.reassembleApplication();
-            }
-          });
-        }
+        // 应该弹出警告错误界面
+        final style = TextStyle(
+            color: const Color(0xFFFFFF66),
+            fontFamily: 'monospace',
+            fontSize: 14.0,
+            fontWeight: FontWeight.bold);
+        return Container(
+          color: RenderErrorBox.backgroundColor,
+          child: Center(
+            child: Wrap(
+              direction: Axis.vertical,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 5.0,
+              children: [
+                Text(
+                  'debug mode 一闪而过的红屏是正常的',
+                  style: style,
+                ),
+                Text(
+                  'g_faraday 路由栈错误，请确认非 hot-reload 引起',
+                  style: style,
+                ),
+                OutlineButton(
+                  child: Text(
+                    '点此恢复',
+                    style: style.apply(color: Colors.white),
+                  ),
+                  onPressed: reassemble,
+                )
+              ],
+            ),
+          ),
+        );
+      } else {
+        return Container(
+          color: (widget.backgroundColorProvider ?? _defaultBackgroundColor)
+              .call(context),
+          alignment: Alignment.center,
+          child: null,
+        );
       }
-      return Container(
-        color: (widget.backgroundColorProvider ?? _defaultBackgroundColor)
-            .call(context),
-        alignment: Alignment.center,
-        child: kDebugMode ? Text('Restarting...') : null,
-      );
     }
 
-    if (kDebugMode) {
-      _reassembleTimer?.cancel();
-    }
+    assert(_index! < _navigators.length);
 
     final current = _navigators[_index!];
     final content = Container(
@@ -204,8 +224,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           _updateIndex(index);
           return true;
         }
-        // seq 不为空 native可能重复调用了onCreate 方法
-
         final arg = FaradayArguments(call.arguments['args'], name, id,
             opaque: call.arguments['background_mode'] != 'transparent');
         _navigators.add(arg);
@@ -221,7 +239,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           _recreateLastPage();
         }
         _updateIndex(index);
-        return Future.value(index != null);
+        return index != null;
       case 'pageDealloc':
         assert(_index != null, _index! < _navigators.length);
         final current = _navigators[_index!];
@@ -229,9 +247,9 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         assert(index != null, 'page not found seq: ${call.arguments}');
         _navigators.removeAt(index!);
         _updateIndex(_navigators.indexOf(current));
-        return Future.value(true);
+        return true;
       default:
-        return Future.value(false);
+        return false;
     }
   }
 
