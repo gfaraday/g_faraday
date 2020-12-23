@@ -1,4 +1,9 @@
-# 0.5.0-nullsafety.7
+# 0.5.1-nullsafety.0
+
+* [ios] refine callback api
+* migrate to `Flutter 1.25.0-8.1.pre`
+
+## 0.5.0-nullsafety.7
 
 * [ios] refine push api
 * refine nullsafety
