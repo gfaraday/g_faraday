@@ -17,10 +17,10 @@ public typealias CallbackToken = UUID
 extension UIViewController {
     internal var callbackToken: CallbackToken? {
         get {
-            return objc_getAssociatedObject(UIViewController.self, &AssociatedKeys.CallbackName) as? CallbackToken
+            return objc_getAssociatedObject(self, &AssociatedKeys.CallbackName) as? CallbackToken
         }
         set {
-            objc_setAssociatedObject(UIViewController.self, &AssociatedKeys.CallbackName, newValue as CallbackToken?, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &AssociatedKeys.CallbackName, newValue as CallbackToken?, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }
