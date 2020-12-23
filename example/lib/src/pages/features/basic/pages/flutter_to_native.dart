@@ -32,14 +32,14 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
                     _showResult(
                         context,
                         await Navigator.of(context)
-                            ?.nativePushNamed('flutter2native', arguments: {}));
+                            .nativePushNamed('flutter2native', arguments: {}));
                   }),
               TextButton(
                   child: Text('🍐: Navigator.of(context).pushNamed'),
                   onPressed: () async {
                     _showResult(
                         context,
-                        await Navigator.of(context)?.pushNamed<Object?>(
+                        await Navigator.of(context).pushNamed<Object?>(
                             'flutter2native',
                             arguments: {}));
                   }),

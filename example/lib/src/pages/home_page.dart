@@ -30,18 +30,18 @@ class _HomePageState extends State<HomePage> {
       child: WillPopScope(
         onWillPop: () async {
           final r = await showCupertinoDialog(
-              builder: (ctx) => CupertinoAlertDialog(
+              builder: (context) => CupertinoAlertDialog(
                     content: Text('确定退出吗?'),
                     actions: [
                       CupertinoDialogAction(
                         child: Text('按错了'),
                         isDefaultAction: true,
-                        onPressed: () => Navigator.of(ctx)?.pop(false),
+                        onPressed: () => Navigator.of(context).pop(false),
                       ),
                       CupertinoDialogAction(
                         child: Text('退出'),
                         isDestructiveAction: true,
-                        onPressed: () => Navigator.of(ctx)?.pop(true),
+                        onPressed: () => Navigator.of(context).pop(true),
                       )
                     ],
                   ),

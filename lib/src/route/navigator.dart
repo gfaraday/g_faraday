@@ -38,12 +38,13 @@ class FaradayNavigator extends Navigator {
   FaradayNavigatorState createState() => FaradayNavigatorState();
 
   ///
-  static FaradayNavigatorState? of(BuildContext context) {
-    FaradayNavigatorState? faraday;
+  static FaradayNavigatorState of(BuildContext context) {
     if (context is StatefulElement && context.state is FaradayNavigatorState) {
-      faraday = context.state as FaradayNavigatorState;
+      return context.state as FaradayNavigatorState;
     }
-    return faraday ?? context.findAncestorStateOfType<FaradayNavigatorState>();
+    final faraday = context.findAncestorStateOfType<FaradayNavigatorState>();
+    assert(faraday != null);
+    return faraday!;
   }
 }
 

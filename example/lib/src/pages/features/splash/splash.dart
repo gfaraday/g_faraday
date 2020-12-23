@@ -34,7 +34,7 @@ class _SplashState extends State<Splash> {
                   : _Platform.android == p
                       ? Colors.green[800]
                       : Colors.blue,
-              onPressed: () => Navigator.of(context)?.push(CupertinoPageRoute(
+              onPressed: () => Navigator.of(context).push(CupertinoPageRoute(
                   builder: (_) => SplashTipPage(p, title: text),
                   fullscreenDialog: true)),
             );
