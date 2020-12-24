@@ -5,6 +5,7 @@ import 'package:g_faraday/g_faraday.dart';
 import 'src/pages/features/basic/pages/flutter_to_flutter.dart';
 import 'src/pages/features/basic/pages/native_to_flutter.dart';
 import 'src/pages/features/basic/pages/tab_page.dart';
+import 'src/pages/features/basic/pages/transparent_page.dart';
 import 'src/pages/home_page.dart';
 
 void main() {
@@ -28,6 +29,10 @@ class _MyAppState extends State<MyApp> {
         settings: settings),
     'tab1': (settings) =>
         CupertinoPageRoute(builder: (context) => TabPage(), settings: settings),
+    'transparent_flutter': (settings) => CupertinoPageRoute(
+          builder: (context) => TransparentPage(),
+          settings: settings,
+        )
   };
 
   @override

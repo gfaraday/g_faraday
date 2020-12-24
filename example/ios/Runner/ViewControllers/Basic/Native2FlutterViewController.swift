@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import g_faraday
 
 class Native2FlutterViewController: BaseViewController {
 
@@ -27,5 +28,10 @@ class Native2FlutterViewController: BaseViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
 
-
+    @IBAction func onTap1(sedner: UIButton) {
+        
+        let vc = FaradayFlutterViewController("transparent_flutter", backgroundClear: true)
+        
+        navigationController?.present(vc, animated: false, completion: nil)
+    }
 }
