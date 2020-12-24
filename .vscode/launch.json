@@ -20,7 +20,7 @@
       "name": "g_faraday Integration Tests: Launch Example App",
       "request": "launch",
       "type": "dart",
-      "program": "example/test_driver/app.dart",
+      "program": "example/test_driver/integration_test_driver.dart",
     }
   ]
 }

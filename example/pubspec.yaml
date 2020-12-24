@@ -32,6 +32,7 @@ dev_dependencies:
     sdk: flutter
   test: 1.16.0-nullsafety.9
   effective_dart: ^1.2.0
+  integration_test: ^1.0.1
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
