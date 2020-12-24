@@ -161,10 +161,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.0-nullsafety.2"
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> [WIP] add tests
   glob:
     dependency: transitive
     description:
@@ -214,11 +210,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.11.4"
-<<<<<<< HEAD
-=======
->>>>>>> feat: upgrade g_json to 4.0.0-nullsafety.2
-=======
->>>>>>> [WIP] add tests
   matcher:
     dependency: transitive
     description:
