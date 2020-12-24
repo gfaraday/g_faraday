@@ -11,6 +11,7 @@ import com.yuxiaor.flutter.g_faraday_example.activity.SingleTaskFlutterActivity
 import com.yuxiaor.flutter.g_faraday_example.basic.FlutterToNativeActivity
 import com.yuxiaor.flutter.g_faraday_example.basic.Native2FlutterActivity
 import com.yuxiaor.flutter.g_faraday_example.basic.TabContainerActivity
+import com.yuxiaor.flutter.g_faraday_example.basic.TransparentBackgroundFlutterActivity
 import java.io.Serializable
 
 const val KEY_ARGS = "_args"
@@ -65,6 +66,10 @@ object CustomNavigator : FaradayNavigator {
             activity.setResult(Activity.RESULT_OK, Intent().apply { putExtra(KEY_ARGS, result) })
         }
         activity.finish()
+
+        if (activity is TransparentBackgroundFlutterActivity) {
+            activity.overridePendingTransition(0, 0)
+        }
     }
 
     override fun enableSwipeBack(enable: Boolean) {

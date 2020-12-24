@@ -51,6 +51,9 @@ extension AppDelegate: FaradayNavigationDelegate {
         // 如果此处不调用 `enableCallback` 那么flutter侧`await Navigator`则永远不会返回
         vc.fa.enableCallback(with: token)
     }
+    
+    func pop(_ viewController: FaradayFlutterViewController) -> Bool {
+    }
 
 }
 
@@ -109,20 +112,3 @@ extension AppDelegate: FaradayCommonHandler {
     }
     
 }
-
-// extension AppDelegate: FaradayHttpProvider {
-
-//     func request(method: String, url: String, parameters: [String : Any]?, headers: [String : String]?, completion: @escaping (Any?) -> Void) {
-//         let afHeaders = headers.map { HTTPHeaders($0) }
-//         let dataRequest = AF.request(url, method: HTTPMethod(rawValue: method.uppercased()), parameters: parameters, headers: afHeaders)
-//         dataRequest.responseJSON { response in
-//             switch response.result {
-//                 case .success(let data):
-//                     completion(["data": data, "errorCode": 0])
-//                 case .failure(let error):
-//                     completion(["message": error.localizedDescription, "errorCode": error.responseCode ?? 1])
-//             }
-//         }
-//     }
-
-// }

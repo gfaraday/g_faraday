@@ -13,8 +13,6 @@ import io.flutter.embedding.engine.plugins.util.GeneratedPluginRegister
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        if (!Faraday.initEngine(this, CustomNavigator)) {
-            GeneratedPluginRegister.registerGeneratedPlugins(Faraday.engine)
-        }
+        Faraday.initEngine(this, CustomNavigator)
     }
 }

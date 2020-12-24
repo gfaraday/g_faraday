@@ -24,9 +24,10 @@ class _Native2FlutterPageState extends State<Native2FlutterPage> {
             children: [
               Text(widget.date ?? 'No Date'),
               TextButton(
-                  child: Text('带参数返回'),
-                  onPressed: () =>
-                      Navigator.of(context).pop('Result From Flutter'))
+                child: Text('带参数返回'),
+                onPressed: () =>
+                    Navigator.of(context).pop('Result From Flutter'),
+              ),
             ],
           ),
         ),
