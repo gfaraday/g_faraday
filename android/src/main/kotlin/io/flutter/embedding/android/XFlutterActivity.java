@@ -24,7 +24,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -488,9 +487,7 @@ public abstract class XFlutterActivity extends Activity
 
         try {
             Bundle metaData = getMetaData();
-            String desiredInitialRoute =
-                    metaData != null ? metaData.getString(INITIAL_ROUTE_META_DATA_KEY) : null;
-            return desiredInitialRoute;
+            return metaData != null ? metaData.getString(INITIAL_ROUTE_META_DATA_KEY) : null;
         } catch (PackageManager.NameNotFoundException e) {
             return null;
         }
@@ -515,8 +512,7 @@ public abstract class XFlutterActivity extends Activity
         // TODO(mattcarroll): determine if we should have an explicit FlutterTestActivity instead of
         // conflating.
         if (isDebuggable() && Intent.ACTION_RUN.equals(getIntent().getAction())) {
-            String appBundlePath = getIntent().getDataString();
-            return appBundlePath;
+            return getIntent().getDataString();
         }
 
         return null;
@@ -713,9 +709,7 @@ public abstract class XFlutterActivity extends Activity
         // Flutter performance tests.
         // This was supported in KitKat (API 19), but has a bug around requiring
         // permissions. See https://github.com/flutter/flutter/issues/46172
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            reportFullyDrawn();
-        }
+        reportFullyDrawn();
     }
 
     @Override
@@ -728,11 +722,8 @@ public abstract class XFlutterActivity extends Activity
         if (getIntent().hasExtra(EXTRA_ENABLE_STATE_RESTORATION)) {
             return getIntent().getBooleanExtra(EXTRA_ENABLE_STATE_RESTORATION, false);
         }
-        if (getCachedEngineId() != null) {
-            // Prevent overwriting the existing state in a cached engine with restoration state.
-            return false;
-        }
-        return true;
+        // Prevent overwriting the existing state in a cached engine with restoration state.
+        return getCachedEngineId() == null;
     }
 
     private boolean stillAttachedForEvent(String event) {
