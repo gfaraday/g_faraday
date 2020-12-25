@@ -75,7 +75,6 @@ class _MyAppState extends State<MyApp> {
         Locale('en', ''),
         Locale.fromSubtags(languageCode: 'zh')
       ],
-      locale: Locale.fromSubtags(languageCode: 'zh'),
       theme: CupertinoThemeData(primaryColor: color),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (_) => route,

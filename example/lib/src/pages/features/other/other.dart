@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
-import 'package:g_faraday_example/src/utils/simple_localizations.dart';
 
+import '../../../utils/simple_localizations.dart';
 import '../../../widgets/action.dart';
 import '../../../widgets/section.dart';
 import '../../example_page_scaffold.dart';
