@@ -26,6 +26,7 @@
 		5B42C2E92570FC4B0069684B /* NeedNavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B42C2E72570FC4B0069684B /* NeedNavigationBarViewController.swift */; };
 		5B42C2ED2570FC5C0069684B /* NoNavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B42C2EB2570FC5C0069684B /* NoNavigationBarViewController.swift */; };
 		5B42C2F02570FCD40069684B /* Other.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B42C2EF2570FCD40069684B /* Other.storyboard */; };
+		5B76432F2595CBFA00B050D3 /* TabSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B76432E2595CBFA00B050D3 /* TabSplitViewController.swift */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -67,6 +68,7 @@
 		5B42C2E72570FC4B0069684B /* NeedNavigationBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedNavigationBarViewController.swift; sourceTree = "<group>"; };
 		5B42C2EB2570FC5C0069684B /* NoNavigationBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoNavigationBarViewController.swift; sourceTree = "<group>"; };
 		5B42C2EF2570FCD40069684B /* Other.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Other.storyboard; sourceTree = "<group>"; };
+		5B76432E2595CBFA00B050D3 /* TabSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSplitViewController.swift; sourceTree = "<group>"; };
 		6F485E225566A3B45EAA9BBB /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				5B42C2D82570E1360069684B /* TabContainer.storyboard */,
 				5B42C2DA2570E23E0069684B /* Tab1ViewController.swift */,
 				5B42C2DC2570E2480069684B /* Tab2ViewController.swift */,
+				5B76432E2595CBFA00B050D3 /* TabSplitViewController.swift */,
 			);
 			path = TabContainer;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				5B42C2DB2570E23E0069684B /* Tab1ViewController.swift in Sources */,
 				5B42C2ED2570FC5C0069684B /* NoNavigationBarViewController.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				5B76432F2595CBFA00B050D3 /* TabSplitViewController.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				5B164C79257F2E69002BAED0 /* BaseViewController.swift in Sources */,
 				5B3F2C6F251992E80091B7E5 /* FaradayNet.swift in Sources */,

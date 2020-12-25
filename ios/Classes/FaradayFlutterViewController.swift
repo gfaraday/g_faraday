@@ -126,7 +126,15 @@ open class FaradayFlutterViewController: FlutterViewController, UINavigationCont
 //        }
         super.viewDidDisappear(animated)
     }
-            
+    
+    // 处理有多个 FlutterViewController的情况
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if (Faraday.default.currentFlutterViewController != self) {
+            Faraday.refreshViewController(self)
+        }
+        super.touchesBegan(touches, with: event)
+    }
+    
     deinit {
         Faraday.sendPageState(.dealloc(id)) { _ in }
         debugPrint("faraday flutter deinit \(name) \(id)")
