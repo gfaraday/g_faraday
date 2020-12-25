@@ -249,9 +249,9 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         _updateIndex(index);
         return index != null;
       case 'pageDealloc':
-        assert(_index != null, _index! < _navigators.length);
         final index = _findIndexBy(id: call.arguments);
         assert(index != null, 'page not found seq: ${call.arguments}');
+        assert(index! < _navigators.length);
         _navigators.removeAt(index!);
         _updateIndex(_navigators.isEmpty ? null : _navigators.length - 1);
         return true;
