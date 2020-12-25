@@ -1,47 +1,43 @@
-# ![log](./doc/images/logo.png)  Faraday
+# ![log](./doc/images/logo.png)  Faraday [中文文档](./README_CN.md)
 
 ![Build](https://img.shields.io/github/workflow/status/gfaraday/g_faraday/Publisher/master?logo=github&style=for-the-badge)
 ![pub_Version](https://img.shields.io/pub/v/g_faraday?include_prereleases&style=for-the-badge&logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNjAwcHgiIGhlaWdodD0iNjAwcHgiIHZpZXdCb3g9IjAgMCA2MDAgNjAwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPHRpdGxlPmZhcmFkYXk8L3RpdGxlPgogICAgPGRlZnM+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IHgxPSIxMC42ODAxNzA0JSIgeTE9IjI2Ljk5MzAyODclIiB4Mj0iNzIuMTEzMDU3NiUiIHkyPSI1Mi45MTkyNjU3JSIgaWQ9ImxpbmVhckdyYWRpZW50LTEiPgogICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjMDAwMDAwIiBvZmZzZXQ9IjAlIj48L3N0b3A+CiAgICAgICAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMCIgb2Zmc2V0PSIxMDAlIj48L3N0b3A+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJmYXJhZGF5IiBmaWxsLXJ1bGU9Im5vbnplcm8iPgogICAgICAgICAgICA8ZyBpZD0iR3JvdXAiPgogICAgICAgICAgICAgICAgPGcgaWQ9ImZsdXR0ZXItc2Vla2xvZ28uY29tIj4KICAgICAgICAgICAgICAgICAgICA8cG9seWdvbiBpZD0iUGF0aCIgZmlsbD0iI0VCRkNGNCIgcG9pbnRzPSIyMDQuNTY2ODQ1IDAgMCAyMjEuOTI4NzQ2IDYzLjMxNzM1OSAyOTAuNjE5OTQ2IDMzMS4yMDI5ODkgMCI+PC9wb2x5Z29uPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJQYXRoIiBmaWxsPSIjRUJGQ0Y0IiBwb2ludHM9IjIwMy4zNDU5MzggMjA0LjI0MTI0IDkzLjk5MDAzNzQgMzIyLjYyMDg5OSAxNTcuNDQzOTAxIDM5Mi4zMzY5MjcgMjIwLjU0MzM2OCAzMjQuMDMwNjU4IDMzMS4yMDI5ODkgMjA0LjI0MTI0Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlBhdGgiIGZpbGw9IiNFQkZDRjQiIHBvaW50cz0iMTU3LjM5NjAxNSAzOTIuODE5ODQxIDIwNS40NDUxNzMgNDQ0LjgwOTk3MyAzMzEuMjAyOTg5IDQ0NC44MDk5NzMgMjIwLjUxMTk2NSAzMjQuNTI1NjA2Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlBhdGgiIGZpbGw9IiNFQkZDRjQiIHBvaW50cz0iOTMuMjQ0MDg0NyAzMjMuODY0MiAxNTYuNjA3OTA4IDI1NS4wOTk3MyAyMjAuODAxOTkzIDMyNC41MDgyMzIgMTU3LjU1ODAwMSAzOTMuMTQ0MjA1Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlBhdGgiIGZpbGwtb3BhY2l0eT0iMC44IiBmaWxsPSJ1cmwoI2xpbmVhckdyYWRpZW50LTEpIiBwb2ludHM9IjE1Ny4zOTYwMTUgMzkyLjMzNjkyNyAyMTAuMzIyOTA0IDM3My4zMzA1NzYgMjE1LjU4MDMyNCAzMjkuMzY5MjcyIj48L3BvbHlnb24+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICA8ZyBpZD0iZmx1dHRlci1zZWVrbG9nby5jb20iIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2Ny43OTcwMTEsIDE1NC4xOTAwMjcpIiBmaWxsPSIjRUJGQ0Y0Ij4KICAgICAgICAgICAgICAgICAgICA8cG9seWdvbiBpZD0iUGF0aCIgcG9pbnRzPSIyMDQuNTY2ODQ1IDAgMCAyMjEuOTI4NzQ2IDYzLjMxNzM1OSAyOTAuNjE5OTQ2IDMzMS4yMDI5ODkgMCI+PC9wb2x5Z29uPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJQYXRoIiBwb2ludHM9IjIwMy4zNDU5MzggMjA0LjI0MTI0IDkzLjk5MDAzNzQgMzIyLjYyMDg5OSAxNTcuNDQzOTAxIDM5Mi4zMzY5MjcgMjIwLjU0MzM2OCAzMjQuMDMwNjU4IDMzMS4yMDI5ODkgMjA0LjI0MTI0Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlBhdGgiIHBvaW50cz0iMTU3LjM5NjAxNSAzOTIuODE5ODQxIDIwNS40NDUxNzMgNDQ0LjgwOTk3MyAzMzEuMjAyOTg5IDQ0NC44MDk5NzMgMjIwLjUxMTk2NSAzMjQuNTI1NjA2Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlBhdGgiIHBvaW50cz0iOTMuMjQ0MDg0NyAzMjMuODY0MiAxNTYuNjA3OTA4IDI1NS4wOTk3MyAyMjAuODAxOTkzIDMyNC41MDgyMzIgMTU3LjU1ODAwMSAzOTMuMTQ0MjA1Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==)
 ![Flutter_Version](https://img.shields.io/badge/Flutter-1.25.0--8.1.pre-blue?style=for-the-badge&logo=flutter)
 ![License](https://img.shields.io/github/license/gfaraday/g_faraday?style=for-the-badge)
 
-一个`Flutter`混合栈开发解决方案
+Flutter plugin for integrate flutter to existing app
 
 ## Features
 
-- [x] 支持`ios`、`android`、`flutter`三端所有原生路由(页面切换)跳转行为
-- [x] 支持混合栈(native -> flutter -> native)路由跳转(popTo、replace ...)
-- [x] 支持flutter页面作为root页面
-- [x] 支持flutter作为子页面加入原生堆栈
-- [x] 支持flutter作为弹出页面(背景透明到native层)
-- [x] [页面间回调传值完整支持](docs/callback.md)
-- [x] [iOS导航条自动隐藏/显示](docs/ios_navigation_bar.md)
-- [x] `WillPopScope`拦截滑动返回(ios)或者返回按键键(android)
-- [x] [发送/接收全局通知](doc/notification.md)
-- [x] 支持自定义页面切换动画
-- [] 单元测试
-- [x] 完整的文档(7/10)
+- [x] `ios`、`android`、`flutter` Native route apis
+- [x] Hybrid stack(native -> flutter -> native)
+- [x] Initial Page Support
+- [x] ChildViewController、Fragment Support
+- [x] Alert Page Support
+- [x] [CallBack](docs/callback.md)
+- [x] [iOS NavigationBar Auto hide/show](docs/ios_navigation_bar.md)
+- [x] WillPopScope Handle `onBackPress`
+- [x] [Global Notification](doc/notification.md)
+- [x] Custom Page Transition
+- [ ] Unit Test
+- [ ] Complete Documentation(7/10)
 
 ## Show Cases
 
-![demo](doc/images/demo.png)
+![demo](doc/images/demo_en.png)
 
 ## Example App
 
-[Android下载apk](https://github.com/gfaraday/g_faraday/releases/download/v0.5.0-nullsafety.3/appv2.apk)
+[Android Download apk](https://github.com/gfaraday/g_faraday/releases/download/v0.5.0-nullsafety.3/appv2.apk)
 
 <!-- [iOS下载app](https://github.com/gfaraday/g_faraday/releases/download/0.4.2/example.app.zip)
 > [模拟器安装app](doc/ios-simulator-install.md) -->
 
-## 设计原则
+## Design Principles
 
-- 对原有平台最小侵入
-- 对现有代码最小改动
-- API尽量保持和原有平台一致
-
-## 更新策略
-
-_Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_faraday`版本_
+- avoid dependency platform implementation
+- avoid modify existing code
+- follow platform api design guidance
 
 ## Requirements
 
@@ -49,32 +45,32 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 - iOS 10.0+ Xcode 12.0+ Swift 5.1+
 - Android minSdkVersion 16 Kotlin 1.4.10+
 
-## 版本对应关系
+## Version Description
 
 | g_faraday | flutter | cocoapods |
 |-----------|---------|-----------|
 | ^0.5.0-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta | any |
 | ^0.5.1-nullsafety.0 | Flutter 1.25.0-8.1.pre • channel beta | >= 1.10.0 |
 
-## 快速开始
+## Quick Start
 
-如果您已经有其他类似框架使用经验，可以直接查看[Example](example/)浏览最佳实践。
+[Browse Example Source Code](example/)
 
-### 添加依赖
+### add dependencies
 
 ``` yaml
 dependencies:
-  # 请确认与本地Flutter版本 >> flutter channel beta, 1.25.0-8.1.pre
+  # please confirm flutter channel >> supported: flutter channel beta, 1.25.0-8.1.pre
   g_faraday: ^0.5.1-nullsafety.0
 ```
 
-### Flutter 端集成
+### Flutter
 
-flutter侧的集成工作，主要是注册需要从原生打开的页面。
+Register route which will be open from native.
 
 ``` dart
 
-// 0x00 定义 route
+// 0x00 define route
 final route = faraday.wrapper((settings) {
     switch (settings.name) {
     case 'first_page':
@@ -85,19 +81,18 @@ final route = faraday.wrapper((settings) {
     return CupertinoPageRoute(builder: (context) => Text(settings.name));
 });
 
-// 0x01 将 route 赋给你的app widget
+// 0x01 set route to your `App` widget
 CupertinoApp(onGenerateRoute: (_) => route);
 
-// 0x02 flutter 侧集成完毕，接下来你可以选择 集成iOS/Android
 ```
 
-### iOS 集成
+### iOS
 
-为了实现从`Flutter`端打开原生页面的应用场景，所以我们需要实现一个打开原生页面的protocol
+Provider a navigator to open `flutter` page.
 
 ``` swift
 
-// 0x00 实现 `FaradayNavigationDelegate`
+// 0x00 implement `FaradayNavigationDelegate`
 extension AppDelegate: FaradayNavigationDelegate {
 
     func push(_ name: String, arguments: Any?, options: [String : Any]?, callback token: CallbackToken) {
@@ -114,30 +109,28 @@ extension AppDelegate: FaradayNavigationDelegate {
             topMost?.navigationController?.pushViewController(vc, animated: true)
         }
 
-        // 非常重要
-        // 如果此处不调用 `enableCallback` 那么flutter侧`await Navigator`则永远不会返回
+        // IMPORTANT
         vc.fa.enableCallback(with: token)
     }
 }
 
-// 0x01 在 `application: didFinishLaunchingWithOptions`中启动flutter engine
+// 0x01 start flutter Engine in `application: didFinishLaunchingWithOptions`
 Faraday.default.startFlutterEngine(navigatorDelegate: self)
 
 
-// 0x02 打开一个flutter 页面
+// 0x02 open flutter page
 let vc = FaradayFlutterViewController("first_page", arguments: nil)
 navigationController?.pushViewController(vc, animated: true)
 
-// 0x03 集成完毕
 ```
 
-### Android 集成
+### Android
 
-为了实现从`Flutter`端打开原生页面的应用场景，所以我们需要实现一组打开原生页面的接口
+Provider a navigator to open `flutter` page.
 
 ``` kotlin
 
-// 0x00 实现 navigator
+// 0x00 implement `FaradayNavigator`
 class SimpleFlutterNavigator : FaradayNavigator {
 
     companion object {
@@ -150,10 +143,9 @@ class SimpleFlutterNavigator : FaradayNavigator {
         val isFlutterRoute = options?.get("flutter") == true
 
         if (isFlutterRoute) {
-            // singleTask 模式
+            // singleTask mode
             val builder = FaradayActivity.builder(name, arguments)
 
-            // 你看到的绿色的闪屏就是这个
             builder.backgroundColor = Color.WHITE
             builder.activityClass = SingleTaskFlutterActivity::class.java
 
@@ -194,35 +186,28 @@ class SimpleFlutterNavigator : FaradayNavigator {
 
 }
 
-// 0x01 在 Application 的onCreate方法中启动FlutterEngine
+// 0x01 start flutter engine in Application.onCrate
 if (!Faraday.initEngine(this, SimpleFlutterNavigator())) {
     GeneratedPluginRegistrant.registerWith(Faraday.engine)
 }
 
-// 0x02 打开一个Flutter页面
+// 0x02 open flutter page
 val intent = FaradayActivity.build(context, routeName, params)
 context.startActivity(intent)
 
 ```
 
-## faraday 全家桶 (推荐)
+## faraday tools (Recommend)
 
-在进行Flutter混合开发时会遇到很多相似的问题，我们提供了相应的解决方案大家玩的开心。
-
-- [路由](doc/route.md)
-- [桥接原生方法](doc/bridge.md)
-- [网络请求](doc/net.md)
+- [Route](doc/route.md)
+- [Bridge Native Methods](doc/bridge.md)
+- [Net](doc/net.md)
 - [JSON](doc/json.md)
-- [命令行工具 | 代码生成 | 打包发布 | CI/CD](https://github.com/gfaraday/cli)
-- [vscode 插件 | 自动补全 | 打包发布](https://github.com/gfaraday/faraday_extension)
+- [vscode Extension](https://github.com/gfaraday/faraday_extension)
 
 ## FAQ
 
 ## Communication
-
-[点击加入钉钉群](https://qr.dingtalk.com/action/joingroup?code=v1,k1,5FUqLooXjcj0166ehqb9qapZT5t7gbUpjQqrXc2H4a4=&_dt_no_comment=1&origin=11)
-
-![DingTalk group](doc/images/qr_code.jpg)
 
 ## Contributing
 

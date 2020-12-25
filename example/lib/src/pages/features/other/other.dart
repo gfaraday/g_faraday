@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
 
+import '../../../utils/simple_localizations.dart';
 import '../../../widgets/action.dart';
 import '../../../widgets/section.dart';
 import '../../example_page_scaffold.dart';
@@ -19,8 +20,8 @@ class _OthersState extends State<Others> {
     return Padding(
       padding: EdgeInsets.only(right: 16),
       child: Section(
-        title: '其他(Others)',
-        subTitle: '其他一些有趣的小功能',
+        title: S.of(context).otherTitle,
+        subTitle: S.of(context).otherDescription,
         child: Row(
           children: [
             Expanded(

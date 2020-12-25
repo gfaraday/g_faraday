@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
 
+import '../../../utils/simple_localizations.dart';
 import '../../../widgets/action.dart';
 import '../../../widgets/section.dart';
 
@@ -25,7 +26,7 @@ class _GlobalNotificationState extends State<GlobalNotification> {
       child: Padding(
         padding: EdgeInsets.only(right: 16),
         child: Section(
-          title: '通知(GlobalNotification)',
+          title: S.of(context).notification,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
