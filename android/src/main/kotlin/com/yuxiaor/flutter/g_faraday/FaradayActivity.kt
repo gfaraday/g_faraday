@@ -65,6 +65,11 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
     private val pageId: Int
         get() = intent.getIntExtra(FaradayConstants.ID, 0)
 
+    val routeName: String
+        get() = intent.getStringExtra(FaradayConstants.ROUTE) ?: ""
+    val params: Serializable?
+        get() = intent.getSerializableExtra(FaradayConstants.ARGS);
+
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
     override fun onNewIntent(intent: Intent) {
