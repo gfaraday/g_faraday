@@ -62,7 +62,8 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
 
     }
 
-    private val pageId by lazy { intent.getIntExtra(FaradayConstants.ID, 0) }
+    private val pageId: Int
+        get() = intent.getIntExtra(FaradayConstants.ID, 0)
 
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
