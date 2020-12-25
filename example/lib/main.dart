@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:g_faraday/g_faraday.dart';
+import 'package:g_faraday_example/src/utils/simple_localizations.dart';
 
 import 'src/pages/features/basic/pages/flutter_to_flutter.dart';
 import 'src/pages/features/basic/pages/native_to_flutter.dart';
@@ -64,6 +66,16 @@ class _MyAppState extends State<MyApp> {
     );
 
     final cupertinoApp = CupertinoApp(
+      localizationsDelegates: [
+        S.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: [
+        Locale('en', ''),
+        Locale.fromSubtags(languageCode: 'zh')
+      ],
+      locale: Locale('en'),
       theme: CupertinoThemeData(primaryColor: color),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (_) => route,

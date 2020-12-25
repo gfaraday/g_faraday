@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../utils/simple_localizations.dart';
 import '../widgets/section.dart';
 import 'features/basic/basic.dart';
 import 'features/notification/notification.dart';
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
       CupertinoSliverNavigationBar(
         backgroundColor: CupertinoColors.white,
         border: null,
-        largeTitle: Text('Faraday功能演示'),
+        largeTitle: Text(S.of(context).homeTitle),
       ),
       SliverPersistentHeader(
         delegate: HomePageBannerDelegate(),
