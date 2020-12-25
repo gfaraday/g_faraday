@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:g_faraday/g_faraday.dart';
-import 'package:g_faraday_example/src/utils/simple_localizations.dart';
 
 import 'src/pages/features/basic/pages/flutter_to_flutter.dart';
 import 'src/pages/features/basic/pages/native_to_flutter.dart';
 import 'src/pages/features/basic/pages/tab_page.dart';
 import 'src/pages/features/basic/pages/transparent_page.dart';
 import 'src/pages/home_page.dart';
+import 'src/utils/simple_localizations.dart';
 
 void main() {
   runApp(MyApp());
@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
         Locale('en', ''),
         Locale.fromSubtags(languageCode: 'zh')
       ],
-      locale: Locale('en'),
+      locale: Locale.fromSubtags(languageCode: 'zh'),
       theme: CupertinoThemeData(primaryColor: color),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (_) => route,

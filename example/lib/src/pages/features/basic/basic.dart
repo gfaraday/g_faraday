@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
+import 'package:g_faraday_example/src/utils/simple_localizations.dart';
 
 import '../../../widgets/section.dart';
 import 'pages/flutter_to_flutter.dart';
@@ -15,8 +16,8 @@ class _BasicState extends State<Basic> {
   @override
   Widget build(BuildContext context) {
     return Section(
-      title: '基础',
-      subTitle: '集成faraday的基础功能',
+      title: S.of(context).basicTitle,
+      subTitle: S.of(context).basicDescription,
       child: Container(
         decoration: BoxDecoration(
           color: CupertinoColors.white,
@@ -64,7 +65,7 @@ class BasicAllPage extends StatelessWidget {
 List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
   final base = [
     _Action(
-      title: '从Flutter跳转到Native页面',
+      title: S.of(context).basicFlutter2Native,
       subTitle: 'ios: viewController android: activity',
       begin: _Action.flutter,
       end: _Action.native,
@@ -74,7 +75,7 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
     ),
     Divider(height: 1),
     _Action(
-      title: '从Native跳转到Flutter页面',
+      title: S.of(context).basicNative2Flutter,
       subTitle: 'viewController activity fragment',
       begin: _Action.native,
       end: _Action.flutter,
@@ -82,8 +83,8 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
     ),
     Divider(height: 1),
     _Action(
-      title: '从Flutter跳转到Flutter页面',
-      subTitle: '支持在新的native容器打开',
+      title: S.of(context).basicFlutter2Flutter,
+      subTitle: S.of(context).basicFlutter2FlutterDescription,
       begin: _Action.flutter,
       end: _Action.flutter,
       onTap: () => Navigator.of(context).push(
@@ -96,8 +97,8 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
     ...base,
     Divider(height: 1),
     _Action(
-      title: '将Flutter作为子页面引入',
-      subTitle: '在native容器中作为tab添加flutter页面',
+      title: S.of(context).basicChild,
+      subTitle: S.of(context).basicChildDescription,
       begin: _Action.flutter,
       end: Icon(Icons.widgets),
       onTap: () => Navigator.of(context).nativePushNamed('tabContainer'),

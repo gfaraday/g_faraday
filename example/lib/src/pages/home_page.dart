@@ -78,8 +78,8 @@ class _HomePageState extends State<HomePage> {
       SliverToBoxAdapter(child: Others()),
       SliverToBoxAdapter(
         child: Section(
-          title: '高级功能(Advance)',
-          subTitle: '以下是隐藏内容,请查看源码',
+          title: S.of(context).advanceTitle,
+          subTitle: S.of(context).advanceDescription,
           //
           // 有什么你想要的功能没有看到，可以在 github 提 issue 我们会尽快加上哦
           //
@@ -118,17 +118,15 @@ class HomePageBannerDelegate extends SliverPersistentHeaderDelegate {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('* 右上角有绿色角标的均为 Flutter 页面'),
+          Text('* ${S.of(context).homeTip1}'),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
-            child: Text('* 所有功能在 iOS/Android 均可用'),
+            child: Text('* ${S.of(context).homeTip2}'),
           ),
-          Text(
-            '* Debug模式第一次打开Flutter页面时出现一闪而过的红屏是正常的',
-            style: DefaultTextStyle.of(context)
-                .style
-                .apply(color: Color(0xF0900000)),
-          ),
+          Text('* ${S.of(context).homeTip3}',
+              style: DefaultTextStyle.of(context)
+                  .style
+                  .apply(color: Color(0xF0900000))),
         ],
       ),
     );
