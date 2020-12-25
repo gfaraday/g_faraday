@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -144,7 +145,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   @override
   Widget build(BuildContext context) {
-    if (_navigators.isEmpty || _index == null || _index == -1) {
+    if (_navigators.isEmpty) {
       if (kDebugMode) {
         // 应该弹出警告错误界面
         final style = TextStyle(
@@ -154,6 +155,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
             fontWeight: FontWeight.bold);
         return Container(
           color: RenderErrorBox.backgroundColor,
+          padding: EdgeInsets.only(left: 15.0, right: 15.0),
           child: Center(
             child: Wrap(
               direction: Axis.vertical,
@@ -187,9 +189,18 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       }
     }
 
-    assert(_index! < _navigators.length);
+    if (_index == null) {
+      log(
+        'g_faraday: _index is null.',
+        level: 900,
+        time: DateTime.now(),
+        name: runtimeType.toString(),
+      );
+    } else {
+      assert(_index! < _navigators.length);
+    }
 
-    final current = _navigators[_index!];
+    final current = _navigators[_index ?? 0];
     final content = Container(
       key: ValueKey(_index),
       color: current.opaque
@@ -210,7 +221,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   Future<bool> _handler(MethodCall call) async {
-    debugPrint('page lifecycle: ${call.method} ${call.arguments}');
     switch (call.method) {
       case 'pageCreate':
         String name = call.arguments['name'];
@@ -240,11 +250,10 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         return index != null;
       case 'pageDealloc':
         assert(_index != null, _index! < _navigators.length);
-        final current = _navigators[_index!];
         final index = _findIndexBy(id: call.arguments);
         assert(index != null, 'page not found seq: ${call.arguments}');
         _navigators.removeAt(index!);
-        _updateIndex(_navigators.indexOf(current));
+        _updateIndex(_navigators.isEmpty ? null : _navigators.length - 1);
         return true;
       default:
         return false;
@@ -258,6 +267,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   void _updateIndex(int? index) {
+    assert(index != -1);
     setState(() {
       _index = index;
       _previousNotFoundId = null;
