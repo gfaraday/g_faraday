@@ -19,8 +19,8 @@ Flutter plugin for integrate flutter to existing app
 - [x] WillPopScope Handle `onBackPress`
 - [x] [Global Notification](doc/notification.md)
 - [x] Custom Page Transition
-- [] Unit Test
-- [] Complete Documentation(7/10)
+- [ ] Unit Test
+- [ ] Complete Documentation(7/10)
 
 ## Show Cases
 
