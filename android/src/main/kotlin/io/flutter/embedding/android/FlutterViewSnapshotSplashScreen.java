@@ -64,15 +64,4 @@ public class FlutterViewSnapshotSplashScreen implements SplashScreen {
                             }
                         });
     }
-
-    @Override
-    public boolean doesSplashViewRememberItsTransition() {
-        return false;
-    }
-
-    @Nullable
-    @Override
-    public Bundle saveSplashScreenState() {
-        return null;
-    }
 }
