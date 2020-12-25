@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.9
+# 0.5.1-nullsafety.10
+
+* [android] fix splash issue
+
+## 0.5.1-nullsafety.9
 
 * [android] make route&params public
 * add more examples

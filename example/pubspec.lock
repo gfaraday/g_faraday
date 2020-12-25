@@ -85,7 +85,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.5.1-nullsafety.9"
+    version: "0.5.1-nullsafety.10"
   g_json:
     dependency: transitive
     description:
