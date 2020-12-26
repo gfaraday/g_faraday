@@ -60,14 +60,14 @@ class FaradayNativeBridge extends StatefulWidget {
     this.transitionBuilderProvider,
   }) : super(key: key);
 
-  static FaradayNativeBridgeState? of(BuildContext context) {
-    FaradayNativeBridgeState? faraday;
+  static FaradayNativeBridgeState of(BuildContext context) {
     if (context is StatefulElement &&
         context.state is FaradayNativeBridgeState) {
-      faraday = context.state as FaradayNativeBridgeState;
+      return context.state as FaradayNativeBridgeState;
     }
-    return faraday ??
-        context.findAncestorStateOfType<FaradayNativeBridgeState>();
+    final faraday = context.findAncestorStateOfType<FaradayNativeBridgeState>();
+    assert(faraday != null);
+    return faraday!;
   }
 
   @override
@@ -140,8 +140,11 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   bool isOnTop(Key key) {
     if (_index == null) return false;
-    return _navigators.isNotEmpty && _navigators[_index!].key == key;
+    return topNavigator == key;
   }
+
+  GlobalKey<FaradayNavigatorState>? get topNavigator =>
+      _navigators.isEmpty ? null : _navigators[_index ?? 0].key;
 
   @override
   Widget build(BuildContext context) {

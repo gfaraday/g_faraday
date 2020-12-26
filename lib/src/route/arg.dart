@@ -3,10 +3,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:g_json/g_json.dart';
 
+import 'navigator.dart';
 import 'observer.dart';
 
 class FaradayArguments {
-  final GlobalKey key;
+  final GlobalKey<FaradayNavigatorState> key;
   final Object? arguments;
   final String name;
   final int id;

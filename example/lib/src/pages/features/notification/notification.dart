@@ -18,7 +18,7 @@ class _GlobalNotificationState extends State<GlobalNotification> {
   Widget build(BuildContext context) {
     return FaradayNotificationListener(
       ['NotificationFromNative'],
-      onNotification: (value) {
+      onNotification: (_, value) {
         setState(() {
           _localMessage = value.arguments.toString();
         });

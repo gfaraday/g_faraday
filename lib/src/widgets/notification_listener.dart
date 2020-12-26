@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:g_faraday/src/route/native_bridge.dart';
 import 'package:g_json/g_json.dart';
 
 ///
@@ -63,6 +64,10 @@ class FaradayNotification {
   }
 }
 
+// ignore: public_member_api_docs
+typedef NotificationRecivedCallback = void Function(
+    BuildContext? topMostContext, FaradayNotification value);
+
 /// Receive native notification
 class FaradayNotificationListener extends StatefulWidget {
   /// 想要监听的通知 名称数组
@@ -74,7 +79,7 @@ class FaradayNotificationListener extends StatefulWidget {
   final List<String> names;
 
   ///
-  final ValueChanged<FaradayNotification> onNotification;
+  final NotificationRecivedCallback onNotification;
 
   ///
   final Widget child;
@@ -103,7 +108,8 @@ class _FaradayNotificationListenerState
       _notificationChannel.setMethodCallHandler(_handler);
     }
     _streamSubscription = _observerNativeNotification(widget.names, (value) {
-      widget.onNotification.call(value);
+      final bridge = FaradayNativeBridge.of(context);
+      widget.onNotification(bridge.topNavigator?.currentContext, value);
     });
   }
 
