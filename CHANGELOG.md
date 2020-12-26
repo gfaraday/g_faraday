@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.10
+# 0.5.1-nullsafety.11
+
+* refine notification api
+
+## 0.5.1-nullsafety.10
 
 * [android] fix splash issue
 
