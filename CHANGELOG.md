@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.11
+# 0.5.1-nullsafety.12
+
+* revert FaradayBrdige of api
+
+## 0.5.1-nullsafety.11
 
 * refine notification api
 
