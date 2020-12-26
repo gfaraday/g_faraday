@@ -269,6 +269,7 @@ import java.util.Objects;
             // sync with the Activity. We use the Fragment's Lifecycle because it is possible that the
             // attached Activity is not a LifecycleOwner.
             Log.v(TAG, "Attaching FlutterEngine to the Activity that owns this delegate.");
+            // 这里有问题比较难解决 在 1.22.5
             flutterEngine.getActivityControlSurface().attachToActivity(this, host.getLifecycle());
         }
 

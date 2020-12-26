@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 // ignore: public_member_api_docs
 class Section extends StatelessWidget {
   final String title;
-  final String? subTitle;
+  final String subTitle;
   final Widget child;
-  final VoidCallback? onTapViewAll;
+  final VoidCallback onTapViewAll;
 
   const Section({
-    Key? key,
-    required this.title,
+    Key key,
+    @required this.title,
     this.subTitle,
     this.onTapViewAll,
-    required this.child,
+    @required this.child,
   }) : super(key: key);
 
   @override
@@ -37,7 +37,7 @@ class Section extends StatelessWidget {
                             fontSize: 20, fontWeight: FontWeight.bold)),
                     if (subTitle != null)
                       Text(
-                        subTitle!,
+                        subTitle,
                         style: TextStyle(
                             fontSize: 14,
                             color: CupertinoColors.secondaryLabel),

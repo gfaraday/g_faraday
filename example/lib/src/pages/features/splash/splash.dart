@@ -47,10 +47,10 @@ class _SplashState extends State<Splash> {
 }
 
 class SplashTipPage extends StatefulWidget {
-  final String? title;
+  final String title;
   final _Platform platform;
 
-  const SplashTipPage(this.platform, {Key? key, this.title}) : super(key: key);
+  const SplashTipPage(this.platform, {Key key, this.title}) : super(key: key);
 
   @override
   _SplashTipPageState createState() => _SplashTipPageState();

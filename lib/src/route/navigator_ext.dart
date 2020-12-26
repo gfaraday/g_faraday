@@ -7,7 +7,7 @@ import 'navigator.dart';
 ///
 extension NavigatorStateX on NavigatorState {
   /// pop native flutter container
-  Future<void> nativePop<T extends Object>([T? result]) {
+  Future<void> nativePop<T extends Object>([T result]) {
     final bridge = FaradayNativeBridge.of(context);
     if (bridge != null) {
       final key = FaradayNavigator.of(context).widget.arg.key;
@@ -17,11 +17,11 @@ extension NavigatorStateX on NavigatorState {
   }
 
   /// push native flutter container
-  Future<T?> nativePushNamed<T extends Object>(String routeName,
-      {Object? arguments, Map<String, dynamic>? options}) {
+  Future<T> nativePushNamed<T extends Object>(String routeName,
+      {Object arguments, Map<String, dynamic> options}) {
     final bridge = FaradayNativeBridge.of(context);
     if (bridge != null) {
-      return bridge.pushNamed<T?>(routeName,
+      return bridge.pushNamed<T>(routeName,
           arguments: arguments, options: options);
     }
 

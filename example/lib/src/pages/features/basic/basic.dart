@@ -114,12 +114,12 @@ class _Action extends StatelessWidget {
   final VoidCallback onTap;
 
   const _Action({
-    Key? key,
-    required this.title,
-    required this.subTitle,
-    required this.begin,
-    required this.end,
-    required this.onTap,
+    Key key,
+    @required this.title,
+    @required this.subTitle,
+    @required this.begin,
+    @required this.end,
+    @required this.onTap,
   }) : super(key: key);
 
   static Widget get flutter => FlutterLogo();

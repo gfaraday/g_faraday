@@ -11,7 +11,7 @@ class S {
   static SimpleLocalizationsDelegate delegate = SimpleLocalizationsDelegate();
 
   static S of(BuildContext context) {
-    return Localizations.of<S>(context, S)!;
+    return Localizations.of<S>(context, S);
   }
 
   static final JSON _localizedValues = JSON({

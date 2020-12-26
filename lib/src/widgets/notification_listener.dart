@@ -82,9 +82,9 @@ class FaradayNotificationListener extends StatefulWidget {
   ///
   const FaradayNotificationListener(
     this.names, {
-    Key? key,
-    required this.onNotification,
-    required this.child,
+    Key key,
+    @required this.onNotification,
+    @required this.child,
   }) : super(key: key);
 
   @override
@@ -94,7 +94,7 @@ class FaradayNotificationListener extends StatefulWidget {
 
 class _FaradayNotificationListenerState
     extends State<FaradayNotificationListener> {
-  StreamSubscription? _streamSubscription;
+  StreamSubscription _streamSubscription;
 
   @override
   void initState() {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Native2FlutterPage extends StatefulWidget {
   final dynamic date;
 
-  const Native2FlutterPage(this.date, {Key? key}) : super(key: key);
+  const Native2FlutterPage(this.date, {Key key}) : super(key: key);
 
   @override
   _Native2FlutterPageState createState() => _Native2FlutterPageState();

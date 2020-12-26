@@ -12,7 +12,7 @@ class GlobalNotification extends StatefulWidget {
 }
 
 class _GlobalNotificationState extends State<GlobalNotification> {
-  String? _localMessage;
+  String _localMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _GlobalNotificationState extends State<GlobalNotification> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      _localMessage!,
+                      _localMessage,
                       style: TextStyle(color: Colors.purple[900]),
                       overflow: TextOverflow.fade,
                     ),

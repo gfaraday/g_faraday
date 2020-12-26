@@ -11,16 +11,16 @@ class FaradayNavigator extends Navigator {
 
   ///
   FaradayNavigator(
-      {Key? key,
-      PopPageCallback? onPopPage,
-      required String initialRoute,
-      required RouteListFactory onGenerateInitialRoutes,
-      required RouteFactory onGenerateRoute,
-      RouteFactory? onUnknownRoute,
+      {Key key,
+      PopPageCallback onPopPage,
+      @required String initialRoute,
+      @required RouteListFactory onGenerateInitialRoutes,
+      @required RouteFactory onGenerateRoute,
+      RouteFactory onUnknownRoute,
       DefaultTransitionDelegate transitionDelegate =
           const DefaultTransitionDelegate<dynamic>(),
-      required this.arg,
-      List<NavigatorObserver>? observers})
+      @required this.arg,
+      List<NavigatorObserver> observers})
       : super(
             key: key,
             onPopPage: onPopPage,
@@ -44,13 +44,13 @@ class FaradayNavigator extends Navigator {
     }
     final faraday = context.findAncestorStateOfType<FaradayNavigatorState>();
     assert(faraday != null);
-    return faraday!;
+    return faraday;
   }
 }
 
 ///
 class FaradayNavigatorState extends NavigatorState {
-  late _FaradayWidgetsBindingObserver? _observerForAndroid;
+  _FaradayWidgetsBindingObserver _observerForAndroid;
 
   @override
   FaradayNavigator get widget => super.widget as FaradayNavigator;
@@ -63,7 +63,7 @@ class FaradayNavigatorState extends NavigatorState {
     observer.disableHorizontalSwipePopGesture
         .addListener(notifyNativeDisableOrEnableBackGesture);
     _observerForAndroid = _FaradayWidgetsBindingObserver(this);
-    WidgetsBinding.instance?.addObserver(_observerForAndroid!);
+    WidgetsBinding.instance?.addObserver(_observerForAndroid);
     super.initState();
   }
 
@@ -72,7 +72,7 @@ class FaradayNavigatorState extends NavigatorState {
     observer.disableHorizontalSwipePopGesture
         .removeListener(notifyNativeDisableOrEnableBackGesture);
     if (_observerForAndroid != null) {
-      WidgetsBinding.instance?.removeObserver(_observerForAndroid!);
+      WidgetsBinding.instance?.removeObserver(_observerForAndroid);
       _observerForAndroid = null;
     }
     super.dispose();
@@ -85,8 +85,7 @@ class FaradayNavigatorState extends NavigatorState {
   }
 
   @override
-  Future<T?> pushNamed<T extends Object?>(String routeName,
-      {Object? arguments}) {
+  Future<T> pushNamed<T extends Object>(String routeName, {Object arguments}) {
     try {
       return super.pushNamed(routeName, arguments: arguments);
       // ignore: avoid_catching_errors
@@ -96,12 +95,12 @@ class FaradayNavigatorState extends NavigatorState {
 
       final bridge = FaradayNativeBridge.of(context);
       assert(bridge != null);
-      return bridge!.pushNamed<T>(routeName, arguments: arguments);
+      return bridge.pushNamed<T>(routeName, arguments: arguments);
     }
   }
 
   @override
-  void pop<T extends Object?>([T? result]) {
+  void pop<T extends Object>([T result]) {
     if (observer.onlyOnePage) {
       FaradayNativeBridge.of(context)?.pop<Object>(widget.arg.key, result);
     } else {
@@ -110,7 +109,7 @@ class FaradayNavigatorState extends NavigatorState {
   }
 
   @override
-  Future<bool> maybePop<T extends Object?>([T? result]) async {
+  Future<bool> maybePop<T extends Object>([T result]) async {
     final r = await super.maybePop(result);
     if (!r && observer.onlyOnePage) {
       pop(result);
@@ -128,7 +127,7 @@ class _FaradayWidgetsBindingObserver extends WidgetsBindingObserver {
   @override
   Future<bool> didPopRoute() async {
     final bridge = FaradayNativeBridge.of(navigator.context);
-    if (!bridge!.isOnTop(navigator.widget.arg.key)) {
+    if (!bridge.isOnTop(navigator.widget.arg.key)) {
       return false;
     }
     return await navigator.maybePop();

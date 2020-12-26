@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
 
 class Flutter2Flutter extends StatefulWidget {
-  final int? index;
+  final int index;
 
-  const Flutter2Flutter({Key? key, this.index}) : super(key: key);
+  const Flutter2Flutter({Key key, this.index}) : super(key: key);
 
   @override
   _Flutter2FlutterState createState() => _Flutter2FlutterState();

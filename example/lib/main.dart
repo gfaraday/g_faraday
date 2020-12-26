@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
 
     final route = faraday.wrapper(
       (settings) {
-        final f = routes[settings.name!];
+        final f = routes[settings.name];
         if (f == null) return null;
         return f(settings);
       },
