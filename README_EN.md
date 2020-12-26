@@ -14,8 +14,8 @@ Flutter plugin for integrate flutter to existing app
 - [x] Initial Page Support
 - [x] ChildViewController、Fragment Support
 - [x] Alert Page Support
-- [x] [CallBack](docs/callback.md)
-- [x] [iOS NavigationBar Auto hide/show](docs/ios_navigation_bar.md)
+- [x] [CallBack](doc/callback.md)
+- [x] [iOS NavigationBar Auto hide/show](doc/ios_navigation_bar.md)
 - [x] WillPopScope Handle `onBackPress`
 - [x] [Global Notification](doc/notification.md)
 - [x] Custom Page Transition

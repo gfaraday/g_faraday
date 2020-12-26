@@ -16,6 +16,8 @@ Navigator.of(context).pop({'id': 1});
 
 ## iOS
 
+> 需要在 applicationDidFinish 中调用 `UIViewController.fa.automaticallyCallbackNullToFlutter()`
+
 一共有两种情况需要处理
 
 - native 打开一个flutter页面然后等待返回值
