@@ -24,7 +24,7 @@ extension AppDelegate: FaradayNavigationDelegate {
     
     func push(_ name: String, arguments: Any?, options: [String : Any]?, callback token: CallbackToken) {
         var vc: UIViewController!
-        let isFultter = options?["flutterRoute"] as? Bool ?? false
+        let isFultter = options?["flutter"] as? Bool ?? false
         let isPresent = options?["present"] as? Bool ?? false
         
         switch name {
