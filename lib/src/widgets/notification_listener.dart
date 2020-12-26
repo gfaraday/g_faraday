@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:g_faraday/src/route/native_bridge.dart';
 import 'package:g_json/g_json.dart';
+
+import '../route/native_bridge.dart';
 
 ///
 const _notificationChannel = MethodChannel('g_faraday/notification');
@@ -109,7 +110,7 @@ class _FaradayNotificationListenerState
     }
     _streamSubscription = _observerNativeNotification(widget.names, (value) {
       final bridge = FaradayNativeBridge.of(context);
-      widget.onNotification(bridge.topNavigator?.currentContext, value);
+      widget.onNotification(bridge?.topNavigator?.currentContext, value);
     });
   }
 

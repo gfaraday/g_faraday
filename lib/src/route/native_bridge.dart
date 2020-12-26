@@ -60,14 +60,12 @@ class FaradayNativeBridge extends StatefulWidget {
     this.transitionBuilderProvider,
   }) : super(key: key);
 
-  static FaradayNativeBridgeState of(BuildContext context) {
+  static FaradayNativeBridgeState? of(BuildContext context) {
     if (context is StatefulElement &&
         context.state is FaradayNativeBridgeState) {
       return context.state as FaradayNativeBridgeState;
     }
-    final faraday = context.findAncestorStateOfType<FaradayNativeBridgeState>();
-    assert(faraday != null);
-    return faraday!;
+    return context.findAncestorStateOfType<FaradayNativeBridgeState>();
   }
 
   @override

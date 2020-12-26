@@ -80,7 +80,7 @@ class FaradayNavigatorState extends NavigatorState {
 
   ///
   void notifyNativeDisableOrEnableBackGesture() {
-    FaradayNativeBridge.of(context).disableHorizontalSwipePopGesture(
+    FaradayNativeBridge.of(context)?.disableHorizontalSwipePopGesture(
         disable: observer.disableHorizontalSwipePopGesture.value);
   }
 
@@ -95,14 +95,15 @@ class FaradayNavigatorState extends NavigatorState {
       debugPrint('fallback to native. name: $routeName, arguments: $arguments');
 
       final bridge = FaradayNativeBridge.of(context);
-      return bridge.pushNamed<T>(routeName, arguments: arguments);
+      assert(bridge != null);
+      return bridge!.pushNamed<T>(routeName, arguments: arguments);
     }
   }
 
   @override
   void pop<T extends Object?>([T? result]) {
     if (observer.onlyOnePage) {
-      FaradayNativeBridge.of(context).pop<Object>(widget.arg.key, result);
+      FaradayNativeBridge.of(context)?.pop<Object>(widget.arg.key, result);
     } else {
       super.pop(result);
     }
@@ -127,7 +128,8 @@ class _FaradayWidgetsBindingObserver extends WidgetsBindingObserver {
   @override
   Future<bool> didPopRoute() async {
     final bridge = FaradayNativeBridge.of(navigator.context);
-    if (!bridge.isOnTop(navigator.widget.arg.key)) {
+    assert(bridge != null);
+    if (!bridge!.isOnTop(navigator.widget.arg.key)) {
       return false;
     }
     return await navigator.maybePop();
