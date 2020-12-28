@@ -85,13 +85,13 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
 
   void _recreateLastPage() async {
     await _channel.invokeMethod('reCreateLastPage');
-    if (_navigators.isNotEmpty && (_index == null || _index == -1)) {
+    if (_navigators.isNotEmpty && (_index == null)) {
       _updateIndex(0);
     }
 
     // 如果重建页面500ms 以后还没有显示命令，默认显示首页
     Timer(Duration(milliseconds: 500), () {
-      if (_navigators.isNotEmpty && (_index == null || _index == -1)) {
+      if (_navigators.isNotEmpty && (_index == null)) {
         _updateIndex(0);
       }
     });
