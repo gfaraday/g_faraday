@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "g_faraday demo fluro",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_fluro.dart",
+            "args": [
+                "--no-sound-null-safety"
+            ]
+        },
+    ]
+}
