@@ -9,5 +9,14 @@
                 "--no-sound-null-safety"
             ]
         },
+        {
+            "name": "g_faraday get fluro",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_get.dart",
+            "args": [
+                "--no-sound-null-safety"
+            ]
+        },
     ]
 }
