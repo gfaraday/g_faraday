@@ -214,8 +214,9 @@ context.startActivity(intent)
 - [桥接原生方法](doc/bridge.md)
 - [网络请求](doc/net.md)
 - [JSON](doc/json.md)
-- [命令行工具 | 代码生成 | 打包发布 | CI/CD](https://github.com/gfaraday/cli)
-- [vscode 插件 | 自动补全 | 打包发布](https://github.com/gfaraday/faraday_extension)
+- [命令行工具 | 代码生成](https://github.com/gfaraday/cli)
+- [vscode 插件 | 自动补全](https://github.com/gfaraday/faraday_extension)
+- [打包发布 | CI/CD](./doc/ci.md)
 
 ## FAQ
 
