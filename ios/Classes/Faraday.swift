@@ -143,7 +143,11 @@ public class Faraday {
     ///   - navigatorDelegate: native 侧路由代理
     ///   - automaticallyRegisterPlugins: 是否自动注册插件，如果不自动注册请及时手动注册所有插件
     ///
-    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate, httpProvider: FaradayHttpProvider? = nil, commonHandler: FaradayHandler? = nil, automaticallyRegisterPlugins: Bool = true) {
+    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate,
+                                   httpProvider: FaradayHttpProvider? = nil,
+                                   commonHandler: FaradayHandler? = nil,
+                                   automaticallyRegisterPlugins: Bool = true,
+                                   entrypoint: String = "main") {
         self.navigatorDelegate = navigatorDelegate
         self.netProvider = httpProvider
         self.commonHandler = commonHandler
@@ -151,7 +155,7 @@ public class Faraday {
         engine = FlutterEngine(name: "io.flutter.faraday", project: nil, allowHeadlessExecution: true)
         
         // 1.1 run
-        guard engine!.run(withEntrypoint: nil) else {
+        guard engine!.run(withEntrypoint: entrypoint) else {
             fatalError("run FlutterEngine failed")
         }
         
@@ -269,3 +273,4 @@ public extension Faraday {
         notificationChannel?.invokeMethod(name, arguments: arguments)
     }
 }
+

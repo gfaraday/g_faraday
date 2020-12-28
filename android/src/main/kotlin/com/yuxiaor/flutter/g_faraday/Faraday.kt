@@ -8,8 +8,10 @@ import com.yuxiaor.flutter.g_faraday.channels.CommonChannel
 import com.yuxiaor.flutter.g_faraday.channels.FaradayNotice
 import com.yuxiaor.flutter.g_faraday.channels.NetChannel
 import com.yuxiaor.flutter.g_faraday.channels.NetHandler
+import io.flutter.FlutterInjector
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
 import io.flutter.plugin.common.MethodChannel
 import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicInteger
@@ -56,11 +58,21 @@ object Faraday {
                    navigator: FaradayNavigator,
                    netHandler: NetHandler? = null,
                    commonHandler: MethodChannel.MethodCallHandler? = null,
-                   automaticallyRegisterPlugins: Boolean = true): Boolean {
+                   automaticallyRegisterPlugins: Boolean = true,
+                   dartEntrypointFunctionName: String = "main"): Boolean {
         // 这个navigator 必须先初始化 不能动
         this.navigator = navigator
         engine = FlutterEngine(context, null, automaticallyRegisterPlugins)
-        engine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+
+        val flutterLoader = FlutterInjector.instance().flutterLoader()
+
+        if (!flutterLoader.initialized()) {
+            throw AssertionError(
+                    "DartEntrypoints can only be created once a FlutterEngine is created.")
+        }
+        val entrypoint = DartEntrypoint(flutterLoader.findAppBundlePath(), dartEntrypointFunctionName)
+
+        engine.dartExecutor.executeDartEntrypoint(entrypoint)
 
         if (netHandler != null) {
             NetChannel(engine.dartExecutor, netHandler)
