@@ -219,6 +219,22 @@ context.startActivity(intent)
 
 ## FAQ
 
+### 是否支持使用第三方路由框架?
+
+支持。
+
+example中提供了[fluro](https://github.com/lukepighetti/fluro)和[getx](https://github.com/jonataslaw/getx)的实现范例
+
+### 是否支持使用`url`配置路由?
+
+支持。
+
+- ios推荐使用[⛵️ URLNavigator](https://github.com/devxoul/URLNavigator)
+- android[原生支持](https://developer.android.com/training/app-links/deep-linking)
+- flutter推荐[fluro](https://github.com/lukepighetti/fluro)
+
+可以保证3端统一使用url进行路由管理。
+
 ## Communication
 
 [点击加入钉钉群](https://qr.dingtalk.com/action/joingroup?code=v1,k1,5FUqLooXjcj0166ehqb9qapZT5t7gbUpjQqrXc2H4a4=&_dt_no_comment=1&origin=11)
