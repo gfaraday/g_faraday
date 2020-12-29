@@ -92,7 +92,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.5.1-nullsafety.13"
+    version: "0.5.1-nullsafety.14"
   g_json:
     dependency: transitive
     description:
