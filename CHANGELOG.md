@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.12
+# 0.5.1-nullsafety.13
+
+* downgrade flutter version to 1.24.0-10.2.pre
+
+## 0.5.1-nullsafety.12
 
 * revert FaradayBrdige of api
 
