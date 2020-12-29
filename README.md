@@ -61,11 +61,13 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 
 如果您已经有其他类似框架使用经验，可以直接查看[Example](example/)浏览最佳实践。
 
+> run example project: `flutter run --no-sound-null-safety`
+
 ### 添加依赖
 
 ``` yaml
 dependencies:
-  # 请确认与本地Flutter版本 >> flutter channel beta, 1.25.0-8.1.pre
+  # 请确认与本地Flutter版本 >> Flutter 1.24.0-10.2.pre
   g_faraday: ^0.5.1-nullsafety.0
 ```
 
