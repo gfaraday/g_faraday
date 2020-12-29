@@ -36,7 +36,7 @@ class _TransparentPageState extends State<TransparentPage>
                           setState(() {
                             _opacity = 0.0;
                           });
-                          Navigator.of(context).pop(true);
+                          Navigator.of(context)?.pop(true);
                         });
                       },
                       child: Text('返回'),
@@ -55,7 +55,7 @@ class _TransparentPageState extends State<TransparentPage>
           child: Container(
             color: Colors.black,
           ),
-          onTap: () => Navigator.of(context).maybePop(),
+          onTap: () => Navigator.of(context)?.maybePop(),
         ),
       ),
     );

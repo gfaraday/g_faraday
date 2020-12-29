@@ -26,19 +26,19 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
                 child: Text('支持🍎和🍐两种方式打开'),
               ),
               TextButton(
-                  child: Text('🍎: Navigator.of(context).nativePushNamed'),
+                  child: Text('🍎: Navigator.of(context)?.nativePushNamed'),
                   onPressed: () async {
                     _showResult(
                         context,
                         await Navigator.of(context)
-                            .nativePushNamed('flutter2native', arguments: {}));
+                            ?.nativePushNamed('flutter2native', arguments: {}));
                   }),
               TextButton(
-                  child: Text('🍐: Navigator.of(context).pushNamed'),
+                  child: Text('🍐: Navigator.of(context)?.pushNamed'),
                   onPressed: () async {
                     _showResult(
                         context,
-                        await Navigator.of(context).pushNamed<Object?>(
+                        await Navigator.of(context)?.pushNamed<Object?>(
                             'flutter2native',
                             arguments: {}));
                   }),

@@ -2,7 +2,7 @@ group 'com.yuxiaor.flutter.g_faraday'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.4.10'
+    ext.kotlin_version = '1.4.21'
     repositories {
         google()
         jcenter()
@@ -26,13 +26,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 //    buildToolsVersion "29.0.3"
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
     defaultConfig {
-        minSdkVersion 23
+        minSdkVersion 16
     }
     lintOptions {
         disable 'InvalidPackage'
