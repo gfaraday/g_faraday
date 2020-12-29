@@ -49,7 +49,7 @@ class _Flutter2FlutterState extends State<Flutter2Flutter> {
                 onPressed: () => Navigator.of(context)?.nativePushNamed(
                     'flutter2flutter',
                     arguments: {'index': (widget.index ?? 1) * -1},
-                    options: Options.flutterRoute()),
+                    options: Options()..flutterRoute()),
               ),
             ],
           ),

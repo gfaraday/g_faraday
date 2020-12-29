@@ -11,16 +11,13 @@ class Options {
   Options([Map<String, dynamic>? value]) : _raw = JSON(value ?? {});
 
   /// enable/disable animation
-  factory Options.animated() =>
-      Options()..add(key: '_faraday.animated', value: true);
+  void animated() => add(key: '_faraday.animated', value: true);
 
   /// show container with/without present
-  factory Options.present() =>
-      Options()..add(key: '_faraday.present', value: true);
+  void present() => add(key: '_faraday.present', value: true);
 
   /// is flutter route
-  factory Options.flutterRoute() =>
-      Options()..add(key: '_faraday.flutter', value: true);
+  void flutterRoute() => add(key: '_faraday.flutter', value: true);
 
   /// add more options
   void add({required String key, required dynamic value}) {
