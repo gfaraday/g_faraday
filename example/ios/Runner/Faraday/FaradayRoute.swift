@@ -13,22 +13,22 @@ import g_faraday
 // GENERATED CODE BY FARADAY CLI - DO NOT MODIFY BY HAND
 
 
-enum FaradayRoute {
-    // ---> enum
-
-    var page: (name: String, arguments: Any?) {
-        switch self {
-            // ---> enum_page
-        }
-    }
-}
-
-extension Faraday {
-    
-    static func createFlutterViewController(route: FaradayRoute, callback:  @escaping (Any?) -> () = { r in debugPrint("result don't be used (String(describing: r))")}) -> FaradayFlutterViewController {
-        let page = route.page
-        let vc = FaradayFlutterViewController(page.name, arguments: page.arguments, callback: callback)
-        return vc
-    }
-}
+//enum FaradayRoute {
+//    // ---> enum
+//
+//    var page: (name: String, arguments: Any?) {
+//        switch self {
+//            // ---> enum_page
+//        }
+//    }
+//}
+//
+//extension Faraday {
+//    
+//    static func createFlutterViewController(route: FaradayRoute, callback:  @escaping (Any?) -> () = { r in debugPrint("result don't be used (String(describing: r))")}) -> FaradayFlutterViewController {
+//        let page = route.page
+//        let vc = FaradayFlutterViewController(page.name, arguments: page.arguments, callback: callback)
+//        return vc
+//    }
+//}
 

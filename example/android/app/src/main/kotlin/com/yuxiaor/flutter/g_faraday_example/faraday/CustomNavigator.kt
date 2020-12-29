@@ -7,6 +7,7 @@ import android.net.Uri
 import com.yuxiaor.flutter.g_faraday.Faraday
 import com.yuxiaor.flutter.g_faraday.FaradayActivity
 import com.yuxiaor.flutter.g_faraday.FaradayNavigator
+import com.yuxiaor.flutter.g_faraday.Options
 import com.yuxiaor.flutter.g_faraday_example.activity.SingleTaskFlutterActivity
 import com.yuxiaor.flutter.g_faraday_example.basic.FlutterToNativeActivity
 import com.yuxiaor.flutter.g_faraday_example.basic.Native2FlutterActivity
@@ -18,10 +19,10 @@ const val KEY_ARGS = "_args"
 
 object CustomNavigator : FaradayNavigator {
 
-    override fun create(name: String, arguments: Serializable?, options: HashMap<String, *>?): Intent? {
+    override fun create(name: String, arguments: Serializable?, options: Options): Intent? {
         val context = Faraday.getCurrentActivity() ?: return null
-        val isFlutterRoute = options?.get("flutter") == true
-        if (isFlutterRoute) {
+
+        if (options.isFlutterRoute) {
             // standard
 //            Faraday.getCurrentActivity()?.startActivity(FaradayActivity.build(this, name, arguments))
 

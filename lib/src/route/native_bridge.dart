@@ -13,6 +13,7 @@ import 'package:g_json/g_json.dart';
 
 import 'arg.dart';
 import 'navigator.dart';
+import 'options.dart';
 
 const _channel = MethodChannel('g_faraday');
 
@@ -115,12 +116,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   Future<T?> pushNamed<T extends Object?>(
     String name, {
     Object? arguments,
-    Map<String, dynamic>? options,
+    Options? options,
   }) async {
     //
     return _channel.invokeMethod<T>('pushNativePage', {
       'name': name,
-      if (options != null) 'options': options,
+      if (options != null) 'options': options.raw,
       if (arguments != null) 'arguments': arguments
     });
   }

@@ -3,6 +3,7 @@ import 'package:g_json/g_json.dart';
 
 import 'native_bridge.dart';
 import 'navigator.dart';
+import 'options.dart';
 
 ///
 extension NavigatorStateX on NavigatorState {
@@ -18,7 +19,7 @@ extension NavigatorStateX on NavigatorState {
 
   /// push native flutter container
   Future<T?> nativePushNamed<T extends Object>(String routeName,
-      {Object? arguments, Map<String, dynamic>? options}) {
+      {Object? arguments, Options? options}) {
     final bridge = FaradayNativeBridge.of(context);
     if (bridge != null) {
       return bridge.pushNamed<T?>(routeName,

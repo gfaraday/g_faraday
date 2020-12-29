@@ -22,10 +22,8 @@ import g_faraday
 
 extension AppDelegate: FaradayNavigationDelegate {
     
-    func push(_ name: String, arguments: Any?, options: [String : Any]?, callback token: CallbackToken) {
+    func push(_ name: String, arguments: Any?, options: Options, callback token: CallbackToken) {
         var vc: UIViewController!
-        let isFultter = options?["flutter"] as? Bool ?? false
-        let isPresent = options?["present"] as? Bool ?? false
         
         switch name {
             case "flutter2native":
@@ -37,14 +35,14 @@ extension AppDelegate: FaradayNavigationDelegate {
             case "navigationBar":
                 vc = UIStoryboard(name: "Other", bundle: nil).instantiateInitialViewController()
             default:
-                vc = isFultter ? FaradayFlutterViewController(name, arguments: arguments) : Flutter2NativeViewController()
+                vc = options.isFlutterRoute ? FaradayFlutterViewController(name, arguments: arguments) : Flutter2NativeViewController()
         }
         
         let topMost = UIViewController.fa.topMost
-        if (isPresent) {
-            topMost?.present(vc, animated: true, completion: nil)
+        if (options.present) {
+            topMost?.present(vc, animated: options.animated, completion: nil)
         } else {
-            topMost?.navigationController?.pushViewController(vc, animated: true)
+            topMost?.navigationController?.pushViewController(vc, animated: options.animated)
         }
         
         // 非常重要

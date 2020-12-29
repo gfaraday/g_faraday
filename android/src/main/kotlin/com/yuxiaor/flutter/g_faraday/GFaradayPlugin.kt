@@ -32,7 +32,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 require(name != null) { "page route name should not be null" }
                 val arguments = call.argument<Serializable>("arguments")
                 val options = call.argument<HashMap<String, *>>("options")
-                navigator?.create(name, arguments, options)?.let {
+                navigator?.create(name, arguments, Options(options))?.let {
                     Faraday.startNativeForResult(it) { nativeResult ->
                         result.success(nativeResult)
                     }

@@ -17,7 +17,7 @@ public protocol FaradayNavigationDelegate: AnyObject {
     ///   - name: native or flutter route name
     ///   - arguments: route arguments
     /// - Returns: pushed viewController
-    func push(_ name: String, arguments: Any?, options: [String: Any]?, callback token: CallbackToken)
+    func push(_ name: String, arguments: Any?, options: Options, callback token: CallbackToken)
     
     /// flutter widget require disbale native swipeback func
     /// - Parameter disable: disable or not
@@ -196,7 +196,7 @@ public class Faraday {
         
         let token = UUID()
         // 这里是有可能打开一个 flutter页面的
-        navigatorDelegate?.push(name, arguments: arg["arguments"], options: arg["options"] as? [String: Any] ?? [:], callback: token)
+        navigatorDelegate?.push(name, arguments: arg["arguments"], options: Options(arg["options"] as? [String: Any]), callback: token)
         callbackCache[token] = callback
     }
     
