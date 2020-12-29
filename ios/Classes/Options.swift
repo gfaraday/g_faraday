@@ -16,7 +16,7 @@ public struct Options {
     }
     
     public var animated: Bool {
-        return get(key: "_faraday.animated", defaultValue: false)
+        return get(key: "_faraday.animated", defaultValue: true)
     }
     
     public var present: Bool {

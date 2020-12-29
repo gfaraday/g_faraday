@@ -12,7 +12,7 @@ import java.io.Serializable
 data class Options(val raw: HashMap<String, *>?) {
 
     val animated: Boolean
-        get() = get("_faraday.animated", false)
+        get() = get("_faraday.animated", true)
 
     val present: Boolean
         get() = get("_faraday.present", false)

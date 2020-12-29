@@ -11,7 +11,7 @@ class Options {
   Options([Map<String, dynamic>? value]) : _raw = JSON(value ?? {});
 
   /// enable/disable animation
-  void animated() => add(key: '_faraday.animated', value: true);
+  void disableAnimation() => add(key: '_faraday.animated', value: false);
 
   /// show container with/without present
   void present() => add(key: '_faraday.present', value: true);
