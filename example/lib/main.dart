@@ -67,6 +67,7 @@ class _MyAppState extends State<MyApp> {
     final cupertinoApp = CupertinoApp(
       localizationsDelegates: [
         S.delegate,
+        DefaultCupertinoLocalizations.delegate
       ],
       supportedLocales: [
         Locale('en', ''),
