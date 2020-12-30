@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.16
+# 0.5.1-nullsafety.17
+
+* compatible xcode 11.5
+
+## 0.5.1-nullsafety.16
 
 * support pop to any flutter route
 
