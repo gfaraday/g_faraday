@@ -10,7 +10,7 @@ import com.yuxiaor.flutter.g_faraday_example.widget.NotificationDialog
 class FirstFlutterActivity : FaradayActivity() {
 
     companion object {
-        fun build(context: Context) = builder<FirstFlutterActivity>("home", null).build(context)
+        fun build(context: Context) = builder<FirstFlutterActivity>("home", null, false).build(context)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

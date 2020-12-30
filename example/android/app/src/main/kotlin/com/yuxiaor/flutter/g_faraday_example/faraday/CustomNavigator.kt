@@ -31,7 +31,7 @@ object CustomNavigator : FaradayNavigator {
 //            Faraday.getCurrentActivity()?.startActivity(intent)
 
             // singleTask 模式
-            val builder = FaradayActivity.builder(name, arguments)
+            val builder = FaradayActivity.builder(name, arguments, false)
 
             // 你看到的绿色的闪屏就是这个
             builder.backgroundColor = Color.WHITE

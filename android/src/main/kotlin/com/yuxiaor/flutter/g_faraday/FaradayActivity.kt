@@ -21,25 +21,36 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
 
         private const val TAG = "FaradayActivity"
 
-        fun builder(routeName: String, params: Serializable? = null) = builder<FaradayActivity>(routeName, params)
+        fun builder(routeName: String, params: Serializable? = null, opaque: Boolean = true) = builder<FaradayActivity>(routeName, params, opaque)
 
+        // opaque: Boolean = false 效率会差一些
+        // 除非你有 非常非常非常 明确的理由，否则不要动他
+        //
+        //
+        // 目前只有一种特定情况 opaque 需要设置为false
+        //
+        // 假如有一个`FaradayActivity`(假设为A)会使用新的容器打开flutter页面(假设为B)
+        // 那么在 build A activity 的intent时 需要设置 `opaque = false` 否则在跳转时 页面会闪烁
+        //
         inline fun <reified T : FaradayActivity> builder(
                 routeName: String,
                 params: Serializable? = null,
+                opaque: Boolean = false,
                 backgroundColor: Int? = null,
-        ) = SingleEngineIntentBuilder(routeName, params, T::class.java, backgroundColor)
+        ) = SingleEngineIntentBuilder(routeName, params, T::class.java, opaque, backgroundColor)
     }
 
     // 后续考虑支持更多参数, 然后再放开访问权限
     data class SingleEngineIntentBuilder(val routeName: String,
                                          val params: Serializable?,
                                          var activityClass: Class<out FaradayActivity>,
+                                         var opaque: Boolean,
                                          var backgroundColor: Int?) {
 
         // 真正开始Build的时候再生成id
         fun build(context: Context): Intent {
 
-            val bm = BackgroundMode.transparent.name
+            val bm = (if (opaque) BackgroundMode.opaque else BackgroundMode.transparent).name
 
             val pageId = Faraday.genPageId()
 
