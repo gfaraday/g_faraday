@@ -120,28 +120,28 @@ public class Faraday {
             switch (call.method) {
                 case "replaceAnchor":
                     if let args = call.arguments as? Dictionary<String, Any>, let key = args["id"] as? NSString, let oldKey = args["oldID"] as? NSString {
-                        if let obj = anchors.object(forKey: oldKey) {
-                            anchors.removeObject(forKey: oldKey)
-                            anchors.setObject(obj, forKey: key)
+                        if let obj = self.anchors.object(forKey: oldKey) {
+                            self.anchors.removeObject(forKey: oldKey)
+                            self.anchors.setObject(obj, forKey: key)
                             result(true)
                             return
                         }
                     }
                 case "addAnchor":
                     if let key = call.arguments as? NSString, let vc = Faraday.default.currentFlutterViewController {
-                        anchors.setObject(vc, forKey: key)
+                        self.anchors.setObject(vc, forKey: key)
                         result(true)
                         return
                     }
                 case "removeAnchor":
                     if let key = call.arguments as? NSString, let vc = Faraday.default.currentFlutterViewController {
-                        anchors.setObject(vc, forKey: key)
+                        self.anchors.setObject(vc, forKey: key)
                         result(true)
                         return
                     }
                 case "popToAnchor":
-                    if let key = call.arguments as? NSString, let vc = anchors.object(forKey: key) {
-                        navigatorDelegate?.pop(to: vc)
+                    if let key = call.arguments as? NSString, let vc = self.anchors.object(forKey: key) {
+                        self.navigatorDelegate?.pop(to: vc)
                         result(true)
                         return
                     }
