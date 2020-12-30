@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.15
+# 0.5.1-nullsafety.16
+
+* support pop to any flutter route
+
+## 0.5.1-nullsafety.15
 
 * refine options default value
 
