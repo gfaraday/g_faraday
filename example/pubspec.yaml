@@ -20,15 +20,15 @@ dependencies:
     # The example app is bundled with the plugin so we use a path dependency on
     # the parent directory to use the current plugin's version.
     path: ../
-  fluro: ^1.7.8
-  get: ^3.24.0
+  # fluro: ^1.7.8
+  # get: ^3.24.0
       
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
 
-  flutter_localizations:
-    sdk: flutter
+  # flutter_localizations:
+  #   sdk: flutter
 
 dev_dependencies:
   flutter_test:

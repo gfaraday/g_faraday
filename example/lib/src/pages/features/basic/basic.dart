@@ -135,32 +135,35 @@ class _Action extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Wrap(
-              direction: Axis.vertical,
-              children: [
-                Row(
-                  children: [
-                    begin,
-                    Icon(
-                      Icons.arrow_right_alt,
-                      color: CupertinoColors.tertiaryLabel,
-                    ),
-                    end
-                  ],
-                ),
-                SizedBox(height: 10),
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: CupertinoColors.black),
-                ),
-                Text(
-                  subTitle,
-                  style: TextStyle(
-                      fontSize: 12, color: CupertinoColors.secondaryLabel),
-                )
-              ],
+            Expanded(
+              child: Wrap(
+                direction: Axis.vertical,
+                children: [
+                  Row(
+                    children: [
+                      begin,
+                      Icon(
+                        Icons.arrow_right_alt,
+                        color: CupertinoColors.tertiaryLabel,
+                      ),
+                      end
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    title,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: CupertinoColors.black),
+                  ),
+                  Text(
+                    subTitle,
+                    maxLines: 2,
+                    style: TextStyle(
+                        fontSize: 12, color: CupertinoColors.secondaryLabel),
+                  )
+                ],
+              ),
             ),
             Spacer(),
             Icon(

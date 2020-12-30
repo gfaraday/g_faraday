@@ -24,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -31,6 +32,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
@@ -151,6 +153,7 @@ public abstract class XFlutterActivity extends Activity
      * <p>See {@link FlutterActivityLaunchConfigs#SPLASH_SCREEN_META_DATA_KEY} for the meta-data key
      * to be used in a manifest file.
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     private Drawable getSplashScreenFromManifest() {
         try {
@@ -264,7 +267,6 @@ public abstract class XFlutterActivity extends Activity
 
     /**
      * Irreversibly release this activity's control of the {@link FlutterEngine} and its
-     * subcomponents.
      *
      * <p>Calling will disconnect this activity's view from the Flutter renderer, disconnect this
      * activity from plugins' {@link ActivityControlSurface}, and stop system channel messages from

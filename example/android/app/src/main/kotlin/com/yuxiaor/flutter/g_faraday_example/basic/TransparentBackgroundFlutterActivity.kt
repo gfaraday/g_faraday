@@ -7,6 +7,6 @@ import com.yuxiaor.flutter.g_faraday.FaradayActivity
 class TransparentBackgroundFlutterActivity: FaradayActivity() {
     companion object {
         fun build(context: Context) = builder<TransparentBackgroundFlutterActivity>("transparent_flutter",
-                opaque = false, backgroundColor = Color.TRANSPARENT).build(context)
+                backgroundColor = Color.TRANSPARENT).build(context)
     }
 }

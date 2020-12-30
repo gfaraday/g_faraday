@@ -11,5 +11,6 @@ export 'src/faraday.dart';
 export 'src/route/navigator.dart';
 export 'src/route/navigator_ext.dart';
 export 'src/route/options.dart';
+export 'src/widgets/navigator_anchor.dart';
 // notification
 export 'src/widgets/notification_listener.dart';

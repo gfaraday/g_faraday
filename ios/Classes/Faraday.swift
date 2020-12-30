@@ -28,6 +28,8 @@ public protocol FaradayNavigationDelegate: AnyObject {
     ///   - viewController: current viewcontroller attached on engine
     /// - Returns: pop succeed or not
     func pop(_ viewController: FaradayFlutterViewController) -> Bool
+    
+    func pop(to viewController: UIViewController)
 }
 
 public extension FaradayNavigationDelegate {
@@ -43,6 +45,10 @@ public extension FaradayNavigationDelegate {
             viewController.navigationController?.popViewController(animated: true)
         }
         return true
+    }
+    
+    func pop(to viewController: UIViewController) {
+        viewController.navigationController?.popToViewController(viewController, animated: true)
     }
 }
 
@@ -77,9 +83,13 @@ public class Faraday {
     
     fileprivate var notificationChannel: FlutterMethodChannel?
     
+    private var anchorChannel: FlutterMethodChannel?
+    
     public private(set) var engine: FlutterEngine?
     
     private var callbackCache = [UUID: FlutterResult]()
+    
+    private let anchors = NSMapTable<NSString, UIViewController>.weakToWeakObjects()
     
     /// 当前attach在Engine的viewController 不一定可见
     public var currentFlutterViewController: FaradayFlutterViewController? {
@@ -105,10 +115,47 @@ public class Faraday {
             }
         })
         
+        anchorChannel = FlutterMethodChannel(name: "g_faraday/anchor", binaryMessenger: messenger)
+        anchorChannel?.setMethodCallHandler({ [unowned self] (call, result) in
+            switch (call.method) {
+                case "replaceAnchor":
+                    if let args = call.arguments as? Dictionary<String, Any>, let key = args["id"] as? NSString, let oldKey = args["oldID"] as? NSString {
+                        if let obj = anchors.object(forKey: oldKey) {
+                            anchors.removeObject(forKey: oldKey)
+                            anchors.setObject(obj, forKey: key)
+                            result(true)
+                            return
+                        }
+                    }
+                case "addAnchor":
+                    if let key = call.arguments as? NSString, let vc = Faraday.default.currentFlutterViewController {
+                        anchors.setObject(vc, forKey: key)
+                        result(true)
+                        return
+                    }
+                case "removeAnchor":
+                    if let key = call.arguments as? NSString, let vc = Faraday.default.currentFlutterViewController {
+                        anchors.setObject(vc, forKey: key)
+                        result(true)
+                        return
+                    }
+                case "popToAnchor":
+                    if let key = call.arguments as? NSString, let vc = anchors.object(forKey: key) {
+                        navigatorDelegate?.pop(to: vc)
+                        result(true)
+                        return
+                    }
+                default:
+                    break
+            }
+            result(false)
+        })
+        
         notificationChannel = FlutterMethodChannel(name: "g_faraday/notification", binaryMessenger: messenger)
         notificationChannel?.setMethodCallHandler({ (call, result) in
             let args = call.arguments as? Dictionary<String, Any>
             NotificationCenter.default.post(name: .init(rawValue: call.method), object: args?["arguments"])
+            result(true)
         })
         
         netChannel = FlutterMethodChannel(name: "g_faraday/net", binaryMessenger: messenger)

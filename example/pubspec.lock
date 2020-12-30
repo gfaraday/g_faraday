@@ -64,19 +64,7 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.0-nullsafety.3"
-  fluro:
-    dependency: "direct main"
-    description:
-      name: fluro
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.7.8"
   flutter:
-    dependency: "direct main"
-    description: flutter
-    source: sdk
-    version: "0.0.0"
-  flutter_localizations:
     dependency: "direct main"
     description: flutter
     source: sdk
@@ -100,20 +88,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.0-nullsafety.2"
-  get:
-    dependency: "direct main"
-    description:
-      name: get
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.24.0"
-  intl:
-    dependency: transitive
-    description:
-      name: intl
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.16.1"
   matcher:
     dependency: transitive
     description:

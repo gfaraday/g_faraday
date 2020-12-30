@@ -23,27 +23,23 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
 
         fun builder(routeName: String, params: Serializable? = null) = builder<FaradayActivity>(routeName, params)
 
-        // opaque: Boolean = false 效率会差一些
-        // 除非你有 非常非常非常 明确的理由，否则不要动他
         inline fun <reified T : FaradayActivity> builder(
                 routeName: String,
                 params: Serializable? = null,
-                opaque: Boolean = true,
                 backgroundColor: Int? = null,
-        ) = SingleEngineIntentBuilder(routeName, params, T::class.java, opaque, backgroundColor)
+        ) = SingleEngineIntentBuilder(routeName, params, T::class.java, backgroundColor)
     }
 
     // 后续考虑支持更多参数, 然后再放开访问权限
     data class SingleEngineIntentBuilder(val routeName: String,
                                          val params: Serializable?,
                                          var activityClass: Class<out FaradayActivity>,
-                                         var opaque: Boolean,
                                          var backgroundColor: Int?) {
 
         // 真正开始Build的时候再生成id
         fun build(context: Context): Intent {
 
-            val bm = (if (opaque) BackgroundMode.opaque else BackgroundMode.transparent).name
+            val bm = BackgroundMode.transparent.name
 
             val pageId = Faraday.genPageId()
 
@@ -73,7 +69,10 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
     private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
 
     override fun onNewIntent(intent: Intent) {
-        this.intent = intent
+        // 只有在intent 发生实质性变化时才考虑更新flutter页面
+        if (intent.getIntExtra(FaradayConstants.ID, -1) != -1) {
+            this.intent = intent
+        }
         super.onNewIntent(intent)
     }
 

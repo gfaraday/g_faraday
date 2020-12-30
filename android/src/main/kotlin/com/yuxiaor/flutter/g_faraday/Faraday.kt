@@ -4,13 +4,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
+import com.yuxiaor.flutter.g_faraday.channels.*
 import com.yuxiaor.flutter.g_faraday.channels.CommonChannel
 import com.yuxiaor.flutter.g_faraday.channels.FaradayNotice
+import com.yuxiaor.flutter.g_faraday.channels.NavigatorAnchor
 import com.yuxiaor.flutter.g_faraday.channels.NetChannel
-import com.yuxiaor.flutter.g_faraday.channels.NetHandler
 import io.flutter.FlutterInjector
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
 import io.flutter.plugin.common.MethodChannel
 import java.lang.ref.WeakReference
@@ -81,6 +81,8 @@ object Faraday {
         if (commonHandler != null) {
             CommonChannel(engine.dartExecutor, commonHandler)
         }
+
+        NavigatorAnchor.setup()
 
         return pluginRef != null
     }

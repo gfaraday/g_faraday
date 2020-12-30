@@ -18,6 +18,7 @@ class _Flutter2FlutterState extends State<Flutter2Flutter> {
       navigationBar: CupertinoNavigationBar(
         middle: Text('Flutter to Flutter ${widget.index ?? 0}'),
       ),
+      backgroundColor: widget.index == null ? Colors.red : null,
       child: SafeArea(
         child: Center(
           child: Column(
@@ -51,6 +52,10 @@ class _Flutter2FlutterState extends State<Flutter2Flutter> {
                     arguments: {'index': (widget.index ?? 1) * -1},
                     options: Options()..flutterRoute()),
               ),
+              TextButton(
+                onPressed: () => faraday.popToAnchor("home"),
+                child: Text('Pop to home'),
+              )
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:g_faraday/g_faraday.dart';
 
 import '../utils/simple_localizations.dart';
 import '../widgets/section.dart';
@@ -26,34 +27,37 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
-      child: WillPopScope(
-        onWillPop: () async {
-          final r = await showCupertinoDialog(
-              builder: (context) => CupertinoAlertDialog(
-                    content: Text('确定退出吗?'),
-                    actions: [
-                      CupertinoDialogAction(
-                        child: Text('按错了'),
-                        isDefaultAction: true,
-                        onPressed: () => Navigator.of(context)?.pop(false),
-                      ),
-                      CupertinoDialogAction(
-                        child: Text('退出'),
-                        isDestructiveAction: true,
-                        onPressed: () => Navigator.of(context)?.pop(true),
-                      )
-                    ],
-                  ),
-              context: context);
-          return r;
-        },
-        child: CupertinoPageScaffold(
-          backgroundColor: CupertinoColors.secondarySystemBackground,
-          child: CustomScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            slivers: _buildSlivers(context),
+    return FaradayNavigatorAnchor(
+      identifier: 'home',
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: WillPopScope(
+          onWillPop: () async {
+            final r = await showCupertinoDialog(
+                builder: (context) => CupertinoAlertDialog(
+                      content: Text('确定退出吗?'),
+                      actions: [
+                        CupertinoDialogAction(
+                          child: Text('按错了'),
+                          isDefaultAction: true,
+                          onPressed: () => Navigator.of(context)?.pop(false),
+                        ),
+                        CupertinoDialogAction(
+                          child: Text('退出'),
+                          isDestructiveAction: true,
+                          onPressed: () => Navigator.of(context)?.pop(true),
+                        )
+                      ],
+                    ),
+                context: context);
+            return r;
+          },
+          child: CupertinoPageScaffold(
+            backgroundColor: CupertinoColors.secondarySystemBackground,
+            child: CustomScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              slivers: _buildSlivers(context),
+            ),
           ),
         ),
       ),

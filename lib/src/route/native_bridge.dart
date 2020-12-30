@@ -126,15 +126,15 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     });
   }
 
-  Future<void> pop<T extends Object>(Key key, [T? result]) async {
+  Future<void> pop<T extends Object>(Key key, [T? result]) {
     assert(_navigators.isNotEmpty);
     assert(_index != null);
     assert(_navigators[_index!].key == key);
-    await _channel.invokeMethod('popContainer', result);
+    return _channel.invokeMethod('popContainer', result);
   }
 
-  Future<void> disableHorizontalSwipePopGesture({required bool disable}) async {
-    await _channel.invokeMethod('disableHorizontalSwipePopGesture', disable);
+  Future<void> disableHorizontalSwipePopGesture({required bool disable}) {
+    return _channel.invokeMethod('disableHorizontalSwipePopGesture', disable);
   }
 
   bool isOnTop(Key key) {
@@ -255,7 +255,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         assert(index != null, 'page not found seq: ${call.arguments}');
         assert(index! < _navigators.length);
         _navigators.removeAt(index!);
-        _updateIndex(_navigators.isEmpty ? null : _navigators.length - 1);
         return true;
       default:
         return false;
