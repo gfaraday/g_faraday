@@ -67,3 +67,23 @@ interface NotificationCallback {
 
     fun onReceiveNotification(arguments: Any?)
 }
+
+
+
+/**
+ * post notification  form native to flutter
+ */
+fun Faraday.postNotification(key: String, arguments: Any?) {
+    FaradayNotice.post(key, arguments)
+}
+
+/**
+ * receive notification from flutter
+ */
+fun Faraday.registerNotification(key: String, callback: (arguments: Any?) -> Unit) {
+    FaradayNotice.register(key, callback)
+}
+
+fun Faraday.unregisterNotification(key: String) {
+    FaradayNotice.unregister(key)
+}

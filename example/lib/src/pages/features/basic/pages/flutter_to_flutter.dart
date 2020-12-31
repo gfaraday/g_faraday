@@ -52,10 +52,6 @@ class _Flutter2FlutterState extends State<Flutter2Flutter> {
                     arguments: {'index': (widget.index ?? 1) * -1},
                     options: Options()..flutterRoute()),
               ),
-              TextButton(
-                onPressed: () => faraday.popToAnchor("home"),
-                child: Text('Pop to home'),
-              )
             ],
           ),
         ),

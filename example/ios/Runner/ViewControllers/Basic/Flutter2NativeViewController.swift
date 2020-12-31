@@ -26,8 +26,4 @@ class Flutter2NativeViewController: BaseViewController {
             navigationController?.fa.popViewController(withResult: r, animated: true)
         }
     }
-    
-    @IBAction func touchPopToRoot(sender: UIButton) {
-        Faraday.default.popTo(anchor: "home")
-    }
 }

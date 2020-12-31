@@ -6,8 +6,6 @@ import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import com.yuxiaor.flutter.g_faraday.channels.*
 import com.yuxiaor.flutter.g_faraday.channels.CommonChannel
-import com.yuxiaor.flutter.g_faraday.channels.FaradayNotice
-import com.yuxiaor.flutter.g_faraday.channels.NavigatorAnchor
 import com.yuxiaor.flutter.g_faraday.channels.NetChannel
 import io.flutter.FlutterInjector
 import io.flutter.embedding.engine.FlutterEngine
@@ -82,8 +80,6 @@ object Faraday {
             CommonChannel(engine.dartExecutor, commonHandler)
         }
 
-        NavigatorAnchor.setup()
-
         return pluginRef != null
     }
 
@@ -136,23 +132,4 @@ object Faraday {
             }
         }
     }
-
-    /**
-     * post notification  form native to flutter
-     */
-    fun postNotification(key: String, arguments: Any?) {
-        FaradayNotice.post(key, arguments)
-    }
-
-    /**
-     * receive notification from flutter
-     */
-    fun registerNotification(key: String, callback: (arguments: Any?) -> Unit) {
-        FaradayNotice.register(key, callback)
-    }
-
-    fun unregisterNotification(key: String) {
-        FaradayNotice.unregister(key)
-    }
-
 }
