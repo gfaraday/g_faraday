@@ -1,4 +1,9 @@
-# 0.5.1-nullsafety.19
+# 0.5.1-nullsafety.20
+
+* add anchro native api
+* [android] fix splash reuse issue
+
+## 0.5.1-nullsafety.19
 
 * fix page dealloc logic
   
