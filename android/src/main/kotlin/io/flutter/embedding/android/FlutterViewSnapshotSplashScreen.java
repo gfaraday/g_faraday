@@ -26,7 +26,8 @@ public class FlutterViewSnapshotSplashScreen implements SplashScreen {
     @Nullable
     @Override
     public View createSplashView(@NonNull Context context, @Nullable Bundle savedInstanceState) {
-        if (splashView != null) return splashView;
+        // 这里不能重用
+        //        if (splashView != null) return splashView;
         ImageView splash = new ImageView(context);
         splash.setImageBitmap(flutterViewSnapshot);
         splashView = splash;
