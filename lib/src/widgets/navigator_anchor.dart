@@ -20,6 +20,11 @@ Future<bool?> _replaceAnchor(String identifier, String oldIdentifier) {
       'replaceAnchor', {'id': identifier, 'oldID': oldIdentifier});
 }
 
+Future<bool?> _handler(MethodCall call) async {
+  if (call.method != 'popToAnchor') return false;
+  return faraday.popToAnchor(call.arguments);
+}
+
 /// 跨页面返回锚点
 class FaradayNavigatorAnchor extends StatefulWidget {
   ///
@@ -44,6 +49,9 @@ class _FaradayNavigatorAnchorState extends State<FaradayNavigatorAnchor> {
   void initState() {
     super.initState();
     _addAnchor(widget.identifier);
+    if (!_channel.checkMethodCallHandler(_handler)) {
+      _channel.setMethodCallHandler(_handler);
+    }
   }
 
   @override
@@ -78,13 +86,13 @@ class _FaradayNavigatorAnchorState extends State<FaradayNavigatorAnchor> {
 
 // ignore: public_member_api_docs
 extension NavigatorAnchorFaraday on Faraday {
-  // ignore: public_member_api_docs
-  void popToAnchor(String identifer) {
+  /// 跳转到指定锚点
+  Future<bool?> popToAnchor(String identifer) async {
     FaradayNotification(_notificatioinName, identifer)
         .dispatchToGlobal(deliverToNative: false);
     // 主要是为了等待 flutter侧的动画完成
-    Future.delayed(Duration(milliseconds: 250), () {
-      _channel.invokeMethod<bool>('popToAnchor', identifer);
+    return Future.delayed(Duration(milliseconds: 300), () {
+      return _channel.invokeMethod<bool>('popToAnchor', identifer);
     });
   }
 }

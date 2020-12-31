@@ -20,6 +20,10 @@ internal object NavigatorAnchor: MethodChannel.MethodCallHandler {
         anchors = mutableMapOf()
     }
 
+    fun popToAnchor(identifier: String) {
+        channel.invokeMethod("popToAnchor", identifier)
+    }
+
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when(call.method) {
             "addAnchor" -> {
@@ -50,4 +54,8 @@ internal object NavigatorAnchor: MethodChannel.MethodCallHandler {
             }
         }
     }
+}
+
+fun Faraday.popToAnchor(identifier: String) {
+    NavigatorAnchor.popToAnchor(identifier)
 }

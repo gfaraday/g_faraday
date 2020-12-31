@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.yuxiaor.flutter.g_faraday.Faraday
 import com.yuxiaor.flutter.g_faraday.FaradayActivity
+import com.yuxiaor.flutter.g_faraday.channels.popToAnchor
 import com.yuxiaor.flutter.g_faraday_example.R
 import java.util.*
 
@@ -24,6 +25,9 @@ class FlutterToNativeActivity : AppCompatActivity() {
             intent.putExtra("date", Date().toString())
             setResult(RESULT_OK, intent)
             finish()
+        }
+        findViewById<Button>(R.id.popButton).setOnClickListener {
+            Faraday.popToAnchor("home")
         }
         actionBar?.title = "Flutter2Native"
     }

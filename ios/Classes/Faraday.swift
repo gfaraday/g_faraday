@@ -319,5 +319,11 @@ public extension Faraday {
         }
         notificationChannel?.invokeMethod(name, arguments: arguments)
     }
+    
+    ///
+    /// 跳转到指定锚点
+    func popTo(anchor identifier: String) {
+        anchorChannel?.invokeMethod("popToAnchor", arguments: identifier)
+    }
 }
 

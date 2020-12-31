@@ -64,8 +64,10 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
   }
 
   void _showResult(BuildContext context, Object? result) {
-    setState(() {
-      _result = result ?? 'NO RESULT';
-    });
+    if (mounted) {
+      setState(() {
+        _result = result ?? 'NO RESULT';
+      });
+    }
   }
 }
