@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.17
+# 0.5.1-nullsafety.18
+
+* add popToAnchor native api
+
+## 0.5.1-nullsafety.17
 
 * compatible xcode 11.5
 
