@@ -9,21 +9,17 @@ final _channel = MethodChannel('g_faraday/anchor');
 final _anchors = <String>[];
 
 Future<bool?> _removeAnchor(String identifier) {
-  assert(_anchors.contains(identifier));
   _anchors.remove(identifier);
   return _channel.invokeMethod<bool>('removeAnchor', identifier);
 }
 
 Future<bool?> _addAnchor(String identifier) {
-  assert(!_anchors.contains(identifier));
   _anchors.add(identifier);
   return _channel.invokeMethod<bool>('addAnchor', identifier);
 }
 
 Future<bool?> _replaceAnchor(String identifier, String oldIdentifier) {
-  assert(_anchors.contains(oldIdentifier));
   _anchors.remove(oldIdentifier);
-  assert(!_anchors.contains(identifier));
   _anchors.add(identifier);
   return _channel.invokeMethod<bool>(
       'replaceAnchor', {'id': identifier, 'oldID': oldIdentifier});
@@ -57,10 +53,13 @@ class _FaradayNavigatorAnchorState extends State<FaradayNavigatorAnchor> {
   @override
   void initState() {
     super.initState();
-    _addAnchor(widget.identifier);
+
     if (!_channel.checkMethodCallHandler(_handler)) {
       _channel.setMethodCallHandler(_handler);
     }
+    Future.delayed(Duration(milliseconds: 500), () {
+      _addAnchor(widget.identifier);
+    });
   }
 
   @override

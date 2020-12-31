@@ -84,7 +84,7 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
         if (intent.getIntExtra(FaradayConstants.ID, -1) != -1) {
             this.intent = intent
         }
-        super.onNewIntent(intent)
+        super.onNewIntent(this.intent)
     }
 
     override fun onAttachedToWindow() {
