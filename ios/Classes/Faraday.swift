@@ -89,7 +89,7 @@ public class Faraday {
     
     private var callbackCache = [UUID: FlutterResult]()
     
-    private let anchors = NSMapTable<NSString, UIViewController>.weakToWeakObjects()
+    fileprivate let anchors = NSMapTable<NSString, UIViewController>.weakToWeakObjects()
     
     /// 当前attach在Engine的viewController 不一定可见
     public var currentFlutterViewController: FaradayFlutterViewController? {
@@ -324,6 +324,11 @@ public extension Faraday {
     /// 跳转到指定锚点
     func popTo(anchor identifier: String) {
         anchorChannel?.invokeMethod("popToAnchor", arguments: identifier)
+    }
+    
+    /// 是否存在某个锚点
+    func hasAnchor(identifier: String) -> Bool {
+        return anchors.object(forKey:  identifier as NSString) != nil
     }
 }
 

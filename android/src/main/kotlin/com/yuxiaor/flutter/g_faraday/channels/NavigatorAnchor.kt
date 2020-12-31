@@ -10,7 +10,8 @@ internal object NavigatorAnchor: MethodChannel.MethodCallHandler {
 
     private val channel = MethodChannel(Faraday.engine.dartExecutor, "g_faraday/anchor")
 
-    private lateinit var anchors: MutableMap<String, Class<Activity>>
+    lateinit var anchors: MutableMap<String, Class<Activity>>
+        private set
 
     init {
         channel.setMethodCallHandler(this)
@@ -56,6 +57,15 @@ internal object NavigatorAnchor: MethodChannel.MethodCallHandler {
     }
 }
 
+// 跳转到指定锚点
 fun Faraday.popToAnchor(identifier: String) {
-    NavigatorAnchor.popToAnchor(identifier)
+    if (hasAnchor(identifier)) {
+        NavigatorAnchor.popToAnchor(identifier)
+    }
 }
+
+// 是否存在某个锚点
+fun Faraday.hasAnchor(identifier: String): Boolean {
+    return NavigatorAnchor.anchors.keys.contains(identifier)
+}
+
