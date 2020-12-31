@@ -254,7 +254,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         final index = _findIndexBy(id: call.arguments);
         assert(index != null, 'page not found seq: ${call.arguments}');
         assert(index! < _navigators.length);
+        final current = _index == null ? null : _navigators[_index!];
         _navigators.removeAt(index!);
+        if (current != null) {
+          final newIndex = _navigators.indexOf(current);
+          _updateIndex(newIndex == -1 ? null : newIndex);
+        }
         return true;
       default:
         return false;
