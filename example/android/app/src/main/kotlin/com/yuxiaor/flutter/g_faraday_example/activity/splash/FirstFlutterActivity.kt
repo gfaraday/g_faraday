@@ -5,6 +5,9 @@ import android.os.Build
 import android.os.Bundle
 import com.yuxiaor.flutter.g_faraday.Faraday
 import com.yuxiaor.flutter.g_faraday.FaradayActivity
+import com.yuxiaor.flutter.g_faraday.channels.postNotification
+import com.yuxiaor.flutter.g_faraday.channels.registerNotification
+import com.yuxiaor.flutter.g_faraday.channels.unregisterNotification
 import com.yuxiaor.flutter.g_faraday_example.widget.NotificationDialog
 
 class FirstFlutterActivity : FaradayActivity() {

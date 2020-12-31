@@ -26,21 +26,12 @@
                         <action selector="touchPopWithSender:" destination="-1" eventType="touchUpInside" id="8ln-H1-MWU"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X1K-eO-e9T">
-                    <rect key="frame" x="159.5" y="513" width="95" height="30"/>
-                    <state key="normal" title="PopTo Anchor"/>
-                    <connections>
-                        <action selector="touchPopToRootWithSender:" destination="-1" eventType="touchUpInside" id="OGB-gP-S2G"/>
-                    </connections>
-                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="S9B-LS-8Vs" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="50v-r3-Jkf"/>
-                <constraint firstItem="X1K-eO-e9T" firstAttribute="top" secondItem="S9B-LS-8Vs" secondAttribute="bottom" constant="50" id="d3N-X8-TmQ"/>
                 <constraint firstItem="S9B-LS-8Vs" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="feU-cE-Ezt"/>
-                <constraint firstItem="X1K-eO-e9T" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="tAq-kb-pg9"/>
             </constraints>
             <point key="canvasLocation" x="139" y="151"/>
         </view>
