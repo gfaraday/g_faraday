@@ -1,4 +1,9 @@
-# 0.5.1-nullsafety.20
+# 0.5.1-nullsafety.21
+
+* remove navigator anchor
+* [android] refine `onNewIntent`
+
+## 0.5.1-nullsafety.20
 
 * add anchro native api
 * [android] fix splash reuse issue
