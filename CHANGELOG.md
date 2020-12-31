@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.18
+# 0.5.1-nullsafety.19
+
+* fix page dealloc logic
+  
+## 0.5.1-nullsafety.18
 
 * add popToAnchor native api
 
