@@ -5,7 +5,7 @@
 ![Flutter_Version](https://img.shields.io/badge/Flutter-1.24.0--10.2.pre-blue?style=for-the-badge&logo=flutter)
 ![License](https://img.shields.io/github/license/gfaraday/g_faraday?style=for-the-badge)
 
-一个`Flutter`混合栈开发解决方案
+[一个`Flutter`混合栈开发解决方案](https://juejin.cn/post/6911985354488676365)
 
 ## Features
 
@@ -51,11 +51,11 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 
 ## 版本对应关系
 
-| g_faraday | flutter | cocoapods | remark |
-|-----------|---------|-----------|--------|
-| ^0.5.1-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta | any | recommend |
-| ^0.5.0-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta | any | |
-| ^4.0.0 | Flutter 1.24.0-10.2.pre • channel beta | any | not recommend |
+| g_faraday           | flutter                                | cocoapods | remark        |
+| ------------------- | -------------------------------------- | --------- | ------------- |
+| ^0.5.1-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta | any       | recommend     |
+| ^0.5.0-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta | any       |               |
+| ^4.0.0              | Flutter 1.24.0-10.2.pre • channel beta | any       | not recommend |
 
 ## 快速开始
 
