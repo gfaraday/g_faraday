@@ -88,8 +88,34 @@ public class Faraday {
     
     //
     func setup(messenger: FlutterBinaryMessenger) {
+        debugPrint("g_faraday flutter plugins register succeed.")
+    }
+    
+    /// 入口方法，用于启动Flutter Engine、 注册插件
+    /// - Parameters:
+    ///   - navigatorDelegate: native 侧路由代理
+    ///   - automaticallyRegisterPlugins: 是否自动注册插件，如果不自动注册请及时手动注册所有插件
+    ///
+    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate,
+                                   httpProvider: FaradayHttpProvider? = nil,
+                                   commonHandler: FaradayHandler? = nil,
+                                   automaticallyRegisterPlugins: Bool = true,
+                                   entrypoint: String = "main") {
+        self.navigatorDelegate = navigatorDelegate
+        self.netProvider = httpProvider
+        self.commonHandler = commonHandler
+        
+        engine = FlutterEngine(name: "io.flutter.faraday", project: nil, allowHeadlessExecution: true)
+        
+        // 1.1 run
+        guard engine!.run(withEntrypoint: entrypoint) else {
+            fatalError("run FlutterEngine failed")
+        }
+        
+        let messenger = engine!.binaryMessenger
         
         channel = FlutterMethodChannel(name: "g_faraday", binaryMessenger: messenger)
+        channel?.resizeBuffer(5)
         
         channel?.setMethodCallHandler({ [unowned self] (call, result) in
             if (call.method == "pushNativePage") {
@@ -136,28 +162,6 @@ public class Faraday {
             commonChannel?.setMethodCallHandler({ (call, r) in
                 h(call.method, call.arguments, r)
             })
-        }
-    }
-    
-    /// 入口方法，用于启动Flutter Engine、 注册插件
-    /// - Parameters:
-    ///   - navigatorDelegate: native 侧路由代理
-    ///   - automaticallyRegisterPlugins: 是否自动注册插件，如果不自动注册请及时手动注册所有插件
-    ///
-    public func startFlutterEngine(navigatorDelegate: FaradayNavigationDelegate,
-                                   httpProvider: FaradayHttpProvider? = nil,
-                                   commonHandler: FaradayHandler? = nil,
-                                   automaticallyRegisterPlugins: Bool = true,
-                                   entrypoint: String = "main") {
-        self.navigatorDelegate = navigatorDelegate
-        self.netProvider = httpProvider
-        self.commonHandler = commonHandler
-        
-        engine = FlutterEngine(name: "io.flutter.faraday", project: nil, allowHeadlessExecution: true)
-        
-        // 1.1 run
-        guard engine!.run(withEntrypoint: entrypoint) else {
-            fatalError("run FlutterEngine failed")
         }
         
         if (automaticallyRegisterPlugins) {
@@ -249,14 +253,13 @@ extension Faraday {
         }
     }
     
-    static func sendPageState(_ state: Faraday.PageState, result: @escaping (Bool) -> Void) {
+    static func sendPageState(_ state: Faraday.PageState) {
         let faraday = Faraday.default
         let info = state.info;
         faraday.channel?.invokeMethod(info.0, arguments: info.1, result: { r in
+            debugPrint("\(info.0): \(info.1 ?? "null") | r: [\(r ?? false)]")
             if (r is FlutterError) {
                 fatalError((r as! FlutterError).message ?? "unkonwn error")
-            } else {
-                result(r as? Bool ?? false)
             }
         })
     }

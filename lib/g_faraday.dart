@@ -7,6 +7,7 @@ export 'src/common/entry.dart';
 export 'src/common/net.dart';
 // wrapper
 export 'src/faraday.dart';
+export 'src/route/native_bridge.dart';
 // navigator
 export 'src/route/navigator.dart';
 export 'src/route/navigator_ext.dart';

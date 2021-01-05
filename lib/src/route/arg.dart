@@ -6,7 +6,7 @@ import 'package:g_json/g_json.dart';
 import 'navigator.dart';
 import 'observer.dart';
 
-class FaradayArguments {
+class FaradayArgument {
   final GlobalKey<FaradayNavigatorState> key;
   final Object? arguments;
   final String name;
@@ -14,7 +14,7 @@ class FaradayArguments {
   final bool opaque;
   final observer = FaradayNavigatorObserver();
 
-  FaradayArguments(this.arguments, this.name, this.id, {this.opaque = true})
+  FaradayArgument(this.arguments, this.name, this.id, {this.opaque = true})
       : key = GlobalKey(debugLabel: 'id: $id');
 
   JSON get info => JSON({

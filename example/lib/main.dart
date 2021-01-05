@@ -20,6 +20,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Map<String, RouteFactory> routes = {
+    '/': (settings) => PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            Container(color: Colors.blueAccent),
+        settings: settings),
     'home': (settings) => CupertinoPageRoute(
         builder: (context) => HomePage(settings.arguments), settings: settings),
     'native2flutter': (settings) => CupertinoPageRoute(
@@ -37,6 +41,11 @@ class _MyAppState extends State<MyApp> {
   };
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final color = Color.fromARGB(255, 6, 210, 116);
 
@@ -46,28 +55,13 @@ class _MyAppState extends State<MyApp> {
         if (f == null) return null;
         return f(settings);
       },
-      switchPageAnimation: (currentRoute) {
-        if (currentRoute['route'] == '') {
-          return ((context, child) => AnimatedSwitcher(
-                duration: Duration(seconds: 1),
-                child: child,
-                transitionBuilder: (child, animation) => RotationTransition(
-                  turns: animation,
-                  child: child,
-                ),
-              ));
-        }
-        return null;
-      },
-      // flutter 自定义过渡页背景
-      nativeContainerBackgroundColorProvider: (context, {route}) =>
-          CupertinoColors.secondarySystemBackground,
     );
 
     final cupertinoApp = CupertinoApp(
       localizationsDelegates: [
         S.delegate,
-        DefaultCupertinoLocalizations.delegate
+        DefaultCupertinoLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate
       ],
       supportedLocales: [
         Locale('en', ''),

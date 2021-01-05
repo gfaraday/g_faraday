@@ -34,17 +34,11 @@ class Faraday {
   /// }
   /// ```
   ///
-  Route<dynamic> wrapper(
-    RouteFactory rawFactory, {
-    ColorProvider? nativeContainerBackgroundColorProvider,
-    TransitionBuilderProvider? switchPageAnimation,
-  }) {
+  Route<dynamic> wrapper(RouteFactory rawFactory) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {
         final page = FaradayNativeBridge(
-          rawFactory,
-          backgroundColorProvider: nativeContainerBackgroundColorProvider,
-          transitionBuilderProvider: switchPageAnimation,
+          onGenerateRoute: rawFactory,
         );
         return page;
       },

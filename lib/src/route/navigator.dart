@@ -7,7 +7,7 @@ import 'observer.dart';
 /// FaradayNavigator is a root widget for each native container
 class FaradayNavigator extends Navigator {
   ///
-  final FaradayArguments arg;
+  final FaradayArgument arg;
 
   ///
   FaradayNavigator(

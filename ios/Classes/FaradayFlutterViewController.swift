@@ -48,7 +48,7 @@ open class FaradayFlutterViewController: FlutterViewController, UINavigationCont
     }
     
     func createFlutterPage() {
-        Faraday.sendPageState(.create(name, arguments, id, backgroundClear)) { _ in }
+        Faraday.sendPageState(.create(name, arguments, id, backgroundClear))
     }
     
     weak var interactivePopGestureRecognizerDelegate: UIGestureRecognizerDelegate?
@@ -80,7 +80,7 @@ open class FaradayFlutterViewController: FlutterViewController, UINavigationCont
     open override func viewWillAppear(_ animated: Bool) {
         engine?.viewController = self
         isShowing = true
-        Faraday.sendPageState(.show(id)) { _ in }
+        Faraday.sendPageState(.show(id))
         super.viewWillAppear(animated)
         view.backgroundColor = backgroundClear ? .clear : .white
     }
@@ -136,7 +136,7 @@ open class FaradayFlutterViewController: FlutterViewController, UINavigationCont
     }
     
     deinit {
-        Faraday.sendPageState(.dealloc(id)) { _ in }
+        Faraday.sendPageState(.dealloc(id))
         debugPrint("faraday flutter deinit \(name) \(id)")
     }
 }

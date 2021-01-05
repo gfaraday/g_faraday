@@ -66,6 +66,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: CupertinoColors.white,
         border: null,
         largeTitle: Text(S.of(context).homeTitle),
+        leading: Container(),
       ),
       SliverPersistentHeader(
         delegate: HomePageBannerDelegate(),
