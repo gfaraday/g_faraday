@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.21
+# 0.5.1-nullsafety.22
+
+* [ios] resize channel buffer
+  
+## 0.5.1-nullsafety.21
 
 * remove navigator anchor
 * [android] refine `onNewIntent`
