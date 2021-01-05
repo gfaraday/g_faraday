@@ -223,6 +223,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   Future<bool> _handler(MethodCall call) async {
+    debugPrint('channel: g_faraday method: ${call.method}: ${call.arguments}');
     switch (call.method) {
       case 'pageCreate':
         String name = call.arguments['name'];

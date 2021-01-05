@@ -90,6 +90,7 @@ public class Faraday {
     func setup(messenger: FlutterBinaryMessenger) {
         
         channel = FlutterMethodChannel(name: "g_faraday", binaryMessenger: messenger)
+        channel?.resizeBuffer(2)
         
         channel?.setMethodCallHandler({ [unowned self] (call, result) in
             if (call.method == "pushNativePage") {
@@ -136,6 +137,12 @@ public class Faraday {
             commonChannel?.setMethodCallHandler({ (call, r) in
                 h(call.method, call.arguments, r)
             })
+        }
+        
+        if let rawEngine = messenger as? FlutterEngine {
+            if (engine == nil || engine != rawEngine) {
+                engine = rawEngine
+            }
         }
     }
     
