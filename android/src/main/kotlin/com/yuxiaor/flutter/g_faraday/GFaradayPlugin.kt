@@ -99,6 +99,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(binding.binaryMessenger, "g_faraday")
+        channel.resizeChannelBuffer(2)
         channel.setMethodCallHandler(this)
         this.navigator = Faraday.navigator
         Faraday.pluginRef = WeakReference(this)
