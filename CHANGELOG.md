@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.22
+# 0.5.1-nullsafety.23
+
+* remove useless asset
+
+## 0.5.1-nullsafety.22
 
 * [ios] resize channel buffer
   
