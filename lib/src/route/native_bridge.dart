@@ -295,7 +295,6 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           arguments: arg.arguments,
         );
         final r = widget.onGenerateRoute(settings);
-        assert(r != null, 'generate route failed. name: $initialRoute');
         return [if (r != null) r];
       },
     );
