@@ -17,12 +17,12 @@ import 'options.dart';
 
 const _channel = MethodChannel('g_faraday');
 
-typedef TransitionBuilderProvider = TransitionBuilder? Function(
+typedef TransitionBuilderProvider = TransitionBuilder Function(
     JSON currentRoute);
 
-typedef ColorProvider = Color Function(BuildContext context, {JSON? route});
+typedef ColorProvider = Color Function(BuildContext context, {JSON route});
 
-Color _defaultBackgroundColor(BuildContext context, {JSON? route}) {
+Color _defaultBackgroundColor(BuildContext context, {JSON route}) {
   return MediaQuery.of(context).platformBrightness == Brightness.light
       ? CupertinoColors.white
       : CupertinoColors.black;
@@ -49,19 +49,19 @@ class FaradayNativeBridge extends StatefulWidget {
   final RouteFactory onGenerateRoute;
 
   // 页面默认背景
-  final ColorProvider? backgroundColorProvider;
+  final ColorProvider backgroundColorProvider;
 
   // 页面切换动画
-  final TransitionBuilderProvider? transitionBuilderProvider;
+  final TransitionBuilderProvider transitionBuilderProvider;
 
   FaradayNativeBridge(
     this.onGenerateRoute, {
-    Key? key,
+    Key key,
     this.backgroundColorProvider,
     this.transitionBuilderProvider,
   }) : super(key: key);
 
-  static FaradayNativeBridgeState? of(BuildContext context) {
+  static FaradayNativeBridgeState of(BuildContext context) {
     if (context is StatefulElement &&
         context.state is FaradayNativeBridgeState) {
       return context.state as FaradayNativeBridgeState;
@@ -75,8 +75,8 @@ class FaradayNativeBridge extends StatefulWidget {
 
 class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   final List<FaradayArguments> _navigators = [];
-  int? _index;
-  int? _previousNotFoundId;
+  int _index;
+  int _previousNotFoundId;
 
   @override
   void initState() {
@@ -113,10 +113,10 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     super.dispose();
   }
 
-  Future<T?> pushNamed<T extends Object?>(
+  Future<T> pushNamed<T extends Object>(
     String name, {
-    Object? arguments,
-    Options? options,
+    Object arguments,
+    Options options,
   }) async {
     //
     return _channel.invokeMethod<T>('pushNativePage', {
@@ -126,14 +126,14 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     });
   }
 
-  Future<void> pop<T extends Object>(Key key, [T? result]) {
+  Future<void> pop<T extends Object>(Key key, [T result]) {
     assert(_navigators.isNotEmpty);
     assert(_index != null);
-    assert(_navigators[_index!].key == key);
+    assert(_navigators[_index].key == key);
     return _channel.invokeMethod('popContainer', result);
   }
 
-  Future<void> disableHorizontalSwipePopGesture({required bool disable}) {
+  Future<void> disableHorizontalSwipePopGesture({@required bool disable}) {
     return _channel.invokeMethod('disableHorizontalSwipePopGesture', disable);
   }
 
@@ -142,7 +142,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     return topNavigator == key;
   }
 
-  GlobalKey<FaradayNavigatorState>? get topNavigator =>
+  GlobalKey<FaradayNavigatorState> get topNavigator =>
       _navigators.isEmpty ? null : _navigators[_index ?? 0].key;
 
   @override
@@ -199,7 +199,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         name: runtimeType.toString(),
       );
     } else {
-      assert(_index! < _navigators.length);
+      assert(_index < _navigators.length);
     }
 
     final current = _navigators[_index ?? 0];
@@ -217,7 +217,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       ),
     );
 
-    final builder = widget.transitionBuilderProvider?.call(current.info);
+    final builder = widget.transitionBuilderProvider.call(current.info);
     if (builder == null) return content;
     return builder(context, content);
   }
@@ -240,7 +240,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         _navigators.add(arg);
         if (_previousNotFoundId != null) {
           // show 比create 先调用
-          _updateIndex(_findIndexBy(id: _previousNotFoundId!));
+          _updateIndex(_findIndexBy(id: _previousNotFoundId));
         }
         return true;
       case 'pageShow':
@@ -254,9 +254,9 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       case 'pageDealloc':
         final index = _findIndexBy(id: call.arguments);
         assert(index != null, 'page not found seq: ${call.arguments}');
-        assert(index! < _navigators.length);
-        final current = _index == null ? null : _navigators[_index!];
-        _navigators.removeAt(index!);
+        assert(index < _navigators.length);
+        final current = _index == null ? null : _navigators[_index];
+        _navigators.removeAt(index);
         if (current != null) {
           final newIndex = _navigators.indexOf(current);
           _updateIndex(newIndex == -1 ? null : newIndex);
@@ -268,12 +268,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   // 如果找不到返回null，不会返回-1
-  int? _findIndexBy({required int id}) {
+  int _findIndexBy({@required int id}) {
     final index = _navigators.indexWhere((arg) => arg.id == id);
     return index != -1 ? index : null;
   }
 
-  void _updateIndex(int? index) {
+  void _updateIndex(int index) {
     assert(index != -1);
     setState(() {
       _index = index;
