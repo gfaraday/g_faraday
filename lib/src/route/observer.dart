@@ -8,7 +8,10 @@ class FaradayNavigatorObserver extends NavigatorObserver {
 
   ValueNotifier<bool> get disableHorizontalSwipePopGesture =>
       _disableHorizontalSwipePopGesture;
-  final _disableHorizontalSwipePopGesture = ValueNotifier<bool>(false);
+
+  // 默认认为是禁用滑动返回手势的
+  // 第一个页面加载以后会自动启用
+  final _disableHorizontalSwipePopGesture = ValueNotifier<bool>(true);
 
   @override
   void didPush(Route route, Route? previousRoute) {
