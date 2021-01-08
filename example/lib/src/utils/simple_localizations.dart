@@ -20,7 +20,7 @@ class S {
         'title': 'Faraday Features Demo',
         'tip1': 'All flutter page has faraday banner on rightTop',
         'tip2': 'All feature available on ios&android',
-        'tip3': 'Debug Mode will show a error page. it is expect.'
+        'tip3': 'Debug Mode will show an error page. it is expected.'
       },
       'basic': {
         'title': 'Basic(基础)',
