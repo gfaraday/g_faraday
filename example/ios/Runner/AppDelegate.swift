@@ -11,10 +11,12 @@ import g_faraday
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         
+        // 自动处理导航栏
         UINavigationController.fa.automaticallyHandleNavigationBarHidden()
+        // 自动回调空值到flutter侧，避免flutter侧 await 一直不返回
         UIViewController.fa.automaticallyCallbackNullToFlutter()
         
-        Faraday.default.startFlutterEngine(navigatorDelegate: self, httpProvider: nil, commonHandler: self.handle(_:_:_:), automaticallyRegisterPlugins: true)
+        Faraday.default.startFlutterEngine(navigatorDelegate: self, httpProvider: nil, commonHandler: nil, automaticallyRegisterPlugins: true)
         
         return true
     }
@@ -50,60 +52,4 @@ extension AppDelegate: FaradayNavigationDelegate {
         vc.fa.enableCallback(with: token)
     }   
 
-}
-
-public protocol FlutterPage {
-    
-    var name: String { get }
-    var arguments: Any? { get }
-}
-
-enum FPage: FlutterPage {
-    
-    case flutterTab1
-    case flutterTab2
-    case flutter
-    case home
-    case native2flutter
-    
-    var name: String {
-        switch self {
-            case .home:
-                return "home"
-            case .native2flutter:
-                return "native2flutter"
-            case .flutterTab1:
-                return "flutter_tab_1"
-            case .flutterTab2:
-                return "flutter_tab_2"
-            default:
-                return "flutter"
-        }
-    }
-    
-    var arguments: Any? { return Date().description }
-}
-
-extension FlutterPage {
-    
-    func flutterViewController(callback: @escaping (Any?) -> Void) -> UIViewController {
-        return FaradayFlutterViewController(name, arguments: arguments, callback: callback)
-    }
-}
-
-
-extension AppDelegate: FaradayCommonHandler {
-    func showLoading(_ message: String) -> Any? {
-        return nil
-    }
-    
-    func getSomeData(_ id: String, _ optionalArg: Bool?) -> Any? {
-        return ["name": "test"]
-    }
-    
-    func setSomeData(_ data: Any, _ id: String) -> Any? {
-        //
-        return true
-    }
-    
 }

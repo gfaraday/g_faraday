@@ -1,5 +1,5 @@
-import Foundation
-
+//import Foundation
+//
 //  Created by faraday_cli on 2020-09-24 09:48:07.370618.
 //
 //    ___                   _
@@ -10,28 +10,28 @@ import Foundation
 //                                  |___/
 //
 // GENERATED CODE BY FARADAY CLI - DO NOT MODIFY BY HAND
-
-
-protocol FaradayCommonHandler {
-
-    // ---> protocol
-
-    func handle(_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Void
-}
-
-extension FaradayCommonHandler {
-
-    func handle(_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Void {
-        if (!defaultHandle(name,arguments,completion)) {
-            debugPrint("Faraday->Warning \(name) not handle. argument: \(arguments ?? "")")
-        }
-    }
-
-    func defaultHandle(_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Bool {
-//        let args = arguments as? Dictionary<String, Any>
-        // ---> impl
-        return false
-    }
-
-}
-
+//
+//
+//protocol FaradayCommonHandler {
+//
+//    // ---> protocol
+//
+//    func handle(_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Void
+//}
+//
+//extension FaradayCommonHandler {
+//
+//    func handle(_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Void {
+//        if (!defaultHandle(name,arguments,completion)) {
+//            debugPrint("Faraday->Warning \(name) not handle. argument: \(arguments ?? "")")
+//        }
+//    }
+//
+//    func defaultHandle(_ name: String, _ arguments: Any?, _ completion: @escaping (_ result: Any?) -> Void) -> Bool {
+////        let args = arguments as? Dictionary<String, Any>
+//        // ---> impl
+//        return false
+//    }
+//
+//}
+//
