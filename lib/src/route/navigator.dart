@@ -61,7 +61,7 @@ class FaradayNavigatorState extends NavigatorState {
   @override
   void initState() {
     observer.disableHorizontalSwipePopGesture
-        .addListener(notifyNativeDisableOrEnableBackGesture);
+        .addListener(_notifyNativeDisableOrEnableBackGesture);
     _observerForAndroid = _FaradayWidgetsBindingObserver(this);
     WidgetsBinding.instance?.addObserver(_observerForAndroid!);
     super.initState();
@@ -70,7 +70,7 @@ class FaradayNavigatorState extends NavigatorState {
   @override
   void dispose() {
     observer.disableHorizontalSwipePopGesture
-        .removeListener(notifyNativeDisableOrEnableBackGesture);
+        .removeListener(_notifyNativeDisableOrEnableBackGesture);
     if (_observerForAndroid != null) {
       WidgetsBinding.instance?.removeObserver(_observerForAndroid!);
       _observerForAndroid = null;
@@ -79,7 +79,7 @@ class FaradayNavigatorState extends NavigatorState {
   }
 
   ///
-  void notifyNativeDisableOrEnableBackGesture() {
+  void _notifyNativeDisableOrEnableBackGesture() {
     FaradayNativeBridge.of(context)?.disableHorizontalSwipePopGesture(
         disable: observer.disableHorizontalSwipePopGesture.value);
   }

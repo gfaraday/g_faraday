@@ -134,6 +134,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   Future<void> disableHorizontalSwipePopGesture({required bool disable}) {
+    debugPrint("swipe pop gesture ${disable ? 'disabled' : 'enabled'}");
     return _channel.invokeMethod('disableHorizontalSwipePopGesture', disable);
   }
 
@@ -278,7 +279,15 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     setState(() {
       _index = index;
       _previousNotFoundId = null;
-      debugPrint('index: $_index');
+
+      if (_index != null && _index! < _navigators.length) {
+        final value = _navigators[_index!]
+            .observer
+            .disableHorizontalSwipePopGesture
+            .value;
+        // 每次切换都需要还原一次配置
+        disableHorizontalSwipePopGesture(disable: value);
+      }
     });
   }
 
