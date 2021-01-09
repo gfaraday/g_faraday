@@ -41,11 +41,7 @@ class _MyAppState extends State<MyApp> {
     final color = Color.fromARGB(255, 6, 210, 116);
 
     final route = faraday.wrapper(
-      (settings) {
-        final f = routes[settings.name!];
-        if (f == null) return null;
-        return f(settings);
-      },
+      (settings) => routes[settings.name]?.call(settings),
       // switchPageAnimation: (currentRoute) {
       //   if (currentRoute['route'] == '') {
       //     return ((context, child) => AnimatedSwitcher(
