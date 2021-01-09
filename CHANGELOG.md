@@ -18,7 +18,7 @@
 
 ## 0.5.1-nullsafety.20
 
-* add anchro native api
+* add anchor native api
 * [android] fix splash reuse issue
 
 ## 0.5.1-nullsafety.19
