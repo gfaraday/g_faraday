@@ -1,4 +1,9 @@
-# 0.5.1-nullsafety.23
+# 0.5.1-nullsafety.24
+
+* [ios] refine swipe pop gesture
+* refine example project
+
+## 0.5.1-nullsafety.23
 
 * remove useless asset
 
