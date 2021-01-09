@@ -22,6 +22,14 @@
 - [ ] 单元测试
 - [x] 完整的文档(7/10)
 
+## 使用`g_faraday`的APP
+
+| 序号 | 名称   | 版本号 | iOS                                                                            | Android                                                         |
+| ---- | ------ | ------ | ------------------------------------------------------------------------------ | --------------------------------------------------------------- |
+| 0    | 寓小二 | 8.0.0  | [AppStore](https://apps.apple.com/cn/app/寓小二-公寓系统定制专家/id1081403007) | [应用宝](https://a.app.qq.com/o/simple.jsp?pkgname=com.yuxiaor) |
+
+> 您的app也在使用?[联系我们](#Communication)
+
 ## Show Cases
 
 ![demo](doc/images/demo.png)
