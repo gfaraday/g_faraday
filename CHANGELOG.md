@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.24
+# 0.5.1-nullsafety.25
+
+* [ios] fix ios notification issue
+
+## 0.5.1-nullsafety.24
 
 * [ios] refine swipe pop gesture
 * refine example project
