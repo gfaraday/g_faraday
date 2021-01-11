@@ -108,8 +108,7 @@ public class Faraday {
         
         notificationChannel = FlutterMethodChannel(name: "g_faraday/notification", binaryMessenger: messenger)
         notificationChannel?.setMethodCallHandler({ (call, result) in
-            let args = call.arguments as? Dictionary<String, Any>
-            NotificationCenter.default.post(name: .init(rawValue: call.method), object: args?["arguments"])
+            NotificationCenter.default.post(name: .init(rawValue: call.method), object: call.arguments)
             result(true)
         })
         
