@@ -138,6 +138,9 @@ public abstract class XFlutterActivity extends Activity
     @Nullable
     @Override
     public SplashScreen provideSplashScreen() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return null;
+        }
         Drawable manifestSplashDrawable = getSplashScreenFromManifest();
         if (manifestSplashDrawable != null) {
             return new DrawableSplashScreen(manifestSplashDrawable);
@@ -213,8 +216,10 @@ public abstract class XFlutterActivity extends Activity
 
     private void configureStatusBarForFullscreenFlutterExperience() {
         Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(Color.TRANSPARENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
         window.getDecorView().setSystemUiVisibility(PlatformPlugin.DEFAULT_SYSTEM_UI);
     }
 
@@ -711,7 +716,9 @@ public abstract class XFlutterActivity extends Activity
         // Flutter performance tests.
         // This was supported in KitKat (API 19), but has a bug around requiring
         // permissions. See https://github.com/flutter/flutter/issues/46172
-        reportFullyDrawn();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            reportFullyDrawn();
+        }
     }
 
     @Override
