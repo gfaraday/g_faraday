@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -155,7 +156,7 @@ import java.util.Objects;
         if (host.shouldAttachEngineToActivity()) {
             // Notify plugins that they are no longer attached to an Activity.
             Log.v(TAG, "Detaching FlutterEngine from the Activity that owns this Fragment.");
-            if (Objects.requireNonNull(host.getActivity()).isChangingConfigurations()) {
+            if (requireNonNull(host.getActivity()).isChangingConfigurations()) {
                 flutterEngine.getActivityControlSurface().detachFromActivityForConfigChanges();
             } else {
                 flutterEngine.getActivityControlSurface().detachFromActivity();
@@ -181,6 +182,12 @@ import java.util.Objects;
 
         flutterSplashView.addView(reattachView);
         flutterSplashView.removeView(flutterView);
+    }
+
+    private  <T> T requireNonNull(T obj) {
+        if (obj == null)
+            throw new NullPointerException();
+        return obj;
     }
 
     boolean isDetached() {
@@ -395,7 +402,9 @@ import java.util.Objects;
         flutterView.addOnFirstFrameRenderedListener(flutterUiDisplayListener);
 
         flutterSplashView = new FlutterSplashView(host.getContext());
-        flutterSplashView.setId(View.generateViewId());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            flutterSplashView.setId(View.generateViewId());
+        }
         flutterSplashView.displayFlutterViewWithSplash(flutterView, host.provideSplashScreen());
 
         Log.v(TAG, "Attaching FlutterEngine to FlutterView.");
