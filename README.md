@@ -120,6 +120,9 @@ extension AppDelegate: FaradayNavigationDelegate {
 
         let topMost = UIViewController.fa.topMost
         if (isPresent) {
+            // 此处注意
+            // vc.modalPresentationStyle 不能是`pageSheet`
+            // 如果的确需要这种UI效果，可以配合透明背景，在Flutter侧实现
             topMost?.present(vc, animated: true, completion: nil)
         } else {
             topMost?.navigationController?.pushViewController(vc, animated: true)
