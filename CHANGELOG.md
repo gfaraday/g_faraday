@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.25
+# 0.5.1-nullsafety.26
+
+* [android] downgrade minSdkVersion to 16
+  
+## 0.5.1-nullsafety.25
 
 * [ios] fix ios notification issue
 
