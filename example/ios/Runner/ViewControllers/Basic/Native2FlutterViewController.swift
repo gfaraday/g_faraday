@@ -21,7 +21,7 @@ class Native2FlutterViewController: BaseViewController {
 
     @IBAction func onTap(sender: UIButton) {
         
-        let vc = FPage.native2flutter.flutterViewController { [weak self] r in
+        let vc = FaradayFlutterViewController("native2flutter") { [weak self] r in
             self?.label.text = r.debugDescription
         }
         
