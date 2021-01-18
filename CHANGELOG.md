@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.26
+# 0.5.1-nullsafety.27
+
+* [ios] post status bar notification
+
+## 0.5.1-nullsafety.26
 
 * [android] downgrade minSdkVersion to 16
   
