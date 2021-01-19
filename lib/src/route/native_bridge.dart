@@ -251,6 +251,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           _recreateLastPage();
         }
         _updateIndex(index);
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
         return index != null;
       case 'pageDealloc':
         final index = _findIndexBy(id: call.arguments);
