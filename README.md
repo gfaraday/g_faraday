@@ -209,7 +209,7 @@ class SimpleFlutterNavigator : FaradayNavigator {
 }
 
 // 0x01 在 Application 的onCreate方法中启动FlutterEngine
-if (!Faraday.initEngine(this, SimpleFlutterNavigator())) {
+if (!Faraday.startFlutterEngine(this, SimpleFlutterNavigator())) {
     GeneratedPluginRegistrant.registerWith(Faraday.engine)
 }
 

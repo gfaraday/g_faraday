@@ -52,12 +52,12 @@ object Faraday {
      *
      */
     @JvmStatic
-    fun initEngine(context: Context,
-                   navigator: FaradayNavigator,
-                   netHandler: NetHandler? = null,
-                   commonHandler: MethodChannel.MethodCallHandler? = null,
-                   automaticallyRegisterPlugins: Boolean = true,
-                   dartEntrypointFunctionName: String = "main"): Boolean {
+    fun startFlutterEngine(context: Context,
+                           navigator: FaradayNavigator,
+                           netHandler: NetHandler? = null,
+                           commonHandler: MethodChannel.MethodCallHandler? = null,
+                           automaticallyRegisterPlugins: Boolean = true,
+                           dartEntrypointFunctionName: String = "main"): Boolean {
         // 这个navigator 必须先初始化 不能动
         this.navigator = navigator
         engine = FlutterEngine(context, null, automaticallyRegisterPlugins)
