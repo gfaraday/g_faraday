@@ -1,4 +1,9 @@
-# 0.5.1-nullsafety.27
+# 0.5.1-nullsafety.28
+
+* [ios] reset additionalSafeAreaInsets
+* [android] refactor `initEngine` to `startEngine`
+  
+## 0.5.1-nullsafety.27
 
 * [ios] post status bar notification
 

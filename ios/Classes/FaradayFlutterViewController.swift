@@ -84,7 +84,9 @@ open class FaradayFlutterViewController: FlutterViewController, UINavigationCont
         super.viewWillAppear(animated)
         view.backgroundColor = backgroundClear ? .clear : .white
         
-        NotificationCenter.default.post(name: .init(rawValue: "io.flutter.plugin.platform.SystemChromeOverlayNotificationName"), object: nil)
+        if #available(iOS 11.0, *) {
+            additionalSafeAreaInsets = .zero
+        }
     }
     
     open override func viewDidAppear(_ animated: Bool) {
