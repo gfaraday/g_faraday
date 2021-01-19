@@ -46,7 +46,7 @@ object Faraday {
      *  @return true if plugins registered otherwise return false.
      *
      *  @sample
-     *  if (!Faraday.initEngine(this, MyFlutterNavigator())) {
+     *  if (!Faraday.startFlutterEngine(this, MyFlutterNavigator())) {
      *       GeneratedPluginRegister.registerGeneratedPlugins(Faraday.engine)
      *   }
      *

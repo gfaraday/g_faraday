@@ -188,7 +188,7 @@ class SimpleFlutterNavigator : FaradayNavigator {
 }
 
 // 0x01 start flutter engine in Application.onCrate
-if (!Faraday.initEngine(this, SimpleFlutterNavigator())) {
+if (!Faraday.startFlutterEngine(this, SimpleFlutterNavigator())) {
     GeneratedPluginRegistrant.registerWith(Faraday.engine)
 }
 
