@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.28
+# 0.5.1-nullsafety.29
+
+* [android] fix status bar style
+
+## 0.5.1-nullsafety.28
 
 * [ios] reset additionalSafeAreaInsets
 * [android] refactor `initEngine` to `startEngine`
