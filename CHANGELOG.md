@@ -1,4 +1,9 @@
-# 0.5.1-nullsafety.29
+# 0.5.1-nullsafety.30
+
+* refactor logger
+* improve widget dispose logic after native container dealloc
+
+## 0.5.1-nullsafety.29
 
 * [android] fix status bar style
 
