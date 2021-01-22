@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -11,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:g_json/g_json.dart';
 
+import '../widgets/log.dart';
 import 'arg.dart';
 import 'navigator.dart';
 import 'options.dart';
@@ -103,7 +103,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     try {
       _recreateLastPage();
     } on MissingPluginException catch (_) {
-      debugPrint('reCreateLastPage failed !!');
+      log('reCreateLastPage failed !!', level: Level.WARNING);
     }
     super.reassemble();
   }
@@ -134,7 +134,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   Future<void> disableHorizontalSwipePopGesture({required bool disable}) {
-    debugPrint("swipe pop gesture ${disable ? 'disabled' : 'enabled'}");
+    log("swipe pop gesture ${disable ? 'disabled' : 'enabled'}");
     return _channel.invokeMethod('disableHorizontalSwipePopGesture', disable);
   }
 
@@ -193,12 +193,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     }
 
     if (_index == null) {
-      log(
-        'g_faraday: _index is null.',
-        level: 900,
-        time: DateTime.now(),
-        name: runtimeType.toString(),
-      );
+      log('g_faraday: _index is null.', level: Level.CONFIG);
     } else {
       assert(_index! < _navigators.length);
     }
@@ -224,12 +219,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   Future<bool> _handler(MethodCall call) async {
-    log(
-      'g_faraday: method: ${call.method}: ${call.arguments}',
-      level: 900,
-      time: DateTime.now(),
-      name: runtimeType.toString(),
-    );
+    log('g_faraday: method: ${call.method}: ${call.arguments}');
     switch (call.method) {
       case 'pageCreate':
         String name = call.arguments['name'];
@@ -273,6 +263,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         // 此时`native`容器已经`dealloc`了,不会再触发渲染会导致`flutter`侧widget延迟释放
         // 因此再这里手动触发一次渲染
         WidgetsBinding.instance?.drawFrame();
+        log('''
+TRIGGER `drawFrame` by hand. if you find any bugs please contact me.
+Email: aoxianglele@icloud.com
+Or
+Github Issue: https://github.com/gfaraday/g_faraday/issues
+        ''');
         return true;
       default:
         return false;

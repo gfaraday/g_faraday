@@ -21,7 +21,7 @@ class Faraday {
   /// @override
   /// void onPress() async {
   ///   final result = await Navigator.of(context).pushNamed('Any Route');
-  ///   debugPrint(result.toString());
+  ///   log(result.toString());
   /// }
   /// ```
   ///
@@ -30,7 +30,7 @@ class Faraday {
   /// @override
   /// void onPress() async {
   ///   final result = await Navigator.of(context).pop('Any ...');
-  ///   debugPrint(result.toString());
+  ///   log(result.toString());
   /// }
   /// ```
   ///

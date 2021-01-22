@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../widgets/log.dart';
 import 'arg.dart';
 import 'native_bridge.dart';
 import 'observer.dart';
@@ -91,8 +92,8 @@ class FaradayNavigatorState extends NavigatorState {
       return super.pushNamed(routeName, arguments: arguments);
       // ignore: avoid_catching_errors
     } on FlutterError catch (e) {
-      debugPrint('g_faraday FaradayNavigator $e');
-      debugPrint('fallback to native. name: $routeName, arguments: $arguments');
+      log('g_faraday FaradayNavigator $e', level: Level.WARNING);
+      log('fallback to native. name: $routeName, arguments: $arguments');
 
       final bridge = FaradayNativeBridge.of(context);
       assert(bridge != null);

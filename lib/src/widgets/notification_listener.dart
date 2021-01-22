@@ -6,15 +6,16 @@ import 'package:flutter/widgets.dart';
 import 'package:g_json/g_json.dart';
 
 import '../route/native_bridge.dart';
+import 'log.dart';
 
 ///
 const _notificationChannel = MethodChannel('g_faraday/notification');
 
 final _notificationController =
     StreamController<FaradayNotification>.broadcast(onListen: () {
-  debugPrint('_notificationController onlListened');
+  log('_notificationController onlListened');
 }, onCancel: () {
-  debugPrint('_notificationController onCanceled');
+  log('_notificationController onCanceled', level: Level.WARNING);
 });
 
 StreamSubscription _observerNativeNotification(
