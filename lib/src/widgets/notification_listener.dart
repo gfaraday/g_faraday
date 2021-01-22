@@ -66,7 +66,7 @@ class FaradayNotification {
 }
 
 // ignore: public_member_api_docs
-typedef NotificationRecivedCallback = void Function(
+typedef NotificationReceivedCallback = void Function(
     BuildContext? topMostContext, FaradayNotification value);
 
 /// Receive native notification
@@ -80,7 +80,7 @@ class FaradayNotificationListener extends StatefulWidget {
   final List<String> names;
 
   ///
-  final NotificationRecivedCallback onNotification;
+  final NotificationReceivedCallback onNotification;
 
   ///
   final Widget child;
