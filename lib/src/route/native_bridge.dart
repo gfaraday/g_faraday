@@ -224,7 +224,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   }
 
   Future<bool> _handler(MethodCall call) async {
-    debugPrint('channel: g_faraday method: ${call.method}: ${call.arguments}');
+    log(
+      'g_faraday: method: ${call.method}: ${call.arguments}',
+      level: 900,
+      time: DateTime.now(),
+      name: runtimeType.toString(),
+    );
     switch (call.method) {
       case 'pageCreate':
         String name = call.arguments['name'];
@@ -259,10 +264,15 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         assert(index! < _navigators.length);
         final current = _index == null ? null : _navigators[_index!];
         _navigators.removeAt(index!);
-        if (current != null) {
-          final newIndex = _navigators.indexOf(current);
-          _updateIndex(newIndex == -1 ? null : newIndex);
-        }
+        final newIndex = current != null ? _navigators.indexOf(current) : -1;
+        _updateIndex(newIndex == -1
+            ? _navigators.isEmpty
+                ? null
+                : _navigators.length - 1
+            : newIndex);
+        // 此时`native`容器已经`dealloc`了,不会再触发渲染会导致`flutter`侧widget延迟释放
+        // 因此再这里手动触发一次渲染
+        WidgetsBinding.instance?.drawFrame();
         return true;
       default:
         return false;

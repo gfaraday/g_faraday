@@ -12,6 +12,11 @@ class Native2FlutterPage extends StatefulWidget {
 
 class _Native2FlutterPageState extends State<Native2FlutterPage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
@@ -33,5 +38,15 @@ class _Native2FlutterPageState extends State<Native2FlutterPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
