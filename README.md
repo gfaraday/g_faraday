@@ -249,6 +249,10 @@ example中提供了[fluro](https://github.com/lukepighetti/fluro)和[getx](https
 
 可以保证3端统一使用url进行路由管理。
 
+### 打包时提示 `failed to load module 'g_faraday'`
+
+请使用`xcode 12.3`及以上版本
+
 ## Communication
 
 [点击加入钉钉群](https://qr.dingtalk.com/action/joingroup?code=v1,k1,5FUqLooXjcj0166ehqb9qapZT5t7gbUpjQqrXc2H4a4=&_dt_no_comment=1&origin=11)
