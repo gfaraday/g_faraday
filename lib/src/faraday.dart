@@ -38,6 +38,7 @@ class Faraday {
     RouteFactory rawFactory, {
     ColorProvider? nativeContainerBackgroundColorProvider,
     TransitionBuilderProvider? switchPageAnimation,
+    List<NavigatorObserver>? observers,
   }) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {
@@ -45,6 +46,7 @@ class Faraday {
           rawFactory,
           backgroundColorProvider: nativeContainerBackgroundColorProvider,
           transitionBuilderProvider: switchPageAnimation,
+          observers: observers,
         );
         return page;
       },

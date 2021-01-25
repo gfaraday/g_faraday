@@ -7,6 +7,7 @@ import 'src/pages/features/basic/pages/native_to_flutter.dart';
 import 'src/pages/features/basic/pages/tab_page.dart';
 import 'src/pages/features/basic/pages/transparent_page.dart';
 import 'src/pages/home_page.dart';
+import 'src/utils/observer.dart';
 import 'src/utils/simple_localizations.dart';
 
 void main() {
@@ -42,6 +43,7 @@ class _MyAppState extends State<MyApp> {
 
     final route = faraday.wrapper(
       (settings) => routes[settings.name]?.call(settings),
+      observers: [DemoObserver()],
       // switchPageAnimation: (currentRoute) {
       //   if (currentRoute['route'] == '') {
       //     return ((context, child) => AnimatedSwitcher(

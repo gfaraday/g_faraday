@@ -53,6 +53,8 @@ class FaradayNavigator extends Navigator {
 class FaradayNavigatorState extends NavigatorState {
   late _FaradayWidgetsBindingObserver? _observerForAndroid;
 
+  bool _cleaning = false;
+
   @override
   FaradayNavigator get widget => super.widget as FaradayNavigator;
 
@@ -101,10 +103,19 @@ class FaradayNavigatorState extends NavigatorState {
     }
   }
 
+  /// pop all routes
+  void clean() {
+    _cleaning = true;
+    super.popUntil((route) => false);
+  }
+
   @override
   void pop<T extends Object?>([T? result]) {
     if (observer.onlyOnePage) {
-      FaradayNativeBridge.of(context)?.pop<Object>(widget.arg.key, result);
+      super.pop();
+      if (!_cleaning) {
+        FaradayNativeBridge.of(context)?.pop<Object>(widget.arg.key, result);
+      }
     } else {
       super.pop(result);
     }

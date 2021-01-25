@@ -54,11 +54,15 @@ class FaradayNativeBridge extends StatefulWidget {
   // 页面切换动画
   final TransitionBuilderProvider? transitionBuilderProvider;
 
+  // NavigatorObserver
+  final List<NavigatorObserver>? observers;
+
   FaradayNativeBridge(
     this.onGenerateRoute, {
     Key? key,
     this.backgroundColorProvider,
     this.transitionBuilderProvider,
+    this.observers,
   }) : super(key: key);
 
   static FaradayNativeBridgeState? of(BuildContext context) {
@@ -130,6 +134,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     assert(_navigators.isNotEmpty);
     assert(_index != null);
     assert(_navigators[_index!].key == key);
+
     return _channel.invokeMethod('popContainer', result);
   }
 
@@ -231,8 +236,13 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           _updateIndex(index);
           return true;
         }
-        final arg = FaradayArguments(call.arguments['args'], name, id,
-            opaque: call.arguments['background_mode'] != 'transparent');
+        final arg = FaradayArguments(
+          call.arguments['args'],
+          name,
+          id,
+          opaque: call.arguments['background_mode'] != 'transparent',
+          observers: widget.observers,
+        );
         _navigators.add(arg);
         if (_previousNotFoundId != null) {
           // show 比create 先调用
@@ -253,7 +263,10 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         assert(index != null, 'page not found seq: ${call.arguments}');
         assert(index! < _navigators.length);
         final current = _index == null ? null : _navigators[_index!];
-        _navigators.removeAt(index!);
+
+        final arg = _navigators.removeAt(index!);
+        arg.key.currentState?.clean();
+
         final newIndex = current != null ? _navigators.indexOf(current) : -1;
         _updateIndex(newIndex == -1
             ? _navigators.isEmpty

@@ -12,10 +12,12 @@ class FaradayArguments {
   final String name;
   final int id;
   final bool opaque;
-  final observer = FaradayNavigatorObserver();
+  final FaradayNavigatorObserver observer;
 
-  FaradayArguments(this.arguments, this.name, this.id, {this.opaque = true})
-      : key = GlobalKey(debugLabel: 'id: $id');
+  FaradayArguments(this.arguments, this.name, this.id,
+      {this.opaque = true, List<NavigatorObserver>? observers})
+      : observer = FaradayNavigatorObserver(observers),
+        key = GlobalKey(debugLabel: 'id: $id');
 
   JSON get info => JSON({
         'route': name,
