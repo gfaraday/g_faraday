@@ -1,4 +1,8 @@
-# 0.5.1-nullsafety.30
+# 0.5.1-nullsafety.31
+
+* add navigator observer
+  
+## 0.5.1-nullsafety.30
 
 * refactor logger
 * improve widget dispose logic after native container dealloc
