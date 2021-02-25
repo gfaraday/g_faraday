@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+import '../g_faraday.dart';
 import 'route/native_bridge.dart';
 import 'route/route.dart';
 
@@ -7,6 +8,12 @@ import 'route/route.dart';
 class Faraday {
   /// 备用 后续会创建faraday注解
   const Faraday();
+
+  static GlobalKey<FaradayNativeBridgeState>? _key;
+
+  /// 最上层 navigator
+  static FaradayNavigatorState? get topMostNavigator =>
+      _key?.currentState?.topNavigator?.currentState;
 
   ///
   ///`Flutter Native 容器`: iOS端是指`FlutterViewController` Android端是指
@@ -42,11 +49,13 @@ class Faraday {
   }) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {
+        _key = GlobalKey(debugLabel: 'TopNativeBridge');
         final page = FaradayNativeBridge(
           rawFactory,
           backgroundColorProvider: nativeContainerBackgroundColorProvider,
           transitionBuilderProvider: switchPageAnimation,
           observers: observers,
+          key: _key,
         );
         return page;
       },
