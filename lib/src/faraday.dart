@@ -15,6 +15,10 @@ class Faraday {
   static FaradayNavigatorState? get topMostNavigator =>
       _key?.currentState?.topNavigator?.currentState;
 
+  /// 最上层 context
+  static BuildContext? get topContext =>
+      _key?.currentState?.topNavigator?.currentContext;
+
   ///
   ///`Flutter Native 容器`: iOS端是指`FlutterViewController` Android端是指
   ///`FlutterActivity`或者`FlutterFragment`容器初始化时需要指定 `name` 以及 `arguments`
