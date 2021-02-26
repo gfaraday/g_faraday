@@ -1,4 +1,6 @@
-# 0.6.0-nullsafety.32
+# 0.6.0-nullsafety.33
+* fix typo
+## 0.6.0-nullsafety.32
 
 * add top navigator accessor
 * add top context accessor
