@@ -240,8 +240,8 @@ public class Faraday {
     
     func disableHorizontalSwipePopGesture(arguments: Any?, callback: FlutterResult) {
         let disable = arguments as? Bool ?? false
-        if navigatorDelegate?.pop != nil {
-            callback(navigatorDelegate?.disableHorizontalSwipePopGesture?(disable))
+        if navigatorDelegate?.disableHorizontalSwipePopGesture != nil {
+            navigatorDelegate?.disableHorizontalSwipePopGesture?(disable)
         } else {
             currentFlutterViewController?.disableHorizontalSwipePopGesture(disable: disable)
         }
