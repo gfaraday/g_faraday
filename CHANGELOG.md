@@ -1,4 +1,10 @@
-# 0.5.1-nullsafety.31
+# 0.6.0-nullsafety.32
+
+* add top navigator accessor
+* add top context accessor
+* compatible with objc
+
+## 0.5.1-nullsafety.31
 
 * add navigator observer
   
