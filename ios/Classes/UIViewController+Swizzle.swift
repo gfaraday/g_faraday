@@ -22,7 +22,7 @@ extension FaradayFlutterViewController: FaradayNavigationBarHiddenProtocol { }
 
 public extension FaradayExtension where ExtendedType: UINavigationController {
         
-    static func automaticallyHandleNavigationBarHidden() {
+   static func automaticallyHandleNavigationBarHidden() {
         swizzle(UINavigationController.self, #selector(UINavigationController.pushViewController(_:animated:)), #selector(UINavigationController.faraday_pushViewController(_:animated:)))
         swizzle(UINavigationController.self, #selector(UINavigationController.popViewController(animated:)), #selector(UINavigationController.faraday_popViewController(animated:)))
         swizzle(UINavigationController.self, #selector(UINavigationController.popToViewController(_:animated:)), #selector(UINavigationController.faraday_popToViewController(_:animated:)))

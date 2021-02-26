@@ -9,7 +9,8 @@ import Foundation
 import Flutter
 
 /// Manager flutter native viewcontroller push&pop、present&dissmis
-public protocol FaradayNavigationDelegate: AnyObject {
+@objc(FFNavigationDelegate)
+public protocol FaradayNavigationDelegate {
     
     
     /// flutter widget request `open`(push or present) a new native viewcontroller
@@ -21,32 +22,36 @@ public protocol FaradayNavigationDelegate: AnyObject {
     
     /// flutter widget require disbale native swipeback func
     /// - Parameter disable: disable or not
-    func disableHorizontalSwipePopGesture(_ disable: Bool)
+    @objc
+    optional func disableHorizontalSwipePopGesture(_ disable: Bool)
     
     /// flutter widget request pop(dismiss) current FaradayFlutterViewcontroller
     /// - Parameters:
     ///   - viewController: current viewcontroller attached on engine
     /// - Returns: pop succeed or not
-    func pop(_ viewController: FaradayFlutterViewController) -> Bool
+    @objc
+    optional func pop(_ viewController: FaradayFlutterViewController) -> Bool
 }
 
-public extension FaradayNavigationDelegate {
-    
-    func disableHorizontalSwipePopGesture(_ disable: Bool) {
-        Faraday.default.currentFlutterViewController?.disableHorizontalSwipePopGesture(disable: disable)
-    }
-        
-    func pop(_ viewController: FaradayFlutterViewController) -> Bool {
-        if (viewController.fa.isModal) {
-            viewController.dismiss(animated: true, completion: nil)
-        } else {
-            viewController.navigationController?.popViewController(animated: true)
-        }
-        return true
-    }
-}
+// 兼容 objc
+//public extension FaradayNavigationDelegate {
+//
+//    func disableHorizontalSwipePopGesture(_ disable: Bool) {
+//        Faraday.default.currentFlutterViewController?.disableHorizontalSwipePopGesture(disable: disable)
+//    }
+//
+//    func pop(_ viewController: FaradayFlutterViewController) -> Bool {
+//        if (viewController.fa.isModal) {
+//            viewController.dismiss(animated: true, completion: nil)
+//        } else {
+//            viewController.navigationController?.popViewController(animated: true)
+//        }
+//        return true
+//    }
+//}
 
-public protocol FaradayHttpProvider: AnyObject {
+@objc(FFHttpProvider)
+public protocol FaradayHttpProvider {
     
     func request(method: String, url: String, parameters: [String: Any]?, headers: [String: String]?, completion: @escaping (_ result: Any?) -> Void) -> Void
 }
@@ -58,6 +63,7 @@ public typealias FaradayHandler = (_ name: String, _ arguments: Any?, _ completi
     核心类，负责管理`Flutter Engine、ViewController`以及其他一些辅助功能主要包含`net、common`
 
 */
+
 public class Faraday {
     
     public static let `default` = Faraday()
@@ -220,12 +226,25 @@ public class Faraday {
             viewController.fa.callback(result: arguments)
         }
         
-        //
-        callback(navigatorDelegate?.pop(viewController) ?? false)
+        if let fn = navigatorDelegate?.pop {
+            callback(fn(viewController))
+        } else {
+            if (viewController.fa.isModal) {
+                viewController.dismiss(animated: true, completion: nil)
+            } else {
+                viewController.navigationController?.popViewController(animated: true)
+            }
+            callback(true)
+        }
     }
     
     func disableHorizontalSwipePopGesture(arguments: Any?, callback: FlutterResult) {
-        Faraday.default.navigatorDelegate?.disableHorizontalSwipePopGesture(arguments as? Bool ?? false)
+        let disable = arguments as? Bool ?? false
+        if navigatorDelegate?.pop != nil {
+            callback(navigatorDelegate?.disableHorizontalSwipePopGesture?(disable))
+        } else {
+            currentFlutterViewController?.disableHorizontalSwipePopGesture(disable: disable)
+        }
         callback(true)
     }
     

@@ -8,6 +8,7 @@
 import UIKit
 import Flutter
 
+@objc(FFViewController)
 open class FaradayFlutterViewController: FlutterViewController, UINavigationControllerDelegate {
     
     public let name: String
@@ -22,7 +23,8 @@ open class FaradayFlutterViewController: FlutterViewController, UINavigationCont
     private var isShowing = false
     private weak var previousFlutterViewController: FaradayFlutterViewController?
     private var swipeBackIsEnable = true
-        
+    
+    @objc
     public init(_ name: String, arguments: Any? = nil, backgroundClear: Bool = false, engine: FlutterEngine? = nil, callback: ((Any?) -> ())? = nil) {
         self.name = name
         self.arguments = arguments

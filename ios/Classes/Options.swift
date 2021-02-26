@@ -7,7 +7,8 @@
 
 import Foundation
 
-public struct Options {
+@objc
+public class Options: NSObject {
     
     let raw: [String: Any]?
     
