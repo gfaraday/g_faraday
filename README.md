@@ -105,6 +105,8 @@ CupertinoApp(onGenerateRoute: (_) => route);
 
 ### iOS 集成
 
+[Objective-C集成看这里](./example_objc_only/README.md)
+
 为了实现从`Flutter`端打开原生页面的应用场景，所以我们需要实现一个打开原生页面的protocol
 
 ``` swift

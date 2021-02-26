@@ -34,7 +34,7 @@
 
 ## 实现对应接口
 
-``` objective-c
+``` objc
 
 @import g_faraday;
 
