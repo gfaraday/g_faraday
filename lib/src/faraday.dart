@@ -53,7 +53,7 @@ class Faraday {
   }) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {
-        _key = GlobalKey(debugLabel: 'TopNativeBridge');
+        _key ??= GlobalKey(debugLabel: 'TopNativeBridge');
         final page = FaradayNativeBridge(
           rawFactory,
           backgroundColorProvider: nativeContainerBackgroundColorProvider,
