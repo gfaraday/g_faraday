@@ -80,7 +80,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.6.0-nullsafety.33"
+    version: "0.7.0"
   g_json:
     dependency: transitive
     description:

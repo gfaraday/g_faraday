@@ -1,5 +1,11 @@
-# 0.6.0-nullsafety.33
+# 0.7.0
+
+* migrate to flutter 2.0
+
+## 0.6.0-nullsafety.33
+
 * fix typo
+
 ## 0.6.0-nullsafety.32
 
 * add top navigator accessor
