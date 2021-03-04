@@ -30,7 +30,7 @@ class _OthersState extends State<Others> {
                 icon: Icon(Icons.wrap_text, color: Colors.white),
                 description: '拦截返回',
                 onTap: () => Navigator.of(context)
-                    ?.push(CupertinoPageRoute(builder: (_) => _WillPopPage())),
+                    .push(CupertinoPageRoute(builder: (_) => _WillPopPage())),
               ),
             ),
             SizedBox(width: 8.0),
@@ -41,7 +41,7 @@ class _OthersState extends State<Others> {
                 description: Platform.isIOS ? 'iOS 自动处理导航条' : 'No Action',
                 onTap: () {
                   if (Platform.isIOS) {
-                    Navigator.of(context)?.nativePushNamed('navigationBar');
+                    Navigator.of(context).nativePushNamed('navigationBar');
                   }
                 },
               ),
@@ -71,12 +71,12 @@ class __WillPopPageState extends State<_WillPopPage> {
                         CupertinoDialogAction(
                           child: Text('按错了'),
                           isDefaultAction: true,
-                          onPressed: () => Navigator.of(context)?.pop(false),
+                          onPressed: () => Navigator.of(context).pop(false),
                         ),
                         CupertinoDialogAction(
                           child: Text('退出'),
                           isDestructiveAction: true,
-                          onPressed: () => Navigator.of(context)?.pop(true),
+                          onPressed: () => Navigator.of(context).pop(true),
                         )
                       ],
                     ),
@@ -89,10 +89,10 @@ class __WillPopPageState extends State<_WillPopPage> {
               Text('当前页面拦截了返回，所以iOS不能滑动返回，android点返回键需要确认'),
               TextButton(
                   child: Text('需要确认: Navigator.of(context)?.maybePop()'),
-                  onPressed: () => Navigator.of(context)?.maybePop()),
+                  onPressed: () => Navigator.of(context).maybePop()),
               TextButton(
                   child: Text('直接返回: Navigator.of(context)?.pop()'),
-                  onPressed: () => Navigator.of(context)?.pop()),
+                  onPressed: () => Navigator.of(context).pop()),
             ],
           )),
     );

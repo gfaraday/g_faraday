@@ -32,7 +32,7 @@ class _Flutter2FlutterState extends State<Flutter2Flutter> {
               TextButton(
                 child: Text('Open New Flutter Page'),
                 onPressed: () {
-                  Navigator.of(context)?.push(
+                  Navigator.of(context).push(
                     CupertinoPageRoute(
                       builder: (_) => Flutter2Flutter(
                         index: (widget.index ?? 0) + 1,
@@ -47,7 +47,7 @@ class _Flutter2FlutterState extends State<Flutter2Flutter> {
               ),
               TextButton(
                 child: Text('Open New Flutter By New Container'),
-                onPressed: () => Navigator.of(context)?.nativePushNamed(
+                onPressed: () => Navigator.of(context).nativePushNamed(
                     'flutter2flutter',
                     arguments: {'index': (widget.index ?? 1) * -1},
                     options: Options()..flutterRoute()),
