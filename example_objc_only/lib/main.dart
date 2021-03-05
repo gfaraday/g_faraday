@@ -17,7 +17,7 @@ class _DemoAppState extends State<DemoApp> {
     return MaterialApp(
       onGenerateRoute: (settings) => faraday.wrapper(
         (settings) => MaterialPageRoute(
-          builder: (BuildContext context) => Scaffold(
+          builder: (context) => Scaffold(
             body: Container(
               child: Center(
                 child: TextButton(
