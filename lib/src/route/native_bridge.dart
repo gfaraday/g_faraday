@@ -274,7 +274,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
                 : _navigators.length - 1
             : newIndex);
         // 此时`native`容器已经`dealloc`了,不会再触发渲染会导致`flutter`侧widget延迟释放
-        // 因此再这里手动触发一次渲染
+        // 因此在这里手动触发一次渲染
         WidgetsBinding.instance?.drawFrame();
         log('''
 TRIGGER `drawFrame` by hand. if you find any bugs please contact me.
