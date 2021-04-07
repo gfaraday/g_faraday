@@ -13,9 +13,10 @@ class FaradayColorBaseSplashScreen(private val color: Int?) : SplashScreen {
     private var splashView: View? = null
 
     override fun createSplashView(context: Context, savedInstanceState: Bundle?): View? {
-        if (splashView != null) {
-            return splashView
-        }
+        //不能重用
+        // if (splashView != null) {
+        //     return splashView
+        // }
         splashView = View(context)
         splashView?.setBackgroundColor(color ?: Color.WHITE)
         return splashView
