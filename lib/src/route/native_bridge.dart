@@ -57,12 +57,16 @@ class FaradayNativeBridge extends StatefulWidget {
   // NavigatorObserver
   final List<NavigatorObserver>? observers;
 
+  // 路由未找到时展示错误页面
+  final WidgetBuilder? errorPage;
+
   FaradayNativeBridge(
     this.onGenerateRoute, {
     Key? key,
     this.backgroundColorProvider,
     this.transitionBuilderProvider,
     this.observers,
+    this.errorPage,
   }) : super(key: key);
 
   static FaradayNativeBridgeState? of(BuildContext context) {
@@ -178,7 +182,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
                   'tips: 可以保存当前dart文件，触发 hot-reload 从而快速恢复',
                   style: style.apply(fontSizeDelta: -2, color: Colors.grey),
                 ),
-                OutlineButton(
+                OutlinedButton(
                   child: Text('点此恢复', style: style.apply(color: Colors.white)),
                   autofocus: true,
                   onPressed: reassemble,
@@ -188,12 +192,13 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
           ),
         );
       } else {
-        return Container(
-          color: (widget.backgroundColorProvider ?? _defaultBackgroundColor)
-              .call(context),
-          alignment: Alignment.center,
-          child: null,
-        );
+        // return Container(
+        //   color: (widget.backgroundColorProvider ?? _defaultBackgroundColor)
+        //       .call(context),
+        //   alignment: Alignment.center,
+        //   child: null,
+        // );
+        return widget.errorPage?.call(context) ?? _defaultErrorPage(context);
       }
     }
 
@@ -221,6 +226,15 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     final builder = widget.transitionBuilderProvider?.call(current.info);
     if (builder == null) return content;
     return builder(context, content);
+  }
+
+  Widget _defaultErrorPage(BuildContext context) {
+    return Container(
+      color: (widget.backgroundColorProvider ?? _defaultBackgroundColor)
+          .call(context),
+      alignment: Alignment.center,
+      child: null,
+    );
   }
 
   Future<bool> _handler(MethodCall call) async {

@@ -50,6 +50,7 @@ class Faraday {
     ColorProvider? nativeContainerBackgroundColorProvider,
     TransitionBuilderProvider? switchPageAnimation,
     List<NavigatorObserver>? observers,
+    WidgetBuilder? errorPage,
   }) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {
@@ -59,6 +60,7 @@ class Faraday {
           backgroundColorProvider: nativeContainerBackgroundColorProvider,
           transitionBuilderProvider: switchPageAnimation,
           observers: observers,
+          errorPage: errorPage,
           key: _key,
         );
         return page;
