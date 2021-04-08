@@ -92,7 +92,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     _channel.setMethodCallHandler(_handler);
   }
 
-  void _recreateLastPage() async {
+  void recreateLastPage() async {
     await _channel.invokeMethod('reCreateLastPage');
     if (_navigators.isNotEmpty && (_index == null)) {
       _updateIndex(0);
@@ -109,7 +109,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   @override
   void reassemble() {
     try {
-      _recreateLastPage();
+      recreateLastPage();
     } on MissingPluginException catch (_) {
       log('reCreateLastPage failed !!', level: Level.WARNING);
     }
@@ -267,7 +267,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         final index = _findIndexBy(id: call.arguments);
         _previousNotFoundId = index == null ? call.arguments : null;
         if (_previousNotFoundId != null) {
-          _recreateLastPage();
+          recreateLastPage();
         }
         _updateIndex(index);
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);

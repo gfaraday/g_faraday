@@ -19,6 +19,11 @@ class Faraday {
   static BuildContext? get topContext =>
       _key?.currentState?.topNavigator?.currentContext;
 
+  ///刷新页面
+  void refresh() {
+    _key?.currentState?.recreateLastPage();
+  }
+
   ///
   ///`Flutter Native 容器`: iOS端是指`FlutterViewController` Android端是指
   ///`FlutterActivity`或者`FlutterFragment`容器初始化时需要指定 `name` 以及 `arguments`
