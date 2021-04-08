@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:g_faraday/g_faraday.dart';
 
 import 'src/pages/features/basic/pages/flutter_to_flutter.dart';
@@ -44,6 +45,7 @@ class _MyAppState extends State<MyApp> {
     final route = faraday.wrapper(
       (settings) => routes[settings.name]?.call(settings),
       observers: [DemoObserver()],
+      errorPage: _buildErrorPage,
       // switchPageAnimation: (currentRoute) {
       //   if (currentRoute['route'] == '') {
       //     return ((context, child) => AnimatedSwitcher(
@@ -89,6 +91,41 @@ class _MyAppState extends State<MyApp> {
           height: 1.0,
         ),
         child: cupertinoApp,
+      ),
+    );
+  }
+
+  ///
+  ///出错页面
+  ///
+  Widget _buildErrorPage(BuildContext context) {
+    return GestureDetector(
+      onTap: () => faraday.refresh(), //刷新
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        color: CupertinoColors.lightBackgroundGray,
+        padding: EdgeInsets.only(left: 15.0, right: 15.0),
+        alignment: Alignment.center,
+        child: Text.rich(
+          TextSpan(children: [
+            TextSpan(
+              text: '404',
+              style: TextStyle(
+                color: CupertinoColors.systemRed,
+                fontSize: 64.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            TextSpan(
+              text: '\n出错了,点击刷新',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: CupertinoColors.placeholderText,
+              ),
+            ),
+          ]),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
