@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.yuxiaor.flutter.g_faraday_example.R
@@ -19,7 +20,7 @@ class NotificationDialog(context: Context, private val msg: String) : BaseDialog
     private val view by lazy { findViewById<RelativeLayout>(R.id.contentView) }
     private val titleTxt by lazy { findViewById<TextView>(R.id.titleTxt) }
     private val msgTxt by lazy { findViewById<TextView>(R.id.msgTxt) }
-    private val handler by lazy { Handler() }
+    private val handler by lazy { Handler(Looper.getMainLooper()) }
     private var time = 3
 
 
