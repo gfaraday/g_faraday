@@ -103,6 +103,8 @@ CupertinoApp(onGenerateRoute: (_) => route);
 // 0x02 flutter 侧集成完毕，接下来你可以选择 集成iOS/Android
 ```
 
+> 注意不管是`CupertinoApp`还是`MaterialApp`都不要设置`home`
+
 ### iOS 集成
 
 [Objective-C集成看这里](./example_objc_only/README.md)
