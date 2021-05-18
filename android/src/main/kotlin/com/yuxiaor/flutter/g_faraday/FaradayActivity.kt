@@ -77,7 +77,7 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
     val params: Serializable?
         get() = intent.getSerializableExtra(FaradayConstants.ARGS);
 
-    private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
+    private var resultListener: ResultListener? = null
 
     override fun onNewIntent(intent: Intent) {
         // 只有在intent 发生实质性变化时才考虑更新flutter页面
@@ -129,7 +129,7 @@ open class FaradayActivity : XFlutterActivity(), ResultProvider {
         return FaradayColorBaseSplashScreen(intent?.getIntExtra(FaradayConstants.SPLASH_SCREEN_BACKGROUND_COLOR, Color.WHITE))
     }
 
-    override fun addResultListener(resultListener: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
+    override fun addResultListener(resultListener: ResultListener) {
         this.resultListener = resultListener
     }
 

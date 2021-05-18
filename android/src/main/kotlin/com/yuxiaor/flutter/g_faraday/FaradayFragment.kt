@@ -18,7 +18,7 @@ import io.flutter.embedding.engine.FlutterEngine
 class FaradayFragment : XFlutterFragment(), ResultProvider {
 
     private val pageId by lazy { arguments?.getInt(FaradayConstants.ID) ?: 0 }
-    private var resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit)? = null
+    private var resultListener: ResultListener? = null
 
     companion object {
         ///
@@ -113,7 +113,7 @@ class FaradayFragment : XFlutterFragment(), ResultProvider {
         return true
     }
 
-    override fun addResultListener(resultListener: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
+    override fun addResultListener(resultListener: ResultListener) {
         this.resultListener = resultListener
 
     }

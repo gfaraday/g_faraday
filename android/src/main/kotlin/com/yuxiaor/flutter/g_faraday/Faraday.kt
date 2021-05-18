@@ -115,7 +115,7 @@ object Faraday {
         }
     }
 
-    private fun startNativeForResult(intent: Intent, requestCode: Int, callback: (requestCode: Int, resultCode: Int, data: Intent?) -> Unit) {
+    private fun startNativeForResult(intent: Intent, requestCode: Int, callback: ResultListener) {
         val activity = getCurrentActivity()
 
         if (activity is ResultProvider) {

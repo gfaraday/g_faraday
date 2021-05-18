@@ -7,6 +7,8 @@ import android.content.Intent
  * Date: 2020-10-22
  * Description:
  */
+typealias ResultListener = (requestCode: Int, resultCode: Int, data: Intent?) -> Unit
+
 interface ResultProvider {
-    fun addResultListener(resultListener: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit))
+    fun addResultListener(resultListener: ResultListener)
 }
