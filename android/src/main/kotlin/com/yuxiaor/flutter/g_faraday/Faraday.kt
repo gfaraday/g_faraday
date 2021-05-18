@@ -3,6 +3,8 @@ package com.yuxiaor.flutter.g_faraday
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.yuxiaor.flutter.g_faraday.channels.*
 import com.yuxiaor.flutter.g_faraday.channels.CommonChannel
@@ -120,7 +122,7 @@ object Faraday {
 
         if (activity is ResultProvider) {
             activity.addResultListener(callback)
-            activity.startActivityForResult(intent, requestCode)
+            activity.startScheme(intent, requestCode)
             return
         }
 
@@ -128,8 +130,24 @@ object Faraday {
             val frag = activity.supportFragmentManager.fragments.first { it.isVisible }
             if (frag is ResultProvider) {
                 frag.addResultListener(callback)
-                frag.startActivityForResult(intent, requestCode)
+                frag.startScheme(intent, requestCode)
             }
+        }
+    }
+
+    private fun Activity.startScheme(intent: Intent, requestCode: Int){
+        try {
+            startActivityForResult(intent, requestCode)
+        }catch (e:Exception){
+            Log.e("Faraday", "Route Not Found: '${intent.data}'")
+        }
+    }
+
+    private fun Fragment.startScheme(intent: Intent, requestCode: Int){
+        try {
+            startActivityForResult(intent, requestCode)
+        }catch (e:Exception){
+            Log.e("Faraday", "Route Not Found: '${intent.data}'")
         }
     }
 }
