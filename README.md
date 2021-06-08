@@ -260,9 +260,9 @@ example中提供了[fluro](https://github.com/lukepighetti/fluro)和[getx](https
 
 ## Communication
 
-[点击加入钉钉群](https://qr.dingtalk.com/action/joingroup?code=v1,k1,5FUqLooXjcj0166ehqb9qapZT5t7gbUpjQqrXc2H4a4=&_dt_no_comment=1&origin=11)
+[扫码加入微信群，请备注 faraday](https://github.com/KevinGong2013)
 
-![DingTalk group](doc/images/qr_code.jpg)
+![wechat group](doc/images/wechat.JPG)
 
 ## Contributing
 
