@@ -66,7 +66,7 @@ object CustomNavigator : FaradayNavigator {
         if (result != null) {
             activity.setResult(Activity.RESULT_OK, Intent().apply { putExtra(KEY_ARGS, result) })
         }
-        activity.finish()
+        activity.onBackPressed()
 
         if (activity is TransparentBackgroundFlutterActivity) {
             activity.overridePendingTransition(0, 0)
