@@ -18,12 +18,7 @@ final _notificationController =
   log('_notificationController onCanceled', level: Level.WARNING);
 });
 
-StreamSubscription _observerNativeNotification(
-    List<String> names, ValueChanged<FaradayNotification> onNotification) {
-  return _notificationController.stream.listen((event) {
-    if (names.contains(event.name)) onNotification(event);
-  });
-}
+var _notificationEnabled = false;
 
 Future<bool> _handler(MethodCall call) {
   if (_notificationController.hasListener) {
@@ -32,6 +27,13 @@ Future<bool> _handler(MethodCall call) {
     return Future.value(true);
   }
   return Future.value(false);
+}
+
+StreamSubscription _observerNativeNotification(
+    List<String> names, ValueChanged<FaradayNotification> onNotification) {
+  return _notificationController.stream.listen((event) {
+    if (names.contains(event.name)) onNotification(event);
+  });
 }
 
 /// FaradayNotification dispatched by native channel
@@ -106,7 +108,8 @@ class _FaradayNotificationListenerState
   @override
   void initState() {
     super.initState();
-    if (!_notificationChannel.checkMethodCallHandler(_handler)) {
+    if (!_notificationEnabled) {
+      _notificationEnabled = true;
       _notificationChannel.setMethodCallHandler(_handler);
     }
     _streamSubscription = _observerNativeNotification(widget.names, (value) {
