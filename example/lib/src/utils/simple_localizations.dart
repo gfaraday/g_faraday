@@ -43,12 +43,12 @@ class S {
       },
       'advance': {
         'title': 'Advance(高级功能)',
-        'description': 'Browse source code, found advance features🚀',
+        'description': 'Browse source code, finding advance features🚀',
       }
     },
     'zh': {
       'home': {
-        'title': 'Farday功能演示',
+        'title': 'Faraday功能演示',
         'tip1': '右上角有绿色角标的均为 Flutter 页面',
         'tip2': '所有功能在 iOS/Android 均可用',
         'tip3': 'Debug模式第一次打开Flutter页面时出现一闪而过的红屏是正常的'
