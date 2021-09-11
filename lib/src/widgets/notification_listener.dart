@@ -10,6 +10,7 @@ import 'log.dart';
 
 ///
 const _notificationChannel = MethodChannel('g_faraday/notification');
+var _notificationChannelEnabled = false;
 
 final _notificationController =
     StreamController<FaradayNotification>.broadcast(onListen: () {
@@ -106,7 +107,7 @@ class _FaradayNotificationListenerState
   @override
   void initState() {
     super.initState();
-    if (!_notificationChannel.checkMethodCallHandler(_handler)) {
+    if (!_notificationChannelEnabled) {
       _notificationChannel.setMethodCallHandler(_handler);
     }
     _streamSubscription = _observerNativeNotification(widget.names, (value) {
