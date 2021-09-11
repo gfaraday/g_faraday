@@ -14,5 +14,3 @@
 
 * notification
 * getPlatformVersions
-
-

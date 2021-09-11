@@ -54,18 +54,19 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 
 ## Requirements
 
-- Flutter 1.24.0-10.2.pre • channel beta
+- Flutter 2.5.0 • channel stable
 - iOS 10.0+ Xcode 12.0+ Swift 5.1+
 - Android minSdkVersion 16 Kotlin 1.4.10+
 
 ## 版本对应关系
 
-| g_faraday           | flutter                                | cocoapods | remark        |
-| ------------------- | -------------------------------------- | --------- | ------------- |
-| ^0.7.0              | Flutter 2.0.0 • channel stable         | any       | recommend     |
-| ^0.5.1-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta | any       | not recommend |
-| ^0.5.0-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta | any       |               |
-| ^4.0.0              | Flutter 1.24.0-10.2.pre • channel beta | any       | not recommend |
+| g_faraday           | flutter                                                                   | cocoapods | remark        |
+| ------------------- | ------------------------------------------------------------------------- | --------- | ------------- |
+| ^0.7.2              | Flutter 2.5.0 • channel stable • `https://github.com/flutter/flutter.git` | any       | recommend     |
+| ^0.7.0              | Flutter 2.0.0 • channel stable                                            | any       | not recommend |
+| ^0.5.1-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta                                    | any       | not recommend |
+| ^0.5.0-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta                                    | any       | not recommend |
+| ^4.0.0              | Flutter 1.24.0-10.2.pre • channel beta                                    | any       | not recommend |
 
 ## 快速开始
 

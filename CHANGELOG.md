@@ -1,6 +1,12 @@
-# 0.7.1
+# 0.7.2
 
-* fix refresh error when save file 
+* migrate to flutter 2.5.0
+* fix typo
+  
+## 0.7.1
+
+* fix refresh error when save file
+
 ## 0.7.0
 
 * migrate to flutter 2.0
