@@ -22,6 +22,8 @@ typedef TransitionBuilderProvider = TransitionBuilder? Function(
 
 typedef ColorProvider = Color Function(BuildContext context, {JSON? route});
 
+typedef NavigatorKeyBuilder = GlobalKey Function(int id);
+
 Color _defaultBackgroundColor(BuildContext context, {JSON? route}) {
   return MediaQuery.of(context).platformBrightness == Brightness.light
       ? CupertinoColors.white
@@ -60,6 +62,8 @@ class FaradayNativeBridge extends StatefulWidget {
   // 路由未找到时展示错误页面
   final WidgetBuilder? errorPage;
 
+  final NavigatorKeyBuilder? navigatorKeyBuilder;
+
   FaradayNativeBridge(
     this.onGenerateRoute, {
     Key? key,
@@ -67,6 +71,7 @@ class FaradayNativeBridge extends StatefulWidget {
     this.transitionBuilderProvider,
     this.observers,
     this.errorPage,
+    this.navigatorKeyBuilder,
   }) : super(key: key);
 
   static FaradayNativeBridgeState? of(BuildContext context) {
@@ -327,7 +332,8 @@ Github Issue: https://github.com/gfaraday/g_faraday/issues
 
   Widget _buildPage(BuildContext context, FaradayArguments arg) {
     return FaradayNavigator(
-      key: arg.key,
+      key: widget.navigatorKeyBuilder != null ? 
+              widget.navigatorKeyBuilder!(arg.id) : arg.key,
       arg: arg,
       initialRoute: arg.name,
       onGenerateRoute: widget.onGenerateRoute,
