@@ -1,7 +1,7 @@
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
 // import 'package:g_faraday/g_faraday.dart';
-// import 'package:get/route_manager.dart';
+// import 'package:get/get.dart';
 
 // import 'src/pages/features/basic/pages/flutter_to_flutter.dart';
 // import 'src/pages/features/basic/pages/native_to_flutter.dart';
@@ -37,12 +37,31 @@
 //         )
 //   };
 
+//   List<GetPage> getPages = [
+//     // GetPage(name: '/', page: () => HomePage({})),
+//     GetPage(name: '/Home', page: () => HomePage({})),
+//     GetPage(name: '/Flutter2Flutter', page: () => Flutter2Flutter()),
+//   ];
+
+//   @override
+//   void initState() {
+//     super.initState();
+
+//     Get.addPages(getPages);
+//   }
+
 //   @override
 //   Widget build(BuildContext context) {
 //     final color = Color.fromARGB(255, 6, 210, 116);
 
 //     final route = faraday.wrapper(
 //       (settings) {
+//         if (getPages.indexWhere((element) => element.name == settings.name) >
+//             -1) {
+//           print("TAG GetX Route settings ${settings.toString()}");
+//           return PageRedirect(settings: settings).page();
+//         }
+
 //         final f = routes[settings.name!];
 //         if (f == null) return null;
 //         return f(settings);
@@ -63,6 +82,12 @@
 //       // flutter 自定义过渡页背景
 //       nativeContainerBackgroundColorProvider: (context, {route}) =>
 //           CupertinoColors.secondarySystemBackground,
+//       navigatorKeyBuilder: (id) {
+//         print("TAG navigatorKeyBuilder $id");
+//         var key = Get.nestedKey(id);
+//         if (key != null) Get.addKey(key);
+//         return key ?? GlobalKey(debugLabel: 'id: $id');
+//       },
 //     );
 
 //     final cupertinoApp = GetCupertinoApp(
