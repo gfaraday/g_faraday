@@ -56,7 +56,7 @@ class Faraday {
     TransitionBuilderProvider? switchPageAnimation,
     List<NavigatorObserver>? observers,
     WidgetBuilder? errorPage,
-    NavigatorKeyBuilder? navigatorKeyBuilder,
+    NavigatorKeyCallback? navigatorKeyCallback,
   }) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {
@@ -68,7 +68,7 @@ class Faraday {
           observers: observers,
           errorPage: errorPage,
           key: _key,
-          navigatorKeyBuilder: navigatorKeyBuilder,
+          navigatorKeyCallback: navigatorKeyCallback,
         );
         return page;
       },

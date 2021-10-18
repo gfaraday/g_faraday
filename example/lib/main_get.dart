@@ -82,11 +82,17 @@
 //       // flutter 自定义过渡页背景
 //       nativeContainerBackgroundColorProvider: (context, {route}) =>
 //           CupertinoColors.secondarySystemBackground,
-//       navigatorKeyBuilder: (id) {
-//         print("TAG navigatorKeyBuilder $id");
-//         var key = Get.nestedKey(id);
-//         if (key != null) Get.addKey(key);
-//         return key ?? GlobalKey(debugLabel: 'id: $id');
+//       navigatorKeyCallback: (key, id) {
+//         print("TAG navigatorKeyCallback key $key id $id");
+
+//         /// 添加进去 GetX 的 GlobalKey 组合，方便根据 id 切换 Navigator
+//         Get.keys.putIfAbsent(
+//           id,
+//           () => key as GlobalKey<NavigatorState>,
+//         );
+
+//         /// 添加最顶层 Navigator 作为 GetX 默认的 Navigator
+//         Get.addKey(key as GlobalKey<NavigatorState>);
 //       },
 //     );
 
