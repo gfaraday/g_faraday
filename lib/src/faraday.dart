@@ -57,6 +57,7 @@ class Faraday {
     List<NavigatorObserver>? observers,
     WidgetBuilder? errorPage,
     NavigatorKeyCallback? navigatorKeyCallback,
+    FaradayNavigatorParentBuilder? faradayNavigatorParentBuilder,
   }) {
     return FaradayPageRouteBuilder(
       pageBuilder: (context) {
@@ -69,6 +70,7 @@ class Faraday {
           errorPage: errorPage,
           key: _key,
           navigatorKeyCallback: navigatorKeyCallback,
+          faradayNavigatorParentBuilder: faradayNavigatorParentBuilder,
         );
         return page;
       },

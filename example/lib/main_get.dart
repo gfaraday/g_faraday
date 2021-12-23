@@ -1,5 +1,6 @@
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:g_faraday/g_faraday.dart';
 // import 'package:get/get.dart';
 
@@ -59,7 +60,7 @@
 //         if (getPages.indexWhere((element) => element.name == settings.name) >
 //             -1) {
 //           print("TAG GetX Route settings ${settings.toString()}");
-//           return PageRedirect(settings: settings).page();
+//           return PageRedirect(settings, null).page();
 //         }
 
 //         final f = routes[settings.name!];
@@ -94,6 +95,8 @@
 //         /// 添加最顶层 Navigator 作为 GetX 默认的 Navigator
 //         Get.addKey(key as GlobalKey<NavigatorState>);
 //       },
+//       faradayNavigatorParentBuilder: (child) =>
+//           ScreenUtilInit(designSize: Size(750, 1334), builder: () => child),
 //     );
 
 //     final cupertinoApp = GetCupertinoApp(

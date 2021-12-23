@@ -22,7 +22,11 @@ typedef TransitionBuilderProvider = TransitionBuilder? Function(
 
 typedef ColorProvider = Color Function(BuildContext context, {JSON? route});
 
+// FaradayNavigatorKey 回调
 typedef NavigatorKeyCallback = Function(GlobalKey key, int id);
+
+// FaradayNavigator 外部 Weiget Builder
+typedef FaradayNavigatorParentBuilder = Widget Function(Widget child);
 
 Color _defaultBackgroundColor(BuildContext context, {JSON? route}) {
   return MediaQuery.of(context).platformBrightness == Brightness.light
@@ -64,6 +68,8 @@ class FaradayNativeBridge extends StatefulWidget {
 
   final NavigatorKeyCallback? navigatorKeyCallback;
 
+  final FaradayNavigatorParentBuilder? faradayNavigatorParentBuilder;
+
   FaradayNativeBridge(
     this.onGenerateRoute, {
     Key? key,
@@ -72,6 +78,7 @@ class FaradayNativeBridge extends StatefulWidget {
     this.observers,
     this.errorPage,
     this.navigatorKeyCallback,
+    this.faradayNavigatorParentBuilder,
   }) : super(key: key);
 
   static FaradayNativeBridgeState? of(BuildContext context) {
@@ -228,9 +235,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       ),
     );
 
+    final contentParent =
+        widget.faradayNavigatorParentBuilder?.call(content) ?? content;
+
     final builder = widget.transitionBuilderProvider?.call(current.info);
-    if (builder == null) return content;
-    return builder(context, content);
+    if (builder == null) return contentParent;
+    return builder(context, contentParent);
   }
 
   Widget _defaultErrorPage(BuildContext context) {
