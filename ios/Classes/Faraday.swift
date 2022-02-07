@@ -194,7 +194,7 @@ public class Faraday {
         viewController.viewDidAppear(false)
     }
     
-    static func callback(_ token: CallbackToken?, result: Any?) {
+    public static func callback(_ token: CallbackToken?, result: Any?) {
         if let t = token {
             if let cb = Faraday.default.callbackCache.removeValue(forKey: t) {
                 cb(result)
