@@ -22,6 +22,12 @@ typedef TransitionBuilderProvider = TransitionBuilder? Function(
 
 typedef ColorProvider = Color Function(BuildContext context, {JSON? route});
 
+// FaradayNavigatorKey 回调
+typedef NavigatorKeyCallback = Function(GlobalKey key, int id);
+
+// FaradayNavigator 外部 Weiget Builder
+typedef FaradayNavigatorParentBuilder = Widget Function(Widget child);
+
 Color _defaultBackgroundColor(BuildContext context, {JSON? route}) {
   return MediaQuery.of(context).platformBrightness == Brightness.light
       ? CupertinoColors.white
@@ -60,6 +66,10 @@ class FaradayNativeBridge extends StatefulWidget {
   // 路由未找到时展示错误页面
   final WidgetBuilder? errorPage;
 
+  final NavigatorKeyCallback? navigatorKeyCallback;
+
+  final FaradayNavigatorParentBuilder? faradayNavigatorParentBuilder;
+
   FaradayNativeBridge(
     this.onGenerateRoute, {
     Key? key,
@@ -67,6 +77,8 @@ class FaradayNativeBridge extends StatefulWidget {
     this.transitionBuilderProvider,
     this.observers,
     this.errorPage,
+    this.navigatorKeyCallback,
+    this.faradayNavigatorParentBuilder,
   }) : super(key: key);
 
   static FaradayNativeBridgeState? of(BuildContext context) {
@@ -223,9 +235,12 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
       ),
     );
 
+    final contentParent =
+        widget.faradayNavigatorParentBuilder?.call(content) ?? content;
+
     final builder = widget.transitionBuilderProvider?.call(current.info);
-    if (builder == null) return content;
-    return builder(context, content);
+    if (builder == null) return contentParent;
+    return builder(context, contentParent);
   }
 
   Widget _defaultErrorPage(BuildContext context) {
@@ -290,6 +305,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         // 此时`native`容器已经`dealloc`了,不会再触发渲染会导致`flutter`侧widget延迟释放
         // 因此在这里手动触发一次渲染
         WidgetsBinding.instance?.drawFrame();
+        WidgetsBinding.instance?.scheduleWarmUpFrame();
         log('''
 TRIGGER `drawFrame` by hand. if you find any bugs please contact me.
 Email: aoxianglele@icloud.com
@@ -326,6 +342,10 @@ Github Issue: https://github.com/gfaraday/g_faraday/issues
   }
 
   Widget _buildPage(BuildContext context, FaradayArguments arg) {
+    if (widget.navigatorKeyCallback != null) {
+      widget.navigatorKeyCallback!(arg.key, arg.id);
+    }
+
     return FaradayNavigator(
       key: arg.key,
       arg: arg,

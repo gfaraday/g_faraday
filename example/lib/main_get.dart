@@ -1,7 +1,8 @@
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:g_faraday/g_faraday.dart';
-// import 'package:get/route_manager.dart';
+// import 'package:get/get.dart';
 
 // import 'src/pages/features/basic/pages/flutter_to_flutter.dart';
 // import 'src/pages/features/basic/pages/native_to_flutter.dart';
@@ -37,12 +38,31 @@
 //         )
 //   };
 
+//   List<GetPage> getPages = [
+//     // GetPage(name: '/', page: () => HomePage({})),
+//     GetPage(name: '/Home', page: () => HomePage({})),
+//     GetPage(name: '/Flutter2Flutter', page: () => Flutter2Flutter()),
+//   ];
+
+//   @override
+//   void initState() {
+//     super.initState();
+
+//     Get.addPages(getPages);
+//   }
+
 //   @override
 //   Widget build(BuildContext context) {
 //     final color = Color.fromARGB(255, 6, 210, 116);
 
 //     final route = faraday.wrapper(
 //       (settings) {
+//         if (getPages.indexWhere((element) => element.name == settings.name) >
+//             -1) {
+//           print("TAG GetX Route settings ${settings.toString()}");
+//           return PageRedirect(settings, null).page();
+//         }
+
 //         final f = routes[settings.name!];
 //         if (f == null) return null;
 //         return f(settings);
@@ -63,6 +83,20 @@
 //       // flutter 自定义过渡页背景
 //       nativeContainerBackgroundColorProvider: (context, {route}) =>
 //           CupertinoColors.secondarySystemBackground,
+//       navigatorKeyCallback: (key, id) {
+//         print("TAG navigatorKeyCallback key $key id $id");
+
+//         /// 添加进去 GetX 的 GlobalKey 组合，方便根据 id 切换 Navigator
+//         Get.keys.putIfAbsent(
+//           id,
+//           () => key as GlobalKey<NavigatorState>,
+//         );
+
+//         /// 添加最顶层 Navigator 作为 GetX 默认的 Navigator
+//         Get.addKey(key as GlobalKey<NavigatorState>);
+//       },
+//       faradayNavigatorParentBuilder: (child) =>
+//           ScreenUtilInit(designSize: Size(750, 1334), builder: () => child),
 //     );
 
 //     final cupertinoApp = GetCupertinoApp(

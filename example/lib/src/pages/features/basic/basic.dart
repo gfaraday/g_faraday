@@ -87,9 +87,13 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
       subTitle: S.of(context).basicFlutter2FlutterDescription,
       begin: _Action.flutter,
       end: _Action.flutter,
-      onTap: () => Navigator.of(context).push(
-        CupertinoPageRoute(builder: (_) => Flutter2Flutter()),
-      ),
+      onTap: () {
+        // Get.toNamed("/Flutter2Flutter");
+
+        Navigator.of(context).push(
+          CupertinoPageRoute(builder: (_) => Flutter2Flutter()),
+        );
+      },
     ),
   ];
   if (onlyBase) return base;
