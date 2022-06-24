@@ -22,7 +22,7 @@
 // class _MyAppState extends State<MyApp> {
 //   Map<String, RouteFactory> routes = {
 //     'home': (settings) => CupertinoPageRoute(
-//         builder: (context) => HomePage(settings.arguments), settings: settings),
+//      builder: (context) => HomePage(settings.arguments), settings: settings),
 //     'native2flutter': (settings) => CupertinoPageRoute(
 //         builder: (context) => Native2FlutterPage(settings.arguments),
 //         settings: settings),
@@ -30,7 +30,7 @@
 //         builder: (context) => Flutter2Flutter(index: settings.toJson.index),
 //         settings: settings),
 //     'tab1': (settings) =>
-//         CupertinoPageRoute(builder: (context) => TabPage(), settings: settings),
+//      CupertinoPageRoute(builder: (context) => TabPage(), settings: settings),
 //     'transparent_flutter': (settings) => CupertinoPageRoute(
 //           builder: (context) => TransparentPage(),
 //           settings: settings,

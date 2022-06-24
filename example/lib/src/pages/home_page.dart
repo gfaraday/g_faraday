@@ -10,7 +10,7 @@ import 'features/other/other.dart';
 import 'features/splash/splash.dart';
 
 class HomePage extends StatefulWidget {
-  final dynamic? args;
+  final dynamic args;
 
   HomePage(this.args);
 

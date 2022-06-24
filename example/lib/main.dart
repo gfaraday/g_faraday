@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:g_faraday/g_faraday.dart';
 
 import 'src/pages/features/basic/pages/flutter_to_flutter.dart';

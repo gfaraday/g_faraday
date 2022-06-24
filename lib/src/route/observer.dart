@@ -26,6 +26,7 @@ class FaradayNavigatorObserver extends NavigatorObserver {
     }
   }
 
+  @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     _update(page: _pageNumInStack, route: newRoute);
     for (final po in _proxyObservers) {
@@ -65,7 +66,7 @@ class FaradayNavigatorObserver extends NavigatorObserver {
 
   void _update({required int page, Route? route}) {
     _pageNumInStack = page;
-    Future.delayed(Duration(milliseconds: 200)).then((_) {
+    Future.delayed(const Duration(milliseconds: 200)).then((_) {
       if (route is ModalRoute) {
         _disableHorizontalSwipePopGesture.value =
             // ignore: invalid_use_of_protected_member
