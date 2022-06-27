@@ -78,7 +78,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
         data["id"] = id
         data["background_mode"] = backgroundMode
-        channel.invoke("pageCreate", data)
+        channel.invokeMethod("pageCreate", data)
     }
 
     internal fun onPageShow(seqId: Int) {
@@ -116,21 +116,21 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     override fun onDetachedFromActivityForConfigChanges() {
     }
 
-    private fun MethodChannel.invoke(method: String, arguments: Any?, callback: ((result: Any?) -> Unit)? = null) {
-        invokeMethod(method, arguments, object : Result {
-
-            override fun notImplemented() {
-                Log.w(TAG, "MethodChannel notImplemented $method $arguments")
-            }
-
-            override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
-                Log.e(TAG, "MethodChannel errorCode: $errorCode \nerrorMessage: $errorMessage \nerrorDetails: $errorDetails")
-            }
-
-            override fun success(result: Any?) {
-                callback?.invoke(result)
-            }
-        })
-    }
+//    private fun MethodChannel.invoke(method: String, arguments: Any?, callback: ((result: Any?) -> Unit)? = null) {
+//        invokeMethod(method, arguments, object : Result {
+//
+//            override fun notImplemented() {
+//                Log.w(TAG, "MethodChannel notImplemented $method $arguments")
+//            }
+//
+//            override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
+//                Log.e(TAG, "MethodChannel errorCode: $errorCode \nerrorMessage: $errorMessage \nerrorDetails: $errorDetails")
+//            }
+//
+//            override fun success(result: Any?) {
+//                callback?.invoke(result)
+//            }
+//        })
+//    }
 
 }
