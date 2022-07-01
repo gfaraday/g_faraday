@@ -4,7 +4,7 @@ name: Publisher
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
   workflow_dispatch:
 
@@ -19,7 +19,7 @@ jobs:
       git_tag_name: ${{ steps.tag_check.outputs.git_tag_name }}
     steps:
       - uses: actions/checkout@v2 # https://github.com/actions/checkout
-      
+
       - uses: CumulusDS/get-yaml-paths-action@v0.1.0
         id: get_package_version
         with:
@@ -41,11 +41,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 # https://github.com/actions/checkout
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.26.0
+
+      - name: push tag
+        uses: anothrNick/github-tag-action@1.36.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CUSTOM_TAG: ${{ needs.check_version.outputs.git_tag_name }}
+          SOURCE: master
 
   publish_pub:
     name: Publish new Pub version
@@ -56,7 +58,7 @@ jobs:
       - name: Publish Dart/Flutter package
         uses: sakebook/actions-flutter-pub-publisher@v1.3.1
         with:
-            credential: ${{ secrets.PUB_PUBLISHER_CREDENTIAL_JSON }}
-            flutter_package: true
-            skip_test: true
-            dry_run: false
+          credential: ${{ secrets.PUB_PUBLISHER_CREDENTIAL_JSON }}
+          flutter_package: true
+          skip_test: true
+          dry_run: false
