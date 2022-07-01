@@ -3,6 +3,7 @@ package com.yuxiaor.flutter.g_faraday
 import android.util.Log
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
+import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -13,6 +14,10 @@ import io.flutter.plugin.common.MethodChannel.Result
 import java.io.Serializable
 import java.lang.ref.WeakReference
 
+fun FlutterEngine.gFaradayPlugin(): GFaradayPlugin? {
+    return plugins.get(GFaradayPlugin::class.java) as? GFaradayPlugin
+}
+
 /** GFaradayPlugin */
 class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
@@ -22,17 +27,21 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private lateinit var channel: MethodChannel
 
-    private var navigator: FaradayNavigator? = null
+    private val navigator: FaradayNavigator
+        get() = Faraday.navigator
+
     internal var binding: ActivityPluginBinding? = null
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+        Log.d(TAG, "onMethodCall: ${call.method}")
+        //
         when (call.method) {
             "pushNativePage" -> {
                 val name = call.argument<String>("name")
                 require(name != null) { "page route name should not be null" }
                 val arguments = call.argument<Serializable>("arguments")
                 val options = call.argument<HashMap<String, *>>("options")
-                navigator?.create(name, arguments, Options(options))?.let {
+                navigator.create(name, arguments, Options(options))?.let {
                     Faraday.startNativeForResult(it) { nativeResult ->
                         result.success(nativeResult)
                     }
@@ -40,7 +49,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
             "popContainer" -> {
                 val arg = call.arguments
-                navigator?.pop(arg as? Serializable)
+                navigator.pop(arg as? Serializable)
                 if (arg != null && arg !is Serializable) {
                     print("=========返回值丢失，返回值类型 $arg")
                 }
@@ -49,28 +58,18 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "disableHorizontalSwipePopGesture" -> {
                 val disable = call.arguments as? Boolean ?: false
                 print(if (!disable) "enable" else "disable" + " Horizontal Swipe PopGesture")
-                navigator?.enableSwipeBack(!disable)
+                navigator.enableSwipeBack(!disable)
                 result.success(null)
             }
             "reCreateLastPage" -> {
-                when (val activity = Faraday.getCurrentActivity()) {
-                    is FaradayActivity -> {
-                        activity.rebuildFlutterPage()
-                    }
-                    is FragmentActivity -> {
-                        val fragment = activity.supportFragmentManager.fragments.first { it.isVisible }
-                        if (fragment is FaradayFragment) {
-                            fragment.rebuildFlutterPage()
-                        }
-                    }
-                }
-                result.success(null)
+                Faraday.getCurrentContainer()?.rebuildFlutterPage()
+                result.success(true)
             }
             else -> result.notImplemented()
         }
     }
 
-    internal fun onPageCreate(route: String, args: Any?, id: Int, backgroundMode: String) {
+    internal fun onPageCreate(route: String, args: Serializable?, id: Int, backgroundMode: String) {
         val data = hashMapOf<String, Any>()
         data["name"] = route
         if (args != null) {
@@ -78,7 +77,20 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
         data["id"] = id
         data["background_mode"] = backgroundMode
-        channel.invoke("pageCreate", data)
+        channel.invokeMethod("pageCreate", data, object: Result {
+            override fun success(result: Any?) {
+                print(result)
+            }
+
+            override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
+                print(errorMessage)
+            }
+
+            override fun notImplemented() {
+                print("notImplemented")
+            }
+
+        })
     }
 
     internal fun onPageShow(seqId: Int) {
@@ -101,10 +113,7 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         channel = MethodChannel(binding.binaryMessenger, "g_faraday")
         channel.resizeChannelBuffer(2)
         channel.setMethodCallHandler(this)
-        this.navigator = Faraday.navigator
-        Faraday.pluginRef = WeakReference(this)
     }
-
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
     }
@@ -115,22 +124,4 @@ class GFaradayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onDetachedFromActivityForConfigChanges() {
     }
-
-    private fun MethodChannel.invoke(method: String, arguments: Any?, callback: ((result: Any?) -> Unit)? = null) {
-        invokeMethod(method, arguments, object : Result {
-
-            override fun notImplemented() {
-                Log.w(TAG, "MethodChannel notImplemented $method $arguments")
-            }
-
-            override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
-                Log.e(TAG, "MethodChannel errorCode: $errorCode \nerrorMessage: $errorMessage \nerrorDetails: $errorDetails")
-            }
-
-            override fun success(result: Any?) {
-                callback?.invoke(result)
-            }
-        })
-    }
-
 }

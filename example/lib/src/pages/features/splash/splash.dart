@@ -28,13 +28,15 @@ class _SplashState extends State<Splash> {
                     ? 'Android'
                     : 'Flutter';
 
-            return OutlineButton(
-              child: Text(text),
-              textColor: _Platform.ios == p
-                  ? Colors.black
-                  : _Platform.android == p
-                      ? Colors.green[800]
-                      : Colors.blue,
+            return CupertinoButton(
+              child: Text(text,
+                  style: TextStyle(
+                    color: _Platform.ios == p
+                        ? Colors.black
+                        : _Platform.android == p
+                            ? Colors.green[800]
+                            : Colors.blue,
+                  )),
               onPressed: () => Navigator.of(context).push(CupertinoPageRoute(
                   builder: (_) => SplashTipPage(p, title: text),
                   fullscreenDialog: true)),

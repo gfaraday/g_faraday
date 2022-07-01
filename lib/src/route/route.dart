@@ -7,7 +7,7 @@ class FaradayPageRouteBuilder<T> extends PageRouteBuilder<T> {
     RouteSettings? settings,
     required WidgetBuilder pageBuilder,
   }) : super(
-            transitionDuration: Duration(microseconds: 0),
+            transitionDuration: const Duration(microseconds: 0),
             settings: settings,
             pageBuilder: (context, _, __) => pageBuilder(context),
             maintainState: true);

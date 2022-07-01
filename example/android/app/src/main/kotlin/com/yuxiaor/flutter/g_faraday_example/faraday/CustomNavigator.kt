@@ -9,6 +9,7 @@ import com.yuxiaor.flutter.g_faraday.FaradayActivity
 import com.yuxiaor.flutter.g_faraday.FaradayNavigator
 import com.yuxiaor.flutter.g_faraday.Options
 import com.yuxiaor.flutter.g_faraday_example.activity.SingleTaskFlutterActivity
+import com.yuxiaor.flutter.g_faraday_example.activity.SingleTopFlutterActivity
 import com.yuxiaor.flutter.g_faraday_example.basic.FlutterToNativeActivity
 import com.yuxiaor.flutter.g_faraday_example.basic.Native2FlutterActivity
 import com.yuxiaor.flutter.g_faraday_example.basic.TabContainerActivity
@@ -23,19 +24,13 @@ object CustomNavigator : FaradayNavigator {
         val context = Faraday.getCurrentActivity() ?: return null
 
         if (options.isFlutterRoute) {
-            // standard
-//            Faraday.getCurrentActivity()?.startActivity(FaradayActivity.build(this, name, arguments))
-
-            // singleTop 模式
-//            val intent = FaradayActivity.build(this, name, args, activityClass = SingleTopFlutterActivity::class.java, willTransactionWithAnother = true)
-//            Faraday.getCurrentActivity()?.startActivity(intent)
 
             // singleTask 模式
             val builder = FaradayActivity.builder(name, arguments, false)
 
             // 你看到的绿色的闪屏就是这个
             builder.backgroundColor = Color.WHITE
-            builder.activityClass = SingleTaskFlutterActivity::class.java
+            builder.activityClass = SingleTopFlutterActivity::class.java
 
             return builder.build(context);
         }
@@ -66,7 +61,7 @@ object CustomNavigator : FaradayNavigator {
         if (result != null) {
             activity.setResult(Activity.RESULT_OK, Intent().apply { putExtra(KEY_ARGS, result) })
         }
-        activity.onBackPressed()
+        activity.finish()
 
         if (activity is TransparentBackgroundFlutterActivity) {
             activity.overridePendingTransition(0, 0)

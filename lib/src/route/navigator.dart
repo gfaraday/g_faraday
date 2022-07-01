@@ -67,7 +67,7 @@ class FaradayNavigatorState extends NavigatorState {
     observer.disableHorizontalSwipePopGesture
         .addListener(_notifyNativeDisableOrEnableBackGesture);
     _observerForAndroid = _FaradayWidgetsBindingObserver(this);
-    WidgetsBinding.instance?.addObserver(_observerForAndroid!);
+    WidgetsBinding.instance.addObserver(_observerForAndroid!);
     super.initState();
   }
 
@@ -76,7 +76,7 @@ class FaradayNavigatorState extends NavigatorState {
     observer.disableHorizontalSwipePopGesture
         .removeListener(_notifyNativeDisableOrEnableBackGesture);
     if (_observerForAndroid != null) {
-      WidgetsBinding.instance?.removeObserver(_observerForAndroid!);
+      WidgetsBinding.instance.removeObserver(_observerForAndroid!);
       _observerForAndroid = null;
     }
     super.dispose();

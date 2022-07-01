@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:g_json/g_json.dart';
 
 import '../widgets/log.dart';
@@ -60,7 +59,7 @@ class FaradayNativeBridge extends StatefulWidget {
   // 路由未找到时展示错误页面
   final WidgetBuilder? errorPage;
 
-  FaradayNativeBridge(
+  const FaradayNativeBridge(
     this.onGenerateRoute, {
     Key? key,
     this.backgroundColorProvider,
@@ -99,7 +98,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     }
 
     // 如果重建页面500ms 以后还没有显示命令，默认显示首页
-    Timer(Duration(milliseconds: 500), () {
+    Timer(const Duration(milliseconds: 500), () {
       if (_navigators.isNotEmpty && (_index == null)) {
         _updateIndex(0);
       }
@@ -116,6 +115,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     super.reassemble();
   }
 
+  @override
   void dispose() {
     _navigators.clear();
     super.dispose();
@@ -160,21 +160,21 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
     if (_navigators.isEmpty) {
       if (kDebugMode) {
         // 应该弹出警告错误界面
-        final style = TextStyle(
-            color: const Color(0xFFFFFF66),
+        const style = TextStyle(
+            color: Color(0xFFFFFF66),
             fontFamily: 'monospace',
             fontSize: 14.0,
             fontWeight: FontWeight.bold);
         return Container(
           color: RenderErrorBox.backgroundColor,
-          padding: EdgeInsets.only(left: 15.0, right: 15.0),
+          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           child: Center(
             child: Wrap(
               direction: Axis.vertical,
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 5.0,
               children: [
-                Text(
+                const Text(
                   'g_faraday 路由栈错误，请确认非 hot-restart 引起',
                   style: style,
                 ),
@@ -183,9 +183,9 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
                   style: style.apply(fontSizeDelta: -2, color: Colors.grey),
                 ),
                 OutlinedButton(
-                  child: Text('点此恢复', style: style.apply(color: Colors.white)),
                   autofocus: true,
                   onPressed: reassemble,
+                  child: Text('点此恢复', style: style.apply(color: Colors.white)),
                 ),
               ],
             ),
@@ -216,10 +216,10 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
               .call(context, route: current.info)
           : Colors.transparent,
       child: IndexedStack(
+        index: _index,
         children: _navigators
             .map((arg) => _buildPage(context, arg))
             .toList(growable: false),
-        index: _index,
       ),
     );
 
@@ -259,14 +259,14 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         );
         _navigators.add(arg);
         if (_previousNotFoundId != null) {
-          // show 比create 先调用
+          // show 比 create 先调用
           _updateIndex(_findIndexBy(id: _previousNotFoundId!));
         }
         return true;
       case 'pageShow':
         final index = _findIndexBy(id: call.arguments);
         _previousNotFoundId = index == null ? call.arguments : null;
-        if (_previousNotFoundId != null) {
+        if (_previousNotFoundId != null && _navigators.isNotEmpty) {
           recreateLastPage();
         }
         _updateIndex(index);
@@ -289,7 +289,7 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
             : newIndex);
         // 此时`native`容器已经`dealloc`了,不会再触发渲染会导致`flutter`侧widget延迟释放
         // 因此在这里手动触发一次渲染
-        WidgetsBinding.instance?.drawFrame();
+        WidgetsBinding.instance.drawFrame();
         log('''
 TRIGGER `drawFrame` by hand. if you find any bugs please contact me.
 Email: aoxianglele@icloud.com
