@@ -259,14 +259,14 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
         );
         _navigators.add(arg);
         if (_previousNotFoundId != null) {
-          // show 比create 先调用
+          // show 比 create 先调用
           _updateIndex(_findIndexBy(id: _previousNotFoundId!));
         }
         return true;
       case 'pageShow':
         final index = _findIndexBy(id: call.arguments);
         _previousNotFoundId = index == null ? call.arguments : null;
-        if (_previousNotFoundId != null) {
+        if (_previousNotFoundId != null && _navigators.isNotEmpty) {
           recreateLastPage();
         }
         _updateIndex(index);

@@ -10,11 +10,21 @@ import com.yuxiaor.flutter.g_faraday.channels.*
 import com.yuxiaor.flutter.g_faraday.channels.CommonChannel
 import com.yuxiaor.flutter.g_faraday.channels.NetChannel
 import io.flutter.FlutterInjector
+import io.flutter.embedding.android.FlutterFragment
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
 import io.flutter.plugin.common.MethodChannel
 import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicInteger
+
+interface FaradayContainer {
+
+    // detach from engine
+    fun performDetach()
+
+    //
+    fun rebuildFlutterPage()
+}
 
 /**
  * Author: Edward
@@ -23,16 +33,12 @@ import java.util.concurrent.atomic.AtomicInteger
  */
 object Faraday {
 
-    private val nextCode = AtomicInteger()
-
-    @JvmStatic
     lateinit var engine: FlutterEngine
         private set
 
-    internal var pluginRef: WeakReference<GFaradayPlugin>? = null
-    internal val plugin: GFaradayPlugin?
-        get() = pluginRef?.get()
+    private val nextCode = AtomicInteger()
 
+    // router manager
     internal lateinit var navigator: FaradayNavigator
 
     /**
@@ -62,7 +68,8 @@ object Faraday {
                            dartEntrypointFunctionName: String = "main"): Boolean {
         // 这个navigator 必须先初始化 不能动
         this.navigator = navigator
-        engine = FlutterEngine(context, null, automaticallyRegisterPlugins)
+
+        engine = FlutterEngine(context, arrayOf(), automaticallyRegisterPlugins)
 
         val flutterLoader = FlutterInjector.instance().flutterLoader()
 
@@ -82,7 +89,9 @@ object Faraday {
             CommonChannel(engine.dartExecutor, commonHandler)
         }
 
-        return pluginRef != null
+        FaradayNotice.setup(engine.dartExecutor)
+
+        return  false
     }
 
     internal fun genPageId(): Int {
@@ -93,10 +102,28 @@ object Faraday {
      * The current flutter container Activity
      */
     @JvmStatic
-    fun getCurrentActivity(): Activity? {
-        return plugin?.binding?.activity
+    fun getCurrentContainer(): FaradayContainer? {
+        val activity = getCurrentActivity()
+        if (activity is FaradayContainer) {
+            return activity
+        }
+
+        if (activity is FragmentActivity) {
+            var frag = activity.supportFragmentManager.fragments.find { it.isVisible }
+            if (frag == null) {
+                frag = activity.supportFragmentManager.fragments.find { it is FaradayContainer }
+            }
+            if (frag is FaradayContainer) {
+                return frag
+            }
+        }
+
+        return  null
     }
 
+    fun getCurrentActivity(): Activity? {
+        return  engine.gFaradayPlugin()?.binding?.activity
+    }
     /**
      * start native Activity,and request for Activity result
      */
@@ -118,11 +145,13 @@ object Faraday {
     }
 
     private fun startNativeForResult(intent: Intent, requestCode: Int, callback: ResultListener) {
-        val activity = getCurrentActivity()
+        val activity = getCurrentContainer()
 
         if (activity is ResultProvider) {
             activity.addResultListener(callback)
-            activity.startScheme(intent, requestCode)
+            if (activity is Activity) {
+                activity.startScheme(intent, requestCode)
+            }
             return
         }
 
