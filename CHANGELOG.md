@@ -1,4 +1,9 @@
-# 0.7.2
+# 1.0.0-beta.1
+
+* migrate to flutter 3.0.3
+* rewrite android plugin
+
+## 0.7.2
 
 * migrate to flutter 2.5.0
 * fix typo
