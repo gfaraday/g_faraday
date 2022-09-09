@@ -1,4 +1,9 @@
-# 1.0.0-beta.1
+# 1.0.0
+
+* migrate to flutter 3.0.5
+* rewrite android plugin
+
+## 1.0.0-beta.1
 
 * migrate to flutter 3.0.3
 * rewrite android plugin
