@@ -14,8 +14,6 @@ import 'arg.dart';
 import 'navigator.dart';
 import 'options.dart';
 
-const _channel = MethodChannel('g_faraday');
-
 typedef TransitionBuilderProvider = TransitionBuilder? Function(
     JSON currentRoute);
 
@@ -84,6 +82,8 @@ class FaradayNativeBridgeState extends State<FaradayNativeBridge> {
   final List<FaradayArguments> _navigators = [];
   int? _index;
   int? _previousNotFoundId;
+
+  final _channel = const MethodChannel('g_faraday');
 
   @override
   void initState() {
