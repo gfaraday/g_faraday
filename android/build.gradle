@@ -4,8 +4,8 @@ version '1.0-SNAPSHOT'
 buildscript {
     ext.kotlin_version = '1.4.21'
     repositories {
-        google()
-        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/google/'}
+        maven { url 'https://maven.aliyun.com/repository/jcenter/'}
     }
 
     dependencies {
@@ -17,8 +17,8 @@ buildscript {
 
 rootProject.allprojects {
     repositories {
-        google()
-        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/google/'}
+        maven { url 'https://maven.aliyun.com/repository/jcenter/'}
     }
 }
 
