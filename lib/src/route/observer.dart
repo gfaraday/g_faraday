@@ -69,8 +69,7 @@ class FaradayNavigatorObserver extends NavigatorObserver {
     Future.delayed(const Duration(milliseconds: 200)).then((_) {
       if (route is ModalRoute) {
         _disableHorizontalSwipePopGesture.value =
-            // ignore: invalid_use_of_protected_member
-            route.hasScopedWillPopCallback || !onlyOnePage;
+            route.popDisposition == RoutePopDisposition.pop || !onlyOnePage;
       } else {
         _disableHorizontalSwipePopGesture.value = !onlyOnePage;
       }
