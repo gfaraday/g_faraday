@@ -90,10 +90,10 @@ class FaradayNotificationListener extends StatefulWidget {
   ///
   const FaradayNotificationListener(
     this.names, {
-    Key? key,
+    super.key,
     required this.onNotification,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   // ignore: library_private_types_in_public_api

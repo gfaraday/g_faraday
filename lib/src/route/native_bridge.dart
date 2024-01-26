@@ -59,12 +59,12 @@ class FaradayNativeBridge extends StatefulWidget {
 
   const FaradayNativeBridge(
     this.onGenerateRoute, {
-    Key? key,
+    super.key,
     this.backgroundColorProvider,
     this.transitionBuilderProvider,
     this.observers,
     this.errorPage,
-  }) : super(key: key);
+  });
 
   static FaradayNativeBridgeState? of(BuildContext context) {
     if (context is StatefulElement &&

@@ -13,28 +13,19 @@ class FaradayNavigator extends Navigator {
 
   ///
   FaradayNavigator(
-      {Key? key,
-      PopPageCallback? onPopPage,
-      required String initialRoute,
-      required RouteListFactory onGenerateInitialRoutes,
-      required RouteFactory onGenerateRoute,
-      RouteFactory? onUnknownRoute,
-      DefaultTransitionDelegate transitionDelegate =
-          const DefaultTransitionDelegate<dynamic>(),
+      {super.key,
+      super.onPopPage,
+      required String super.initialRoute,
+      required super.onGenerateInitialRoutes,
+      required RouteFactory super.onGenerateRoute,
+      super.onUnknownRoute,
+      DefaultTransitionDelegate super.transitionDelegate,
       required this.arg,
       List<NavigatorObserver>? observers})
-      : super(
-            key: key,
-            onPopPage: onPopPage,
-            initialRoute: initialRoute,
-            onGenerateRoute: onGenerateRoute,
-            onUnknownRoute: onUnknownRoute,
-            onGenerateInitialRoutes: onGenerateInitialRoutes,
-            transitionDelegate: transitionDelegate,
-            observers: [
-              arg.observer,
-              if (observers != null) ...observers,
-            ]);
+      : super(observers: [
+          arg.observer,
+          if (observers != null) ...observers,
+        ]);
 
   @override
   FaradayNavigatorState createState() => FaradayNavigatorState();
