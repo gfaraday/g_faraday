@@ -12,7 +12,7 @@ import 'features/splash/splash.dart';
 class HomePage extends StatefulWidget {
   final dynamic args;
 
-  HomePage(this.args);
+  const HomePage(this.args, {Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -28,31 +28,36 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
-      child: WillPopScope(
-        onWillPop: () async {
+      child: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
+          if (didPop) return;
           final r = await showCupertinoDialog(
               builder: (context) => CupertinoAlertDialog(
-                    content: Text('确定退出吗?'),
+                    content: const Text('确定退出吗?'),
                     actions: [
                       CupertinoDialogAction(
-                        child: Text('按错了'),
                         isDefaultAction: true,
                         onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text('按错了'),
                       ),
                       CupertinoDialogAction(
-                        child: Text('退出'),
                         isDestructiveAction: true,
                         onPressed: () => Navigator.of(context).pop(true),
+                        child: const Text('退出'),
                       )
                     ],
                   ),
               context: context);
-          return r;
+          if (r) {
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).pop();
+          }
         },
         child: CupertinoPageScaffold(
           backgroundColor: CupertinoColors.secondarySystemBackground,
           child: CustomScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             slivers: _buildSlivers(context),
           ),
         ),
@@ -72,10 +77,10 @@ class _HomePageState extends State<HomePage> {
         floating: false,
         pinned: false,
       ),
-      SliverToBoxAdapter(child: Basic()),
-      SliverToBoxAdapter(child: Splash()),
-      SliverToBoxAdapter(child: GlobalNotification()),
-      SliverToBoxAdapter(child: Others()),
+      const SliverToBoxAdapter(child: Basic()),
+      const SliverToBoxAdapter(child: Splash()),
+      const SliverToBoxAdapter(child: GlobalNotification()),
+      const SliverToBoxAdapter(child: Others()),
       SliverToBoxAdapter(
         child: Section(
           title: S.of(context).advanceTitle,
@@ -83,23 +88,21 @@ class _HomePageState extends State<HomePage> {
           //
           // 有什么你想要的功能没有看到，可以在 github 提 issue 我们会尽快加上哦
           //
-          child: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Transform.scale(
-                  scale: 0.6,
-                  child: Image.asset('images/faraday.png'),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Transform.scale(
+                scale: 0.6,
+                child: Image.asset('images/faraday.png'),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Faraday',
+                  style: TextStyle(color: CupertinoColors.secondaryLabel),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Faraday',
-                    style: TextStyle(color: CupertinoColors.secondaryLabel),
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),
@@ -112,21 +115,21 @@ class HomePageBannerDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return AnimatedContainer(
-      padding: EdgeInsets.all(16),
-      duration: Duration(microseconds: 100),
+      padding: const EdgeInsets.all(16),
+      duration: const Duration(microseconds: 100),
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('* ${S.of(context).homeTip1}'),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Text('* ${S.of(context).homeTip2}'),
           ),
           Text('* ${S.of(context).homeTip3}',
               style: DefaultTextStyle.of(context)
                   .style
-                  .apply(color: Color(0xF0900000))),
+                  .apply(color: const Color(0xF0900000))),
         ],
       ),
     );

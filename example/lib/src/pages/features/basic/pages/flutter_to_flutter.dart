@@ -24,13 +24,13 @@ class _Flutter2FlutterState extends State<Flutter2Flutter> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text(
                     'Flutter 页面之间的跳转和纯flutter项目没有任何区别， navigator的所有api均可使用'),
               ),
               TextButton(
-                child: Text('Open New Flutter Page'),
+                child: const Text('Open New Flutter Page'),
                 onPressed: () {
                   Navigator.of(context).push(
                     CupertinoPageRoute(
@@ -46,7 +46,7 @@ class _Flutter2FlutterState extends State<Flutter2Flutter> {
                 },
               ),
               TextButton(
-                child: Text('Open New Flutter By New Container'),
+                child: const Text('Open New Flutter By New Container'),
                 onPressed: () => Navigator.of(context).nativePushNamed(
                     'flutter2flutter',
                     arguments: {'index': (widget.index ?? 1) * -1},

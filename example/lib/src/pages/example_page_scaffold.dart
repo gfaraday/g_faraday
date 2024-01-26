@@ -19,7 +19,7 @@ class _ExamplePageScaffoldState extends State<ExamplePageScaffold> {
         middle: Text(widget.title ?? 'NoTitle'),
       ),
       child: SafeArea(
-        minimum: EdgeInsets.all(16),
+        minimum: const EdgeInsets.all(16),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

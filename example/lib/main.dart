@@ -11,11 +11,14 @@ import 'src/utils/observer.dart';
 import 'src/utils/simple_localizations.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
+  // ignore: library_private_types_in_public_api
   _MyAppState createState() => _MyAppState();
 }
 
@@ -29,17 +32,17 @@ class _MyAppState extends State<MyApp> {
     'flutter2flutter': (settings) => CupertinoPageRoute(
         builder: (context) => Flutter2Flutter(index: settings.toJson.index),
         settings: settings),
-    'tab1': (settings) =>
-        CupertinoPageRoute(builder: (context) => TabPage(), settings: settings),
+    'tab1': (settings) => CupertinoPageRoute(
+        builder: (context) => const TabPage(), settings: settings),
     'transparent_flutter': (settings) => CupertinoPageRoute(
-          builder: (context) => TransparentPage(),
+          builder: (context) => const TransparentPage(),
           settings: settings,
         )
   };
 
   @override
   Widget build(BuildContext context) {
-    final color = Color.fromARGB(255, 6, 210, 116);
+    const color = Color.fromARGB(255, 6, 210, 116);
 
     final route = faraday.wrapper(
       (settings) => routes[settings.name]?.call(settings),
@@ -69,11 +72,11 @@ class _MyAppState extends State<MyApp> {
         DefaultCupertinoLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      supportedLocales: [
+      supportedLocales: const [
         Locale('en', ''),
         Locale.fromSubtags(languageCode: 'zh')
       ],
-      theme: CupertinoThemeData(primaryColor: color),
+      theme: const CupertinoThemeData(primaryColor: color),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (_) => route,
     );
@@ -84,7 +87,7 @@ class _MyAppState extends State<MyApp> {
         location: BannerLocation.topEnd,
         message: 'faraday',
         color: color,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: CupertinoColors.white,
           fontSize: 12 * 0.85,
           fontWeight: FontWeight.w900,
@@ -104,9 +107,9 @@ class _MyAppState extends State<MyApp> {
       behavior: HitTestBehavior.opaque,
       child: Container(
         color: CupertinoColors.lightBackgroundGray,
-        padding: EdgeInsets.only(left: 15.0, right: 15.0),
+        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
         alignment: Alignment.center,
-        child: Text.rich(
+        child: const Text.rich(
           TextSpan(children: [
             TextSpan(
               text: '404',

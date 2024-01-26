@@ -8,6 +8,8 @@ import 'pages/flutter_to_flutter.dart';
 import 'pages/flutter_to_native.dart';
 
 class Basic extends StatefulWidget {
+  const Basic({Key? key}) : super(key: key);
+
   @override
   _BasicState createState() => _BasicState();
 }
@@ -32,20 +34,22 @@ class _BasicState extends State<Basic> {
 }
 
 class BasicAllPage extends StatelessWidget {
+  const BasicAllPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       backgroundColor: CupertinoColors.secondarySystemBackground,
-      navigationBar: CupertinoNavigationBar(
+      navigationBar: const CupertinoNavigationBar(
         middle: Text('All Basics'),
       ),
       child: SafeArea(
         child: Center(
           child: ListView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             children: [
               Container(
-                margin: EdgeInsets.all(16.0),
+                margin: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   color: CupertinoColors.white,
                   borderRadius: BorderRadius.circular(8),
@@ -70,10 +74,10 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
       begin: _Action.flutter,
       end: _Action.native,
       onTap: () => Navigator.of(context).push(
-        CupertinoPageRoute(builder: (_) => Flutter2NativePage()),
+        CupertinoPageRoute(builder: (_) => const Flutter2NativePage()),
       ),
     ),
-    Divider(height: 1),
+    const Divider(height: 1),
     _Action(
       title: S.of(context).basicNative2Flutter,
       subTitle: 'viewController activity fragment',
@@ -81,26 +85,26 @@ List<Widget> _buildActions(BuildContext context, {bool onlyBase = true}) {
       end: _Action.flutter,
       onTap: () => Navigator.of(context).nativePushNamed('native2flutter'),
     ),
-    Divider(height: 1),
+    const Divider(height: 1),
     _Action(
       title: S.of(context).basicFlutter2Flutter,
       subTitle: S.of(context).basicFlutter2FlutterDescription,
       begin: _Action.flutter,
       end: _Action.flutter,
       onTap: () => Navigator.of(context).push(
-        CupertinoPageRoute(builder: (_) => Flutter2Flutter()),
+        CupertinoPageRoute(builder: (_) => const Flutter2Flutter()),
       ),
     ),
   ];
   if (onlyBase) return base;
   return [
     ...base,
-    Divider(height: 1),
+    const Divider(height: 1),
     _Action(
       title: S.of(context).basicChild,
       subTitle: S.of(context).basicChildDescription,
       begin: _Action.flutter,
-      end: Icon(Icons.widgets),
+      end: const Icon(Icons.widgets),
       onTap: () => Navigator.of(context).nativePushNamed('tabContainer'),
     ),
   ];
@@ -122,9 +126,9 @@ class _Action extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-  static Widget get flutter => FlutterLogo();
+  static Widget get flutter => const FlutterLogo();
   static Widget get native =>
-      Icon(Icons.mobile_screen_share, color: CupertinoColors.activeBlue);
+      const Icon(Icons.mobile_screen_share, color: CupertinoColors.activeBlue);
 
   @override
   Widget build(BuildContext context) {
@@ -142,31 +146,31 @@ class _Action extends StatelessWidget {
                   Row(
                     children: [
                       begin,
-                      Icon(
+                      const Icon(
                         Icons.arrow_right_alt,
                         color: CupertinoColors.tertiaryLabel,
                       ),
                       end
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         color: CupertinoColors.black),
                   ),
                   Text(
                     subTitle,
                     maxLines: 2,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 12, color: CupertinoColors.secondaryLabel),
                   )
                 ],
               ),
             ),
-            Spacer(),
-            Icon(
+            const Spacer(),
+            const Icon(
               CupertinoIcons.right_chevron,
               color: CupertinoColors.tertiaryLabel,
             )

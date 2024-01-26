@@ -6,6 +6,8 @@ import '../../../widgets/action.dart';
 import '../../../widgets/section.dart';
 
 class GlobalNotification extends StatefulWidget {
+  const GlobalNotification({Key? key}) : super(key: key);
+
   @override
   _GlobalNotificationState createState() => _GlobalNotificationState();
 }
@@ -16,14 +18,14 @@ class _GlobalNotificationState extends State<GlobalNotification> {
   @override
   Widget build(BuildContext context) {
     return FaradayNotificationListener(
-      ['NotificationFromNative'],
+      const ['NotificationFromNative'],
       onNotification: (_, value) {
         setState(() {
           _localMessage = value.arguments.toString();
         });
       },
       child: Padding(
-        padding: EdgeInsets.only(right: 16),
+        padding: const EdgeInsets.only(right: 16),
         child: Section(
           title: S.of(context).notification,
           child: Column(
@@ -48,7 +50,7 @@ class _GlobalNotificationState extends State<GlobalNotification> {
               ),
               if (_localMessage != null)
                 TweenAnimationBuilder(
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   tween: Tween(begin: 5.0, end: 1.0),
                   builder: (context, dynamic value, child) =>
                       Transform.scale(scale: value, child: child),

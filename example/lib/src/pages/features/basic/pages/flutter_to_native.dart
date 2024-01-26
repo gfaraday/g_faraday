@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:g_faraday/g_faraday.dart';
 
 class Flutter2NativePage extends StatefulWidget {
+  const Flutter2NativePage({Key? key}) : super(key: key);
+
   @override
   _Flutter2NativePageState createState() => _Flutter2NativePageState();
 }
@@ -13,7 +15,7 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
+      navigationBar: const CupertinoNavigationBar(
         middle: Text('Flutter to Native'),
       ),
       child: SafeArea(
@@ -21,12 +23,13 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text('支持🍎和🍐两种方式打开'),
               ),
               TextButton(
-                  child: Text('🍎: Navigator.of(context)?.nativePushNamed'),
+                  child:
+                      const Text('🍎: Navigator.of(context)?.nativePushNamed'),
                   onPressed: () async {
                     _showResult(
                         context,
@@ -34,7 +37,7 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
                             .nativePushNamed('flutter2native', arguments: {}));
                   }),
               TextButton(
-                  child: Text('🍐: Navigator.of(context)?.pushNamed'),
+                  child: const Text('🍐: Navigator.of(context)?.pushNamed'),
                   onPressed: () async {
                     _showResult(
                         context,
@@ -45,10 +48,10 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
               if (_result != null)
                 Text(
                   'result: $_result',
-                  style: TextStyle(color: CupertinoColors.destructiveRed),
+                  style: const TextStyle(color: CupertinoColors.destructiveRed),
                 ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text('''推荐使用🍎来打开native路由
 
 注意事项

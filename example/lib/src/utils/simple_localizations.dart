@@ -8,7 +8,8 @@ class S {
 
   final Locale locale;
 
-  static SimpleLocalizationsDelegate delegate = SimpleLocalizationsDelegate();
+  static SimpleLocalizationsDelegate delegate =
+      const SimpleLocalizationsDelegate();
 
   static S of(BuildContext context) {
     return Localizations.of<S>(context, S)!;

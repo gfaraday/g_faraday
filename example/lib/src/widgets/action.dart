@@ -23,6 +23,7 @@ class FaradayAction extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: TextButton(
+        onPressed: onTap,
         child: Stack(
           children: [
             Positioned(
@@ -35,7 +36,7 @@ class FaradayAction extends StatelessWidget {
               bottom: 8.0,
               child: Text(
                 description,
-                style: TextStyle(
+                style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
@@ -43,7 +44,6 @@ class FaradayAction extends StatelessWidget {
             ),
           ],
         ),
-        onPressed: onTap,
       ),
     );
   }

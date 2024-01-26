@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TransparentPage extends StatefulWidget {
+  const TransparentPage({Key? key}) : super(key: key);
+
   @override
   _TransparentPageState createState() => _TransparentPageState();
 }
@@ -23,12 +25,14 @@ class _TransparentPageState extends State<TransparentPage>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         await showCupertinoDialog(
             context: context,
             builder: (context) => CupertinoAlertDialog(
-                  title: Text('这里可以拦截返回'),
+                  title: const Text('这里可以拦截返回'),
                   actions: [
                     CupertinoActionSheetAction(
                       onPressed: () {
@@ -39,18 +43,17 @@ class _TransparentPageState extends State<TransparentPage>
                           Navigator.of(context).pop(true);
                         });
                       },
-                      child: Text('返回'),
+                      child: const Text('返回'),
                     )
                   ],
                 ));
-        return Future.microtask(
-            () => Future.delayed(Duration(milliseconds: 300), () {
-                  return true;
-                }));
+        Future.delayed(const Duration(milliseconds: 300), () {
+          Navigator.of(context).pop();
+        });
       },
       child: AnimatedOpacity(
         opacity: _opacity,
-        duration: Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 200),
         child: GestureDetector(
           child: Container(
             color: Colors.black,

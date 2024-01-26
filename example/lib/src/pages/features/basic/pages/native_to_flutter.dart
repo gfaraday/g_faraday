@@ -19,7 +19,7 @@ class _Native2FlutterPageState extends State<Native2FlutterPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
+      navigationBar: const CupertinoNavigationBar(
         middle: Text('Native2Flutter'),
       ),
       child: SafeArea(
@@ -29,7 +29,7 @@ class _Native2FlutterPageState extends State<Native2FlutterPage> {
             children: [
               Text(widget.date ?? 'No Date'),
               TextButton(
-                child: Text('带参数返回'),
+                child: const Text('带参数返回'),
                 onPressed: () =>
                     Navigator.of(context).pop('Result From Flutter'),
               ),
