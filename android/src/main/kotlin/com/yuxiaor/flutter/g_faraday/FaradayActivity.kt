@@ -17,7 +17,6 @@ import io.flutter.embedding.android.ExclusiveAppComponent
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
 import io.flutter.embedding.android.FlutterView
-import io.flutter.embedding.android.SplashScreen
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.platform.PlatformPlugin
 import java.io.Serializable
@@ -199,11 +198,11 @@ open class FaradayActivity : FlutterActivity(), ResultProvider, ExclusiveAppComp
         super.onDestroy()
     }
 
-    override fun provideSplashScreen(): SplashScreen? {
-        val splashScreen = super.provideSplashScreen()
-        if (splashScreen != null) return splashScreen
-        return FaradayColorBaseSplashScreen(intent?.getIntExtra(FaradayConstants.SPLASH_SCREEN_BACKGROUND_COLOR, Color.WHITE))
-    }
+//    override fun provideSplashScreen(): SplashScreen? {
+//        val splashScreen = super.provideSplashScreen()
+//        if (splashScreen != null) return splashScreen
+//        return FaradayColorBaseSplashScreen(intent?.getIntExtra(FaradayConstants.SPLASH_SCREEN_BACKGROUND_COLOR, Color.WHITE))
+//    }
 
     override fun addResultListener(resultListener: ResultListener) {
         this.resultListener = resultListener

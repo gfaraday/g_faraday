@@ -5,7 +5,6 @@ package com.yuxiaor.flutter.g_faraday
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -100,11 +99,11 @@ class FaradayFragment : FlutterFragment(), ResultProvider, FaradayContainer, Exc
         return TransparencyMode.transparent
     }
 
-    override fun provideSplashScreen(): SplashScreen? {
-        val splashScreen = super.provideSplashScreen()
-        if (splashScreen != null) return splashScreen
-        return FaradayColorBaseSplashScreen(arguments?.getInt(FaradayConstants.SPLASH_SCREEN_BACKGROUND_COLOR, Color.WHITE))
-    }
+//    override fun provideSplashScreen(): SplashScreen? {
+//        val splashScreen = super.provideSplashScreen()
+//        if (splashScreen != null) return splashScreen
+//        return FaradayColorBaseSplashScreen(arguments?.getInt(FaradayConstants.SPLASH_SCREEN_BACKGROUND_COLOR, Color.WHITE))
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
