@@ -50,7 +50,7 @@ public extension FaradayExtension where ExtendedType: UINavigationController {
 }
 
 extension UINavigationController {
-    func isNavigationBarHidden(at viewController: UIViewController?) -> Bool {
+    public func navigationBarIsHidden(for viewController: UIViewController?) -> Bool {
         if let vc = viewController as? FaradayNavigationBarHiddenProtocol {
             return vc.isFaradayNavigationBarHidden
         } else if let nav = self as? FaradayNavigationControllerBarHiddenProtocol {
@@ -61,8 +61,8 @@ extension UINavigationController {
     }
     
     @objc fileprivate func faraday_pushViewController(_ viewController: UIViewController, animated: Bool) {
-        let fromHidden = isNavigationBarHidden(at: viewControllers.last)
-        let toHidden = isNavigationBarHidden(at: viewController)
+        let fromHidden = navigationBarIsHidden(for: viewControllers.last)
+        let toHidden = navigationBarIsHidden(for: viewController)
         
         faraday_pushViewController(viewController, animated: animated)
         if fromHidden != toHidden {
@@ -74,8 +74,8 @@ extension UINavigationController {
         if viewControllers.count <= 1 {
             return nil
         }
-        let fromHidden = isNavigationBarHidden(at: viewControllers.last)
-        let toHidden = isNavigationBarHidden(at: viewControllers[viewControllers.count - 2])
+        let fromHidden = navigationBarIsHidden(for: viewControllers.last)
+        let toHidden = navigationBarIsHidden(for: viewControllers[viewControllers.count - 2])
         
         defer {
             if fromHidden != toHidden {
@@ -90,8 +90,8 @@ extension UINavigationController {
         if viewControllers.count <= 1 {
             return nil
         }
-        let fromHidden = isNavigationBarHidden(at: viewControllers.last)
-        let toHidden = isNavigationBarHidden(at: viewController)
+        let fromHidden = navigationBarIsHidden(for: viewControllers.last)
+        let toHidden = navigationBarIsHidden(for: viewController)
         
         defer {
             if fromHidden != toHidden {
@@ -106,8 +106,8 @@ extension UINavigationController {
         if viewControllers.count <= 1 {
             return nil
         }
-        let fromHidden = isNavigationBarHidden(at: viewControllers.last)
-        let toHidden = isNavigationBarHidden(at: viewControllers.first)
+        let fromHidden = navigationBarIsHidden(for: viewControllers.last)
+        let toHidden = navigationBarIsHidden(for: viewControllers.first)
         
         defer {
             if fromHidden != toHidden {
