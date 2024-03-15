@@ -16,7 +16,19 @@ let swizzle: (AnyClass, Selector, Selector) -> () = { fromClass, originalSelecto
 }
 
 // 当前 ViewController 需要隐藏navigationBar时，需遵循此协议,此外如果是rootVC，则需要单独设置navigationBarHidden
-public protocol FaradayNavigationBarHiddenProtocol {}
+public protocol FaradayNavigationBarHiddenProtocol where Self: UIViewController {
+    var isFaradayNavigationBarHidden: Bool { get }
+}
+
+extension FaradayNavigationBarHiddenProtocol {
+    public var isFaradayNavigationBarHidden: Bool {
+        return true
+    }
+}
+// 给 NavigationController 设置默认的bar hidden
+public protocol FaradayNavigationControllerBarHiddenProtocol where Self: UINavigationController {
+    var isFaradayNavigationBarHidden: Bool { get }
+}
 
 extension FaradayFlutterViewController: FaradayNavigationBarHiddenProtocol { }
 
@@ -38,20 +50,22 @@ public extension FaradayExtension where ExtendedType: UINavigationController {
 }
 
 extension UINavigationController {
-
+    func isNavigationBarHidden(at viewController: UIViewController?) -> Bool {
+        if let vc = viewController as? FaradayNavigationBarHiddenProtocol {
+            return vc.isFaradayNavigationBarHidden
+        } else if let nav = self as? FaradayNavigationControllerBarHiddenProtocol {
+            return nav.isFaradayNavigationBarHidden
+        } else {
+            return false
+        }
+    }
+    
     @objc fileprivate func faraday_pushViewController(_ viewController: UIViewController, animated: Bool) {
-        var formHidden = false
-        var toHidden = false
-        
-        if let _ = viewControllers.last as? FaradayNavigationBarHiddenProtocol {
-            formHidden = true
-        }
-        if let _ = viewController as? FaradayNavigationBarHiddenProtocol {
-            toHidden = true
-        }
+        let fromHidden = isNavigationBarHidden(at: viewControllers.last)
+        let toHidden = isNavigationBarHidden(at: viewController)
         
         faraday_pushViewController(viewController, animated: animated)
-        if formHidden != toHidden {
+        if fromHidden != toHidden {
             setNavigationBarHidden(toHidden, animated: animated)
         }
     }
@@ -60,18 +74,11 @@ extension UINavigationController {
         if viewControllers.count <= 1 {
             return nil
         }
-        var formHidden = false
-        var toHidden = false
-        
-        if let _ = viewControllers.last as? FaradayNavigationBarHiddenProtocol {
-            formHidden = true
-        }
-        if let _ = viewControllers[viewControllers.count - 2] as? FaradayNavigationBarHiddenProtocol {
-            toHidden = true
-        }
+        let fromHidden = isNavigationBarHidden(at: viewControllers.last)
+        let toHidden = isNavigationBarHidden(at: viewControllers[viewControllers.count - 2])
         
         defer {
-            if formHidden != toHidden {
+            if fromHidden != toHidden {
                 setNavigationBarHidden(toHidden, animated: animated)
             }
         }
@@ -83,19 +90,11 @@ extension UINavigationController {
         if viewControllers.count <= 1 {
             return nil
         }
-        var formHidden = false
-        var toHidden = false
-        
-        if let _ = viewControllers.last as? FaradayNavigationBarHiddenProtocol {
-            formHidden = true
-        }
-        
-        if let _ = viewController as? FaradayNavigationBarHiddenProtocol {
-            toHidden = true
-        }
+        let fromHidden = isNavigationBarHidden(at: viewControllers.last)
+        let toHidden = isNavigationBarHidden(at: viewController)
         
         defer {
-            if formHidden != toHidden {
+            if fromHidden != toHidden {
                 setNavigationBarHidden(toHidden, animated: animated)
             }
         }
@@ -107,18 +106,11 @@ extension UINavigationController {
         if viewControllers.count <= 1 {
             return nil
         }
-        var formHidden = false
-        var toHidden = false
-        
-        if let _ = viewControllers.last as? FaradayNavigationBarHiddenProtocol {
-            formHidden = true
-        }
-        if let _ = viewControllers.first as? FaradayNavigationBarHiddenProtocol {
-            toHidden = true
-        }
+        let fromHidden = isNavigationBarHidden(at: viewControllers.last)
+        let toHidden = isNavigationBarHidden(at: viewControllers.first)
         
         defer {
-            if formHidden != toHidden {
+            if fromHidden != toHidden {
                 setNavigationBarHidden(toHidden, animated: animated)
             }
         }
