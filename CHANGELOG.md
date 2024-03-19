@@ -1,3 +1,8 @@
+# 1.0.1
+
+* migrate to flutter 3.16.9
+* ios add FaradayNavigationControllerBarHiddenProtocol
+
 # 1.0.0
 
 * migrate to flutter 3.0.5
