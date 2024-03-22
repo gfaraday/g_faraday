@@ -1,3 +1,6 @@
+# 1.0.2
+* Fix NPE when platform plugin delegate is null
+
 # 1.0.1
 
 * migrate to flutter 3.16.9

@@ -231,7 +231,7 @@ open class FaradayActivity : FlutterActivity(), ResultProvider, ExclusiveAppComp
 
             // 0x02
             if (platformPlugin == null) {
-                platformPlugin = PlatformPlugin(activity, flutterEngine!!.platformChannel)
+                platformPlugin = PlatformPlugin(activity, flutterEngine!!.platformChannel, this)
             }
 
             // 0x03

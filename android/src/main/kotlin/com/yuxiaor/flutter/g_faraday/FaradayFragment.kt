@@ -201,7 +201,7 @@ class FaradayFragment : FlutterFragment(), ResultProvider, FaradayContainer, Exc
 
             // 0x02
             if (platformPlugin == null) {
-                platformPlugin = PlatformPlugin(requireActivity(), flutterEngine!!.platformChannel)
+                platformPlugin = PlatformPlugin(requireActivity(), flutterEngine!!.platformChannel, this)
             }
 
             // 0x03
