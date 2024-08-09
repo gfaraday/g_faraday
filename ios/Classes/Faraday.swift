@@ -278,11 +278,11 @@ extension Faraday {
         let faraday = Faraday.default
         let info = state.info;
         faraday.channel?.invokeMethod(info.0, arguments: info.1, result: { r in
-            if (r is FlutterError) {
-                fatalError((r as! FlutterError).message ?? "unkonwn error")
-            } else {
+            // if (r is FlutterError) {
+            //     fatalError((r as! FlutterError).message ?? "unkonwn error")
+            // } else {
                 result(r as? Bool ?? false)
-            }
+            // }
         })
     }
 }
