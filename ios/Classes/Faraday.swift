@@ -92,6 +92,9 @@ public class Faraday {
         return engine?.viewController as? FaradayFlutterViewController
     }
     
+    /// 打印未知错误,
+    public var onLogError: ((String) -> Void)?
+    
     //
     func setup(messenger: FlutterBinaryMessenger) {
         
@@ -278,11 +281,13 @@ extension Faraday {
         let faraday = Faraday.default
         let info = state.info;
         faraday.channel?.invokeMethod(info.0, arguments: info.1, result: { r in
-            // if (r is FlutterError) {
-            //     fatalError((r as! FlutterError).message ?? "unkonwn error")
-            // } else {
+             if (r is FlutterError) {
+                 let error = r as! FlutterError
+                 Faraday.default.onLogError?("[FlutterError]: code: \(error.code) message: \(error.message) info: \(info)")
+                 result(false)
+             } else {
                 result(r as? Bool ?? false)
-            // }
+             }
         })
     }
 }

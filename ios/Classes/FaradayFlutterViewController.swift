@@ -24,6 +24,9 @@ open class FaradayFlutterViewController: FlutterViewController, UINavigationCont
     private weak var previousFlutterViewController: FaradayFlutterViewController?
     private var swipeBackIsEnable = true
     
+    // 当createPageFailed报错时，根据此变量，重试一次
+    private var createPageFailed = false
+    
     @objc
     public init(_ name: String, arguments: Any? = nil, backgroundClear: Bool = false, engine: FlutterEngine? = nil, callback: ((Any?) -> ())? = nil) {
         self.name = name
@@ -50,7 +53,38 @@ open class FaradayFlutterViewController: FlutterViewController, UINavigationCont
     }
     
     func createFlutterPage() {
-        Faraday.sendPageState(.create(name, arguments, id, backgroundClear)) { _ in }
+        Faraday.sendPageState(.create(name, arguments, id, backgroundClear)) { [weak self] isSuccess in
+            self?.createPageFailed = !isSuccess
+        }
+    }
+    
+    func showFlutterPage(_ retry: Bool = true) {
+        func retryAgain(_ isSuccess: Bool) {
+            if retry && !isSuccess {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                    self?.createPageFailed = true
+                    self?.showFlutterPage(false)
+                }
+            }
+        }
+        
+        if createPageFailed {
+            Faraday.sendPageState(.create(name, arguments, id, backgroundClear)) { isSuccess in
+                if !isSuccess {
+                    retryAgain(isSuccess)
+                } else {
+                    Faraday.sendPageState(.show(self.id)) { _ in }
+                }
+            }
+        } else {
+            Faraday.sendPageState(.show(id)) { isSuccess in
+                retryAgain(isSuccess)
+            }
+        }
+    }
+    
+    func retryCreateFlutterPage() {
+        isShowing
     }
     
     weak var interactivePopGestureRecognizerDelegate: UIGestureRecognizerDelegate?
@@ -82,7 +116,8 @@ open class FaradayFlutterViewController: FlutterViewController, UINavigationCont
     open override func viewWillAppear(_ animated: Bool) {
         engine?.viewController = self
         isShowing = true
-        Faraday.sendPageState(.show(id)) { _ in }
+        // Faraday.sendPageState(.show(id)) { _ in }
+        showFlutterPage()
         super.viewWillAppear(animated)
         view.backgroundColor = backgroundClear ? .clear : .white
         
