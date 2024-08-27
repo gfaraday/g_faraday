@@ -27,8 +27,9 @@ class _TransparentPageState extends State<TransparentPage>
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
+        final navigator = Navigator.of(context);
         await showCupertinoDialog(
             context: context,
             builder: (context) => CupertinoAlertDialog(
@@ -36,20 +37,20 @@ class _TransparentPageState extends State<TransparentPage>
                   actions: [
                     CupertinoActionSheetAction(
                       onPressed: () {
+                        final navigator = Navigator.of(context);
                         Future.microtask(() {
                           setState(() {
                             _opacity = 0.0;
                           });
-                          Navigator.of(context).pop(true);
+                          navigator.pop(true);
                         });
                       },
                       child: const Text('返回'),
                     )
                   ],
                 ));
-        Future.delayed(const Duration(milliseconds: 300), () {
-          Navigator.of(context).pop();
-        });
+        await Future.delayed(const Duration(milliseconds: 300));
+        navigator.pop();
       },
       child: AnimatedOpacity(
         opacity: _opacity,

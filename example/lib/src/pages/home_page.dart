@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
       value: SystemUiOverlayStyle.light,
       child: PopScope(
         canPop: false,
-        onPopInvoked: (didPop) async {
+        onPopInvokedWithResult: (didPop, _) async {
           if (didPop) return;
           final r = await showCupertinoDialog(
               builder: (context) => CupertinoAlertDialog(

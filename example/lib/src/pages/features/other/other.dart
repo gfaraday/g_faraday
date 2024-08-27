@@ -66,7 +66,7 @@ class __WillPopPageState extends State<_WillPopPage> {
     return CupertinoPageScaffold(
       child: PopScope(
           canPop: false,
-          onPopInvoked: (didPop) async {
+          onPopInvokedWithResult: (didPop, _) async {
             if (didPop) return;
 
             final r = await showCupertinoDialog(

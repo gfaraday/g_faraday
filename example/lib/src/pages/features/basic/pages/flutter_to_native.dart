@@ -31,19 +31,16 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
                   child:
                       const Text('🍎: Navigator.of(context)?.nativePushNamed'),
                   onPressed: () async {
-                    _showResult(
-                        context,
-                        await Navigator.of(context)
-                            .nativePushNamed('flutter2native', arguments: {}));
+                    final result = await Navigator.of(context)
+                        .nativePushNamed('flutter2native', arguments: {});
+                    _showResult(result);
                   }),
               TextButton(
                   child: const Text('🍐: Navigator.of(context)?.pushNamed'),
                   onPressed: () async {
-                    _showResult(
-                        context,
-                        await Navigator.of(context).pushNamed<Object?>(
-                            'flutter2native',
-                            arguments: {}));
+                    final result = await Navigator.of(context)
+                        .pushNamed<Object?>('flutter2native', arguments: {});
+                    _showResult(result);
                   }),
               if (_result != null)
                 Text(
@@ -66,7 +63,7 @@ class _Flutter2NativePageState extends State<Flutter2NativePage> {
     );
   }
 
-  void _showResult(BuildContext context, Object? result) {
+  void _showResult(Object? result) {
     if (mounted) {
       setState(() {
         _result = result ?? 'NO RESULT';
