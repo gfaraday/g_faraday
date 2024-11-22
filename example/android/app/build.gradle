@@ -1,3 +1,8 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -11,8 +16,6 @@ if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 def keystoreProperties = new Properties()
@@ -22,7 +25,8 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 33
+    namespace 'com.yuxiaor.flutter.g_faraday_example'
+    compileSdkVersion 34
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -35,7 +39,7 @@ android {
     defaultConfig {
         applicationId "com.yuxiaor.flutter.g_faraday_example"
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 2
         versionName "1.0.0"
     }
@@ -55,11 +59,11 @@ android {
 //       }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "17"
     }
 }
 

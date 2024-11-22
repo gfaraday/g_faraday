@@ -1,18 +1,24 @@
 buildscript {
-    ext.kotlin_version = '1.6.21'
+    ext.kotlin_version = '1.8.22'
     repositories {
+        google() // 推荐 Google 仓库
+        mavenCentral() // 备用
+        maven { url "https://maven.aliyun.com/repository/central" }
         maven { url 'https://maven.aliyun.com/repository/google/'}
         maven { url 'https://maven.aliyun.com/repository/jcenter/'}
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:8.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 allprojects {
     repositories {
+        google() // 推荐 Google 仓库
+        mavenCentral() // 备用
+        maven { url "https://maven.aliyun.com/repository/central" }
         maven { url 'https://maven.aliyun.com/repository/google/'}
         maven { url 'https://maven.aliyun.com/repository/jcenter/'}
     }

@@ -1,8 +1,5 @@
-group 'com.yuxiaor.flutter.g_faraday'
-version '1.0-SNAPSHOT'
-
 buildscript {
-    ext.kotlin_version = '1.6.21'
+    ext.kotlin_version = '1.8.22'
     repositories {
         google()
         jcenter()
@@ -10,10 +7,19 @@ buildscript {
 
     dependencies {
         //noinspection GradleDependency
-        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.android.tools.build:gradle:8.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+group 'com.yuxiaor.flutter.g_faraday'
+version '1.0-SNAPSHOT'
+
 
 rootProject.allprojects {
     repositories {
@@ -21,11 +27,9 @@ rootProject.allprojects {
     }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-
 android {
-    compileSdkVersion 33
+    namespace 'com.yuxiaor.flutter.g_faraday'
+    compileSdkVersion 34
 //    buildToolsVersion "29.0.3"
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -35,6 +39,14 @@ android {
     }
     lintOptions {
         disable 'InvalidPackage'
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 
