@@ -190,7 +190,7 @@ public class Faraday {
     /// 例如 在iOS13 以上从FaradayFlutterViewController `present`新页面的时候 生命周期调用不符合预期
     /// - Parameter viewController: 需要刷新状态的FaradayFlutterViewController实例
     public static func refreshViewController(_ viewController: FaradayFlutterViewController) {
-        viewController.engine?.viewController = nil
+        viewController.engine.viewController = nil
         
         viewController.viewWillAppear(false)
         viewController.viewDidLayoutSubviews()
