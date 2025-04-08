@@ -83,9 +83,9 @@ open class FaradayFlutterViewController: FlutterViewController, UINavigationCont
         }
     }
     
-    func retryCreateFlutterPage() {
-        isShowing
-    }
+//    func retryCreateFlutterPage() {
+//        isShowing
+//    }
     
     weak var interactivePopGestureRecognizerDelegate: UIGestureRecognizerDelegate?
         
