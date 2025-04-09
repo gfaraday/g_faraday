@@ -283,7 +283,7 @@ extension Faraday {
         faraday.channel?.invokeMethod(info.0, arguments: info.1, result: { r in
              if (r is FlutterError) {
                  let error = r as! FlutterError
-                 Faraday.default.onLogError?("[FlutterError]: code: \(error.code) message: \(error.message) info: \(info)")
+                 Faraday.default.onLogError?("[FlutterError]: code: \(error.code) message: \(error.message ?? "null") info: \(info)")
                  result(false)
              } else {
                 result(r as? Bool ?? false)

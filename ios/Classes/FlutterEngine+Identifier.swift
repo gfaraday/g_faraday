@@ -13,13 +13,17 @@ private struct AssociatedKeys {
 
 extension FaradayExtension where ExtendedType: FlutterEngine {
     
+    private var identifierKey: UnsafeRawPointer {
+        UnsafeRawPointer(bitPattern: AssociatedKeys.IdentifierKeyName.hashValue)!
+    }
+    
     internal var id: Int? {
         get {
-            return objc_getAssociatedObject(UIViewController.self, &AssociatedKeys.IdentifierKeyName) as? Int
+            return objc_getAssociatedObject(UIViewController.self, identifierKey) as? Int
         }
         nonmutating set {
             if let newValue = newValue {
-                objc_setAssociatedObject(UIViewController.self, &AssociatedKeys.IdentifierKeyName, newValue as Int?, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                objc_setAssociatedObject(UIViewController.self, identifierKey, newValue as Int?, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }

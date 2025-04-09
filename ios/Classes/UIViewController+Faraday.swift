@@ -15,12 +15,17 @@ private struct AssociatedKeys {
 public typealias CallbackToken = UUID
 
 extension UIViewController {
+    
+    private var callbackIdentifierKey: UnsafeRawPointer {
+        UnsafeRawPointer(bitPattern: AssociatedKeys.CallbackName.hashValue)!
+    }
+    
     internal var callbackToken: CallbackToken? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.CallbackName) as? CallbackToken
+            return objc_getAssociatedObject(self, callbackIdentifierKey) as? CallbackToken
         }
         set {
-            objc_setAssociatedObject(self, &AssociatedKeys.CallbackName, newValue as CallbackToken?, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, callbackIdentifierKey, newValue as CallbackToken?, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }
@@ -89,6 +94,10 @@ final class Deallocator {
 
 extension UIViewController {
     
+    private var deallocatorIdentifierKey: UnsafeRawPointer {
+        UnsafeRawPointer(bitPattern: AssociatedKeys.DeallocatorName.hashValue)!
+    }
+    
     @objc fileprivate func faraday_viewDidLoad() {
         
         let token = callbackToken
@@ -97,7 +106,7 @@ extension UIViewController {
             Faraday.callback(token, result: nil)
         }
         
-        objc_setAssociatedObject(self, &AssociatedKeys.DeallocatorName, deallocator, .OBJC_ASSOCIATION_RETAIN)
+        objc_setAssociatedObject(self, deallocatorIdentifierKey, deallocator, .OBJC_ASSOCIATION_RETAIN)
         
         faraday_viewDidLoad()
     }
