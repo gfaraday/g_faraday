@@ -114,7 +114,7 @@ open class FaradayFlutterViewController: FlutterViewController, UINavigationCont
     }
     
     open override func viewWillAppear(_ animated: Bool) {
-        engine?.viewController = self
+        engine.viewController = self
         isShowing = true
         // Faraday.sendPageState(.show(id)) { _ in }
         showFlutterPage()
