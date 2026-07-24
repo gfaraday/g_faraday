@@ -41,15 +41,17 @@ Flutter plugin for integrate flutter to existing app
 
 ## Requirements
 
-- Flutter 2.5.0 • channel stable
-- iOS 10.0+ Xcode 12.0+ Swift 5.1+
+- Flutter 3.38.0 • channel stable
+- iOS 13.0+ Xcode 15.0+ Swift 5.9+ (UIScene supported, see [iOS UIScene support](doc/ios_scene.md))
 - Android minSdkVersion 16 Kotlin 1.4.10+
 
 ## Faraday VS. Flutter versions
 
 | g_faraday           | flutter                                                                   | cocoapods | remark        |
 | ------------------- | ------------------------------------------------------------------------- | --------- | ------------- |
-| ^0.7.2              | Flutter 2.5.0 • channel stable • `https://github.com/flutter/flutter.git` | any       | recommend     |
+| ^1.2.0              | Flutter 3.38.0 • channel stable • `https://github.com/flutter/flutter.git` | any       | recommend (UIScene) |
+| ^1.0.0              | Flutter 3.0.5 • channel stable • `https://github.com/flutter/flutter.git` | any       | not recommend |
+| ^0.7.2              | Flutter 2.5.0 • channel stable • `https://github.com/flutter/flutter.git` | any       | not recommend     |
 | ^0.7.0              | Flutter 2.0.0 • channel stable                                            | any       | not recommend |
 | ^0.5.1-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta                                    | any       | not recommend |
 | ^0.5.0-nullsafety.0 | Flutter 1.24.0-10.2.pre • channel beta                                    | any       | not recommend |

@@ -1,3 +1,13 @@
+# 1.2.0
+
+* iOS 支持 UIScene 生命周期（适配 Apple 强制要求，详见 [文档](doc/ios_scene.md)）
+* 新增 `UIViewController.fa.keyWindow`（scene-aware），`fa.topMost` 内部改走 scene 优先查找
+* 最低要求提升：Flutter 3.38.0 / Dart 3.10.0 / iOS 13.0
+
+# 1.1.0
+
+* migrate to flutter 3.27.0
+
 # 1.0.2
 * Fix NPE when platform plugin delegate is null
 

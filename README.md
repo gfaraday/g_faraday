@@ -54,15 +54,16 @@ _Flutter **stable channel** 发布后 **一周内**适配发布对应的`g_farad
 
 ## Requirements
 
-- Flutter 3.0.5 • channel stable
-- iOS 10.0+ Xcode 12.0+ Swift 5.1+
+- Flutter 3.38.0 • channel stable
+- iOS 13.0+ Xcode 15.0+ Swift 5.9+（已支持 UIScene 生命周期，接入见[文档](doc/ios_scene.md)）
 - Android minSdkVersion 16 Kotlin 1.4.10+
 
 ## 版本对应关系
 
 | g_faraday           | flutter                                                                   | cocoapods | remark        |
 | ------------------- | ------------------------------------------------------------------------- | --------- | ------------- |
-| ^1.0.0       | Flutter 3.0.5 • channel stable • `https://github.com/flutter/flutter.git`   | any       | recommend        |
+| ^1.2.0       | Flutter 3.38.0 • channel stable • `https://github.com/flutter/flutter.git`   | any       | recommend（UIScene 支持）        |
+| ^1.0.0       | Flutter 3.0.5 • channel stable • `https://github.com/flutter/flutter.git`   | any       | not recommend        |
 | ^1.0.0-beta.1       | Flutter 3.0.3 • channel stable • `https://github.com/flutter/flutter.git`   | any       | not recommend        |
 | ^0.7.2              | Flutter 2.5.0 • channel stable • `https://github.com/flutter/flutter.git` | any       | not recommend     |
 | ^0.7.0              | Flutter 2.0.0 • channel stable                                            | any       | not recommend |
