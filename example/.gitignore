@@ -23,6 +23,9 @@
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
+**/ios/Flutter/ephemeral/
+**/ios/Pods/
+**/ios/.symlinks/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
