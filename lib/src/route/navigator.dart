@@ -14,7 +14,7 @@ class FaradayNavigator extends Navigator {
   ///
   FaradayNavigator(
       {super.key,
-      super.onPopPage,
+      super.onDidRemovePage,
       required String super.initialRoute,
       required super.onGenerateInitialRoutes,
       required RouteFactory super.onGenerateRoute,
