@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 public struct FaradayExtension<ExtendedType> {
     /// Stores the type or meta-type of any extended type.

@@ -12,6 +12,10 @@ android-aar-repo
 ios-frameworks
 .faraday.json
 
+# SPM 本地构建目录
+.build/
+.swiftpm/
+
 # FVM: 本机符号链接与缓存不跟踪，fvm_config.json（版本约定）保持跟踪
 .fvm/flutter_sdk
 .fvm/versions/
