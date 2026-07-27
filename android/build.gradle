@@ -1,20 +1,5 @@
-buildscript {
-    ext.kotlin_version = '1.8.22'
-    repositories {
-        google()
-        jcenter()
-    }
-
-    dependencies {
-        //noinspection GradleDependency
-        classpath 'com.android.tools.build:gradle:8.0.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 plugins {
     id 'com.android.library'
-    id 'kotlin-android'
 }
 
 group 'com.yuxiaor.flutter.g_faraday'
@@ -24,12 +9,13 @@ version '1.0-SNAPSHOT'
 rootProject.allprojects {
     repositories {
         google()
+        mavenCentral()
     }
 }
 
 android {
     namespace 'com.yuxiaor.flutter.g_faraday'
-    compileSdkVersion 34
+    compileSdk = 36
 //    buildToolsVersion "29.0.3"
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -45,13 +31,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    // Flutter 3.44 (AGP 9) 内置 Kotlin 2.3.20，不再需要自带 KGP；
+    // kotlinOptions 由 AGP 内置 Kotlin 提供。
     kotlinOptions {
         jvmTarget = "17"
     }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.activity:activity-ktx:1.6.0-alpha05"
 }
